@@ -74,7 +74,9 @@ module tb_priority_if;
     end
 
 endmodule
-//Log File Output
+
+//LogFile simulation Output using Cadence Xcelium 23.09
+
 [2025-06-20 03:01:26 UTC] xrun -Q -unbuffered '-timescale' '1ns/1ns' '-sysv' '-access' '+rw' design.sv testbench.sv  
 TOOL:	xrun	23.09-s001: Started on Jun 19, 2025 at 23:01:26 EDT
 xrun: 23.09-s001: (c) Copyright 1995-2023 Cadence Design Systems, Inc.
@@ -103,3 +105,5 @@ Simulation complete via $finish(1) at time 80 NS + 0
 xcelium> exit
 TOOL:	xrun	23.09-s001: Exiting on Jun 19, 2025 at 23:01:27 EDT  (total: 00:00:01)
 Done
+
+//Synthesis Output
