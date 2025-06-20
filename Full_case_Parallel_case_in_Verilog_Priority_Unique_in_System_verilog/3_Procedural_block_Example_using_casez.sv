@@ -129,7 +129,7 @@ module instruction_decoder_tb;
     end
 endmodule
 
-//Log File Output
+// LogFile simulation Output using Cadence Xcelium 23.09
 
 [2025-06-18 13:55:58 UTC] xrun -Q -unbuffered '-timescale' '1ns/1ns' '-sysv' '-access' '+rw' design.sv testbench.sv  
 TOOL:	xrun	23.09-s001: Started on Jun 18, 2025 at 09:55:59 EDT
@@ -167,3 +167,4 @@ xcelium> exit
 TOOL:	xrun	23.09-s001: Exiting on Jun 18, 2025 at 09:56:00 EDT  (total: 00:00:01)
 Done
 
+//Synthesis Output
