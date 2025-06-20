@@ -81,7 +81,7 @@ module alu_tb;
     end
 endmodule
 
-//Log File Output
+//Log File Simulation Output using Cadence Xcelium 23.09
 
 [2025-06-18 13:22:28 UTC] xrun -Q -unbuffered '-timescale' '1ns/1ns' '-sysv' '-access' '+rw' design.sv testbench.sv  
 TOOL:	xrun	23.09-s001: Started on Jun 18, 2025 at 09:22:28 EDT
@@ -106,3 +106,5 @@ Simulation complete via $finish(1) at time 80 NS + 0
 xcelium> exit
 TOOL:	xrun	23.09-s001: Exiting on Jun 18, 2025 at 09:22:29 EDT  (total: 00:00:01)
 Done
+
+//Synthesis Output
