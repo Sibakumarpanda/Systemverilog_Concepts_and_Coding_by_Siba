@@ -133,3 +133,4 @@ xcelium> exit
 TOOL:	xrun	23.09-s001: Exiting on Jun 18, 2025 at 23:47:45 EDT  (total: 00:00:02)
 Done
 
+// Synthesis Output
