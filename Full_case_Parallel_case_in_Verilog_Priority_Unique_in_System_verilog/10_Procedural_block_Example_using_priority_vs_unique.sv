@@ -80,6 +80,7 @@ module priority_case_vs_unique_case_example_compare_tb;
 endmodule
 
 // LogFile Output using Cadence Synopsys VCS
+
 [2025-06-20 02:58:29 UTC] vcs -full64 -licqueue '-timescale=1ns/1ns' '+vcs+flush+all' '+warn=all' '-sverilog' design.sv testbench.sv  && ./simv +vcs+lic+wait  
                          Chronologic VCS (TM)
        Version U-2023.03-SP2_Full64 -- Thu Jun 19 22:58:30 2025
@@ -177,3 +178,5 @@ Time: 60 ns
 CPU Time:      0.260 seconds;       Data structure size:   0.0Mb
 Thu Jun 19 22:58:31 2025
 Done
+
+//Synthesis Output    
