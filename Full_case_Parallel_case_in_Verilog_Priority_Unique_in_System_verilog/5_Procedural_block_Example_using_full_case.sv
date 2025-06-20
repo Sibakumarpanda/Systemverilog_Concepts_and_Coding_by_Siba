@@ -115,3 +115,5 @@ Simulation complete via $finish(1) at time 80 NS + 0
 xcelium> exit
 TOOL:	xrun	23.09-s001: Exiting on Jun 18, 2025 at 23:53:49 EDT  (total: 00:00:01)
 Done
+
+// Synthesis Output
