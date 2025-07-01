@@ -1,3 +1,12 @@
+//---------------------------------------------------------------------------------------------------------
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//(c) Copyright Siba Kumar Panda, All rights reserved
+// File    : system_verilog_randomization_control.sv 
+// Project : Understanding SV Randomization Control like srandom() , get_randstate(), set_randstate()
+// Purpose : 
+// Author  : Siba Kumar Panda
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 Concept of PRNG:
 -A Pseudo-Random Number Generator (PRNG) is an algorithm that generates a sequence of numbers that look random, but are actually completely determined by a starting value called a seed.
 -Think of it like a shuffle playlist that always plays the same songs in the same order if you start from the same point.
