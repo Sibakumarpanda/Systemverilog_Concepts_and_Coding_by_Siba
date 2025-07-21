@@ -39,7 +39,7 @@ Various examples with outputs to understand the event concept : (By using -> eve
       b. Type B2: An event is triggered before waiting for event trigger
       c. Type C2: An event is triggered at the same time as waiting for the event trigger 
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
 Example1: Type A1: An event is triggered after waiting for the event trigger 
   
  -For example, there are two processes A and B. The process_A task is used to trigger an event e1 and the process_B task is used to wait for the event using @ operator.
@@ -86,7 +86,7 @@ xmsim: *W,RNQUIE: Simulation is complete.
 xcelium> exit
 TOOL:	xrun	23.09-s001: Exiting on Jul 21, 2025 at 08:11:22 EDT  (total: 00:00:02)
 Done
-  
+////////////////////////////////////////////////////////////////////////////////////////////////  
 Example2: Type B1: An event is triggered before waiting for event trigger  
  - The process_B task has a 10ns delay which makes sure event e1 triggers before waiting for an event trigger. 
  - The wait for the event to be triggered via @ operator will not be unblocked since the e1 event is triggered before. 
@@ -132,7 +132,7 @@ xmsim: *W,RNQUIE: Simulation is complete.
 xcelium> exit
 TOOL:	xrun	23.09-s001: Exiting on Jul 21, 2025 at 08:16:52 EDT  (total: 00:00:01)
 Done  
-  
+//////////////////////////////////////////////////////////////////////////////////////////////  
 Example3: Type C1: An event is triggered at the same time as waiting for the event trigger 
 -The process_A and process_B have no delay involved to ensure triggering of an event and waiting for the event trigger to happen at the same time. 
 -Since both processes are triggered at the same time, the @ operator will not detect an event triggering. The SystemVerilog provides a wait() construct to solve this problem .(Example6 here)
@@ -176,9 +176,139 @@ xmsim: *W,RNQUIE: Simulation is complete.
 xcelium> exit
 TOOL:	xrun	23.09-s001: Exiting on Jul 21, 2025 at 08:31:50 EDT  (total: 00:00:01)
 Done
-
+////////////////////////////////////////////////////////////////////////////////////////////
 Example4: Type A2: An event is triggered after waiting for the event trigger	
 -For example, there are two processes A and B. The process_A task is used to trigger an event e1 and the process_B task is used to wait for the event using the wait() construct.
 -The process_A task has a 10ns delay which makes sure event e1 triggers after waiting for the event trigger. 
 -The wait of the event to be triggered via wait() construct will be unblocked once the e1 event is triggered	
+
+module event_example4();
+  event e1;
+  
+  task process_A();
+    #10;
+    $display("@%0t: Before triggering event e1", $time);
+    ->e1;
+    $display("@%0t: After triggering event e1", $time);
+  endtask
+  
+  task process_B();
+    $display("@%0t: waiting for the event e1", $time);
+    wait(e1.triggered);
+    $display("@%0t: event e1 is triggered", $time);
+  endtask
+
+  initial begin
+    fork
+      process_A();
+      process_B();
+    join
+  end
+endmodule :event_example4	
+
+//LogFile Output using Cadence Xcelium Tool
+[2025-07-21 13:08:40 UTC] xrun -Q -unbuffered '-timescale' '1ns/1ns' '-sysv' '-access' '+rw' design.sv testbench.sv  
+TOOL:	xrun	23.09-s001: Started on Jul 21, 2025 at 09:08:40 EDT
+xrun: 23.09-s001: (c) Copyright 1995-2023 Cadence Design Systems, Inc.
+	Top level design units:
+		event_example
+Loading snapshot worklib.event_example:sv .................... Done
+xcelium> source /xcelium23.09/tools/xcelium/files/xmsimrc
+xcelium> run
+@0: waiting for the event e1
+@10: Before triggering event e1
+@10: After triggering event e1
+@10: event e1 is triggered
+xmsim: *W,RNQUIE: Simulation is complete.
+xcelium> exit
+TOOL:	xrun	23.09-s001: Exiting on Jul 21, 2025 at 09:08:42 EDT  (total: 00:00:02)
+Done
+/////////////////////////////////////////////////////////////////////////////////////////////
+Example5: Type B2: An event is triggered before waiting for event trigger
+-The process_B task has a 10ns delay which makes sure event e1 triggers before waiting for an event trigger. 
+-The wait of the event to be triggered via wait() construct will not be unblocked since the e1 event is triggered before. 
+-Hence, statements after waiting for the trigger (with wait() construct) will not be executed.
 	
+module event_example5();
+  event e1;
+  
+  task process_A();
+    $display("@%0t: Before triggering event e1", $time);
+    ->e1;
+    $display("@%0t: After triggering event e1", $time);
+  endtask
+  
+  task process_B();
+    #10;
+    $display("@%0t: waiting for the event e1", $time);
+    wait(e1.triggered);
+    $display("@%0t: event e1 is triggered", $time);
+  endtask
+
+  initial begin
+    fork
+      process_A();
+      process_B();
+    join
+  end
+endmodule :event_example5	
+
+//LogFile output using Cadence Xcelium Tool
+[2025-07-21 13:12:51 UTC] xrun -Q -unbuffered '-timescale' '1ns/1ns' '-sysv' '-access' '+rw' design.sv testbench.sv  
+TOOL:	xrun	23.09-s001: Started on Jul 21, 2025 at 09:12:52 EDT
+xrun: 23.09-s001: (c) Copyright 1995-2023 Cadence Design Systems, Inc.
+	Top level design units:
+		event_example
+Loading snapshot worklib.event_example:sv .................... Done
+xcelium> source /xcelium23.09/tools/xcelium/files/xmsimrc
+xcelium> run
+@0: Before triggering event e1
+@0: After triggering event e1
+@10: waiting for the event e1
+xmsim: *W,RNQUIE: Simulation is complete.
+xcelium> exit
+TOOL:	xrun	23.09-s001: Exiting on Jul 21, 2025 at 09:12:53 EDT  (total: 00:00:01)
+Done
+/////////////////////////////////////////////////////////////////////////////////////////
+Example6: Type C2: An event is triggered at the same time as waiting for the event trigger 
+-The process_A and process_B have no delay involved to ensure triggering of an event and waiting for even triggers happens at the same time and wait () construct will detect an event triggering.
+	
+module event_example6();
+  event e1;
+  
+  task process_A();
+    $display("@%0t: Before triggering event e1", $time);
+    ->e1;
+    $display("@%0t: After triggering event e1", $time);
+  endtask
+  
+  task process_B();
+    $display("@%0t: waiting for the event e1", $time);
+    wait(e1.triggered);
+    $display("@%0t: event e1 is triggered", $time);
+  endtask
+
+  initial begin
+    fork
+      process_A();
+      process_B();
+    join
+  end
+endmodule :event_example6
+//LogFile Output using Cadence Xcelium Tool
+[2025-07-21 13:17:27 UTC] xrun -Q -unbuffered '-timescale' '1ns/1ns' '-sysv' '-access' '+rw' design.sv testbench.sv  
+TOOL:	xrun	23.09-s001: Started on Jul 21, 2025 at 09:17:28 EDT
+xrun: 23.09-s001: (c) Copyright 1995-2023 Cadence Design Systems, Inc.
+	Top level design units:
+		event_example
+Loading snapshot worklib.event_example:sv .................... Done
+xcelium> source /xcelium23.09/tools/xcelium/files/xmsimrc
+xcelium> run
+@0: Before triggering event e1
+@0: After triggering event e1
+@0: waiting for the event e1
+@0: event e1 is triggered
+xmsim: *W,RNQUIE: Simulation is complete.
+xcelium> exit
+TOOL:	xrun	23.09-s001: Exiting on Jul 21, 2025 at 09:17:29 EDT  (total: 00:00:01)
+Done	
