@@ -27,7 +27,7 @@ Event operator                                            Description
 wait                                                      The wait() construct is similar to @ operator except it will unblock the process even if triggering an event and waiting for an event to happen at the same time. (level sensitive wait operator)
 
   
-Various examples with outputs to understand the event concept : (By using -> event operatore)
+Various examples with outputs to understand the event concept : (By using -> event operator)
   
   1. Event is triggered using -> and waiting for SystemVerilog event to be triggered via the @ operator
       a. Type A1: An event is triggered after waiting for the event trigger
@@ -133,3 +133,52 @@ xcelium> exit
 TOOL:	xrun	23.09-s001: Exiting on Jul 21, 2025 at 08:16:52 EDT  (total: 00:00:01)
 Done  
   
+Example3: Type C1: An event is triggered at the same time as waiting for the event trigger 
+-The process_A and process_B have no delay involved to ensure triggering of an event and waiting for the event trigger to happen at the same time. 
+-Since both processes are triggered at the same time, the @ operator will not detect an event triggering. The SystemVerilog provides a wait() construct to solve this problem .(Example6 here)
+
+module event_example3();
+  event e1;
+  
+  task process_A();
+    $display("@%0t: Before triggering event e1", $time);
+    ->e1;
+    $display("@%0t: After triggering event e1", $time);
+  endtask
+  
+  task process_B();
+    $display("@%0t: waiting for the event e1", $time);
+    @e1;
+    $display("@%0t: event e1 is triggered", $time);
+  endtask
+
+  initial begin
+    fork
+      process_A();
+      process_B();
+    join
+  end
+endmodule :event_example3
+	
+//Logfile output using Cadence Xcelium Tool
+[2025-07-21 12:31:49 UTC] xrun -Q -unbuffered '-timescale' '1ns/1ns' '-sysv' '-access' '+rw' design.sv testbench.sv  
+TOOL:	xrun	23.09-s001: Started on Jul 21, 2025 at 08:31:49 EDT
+xrun: 23.09-s001: (c) Copyright 1995-2023 Cadence Design Systems, Inc.
+	Top level design units:
+		event_example
+Loading snapshot worklib.event_example:sv .................... Done
+xcelium> source /xcelium23.09/tools/xcelium/files/xmsimrc
+xcelium> run
+@0: Before triggering event e1
+@0: After triggering event e1
+@0: waiting for the event e1
+xmsim: *W,RNQUIE: Simulation is complete.
+xcelium> exit
+TOOL:	xrun	23.09-s001: Exiting on Jul 21, 2025 at 08:31:50 EDT  (total: 00:00:01)
+Done
+
+Example4: Type A2: An event is triggered after waiting for the event trigger	
+-For example, there are two processes A and B. The process_A task is used to trigger an event e1 and the process_B task is used to wait for the event using the wait() construct.
+-The process_A task has a 10ns delay which makes sure event e1 triggers after waiting for the event trigger. 
+-The wait of the event to be triggered via wait() construct will be unblocked once the e1 event is triggered	
+	
