@@ -9,8 +9,8 @@ How two or more processes are synchronized???
 -The processes can wait for an event to be triggered either via @ operator or wait() construct.
 -Syntax:
 // To trigger an event
--> <event_name>;
-->> <event_name>; 
+-> <event_name>;   //called as Instantaneous event.
+->> <event_name>;  //called as Non-blocking events
 //wait for an event
 @(<event_name>); or @(<event_name>.triggered);
 wait(<event_name>.triggered);
