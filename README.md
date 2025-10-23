@@ -31,3 +31,9 @@ The code will execute on the platform, and you can view the simulation results i
 ## Content of this Repository
 
 This repository contains the basic to advance level SV Concepts , code examples with complete understanding as per below Outline . 
+
+**1. SV Data Types**
+
+**2. SV Arrays**
+
+**3. Dynamic Array in SV**
