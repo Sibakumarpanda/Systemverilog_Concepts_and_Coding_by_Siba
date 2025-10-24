@@ -30,9 +30,7 @@ Data Types :
 /*******************************************************************************************************************************/
 NOTE - In System Verilog all the Data types are of 2 state , except one data type that is of 4-state called logic data type
      - In Verilog all the Data types are of 4 state , except one data type that is of 2-state called  data type
-
-
-All the below data types are explained with respect to below points :
+     - All the below data types are explained with respect to below points :
             1. state of data type          
             2. Size of the Data Type
             3. signed/unsigned 
