@@ -34,6 +34,6 @@ This repository contains the basic to advance level SV Concepts , code examples 
 
 **1. SV Data Types**
 
-**2. SV Arrays**
+**2. SV Arrays- Fixed Size array , Single Dimension ,Multi Dimension array ,Packed/Unpacked array**
 
 **3. Dynamic Array in SV**
