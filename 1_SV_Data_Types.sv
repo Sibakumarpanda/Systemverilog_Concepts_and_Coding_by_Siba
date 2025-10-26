@@ -25,7 +25,7 @@ Data Types :
 7. enumerations Data Type : enum
 8. structure Data Type : struct
 9. Union Data Type: union 
-10. class data Type : class  
+10. Class data Type : class  
   
 /*******************************************************************************************************************************/
 NOTE - In System Verilog all the Data types are of 2 state , except one data type that is of 4-state called logic data type
@@ -36,24 +36,61 @@ NOTE - In System Verilog all the Data types are of 2 state , except one data typ
             3. signed/unsigned 
             4. Default value 
   
+/********************************/
+    Data Types Description
+/*******************************/  
+integer-  State : 4state data type, Size: 32-bit signed integer , Default Value = 32'bx
+int-      State : 2state data type, Size: 32-bit signed integer , Default Value = 32'b0
+shortint- State : 2state data type, Size: 16-bit signed integer , Default Value = 16'b0
+longint-  State : 2state data type, Size: 64-bit signed integer , Default Value = 64'b0
+bit-      State : 2state data type, Size: User-defined vector size , unsigned , Default Value = 1'b0
+byte-     State : 2state data type, Size: 8-bit signed integer or ASCII character , Default value = 8'b0
+logic-    State : 4state data type, Size: User-defined vector size, Can be signed or unsigned (depends on declaration) , Default value = 1'bx
+reg-      State : 4state data type, Size: User-defined vector size, Can be signed or unsigned (depends on declaration) , Default value = 1'bx
+wire-     State : 4state data type, Size: User-defined vector size, Can be signed or unsigned (depends on declaration), Default value = 1'bz
+time-     State : 4state data type, Size: 64-bit unsigned integer , Default value = 64'b0
 
+real-         State: Floating-point data type (simulated with 64-bit double precision) , Size: 64-bit double precision floating point (IEEE 754) ,Default Value: 0.0
+                     It is Same as double in C, used for mathematical computations
+shortreal-    State: Floating-point data type (simulated with 32-bit single precision) ,Size: 32-bit single precision floating point (IEEE 754) ,Default Value: 0.0
+                     Same as float in C, more efficient for simulation than real
+realtime-     State: Floating-point data type (same as real) ,Size: 64-bit double precision floating point (IEEE 754) ,Default Value: 0
+                     Semantically identical to real, but used to explicitly indicate the variable represents simulation time values
 
-int - 2 state data type, 32-bit signed integer
-
-integer- 4 state data type, 32-bit signed integer
-
-shortint- 2 state data type, 16-bit signed integer
-
-longint -2 state data type, 64-bit signed integer
-
-bit- 2 state data type, unsigned, user-defined vector size
-
-byte -2 state data type, 8-bit signed integer or ASCII character
-
-logic -4 state data type, unsigned, user-defined vector size
-
-reg -4 state data type, unsigned, user-defined vector size
-
-time -4 state data type, 64-bit unsigned integer
-
+void data Type- Its a  Non-existence data is known as a void data type. 
+                It is usually used with functions where it’s return type is void.
+                It can be specified as the return type of functions and tasks to indicate no return value.       
+                For example :
+                  function void display ();
+	                   $display ("Am not going to return any value");
+                  endfunction
   
+                  task void display ();
+	                   #10 $display ("Me neither");
+                   endtask     
+
+string data Type-  An ordered collection of characters is called a string data type. 
+                   The length of string variables may vary during simulation, hence the variable having type string is dynamic in nature.
+
+Event data type-   Data type event is a handle to a synchronization object. 
+                   The object which is referenced by an event variable can be triggered and waited for. In detail we will study later
+                   event is_empty; // declaration of is_empty event.  
+
+User-defined types- User-defined types use keyword typedef which is an extension of SystemVerilog data type.
+                    typedef int myint;  // Declaration
+                    myint a,b;          // Usage of user defined data type.  
+
+Enumeration data Type: A set of integral named constants is called an enumerated type. 
+                       It defines a set of named values having an anonymous int type.
+                       enum {red, yellow, green} traffic_signal;   //Anonymous int type -> red = 0, yellow = 1 and green = 2  
+
+Why logic data type came in to picture in System Verilog ???
+  - In Verilog behavior modeling, always, and initial procedural blocks use reg data type whereas, in dataflow modeling, continuous assignment uses wire data type. 
+  - SystemVerilog allows driving signals in the ‘assign’ statements and procedural blocks using logic data type. 
+  - The logic is a 4-state data type that allows capturing the Z or X behavior of the design. 
+
+Structure Data Type:
+
+Union Data Type:
+
+Class Data Type:  
