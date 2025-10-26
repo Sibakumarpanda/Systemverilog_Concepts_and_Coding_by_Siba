@@ -94,3 +94,20 @@ Structure Data Type:
 Union Data Type:
 
 Class Data Type:  
+
+Real to int Data Type conversion :	  
+  -Real numbers will be converted to integers by rounding the real number to the nearest integer instead of truncating it. 
+  -If the fractional part is exactly 0.5, it will be rounded away from zero. 
+  -Explicit conversion can be specified using casting or using system tasks. 
+  -Directly assigning a real value to an integral type will also round instead of truncate.	 
+
+  // Casting will perform rounding
+     int'(2.0 * 3.0)
+     shortint'({8'hab, 8'hef})
+
+  // Using system tasks will truncate
+     integer  	$rtoi ( real_val )
+     real 		$itor ( int_val)	  
+	  
+	  
+	  
