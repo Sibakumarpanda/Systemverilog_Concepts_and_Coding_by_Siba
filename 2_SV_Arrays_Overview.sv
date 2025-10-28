@@ -157,3 +157,14 @@ array[2][1][2] = 800
 array[2][2][0] = 9
 array[2][2][1] = 90
 array[2][2][2] = 900
+
+/********************************************/
+Concept of Scalar and Vector
+/********************************************/
+Scalar : The data object which does not have a specific range for bit/logic/reg is a scalar.
+Example :   logic var1;
+            bit var2;
+
+Vector:  The data object which has a specific range for bit/logic/reg is a vector.
+Example :  logic [5:0] var1;
+           bit [2:0] var2;
