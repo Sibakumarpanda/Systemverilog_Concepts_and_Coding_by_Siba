@@ -6,4 +6,14 @@ Dynamic Array in SystemVerilog :
  -Dynamic array is an unpacked array whose sizes can be changed during run time.
  -The methods used in dynamic array are : new[] , size(), delete()
 
+Dynamic array declaration :
+   bit [2:0] array []; 
+   string str_arr [];
+   array = new[2];  // To allocate the size of an array
 
+Dynamic array Methods :
+function int size()    - Returns the current size of a dynamic array
+function void delete() - Delete array results in an empty dynamic array i.e. zero-sized array.
+new[ ] - To create a memory. It can also be used to resize or copy a dynamic array.
+ 
+Note: The new [ ] is different from the function new() which is used in the OOP concept. 
