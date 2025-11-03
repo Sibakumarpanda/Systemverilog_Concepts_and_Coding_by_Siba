@@ -40,4 +40,12 @@ This repository contains the basic to advance level SV Concepts , code examples 
 
 **4. Associative Array in SV**
 
-**3. Array Manipulation Methods**
+**5. Array Manipulation Methods**
+
+    Array locator methods
+    
+    Array ordering methods
+    
+    Array reduction methods
+    
+    Iterator index querying
