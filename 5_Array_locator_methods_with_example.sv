@@ -42,7 +42,7 @@ endclass :array_locator_method_trans_class
 
 // TB TOP , File Name : testbench.sv   
 `include "array_locator_method_trans_class.sv"
-module elememt_arr_locator_tb_top_example1;
+module element_arr_locator_tb_top_example1;
   
   array_locator_method_trans_class tr;
   array_locator_method_trans_class tr_assoc_arr[int];
@@ -238,7 +238,7 @@ module elememt_arr_locator_tb_top_example1;
     end
   endfunction :min_max_method
   
-endmodule :elememt_arr_locator_tb_top_example1    
+endmodule :element_arr_locator_tb_top_example1    
 
 //Log File Output
     
