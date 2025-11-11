@@ -8,8 +8,9 @@ Array Locator methods Overview :
 -  The array location methods can be classified into two types
       Element locator
       Index locator
-
-Element locator Methods: 
+/******************************/ 
+  Element locator Methods: 
+/*****************************/     
   - In element locator type, locator methods iterate over all elements in an array, and then it is used to evaluate the expression specified ‘with’ clause and returns element/s in a queue. 
   - For some of the methods, the ‘with’ clause is optional.
   - The Element locator methods are as below
@@ -22,7 +23,7 @@ min           -Returns the element with the minimum value or whose expression ev
 max           -Returns the element with the maximum value or whose expression evaluates to a maximum.
     
 /**************************************************************************************************/
-      Array Locator Methods , Complete Example1
+    Array Locator Methods , Complete Example1 (Element locator Methods)
 /**************************************************************************************************/
 // Transaction class , File Name : array_locator_method_trans_class.sv
     
@@ -326,4 +327,21 @@ CPU Time:      0.460 seconds;       Data structure size:   0.0Mb
 Tue Nov  4 01:54:28 2025
 Done
     
-    
+/********************************************/    
+   Index locator Methods:
+/********************************************/        
+  - The index locator method returns index or indexes on iterating over the array.
+
+Methods                                                     Description
+
+find_index                                                  Returns the indexes of all elements satisfying the given expression
+
+find_first_index                                            Returns the index of the first element satisfying the given expression
+
+find_last_index                                             Returns the index of the last element satisfying the given expression
+
+unique_index                                                Returns the indexes of all elements with unique values or whose expression is unique.
+
+/**************************************************************************************************/
+    Array Locator Methods , Complete Example2 (Index locator Methods)
+/**************************************************************************************************/    
