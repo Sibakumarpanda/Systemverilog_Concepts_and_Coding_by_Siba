@@ -345,3 +345,242 @@ unique_index                                                Returns the indexes 
 /**************************************************************************************************/
     Array Locator Methods , Complete Example2 (Index locator Methods)
 /**************************************************************************************************/    
+// Transaction class , File Name : array_locator_method_trans_class.sv
+ typedef enum {RED, GREEN, YELLOW} color_type;
+
+class array_locator_method_trans_class;
+  rand bit [2:0] addr;
+  rand bit [2:0] data;
+  rand color_type colors; 
+  
+  function void print;
+    $display("addr = %0d, data = %0d and color = %s", addr, data, colors.name);
+  endfunction
+  
+endclass :array_locator_method_trans_class
+
+// TB TOP , File Name : testbench.sv   
+`include "array_locator_method_trans_class.sv"
+
+ `include "array_locator_method_trans_class.sv"
+
+module element_arr_locator_tb_top_example2;
+  
+  array_locator_method_trans_class   tr;
+  array_locator_method_trans_class   tr_assoc_arr[int];
+  int arr[8] = '{5,6,9,2,3,4,6,10};
+  
+  initial begin
+    $display("-------------------------------------");
+    $display("--------- Generating array ----------");
+    $display("-------------------------------------");
+    array_gen();
+    $display("-------------------------------------");
+    $display("--------- find_index method ---------");
+    $display("-------------------------------------");
+    find_index_method();
+    $display("-------------------------------------");
+    $display("------ find_first_index method ------");
+    $display("-------------------------------------");
+    find_first_index_method();
+    $display("-------------------------------------");
+    $display("------ find_last_index method -------");
+    $display("-------------------------------------");
+    find_last_index_method();
+    $display("-------------------------------------");
+    $display("-------- unique_index method --------");
+    $display("-------------------------------------");
+    unique_index_method();
+  end
+  
+  
+  //-------------------------
+  // Array gen and methods
+  //-------------------------
+  
+  function void array_gen();
+    tr = new();
+    assert(tr.randomize());
+    tr.print();
+    tr_assoc_arr[3] =  tr;
+    
+    tr = new();
+    assert(tr.randomize());
+    tr.print();
+    tr_assoc_arr[5] =  tr;
+    
+    tr = new();
+    assert(tr.randomize());
+    tr.print();
+    tr_assoc_arr[8] =  tr;
+    
+    tr = new();
+    assert(tr.randomize());
+    tr.print();
+    tr_assoc_arr[11] =  tr;
+    
+    tr = new();
+    assert(tr.randomize());
+    tr.print();
+    tr_assoc_arr[15] =  tr;
+  endfunction :array_gen
+  
+  function void find_index_method();
+    int idx_q[$], idx;
+    int qsize;
+    
+    // Find all idx having element as RED color
+    idx_q = tr_assoc_arr.find_index with (item.colors == RED);
+    qsize = idx_q.size;
+    $display("Number of indexes having color item 'RED' = %0d", qsize);
+    
+    for(int i = 0; i < qsize; i++) begin
+      idx = idx_q.pop_front();
+      $display("Element %0d for popped index = %0d: ",i+1, idx);
+      tr_assoc_arr[idx].print();
+    end
+    
+    //expression has multiple conditions
+    idx_q = tr_assoc_arr.find_index with (item.data == 3 && item.colors <= RED);
+    qsize = idx_q.size;
+    $display("\nNumber of indexes for data == 3 and color == RED is %0d", qsize);
+    
+    for(int i = 0; i < qsize; i++) begin
+      idx = idx_q.pop_front();
+      $display("Element %0d for popped index = %0d: ",i+1, idx);
+      tr_assoc_arr[idx].print();
+    end
+  endfunction :find_index_method
+  
+  function void find_first_index_method();
+    int idx_q[$], idx;
+    int qsize;
+    
+    // Find first idx having element as RED color
+    idx_q = tr_assoc_arr.find_first_index with (item.colors == RED);
+    qsize = idx_q.size;
+    $display("Number of index having color item 'RED' = %0d", qsize);
+    
+    for(int i = 0; i < qsize; i++) begin
+      idx = idx_q.pop_front();
+      $display("Element %0d for popped first index = %0d: ",i+1, idx);
+      tr_assoc_arr[idx].print();
+    end
+    
+    //expression has multiple conditions
+    idx_q = tr_assoc_arr.find_first_index with (item.data >= 3 && item.colors <= RED);
+    qsize = idx_q.size;
+    $display("\nNumber of indexes for data >= 3 and color == RED is %0d", qsize);
+    
+    for(int i = 0; i < qsize; i++) begin
+      idx = idx_q.pop_front();
+      $display("Element %0d for popped first index = %0d: ",i+1, idx);
+      tr_assoc_arr[idx].print();
+    end
+  endfunction :find_first_index_method
+  
+  function void find_last_index_method();
+    int idx_q[$], idx;
+    int qsize;
+    
+    // Find all idx having element as RED color
+    idx_q = tr_assoc_arr.find_last_index with (item.colors == RED);
+    qsize = idx_q.size;
+    $display("Number of indexes having color item 'RED' = %0d", qsize);
+    
+    for(int i = 0; i < qsize; i++) begin
+      idx = idx_q.pop_front();
+      $display("Element %0d for popped last index = %0d: ",i+1, idx);
+      tr_assoc_arr[idx].print();
+    end
+    
+    //expression has multiple conditions
+    idx_q = tr_assoc_arr.find_last_index with (item.data >= 3 && item.colors <= RED);
+    qsize = idx_q.size;
+    $display("\nNumber of indexes for data >= 3 and color == RED is %0d", qsize);
+    
+    for(int i = 0; i < qsize; i++) begin
+      idx = idx_q.pop_front();
+      $display("Element %0d for popped last index = %0d: ",i+1, idx);
+      tr_assoc_arr[idx].print();
+    end
+  endfunction :find_last_index_method
+  
+  function void unique_index_method();
+    int idx_q[$], idx;
+    int qsize;
+    
+    idx_q = arr.unique_index();
+    $display("unique element in arr = %p", idx_q);
+    
+    // Find all idx having element as RED color
+    idx_q = tr_assoc_arr.unique_index with (item.addr);
+    qsize = idx_q.size;
+    $display("Number of indexes having unique addr = %0d", qsize);
+    
+    for(int i = 0; i < qsize; i++) begin
+      idx = idx_q.pop_front();
+      $display("Element %0d for popped index = %0d: ",i+1, idx);
+      tr_assoc_arr[idx].print();
+    end
+  endfunction :unique_index_method
+  
+endmodule :element_arr_locator_tb_top_example2
+
+//Log File Output
+    
+ Starting vcs inline pass...
+1 module and 0 UDP read.
+recompiling module element_arr_locator_tb_top_example2
+rm -f _cuarc*.so _csrc*.so pre_vcsobj_*.so share_vcsobj_*.so
+if [ -x ../simv ]; then chmod a-x ../simv; fi
+g++  -o ../simv      -rdynamic  -Wl,-rpath='$ORIGIN'/simv.daidir -Wl,-rpath=./simv.daidir -Wl,-rpath=/apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib -L/apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib  -Wl,-rpath-link=./   objs/amcQw_d.o   _332_archive_1.so   SIM_l.o       rmapats_mop.o rmapats.o rmar.o rmar_nd.o  rmar_llvm_0_1.o rmar_llvm_0_0.o            -lvirsim -lerrorinf -lsnpsmalloc -lvfs    -lvcsnew -lsimprofile -luclinative /apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib/vcs_tls.o   -Wl,-whole-archive  -lvcsucli    -Wl,-no-whole-archive          /apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib/vcs_save_restore_new.o -ldl  -lc -lm -lpthread -ldl 
+../simv up to date
+CPU time: .546 seconds to compile + .521 seconds to elab + .442 seconds to link
+Chronologic VCS simulator copyright 1991-2023
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Nov 10 23:20 2025
+-------------------------------------
+--------- Generating array ----------
+-------------------------------------
+addr = 1, data = 4 and color = GREEN
+addr = 7, data = 4 and color = GREEN
+addr = 3, data = 1 and color = YELLOW
+addr = 6, data = 3 and color = YELLOW
+addr = 1, data = 0 and color = GREEN
+-------------------------------------
+--------- find_index method ---------
+-------------------------------------
+Number of indexes having color item 'RED' = 0
+
+Number of indexes for data == 3 and color == RED is 0
+-------------------------------------
+------ find_first_index method ------
+-------------------------------------
+Number of index having color item 'RED' = 0
+
+Number of indexes for data >= 3 and color == RED is 0
+-------------------------------------
+------ find_last_index method -------
+-------------------------------------
+Number of indexes having color item 'RED' = 0
+
+Number of indexes for data >= 3 and color == RED is 0
+-------------------------------------
+-------- unique_index method --------
+-------------------------------------
+unique element in arr = '{0, 1, 2, 3, 4, 5, 7} 
+Number of indexes having unique addr = 4
+Element 1 for popped index = 3: 
+addr = 1, data = 4 and color = GREEN
+Element 2 for popped index = 5: 
+addr = 7, data = 4 and color = GREEN
+Element 3 for popped index = 8: 
+addr = 3, data = 1 and color = YELLOW
+Element 4 for popped index = 11: 
+addr = 6, data = 3 and color = YELLOW
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 0 ns
+CPU Time:      0.500 seconds;       Data structure size:   0.0Mb
+Mon Nov 10 23:20:43 2025
+Done   
