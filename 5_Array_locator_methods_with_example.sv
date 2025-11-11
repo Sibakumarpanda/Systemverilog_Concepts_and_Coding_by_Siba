@@ -584,3 +584,21 @@ Time: 0 ns
 CPU Time:      0.500 seconds;       Data structure size:   0.0Mb
 Mon Nov 10 23:20:43 2025
 Done   
+    
+/********************************************************************/
+    Methods having mandatory and optional ‘with’ clause
+/********************************************************************/  
+Type                            Mandatory ‘with’ clause methods                            Optional ‘with’ clause methods
+
+Element Locator                 find                                                        unique
+
+                                find_first                                                  min
+
+                                find_last                                                   max
+    
+
+Index Locator                   find_index                                                  unique_index
+
+                                find_first_index
+
+                                find_last_index   
