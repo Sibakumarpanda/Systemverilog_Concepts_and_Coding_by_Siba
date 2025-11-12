@@ -468,6 +468,111 @@ CPU Time:      0.350 seconds;       Data structure size:   0.0Mb
 Tue Nov 11 20:07:49 2025
 Done  
   
+/*****************************************************************************************************/
+   Array Ordering Example4 with special array values- sort and rsort methods may use the ‘with’ clause.
+  //  [Running with 5 iterations and see the behaviour]
+/****************************************************************************************************/  
   
+module array_ordering_method_using_with_clause_with_special_array_val_more_iteration_run;
+  
+  bit    a_value[10] = '{0,0,0,1,1,1,0,1,0,1};
+  
+  initial begin
+       
+     $display("BEFORE 'a_value' sort: a_value=%p", a_value);
+     a_value.sort;
+     $display("AFTER 'a_value' sort: a_value=%p",a_value);
+     $display ("********************************************");
+    
+    $display ("------------->>Running with More iteration to observe the behaviour of sort method using with clause ");
+    repeat (5) begin
+    
+     $display("BEFORE 'a_value' sort using with clause: a_value=%p", a_value);
+      a_value.sort (x) with (x % 2); //OK – 'with' clause is ok    
+     $display("AFTER 'a_value' sort using with clause: a_value=%p",a_value);
+     $display ("********************************************");
+    end   
+    
+     $display("BEFORE 'a_value' rsort: a_value=%p",a_value);
+     a_value.rsort;
+     $display("AFTER 'a_value' rsort: a_value=%p",a_value);
+     $display ("********************************************");
+    
+    $display ("------------->>Running with More iteration to observe the behaviour of rsort method using with clause ");
+    repeat (5) begin
+    
+     $display("BEFORE 'a_value' rsort using with clause: a_value=%p",a_value);
+      a_value.rsort (x) with (x %2);    
+     $display("AFTER 'a_value' rsort using with clause: a_value=%p",a_value);
+     $display ("********************************************");
+      
+    end 
+    
+     $display("BEFORE 'a_value' shuffle: a_value=%p",a_value); //a_value.shuffle (x) with (x < 5); //Compile ERROR –cannot use 'with' clause
+     a_value.shuffle;
+     $display("AFTER 'a_value' shuffle: a_value=%p",a_value);
+     $display ("********************************************");
+    end
+  
+endmodule :array_ordering_method_using_with_clause_with_special_array_val_more_iteration_run
+  
+//Log File Output
+ Starting vcs inline pass...
+1 module and 0 UDP read.
+recompiling module array_ordering_method_using_with_clause_with_special_array_val_more_iteration_run
+rm -f _cuarc*.so _csrc*.so pre_vcsobj_*.so share_vcsobj_*.so
+if [ -x ../simv ]; then chmod a-x ../simv; fi
+g++  -o ../simv      -rdynamic  -Wl,-rpath='$ORIGIN'/simv.daidir -Wl,-rpath=./simv.daidir -Wl,-rpath=/apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib -L/apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib  -Wl,-rpath-link=./   objs/amcQw_d.o   _331_archive_1.so   SIM_l.o       rmapats_mop.o rmapats.o rmar.o rmar_nd.o  rmar_llvm_0_1.o rmar_llvm_0_0.o            -lvirsim -lerrorinf -lsnpsmalloc -lvfs    -lvcsnew -lsimprofile -luclinative /apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib/vcs_tls.o   -Wl,-whole-archive  -lvcsucli    -Wl,-no-whole-archive          /apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib/vcs_save_restore_new.o -ldl  -lc -lm -lpthread -ldl 
+../simv up to date
+CPU time: .335 seconds to compile + .393 seconds to elab + .337 seconds to link
+Chronologic VCS simulator copyright 1991-2023
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Nov 11 23:29 2025
+BEFORE 'a_value' sort: a_value='{'h0, 'h0, 'h0, 'h1, 'h1, 'h1, 'h0, 'h1, 'h0, 'h1} 
+AFTER 'a_value' sort: a_value='{'h0, 'h0, 'h0, 'h0, 'h0, 'h1, 'h1, 'h1, 'h1, 'h1} 
+********************************************
+------------->>Running with More iteration to observe the behaviour of sort method using with clause 
+BEFORE 'a_value' sort using with clause: a_value='{'h0, 'h0, 'h0, 'h0, 'h0, 'h1, 'h1, 'h1, 'h1, 'h1} 
+AFTER 'a_value' sort using with clause: a_value='{'h0, 'h0, 'h0, 'h0, 'h0, 'h1, 'h1, 'h1, 'h1, 'h1} 
+********************************************
+BEFORE 'a_value' sort using with clause: a_value='{'h0, 'h0, 'h0, 'h0, 'h0, 'h1, 'h1, 'h1, 'h1, 'h1} 
+AFTER 'a_value' sort using with clause: a_value='{'h0, 'h0, 'h0, 'h0, 'h0, 'h1, 'h1, 'h1, 'h1, 'h1} 
+********************************************
+BEFORE 'a_value' sort using with clause: a_value='{'h0, 'h0, 'h0, 'h0, 'h0, 'h1, 'h1, 'h1, 'h1, 'h1} 
+AFTER 'a_value' sort using with clause: a_value='{'h0, 'h0, 'h0, 'h0, 'h0, 'h1, 'h1, 'h1, 'h1, 'h1} 
+********************************************
+BEFORE 'a_value' sort using with clause: a_value='{'h0, 'h0, 'h0, 'h0, 'h0, 'h1, 'h1, 'h1, 'h1, 'h1} 
+AFTER 'a_value' sort using with clause: a_value='{'h0, 'h0, 'h0, 'h0, 'h0, 'h1, 'h1, 'h1, 'h1, 'h1} 
+********************************************
+BEFORE 'a_value' sort using with clause: a_value='{'h0, 'h0, 'h0, 'h0, 'h0, 'h1, 'h1, 'h1, 'h1, 'h1} 
+AFTER 'a_value' sort using with clause: a_value='{'h0, 'h0, 'h0, 'h0, 'h0, 'h1, 'h1, 'h1, 'h1, 'h1} 
+********************************************
+BEFORE 'a_value' rsort: a_value='{'h0, 'h0, 'h0, 'h0, 'h0, 'h1, 'h1, 'h1, 'h1, 'h1} 
+AFTER 'a_value' rsort: a_value='{'h1, 'h1, 'h1, 'h1, 'h1, 'h0, 'h0, 'h0, 'h0, 'h0} 
+********************************************
+------------->>Running with More iteration to observe the behaviour of rsort method using with clause 
+BEFORE 'a_value' rsort using with clause: a_value='{'h1, 'h1, 'h1, 'h1, 'h1, 'h0, 'h0, 'h0, 'h0, 'h0} 
+AFTER 'a_value' rsort using with clause: a_value='{'h1, 'h1, 'h1, 'h1, 'h1, 'h0, 'h0, 'h0, 'h0, 'h0} 
+********************************************
+BEFORE 'a_value' rsort using with clause: a_value='{'h1, 'h1, 'h1, 'h1, 'h1, 'h0, 'h0, 'h0, 'h0, 'h0} 
+AFTER 'a_value' rsort using with clause: a_value='{'h1, 'h1, 'h1, 'h1, 'h1, 'h0, 'h0, 'h0, 'h0, 'h0} 
+********************************************
+BEFORE 'a_value' rsort using with clause: a_value='{'h1, 'h1, 'h1, 'h1, 'h1, 'h0, 'h0, 'h0, 'h0, 'h0} 
+AFTER 'a_value' rsort using with clause: a_value='{'h1, 'h1, 'h1, 'h1, 'h1, 'h0, 'h0, 'h0, 'h0, 'h0} 
+********************************************
+BEFORE 'a_value' rsort using with clause: a_value='{'h1, 'h1, 'h1, 'h1, 'h1, 'h0, 'h0, 'h0, 'h0, 'h0} 
+AFTER 'a_value' rsort using with clause: a_value='{'h1, 'h1, 'h1, 'h1, 'h1, 'h0, 'h0, 'h0, 'h0, 'h0} 
+********************************************
+BEFORE 'a_value' rsort using with clause: a_value='{'h1, 'h1, 'h1, 'h1, 'h1, 'h0, 'h0, 'h0, 'h0, 'h0} 
+AFTER 'a_value' rsort using with clause: a_value='{'h1, 'h1, 'h1, 'h1, 'h1, 'h0, 'h0, 'h0, 'h0, 'h0} 
+********************************************
+BEFORE 'a_value' shuffle: a_value='{'h1, 'h1, 'h1, 'h1, 'h1, 'h0, 'h0, 'h0, 'h0, 'h0} 
+AFTER 'a_value' shuffle: a_value='{'h0, 'h0, 'h0, 'h0, 'h0, 'h1, 'h1, 'h1, 'h1, 'h1} 
+********************************************
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 0 ns
+CPU Time:      0.330 seconds;       Data structure size:   0.0Mb
+Tue Nov 11 23:29:32 2025
+Done 
   
   
