@@ -574,5 +574,21 @@ Time: 0 ns
 CPU Time:      0.330 seconds;       Data structure size:   0.0Mb
 Tue Nov 11 23:29:32 2025
 Done 
-  
+/*****************************************************************************************************/
+/*   Array Ordering Example5 : Question :
+A SV array is given as:   int val_a[8] = '{3,2,1,6,8,7,4,9};
+Its required to sort the elements which are greater than 3 only.(using SV Array ordering methods )
+Result should be : int val_a[8] = '{3,2,1,4,6,7,8,9}
+
+How to do ? 
+[It may requires a queue to keep track of the indexes of the array elements greater than 3. 
+The find() and find_index() methods can be used to create both those queues]
+
+Steps: 1. First put the elements of the array greater than 3 into a queue
+       2. Then , sort the queue elements
+       3. Then put the sorted queue elements, back into the original array in sorted order
+       4. Then display the array contents
+       
+ */    
+/****************************************************************************************************/    
   
