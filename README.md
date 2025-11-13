@@ -49,3 +49,5 @@ This repository contains the basic to advance level SV Concepts , code examples 
     Array reduction methods
     
     Iterator index querying
+
+**6. SV Queue overview and its various methods with examples**    
