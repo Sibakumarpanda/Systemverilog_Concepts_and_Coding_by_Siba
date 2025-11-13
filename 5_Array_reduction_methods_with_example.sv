@@ -87,3 +87,8 @@ Time: 0 ns
 CPU Time:      0.360 seconds;       Data structure size:   0.0Mb
 Thu Nov 13 03:58:45 2025
 Done
+/**********************************************/
+    Array Reduction Method Example2
+/**********************************************/
+
+  
