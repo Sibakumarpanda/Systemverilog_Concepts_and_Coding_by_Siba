@@ -186,3 +186,86 @@ Done
 /*************************************************************************/
    Queue : Example4 : 
 /************************************************************************/   
+module queue_methods_example4; //Example with size , max, pop_front, pop_back methods
+  byte q[$];
+  
+ initial
+   begin
+   q.push_front(2);
+   q.push_front(12);
+   q.push_front(22);
+   $display("The values in Queue are = %p ",q);  //'{22, 12, 2} 
+     
+   q.push_back(11);
+   q.push_back(99);
+   $display("The values in Queue are = %p ",q); // '{22, 12, 2, 11, 99} 
+     
+   foreach(q[i]) begin
+     $display("The values in Queue at q[%0d] = %0d ",i,q[i]); 
+   end
+
+   $display("The Size of the Queue is= %0d " ,q.size()); //5
+   $display("The maximum value in the Queue is = %p " ,q.max()); // `{99}
+   $display("The minimim value in the Queue is = %p " ,q.min());  // `{2}
+   $display("The pop_front value in the Queue is = %0d " ,q.pop_front()); //22
+   $display("The pop_front value in the Queue is = %0d " ,q.pop_back()); //99
+     
+   $display("The values in Queue are = %p ",q); 
+
+   foreach(q[i]) begin
+     $display("The values in Queue at q[%0d] = %0d ",i,q[i]); // `{12,2,11}
+   end
+
+   q.delete(3); 
+   // Means delete the value at index 3, But here if you look carefully previously only 3 values are present with index range from 0 to 2 .
+   //Means Index3 is not available , Hence it will give warning (Illegal index into queue)
+   $display("The values in Queue are = %p ",q);        // Same values as before '{12, 2, 11}   
+   $display("The Size of the Queue is= %0d " ,q.size()); //3
+     
+   q.delete(2);  // Means delete the value at index 2
+   $display("The values in Queue are = %p ",q);         //'{12, 2}  
+   $display("The Size of the Queue is= %0d " ,q.size());  //2
+  end
+endmodule :queue_methods_example4
+   
+//Log File Output using Simens Questa Tool
+   
+# Loading sv_std.std
+# Loading work.queue_methods_example4(fast)
+# 
+# run -all
+# The values in Queue are = '{22, 12, 2} 
+# The values in Queue are = '{22, 12, 2, 11, 99} 
+# The values in Queue at q[0] = 22 
+# The values in Queue at q[1] = 12 
+# The values in Queue at q[2] = 2 
+# The values in Queue at q[3] = 11 
+# The values in Queue at q[4] = 99 
+# The Size of the Queue is= 5 
+# The maximum value in the Queue is = '{99} 
+# The minimim value in the Queue is = '{2} 
+# The pop_front value in the Queue is = 22 
+# The pop_front value in the Queue is = 99 
+# The values in Queue are = '{12, 2, 11} 
+# The values in Queue at q[0] = 12 
+# The values in Queue at q[1] = 2 
+# The values in Queue at q[2] = 11 
+# ** Warning: (vsim-8133) Illegal index into queue.
+#    Time: 0 ns  Iteration: 0  Process: /queue_methods_example4/#INITIAL#4 File: testbench.sv Line: 31
+# The values in Queue are = '{12, 2, 11} 
+# The Size of the Queue is= 3 
+# The values in Queue are = '{12, 2} 
+# The Size of the Queue is= 2 
+# exit
+# End time: 06:47:36 on Nov 14,2025, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 1
+End time: 06:47:36 on Nov 14,2025, Elapsed time: 0:00:02
+*** Summary *********************************************
+    qrun: Errors:   0, Warnings:   0
+    vlog: Errors:   0, Warnings:   0
+    vopt: Errors:   0, Warnings:   1
+    vsim: Errors:   0, Warnings:   1
+  Totals: Errors:   0, Warnings:   2
+Done
+   
+   
