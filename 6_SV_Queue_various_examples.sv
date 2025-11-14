@@ -184,7 +184,7 @@ Fri Nov 14 06:16:50 2025
 Done
    
 /*************************************************************************/
-   Queue : Example4 : 
+   Queue : Example4 : Example with size , max, pop_front, pop_back methods
 /************************************************************************/   
 module queue_methods_example4; //Example with size , max, pop_front, pop_back methods
   byte q[$];
