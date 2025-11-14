@@ -268,4 +268,45 @@ End time: 06:47:36 on Nov 14,2025, Elapsed time: 0:00:02
   Totals: Errors:   0, Warnings:   2
 Done
    
-   
+/*******NOTE : If we will run the same above Example4 using Synopsys VCS Tool , we will get the error for that Illegal indx as below ********/
+//Log File Output Using Synopsys VCS Tool
+Starting vcs inline pass...
+
+1 module and 0 UDP read.
+recompiling module queue_methods_example4
+rm -f _cuarc*.so _csrc*.so pre_vcsobj_*.so share_vcsobj_*.so
+if [ -x ../simv ]; then chmod a-x ../simv; fi
+g++  -o ../simv      -rdynamic  -Wl,-rpath='$ORIGIN'/simv.daidir -Wl,-rpath=./simv.daidir -Wl,-rpath=/apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib -L/apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib  -Wl,-rpath-link=./   objs/amcQw_d.o   _331_archive_1.so   SIM_l.o       rmapats_mop.o rmapats.o rmar.o rmar_nd.o  rmar_llvm_0_1.o rmar_llvm_0_0.o            -lvirsim -lerrorinf -lsnpsmalloc -lvfs    -lvcsnew -lsimprofile -luclinative /apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib/vcs_tls.o   -Wl,-whole-archive  -lvcsucli    -Wl,-no-whole-archive          /apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib/vcs_save_restore_new.o -ldl  -lc -lm -lpthread -ldl 
+../simv up to date
+CPU time: .409 seconds to compile + .463 seconds to elab + .397 seconds to link
+Chronologic VCS simulator copyright 1991-2023
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Nov 14 06:50 2025
+The values in Queue are = '{22, 12, 2}  
+The values in Queue are = '{22, 12, 2, 11, 99}  
+The values in Queue at q[0] = 22 
+The values in Queue at q[1] = 12 
+The values in Queue at q[2] = 2 
+The values in Queue at q[3] = 11 
+The values in Queue at q[4] = 99 
+The Size of the Queue is= 5 
+The maximum value in the Queue is = '{99}  
+The minimim value in the Queue is = '{2}  
+The pop_front value in the Queue is = 22 
+The pop_front value in the Queue is = 99 
+The values in Queue are = '{12, 2, 11}  
+The values in Queue at q[0] = 12 
+The values in Queue at q[1] = 2 
+The values in Queue at q[2] = 11 
+
+Error-[DT-MCWII] Method called with invalid index
+testbench.sv, 31
+  "delete" method called with invalid index (size:3, index:3)
+  Please make sure that the index is positive and less than size.
+
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 0 ns
+CPU Time:      0.390 seconds;       Data structure size:   0.0Mb
+Fri Nov 14 06:50:53 2025
+Exit code expected: 0, received: 1
+Done   
