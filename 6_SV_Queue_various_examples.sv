@@ -1,5 +1,5 @@
 /*************************************/
-   Queue : Example1
+   Queue : Example1 - Basic example
 /**************************************/
 module queue_basic_example1;
     // Create a queue that can store "string" values
@@ -113,3 +113,6 @@ Time: 0 ns
 CPU Time:      0.480 seconds;       Data structure size:   0.0Mb
 Thu Nov 13 23:47:23 2025
 Done   
+/*************************************************************************/
+   Queue : Example3 : 
+/************************************************************************/
