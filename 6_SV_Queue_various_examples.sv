@@ -311,3 +311,68 @@ CPU Time:      0.390 seconds;       Data structure size:   0.0Mb
 Fri Nov 14 06:50:53 2025
 Exit code expected: 0, received: 1
 Done   
+/***************************************************************************/
+   Queue : Example5 : Queue_population
+/**************************************************************************/
+module queue_population_example5;
+  int q1[$];
+  int q2[$];
+  
+ initial
+   begin
+    q1[23] = 81;  // ILLEGAL: Index 23 doesn't exist in empty queue → IGNORED
+    q1[75] = 65;  // ILLEGAL: Index 75 doesn't exist in empty queue → IGNORED
+     
+    $display("The Populted value for Q1 Queue are ------->");
+    $display("The values at Queue index23 is =%0d ", q1[23]);  // Reading non-existent index → Returns 0 (default)
+    $display("The values at Queue index75 is =%0d ", q1[75]);  // Reading non-existent index → Returns 0 (default)  
+    $display("The values in the Queue are = %p ", q1);      // Queue is still empty → '{}
+     
+    q1.push_back(81);  // q1[0] = 81
+    q1.push_back(65);  // q1[1] = 65
+    $display("The values in the Queue are = %p " ,q1);
+     
+    // Method1 -First create the queue with sufficient size 
+    q2 = '{76{0}};      // Create queue with 76 zeros
+    q2[23] = 81;       // Now this works
+    q2[75] = 65;       // This also works 
+     
+    $display("The Populted value for Q2 Queue are ------->"); 
+    $display("The values at Queue index23 is =%0d ", q2[23]);  // 81
+    $display("The values at Queue index75 is =%0d ", q2[75]);  // 65
+    $display("The values in the Queue are = %p ", q2);      //  `{81,65}
+     
+     // Method 2: Using insert() - Most straightforward , This will also work as expected 
+     /*
+    q2.insert(23, 81);  // Insert 81 at index 23
+    q2.insert(75, 65);  // Insert 65 at index 75 
+    */ 
+     
+  end
+endmodule : queue_population_example5
+//Log File Output
+   
+Starting vcs inline pass...
+1 module and 0 UDP read.
+recompiling module queue_population_example5
+rm -f _cuarc*.so _csrc*.so pre_vcsobj_*.so share_vcsobj_*.so
+if [ -x ../simv ]; then chmod a-x ../simv; fi
+g++  -o ../simv      -rdynamic  -Wl,-rpath='$ORIGIN'/simv.daidir -Wl,-rpath=./simv.daidir -Wl,-rpath=/apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib -L/apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib  -Wl,-rpath-link=./   objs/amcQw_d.o   _332_archive_1.so   SIM_l.o       rmapats_mop.o rmapats.o rmar.o rmar_nd.o  rmar_llvm_0_1.o rmar_llvm_0_0.o            -lvirsim -lerrorinf -lsnpsmalloc -lvfs    -lvcsnew -lsimprofile -luclinative /apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib/vcs_tls.o   -Wl,-whole-archive  -lvcsucli    -Wl,-no-whole-archive          /apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib/vcs_save_restore_new.o -ldl  -lc -lm -lpthread -ldl 
+../simv up to date
+CPU time: .404 seconds to compile + .450 seconds to elab + .399 seconds to link
+Chronologic VCS simulator copyright 1991-2023
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Nov 14 23:39 2025
+The Populted value for Q1 Queue are ------->
+The values at Queue index23 is =0 
+The values at Queue index75 is =0 
+The values in the Queue are = '{} 
+The values in the Queue are = '{81, 65}  
+The Populted value for Q2 Queue are ------->
+The values at Queue index23 is =81 
+The values at Queue index75 is =65 
+The values in the Queue are = '{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 81, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65}  
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 0 ns
+CPU Time:      0.540 seconds;       Data structure size:   0.0Mb   
+   
