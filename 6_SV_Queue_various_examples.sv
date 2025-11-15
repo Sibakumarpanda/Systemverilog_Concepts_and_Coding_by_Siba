@@ -710,5 +710,76 @@ Sat Nov 15 09:28:10 2025
 Done 
    
 /******************************************************************************************************/
-   Queue : Example9 : 
+   Queue : Example9 : uses of shuffle method in Queue
 /*****************************************************************************************************/     
+module queue_example_using_shuffle_method_example9; //uses of shuffle method in Queue
+ 
+  int num_q[$];
+    
+  initial begin
+    for(int i = 0; i < 10; i++) begin
+      num_q.push_back(i);
+    end
+    $display("--- Before shuffle ---");
+    
+    foreach(num_q[i]) begin 
+      $display("num_q[%0d] = %0d", i, num_q[i]);
+    end
+    
+    $display("The Size of num_q Queue Before shuffle is =%0d", num_q.size());
+    
+    num_q.shuffle();
+    
+    $display("--- After shuffle ---");
+    
+    $display("The Size of num_q Queue after shuffle is =%0d", num_q.size());
+    foreach(num_q[i]) begin
+      $display("num_q[%0d] = %0d", i, num_q[i]);
+    end
+  end
+endmodule :queue_example_using_shuffle_method_example9
+//Log File Output
+   
+Starting vcs inline pass...
+1 module and 0 UDP read.
+recompiling module queue_example_using_shuffle_method_example9
+rm -f _cuarc*.so _csrc*.so pre_vcsobj_*.so share_vcsobj_*.so
+if [ -x ../simv ]; then chmod a-x ../simv; fi
+g++  -o ../simv      -rdynamic  -Wl,-rpath='$ORIGIN'/simv.daidir -Wl,-rpath=./simv.daidir -Wl,-rpath=/apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib -L/apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib  -Wl,-rpath-link=./   objs/amcQw_d.o   _332_archive_1.so   SIM_l.o       rmapats_mop.o rmapats.o rmar.o rmar_nd.o  rmar_llvm_0_1.o rmar_llvm_0_0.o            -lvirsim -lerrorinf -lsnpsmalloc -lvfs    -lvcsnew -lsimprofile -luclinative /apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib/vcs_tls.o   -Wl,-whole-archive  -lvcsucli    -Wl,-no-whole-archive          /apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib/vcs_save_restore_new.o -ldl  -lc -lm -lpthread -ldl 
+../simv up to date
+CPU time: .407 seconds to compile + .430 seconds to elab + .310 seconds to link
+Chronologic VCS simulator copyright 1991-2023
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Nov 15 09:35 2025
+--- Before shuffle ---
+num_q[0] = 0
+num_q[1] = 1
+num_q[2] = 2
+num_q[3] = 3
+num_q[4] = 4
+num_q[5] = 5
+num_q[6] = 6
+num_q[7] = 7
+num_q[8] = 8
+num_q[9] = 9
+The Size of num_q Queue Before shuffle is =10
+--- After shuffle ---
+The Size of num_q Queue after shuffle is =10
+num_q[0] = 8
+num_q[1] = 6
+num_q[2] = 7
+num_q[3] = 9
+num_q[4] = 5
+num_q[5] = 0
+num_q[6] = 1
+num_q[7] = 4
+num_q[8] = 2
+num_q[9] = 3
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 0 ns
+CPU Time:      0.370 seconds;       Data structure size:   0.0Mb
+Sat Nov 15 09:35:49 2025
+Done   
+/******************************************************************************************************/
+   Queue : Example10 : 
+/*****************************************************************************************************/      
