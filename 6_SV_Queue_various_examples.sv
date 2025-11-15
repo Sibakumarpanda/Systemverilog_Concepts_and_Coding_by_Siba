@@ -864,3 +864,88 @@ Done
 /******************************************************************************************************/
    Queue : Example11 : Example of array of Queue of string values
 /*****************************************************************************************************/ 
+module array_of_queue_example11; // Example of array of Queue with strings 
+  string array_queue [3][$];
+    
+  initial begin
+    
+    array_queue = '{ {"siba", "subha", "subhra", "sriyambika"},   // Each array having 4 string names in index range from 0 to 3
+                     {"biranchi", "pinku", "ani", "trupti"},
+                     {"simanchala", "kuni", "siku"}
+                   };
+    
+    $display("Before push_back operation--------------> ");
+    
+    $display("The content of the array of Queue : array_queue = %p",array_queue);
+    
+    // Print array of queue values
+    foreach (array_queue[i,j]) begin
+      $display("array_queue[%0d][%0d] = %s", i, j, array_queue[i][j]);
+    end
+    
+    $display("------------------");
+    
+    array_queue[0].push_back("misty1");
+    array_queue[1].push_back("misty2");
+    array_queue[2].push_back("misty3");
+    
+    $display("After push_back operation------------------> ");
+    
+    $display("The content of the array of Queue : array_queue = %p",array_queue);
+    
+    // Print array of queues
+    foreach (array_queue[i,j]) begin
+      $display("array_queue[%0d][%0d] = %s", i, j, array_queue[i][j]);
+    end
+    
+  end
+  
+endmodule :array_of_queue_example11
+//Log File Output
+   
+ Starting vcs inline pass...
+1 module and 0 UDP read.
+recompiling module array_of_queue_example11
+rm -f _cuarc*.so _csrc*.so pre_vcsobj_*.so share_vcsobj_*.so
+if [ -x ../simv ]; then chmod a-x ../simv; fi
+g++  -o ../simv      -rdynamic  -Wl,-rpath='$ORIGIN'/simv.daidir -Wl,-rpath=./simv.daidir -Wl,-rpath=/apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib -L/apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib  -Wl,-rpath-link=./   objs/amcQw_d.o   _331_archive_1.so   SIM_l.o       rmapats_mop.o rmapats.o rmar.o rmar_nd.o  rmar_llvm_0_1.o rmar_llvm_0_0.o            -lvirsim -lerrorinf -lsnpsmalloc -lvfs    -lvcsnew -lsimprofile -luclinative /apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib/vcs_tls.o   -Wl,-whole-archive  -lvcsucli    -Wl,-no-whole-archive          /apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib/vcs_save_restore_new.o -ldl  -lc -lm -lpthread -ldl 
+../simv up to date
+CPU time: .372 seconds to compile + .421 seconds to elab + .349 seconds to link
+Chronologic VCS simulator copyright 1991-2023
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Nov 15 10:46 2025
+Before push_back operation--------------> 
+The content of the array of Queue : array_queue = '{'{"siba", "subha", "subhra", "sriyambika"} , '{"biranchi", "pinku", "ani", "trupti"} , '{"simanchala", "kuni", "siku"} }
+array_queue[0][0] = siba
+array_queue[0][1] = subha
+array_queue[0][2] = subhra
+array_queue[0][3] = sriyambika
+array_queue[1][0] = biranchi
+array_queue[1][1] = pinku
+array_queue[1][2] = ani
+array_queue[1][3] = trupti
+array_queue[2][0] = simanchala
+array_queue[2][1] = kuni
+array_queue[2][2] = siku
+------------------
+After push_back operation------------------> 
+The content of the array of Queue : array_queue = '{'{"siba", "subha", "subhra", "sriyambika", "misty1"} , '{"biranchi", "pinku", "ani", "trupti", "misty2"} , '{"simanchala", "kuni", "siku", "misty3"} }
+array_queue[0][0] = siba
+array_queue[0][1] = subha
+array_queue[0][2] = subhra
+array_queue[0][3] = sriyambika
+array_queue[0][4] = misty1
+array_queue[1][0] = biranchi
+array_queue[1][1] = pinku
+array_queue[1][2] = ani
+array_queue[1][3] = trupti
+array_queue[1][4] = misty2
+array_queue[2][0] = simanchala
+array_queue[2][1] = kuni
+array_queue[2][2] = siku
+array_queue[2][3] = misty3
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 0 ns
+CPU Time:      0.370 seconds;       Data structure size:   0.0Mb
+Sat Nov 15 10:46:58 2025
+Done  
