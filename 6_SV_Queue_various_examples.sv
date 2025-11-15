@@ -781,5 +781,86 @@ CPU Time:      0.370 seconds;       Data structure size:   0.0Mb
 Sat Nov 15 09:35:49 2025
 Done   
 /******************************************************************************************************/
-   Queue : Example10 : 
+   Queue : Example10 : Example of array of Queue of int values
 /*****************************************************************************************************/      
+module array_of_queue_example10; // Example of array of Queue of int values
+  int array_queue [3][$];
+    
+  initial begin
+    //array[0] = {2, 4, 6, 8};
+    //array[1] = {1, 3, 5, 7};
+    //array[2] = {100, 200, 300};
+    //or
+    array_queue = '{ {2, 4, 6, 8},   // Each array having 4 elements in index range from 0 to 3
+                     {1, 3, 5, 7},
+                     {100, 200, 300}
+                   };
+    
+    $display("Before push_back operation--------------> ");
+    
+    $display("The content of the array of Queue : array_queue = %p",array_queue);
+    
+    // Print array of queue values
+    foreach (array_queue[i,j]) begin
+      $display("array_queue[%0d][%0d] = %0d", i, j, array_queue[i][j]);
+    end
+    
+    $display("------------------");
+    
+    array_queue[0].push_back(10);
+    array_queue[1].push_back(9);
+    array_queue[2].push_back(400);
+    
+    $display("After push_back operation------------------> ");
+    
+    $display("The content of the array of Queue : array_queue = %p",array_queue);
+    
+    // Print array of queues
+    foreach (array_queue[i,j]) begin
+      $display("array_queue[%0d][%0d] = %0d", i, j, array_queue[i][j]);
+    end
+    
+  end
+  
+endmodule :array_of_queue_example10
+
+//Log File Output
+   
+Before push_back operation--------------> 
+The content of the array of Queue : array_queue = '{'{2, 4, 6, 8} , '{1, 3, 5, 7} , '{100, 200, 300} }
+array_queue[0][0] = 2
+array_queue[0][1] = 4
+array_queue[0][2] = 6
+array_queue[0][3] = 8
+array_queue[1][0] = 1
+array_queue[1][1] = 3
+array_queue[1][2] = 5
+array_queue[1][3] = 7
+array_queue[2][0] = 100
+array_queue[2][1] = 200
+array_queue[2][2] = 300
+------------------
+After push_back operation------------------> 
+The content of the array of Queue : array_queue = '{'{2, 4, 6, 8, 10} , '{1, 3, 5, 7, 9} , '{100, 200, 300, 400} }
+array_queue[0][0] = 2
+array_queue[0][1] = 4
+array_queue[0][2] = 6
+array_queue[0][3] = 8
+array_queue[0][4] = 10
+array_queue[1][0] = 1
+array_queue[1][1] = 3
+array_queue[1][2] = 5
+array_queue[1][3] = 7
+array_queue[1][4] = 9
+array_queue[2][0] = 100
+array_queue[2][1] = 200
+array_queue[2][2] = 300
+array_queue[2][3] = 400
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 0 ns
+CPU Time:      0.340 seconds;       Data structure size:   0.0Mb
+Sat Nov 15 09:48:24 2025
+Done   
+/******************************************************************************************************/
+   Queue : Example11 : Example of array of Queue of string values
+/*****************************************************************************************************/ 
