@@ -575,5 +575,140 @@ CPU Time:      0.420 seconds;       Data structure size:   0.0Mb
 Sat Nov 15 08:55:46 2025
 Done   
 /******************************************************************************************************/
-   Queue : Example8 :  
+   Queue : Example8 :  Queue_overall_example_with_all_methods_example8
 /*****************************************************************************************************/         
+module queue_overall_example_with_all_methods_example8;
+  
+  string animal_q[$];
+    
+  initial begin
+    $display("Initial Size: animal_q = %0d", animal_q.size());
+    
+    animal_q = {"TIGER","LION"};
+    $display("Size: animal_q = %0d", animal_q.size());
+    $display("-----------------------");
+    
+    animal_q.insert(1, "ELEPHANT");
+    animal_q.insert(3, "FOX");
+    animal_q.insert(4, "ZEBRA");
+    $display("Size: animal_q = %0d", animal_q.size());
+    
+    foreach(animal_q[i]) begin
+      $display("animal_q[%0d] = %s", i, animal_q[i]);
+    end
+    $display("-----------------------");
+    
+    $display("--- Access queue item ---");
+    $display("The second element of animal_q = %s", animal_q[2]);
+    $display("The fourth element of animal_q = %s", animal_q[4]);
+    $display("-----------------------");
+    
+    $display("--- Delete queue item ---");
+    animal_q.delete(2);
+    foreach(animal_q[i]) begin
+      $display("animal_q[%0d] = %s", i, animal_q[i]);
+    end
+    $display("-----------------------");
+    
+    $display("--- Delete complete queue ---");
+    animal_q.delete();
+    $display("Size after queue deletion: animal_q size = %0d", animal_q.size());
+    $display("-----------------------");
+    
+    
+    animal_q = {"TIGER","LION"};
+    
+    $display("--- push_back methods ---");
+    animal_q.push_back("ELEPHANT");
+    foreach(animal_q[i]) begin
+      $display("animal_q[%0d] = %s", i, animal_q[i]);
+    end
+    $display("-----------------------");
+    
+    $display("--- push_front methods ---");
+    animal_q.push_front("FOX");
+    foreach(animal_q[i]) begin
+      $display("animal_q[%0d] = %s", i, animal_q[i]);
+    end
+    $display("-----------------------");
+ 
+    $display("--- pop_back methods ---");
+    animal_q.pop_back();
+    foreach(animal_q[i]) begin
+      $display("animal_q[%0d] = %s", i, animal_q[i]);
+    end
+    $display("-----------------------");
+    
+    $display("--- pop_front methods ---");
+    animal_q.pop_front();
+    foreach(animal_q[i]) begin
+      $display("animal_q[%0d] = %s", i, animal_q[i]);
+    end
+    $display("-----------------------");
+  end
+endmodule :queue_overall_example_with_all_methods_example8
+//Log File output
+   
+Starting vcs inline pass...
+1 module and 0 UDP read.
+recompiling module queue_overall_example_with_all_methods_example8
+rm -f _cuarc*.so _csrc*.so pre_vcsobj_*.so share_vcsobj_*.so
+if [ -x ../simv ]; then chmod a-x ../simv; fi
+g++  -o ../simv      -rdynamic  -Wl,-rpath='$ORIGIN'/simv.daidir -Wl,-rpath=./simv.daidir -Wl,-rpath=/apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib -L/apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib  -Wl,-rpath-link=./   objs/amcQw_d.o   _331_archive_1.so   SIM_l.o       rmapats_mop.o rmapats.o rmar.o rmar_nd.o  rmar_llvm_0_1.o rmar_llvm_0_0.o            -lvirsim -lerrorinf -lsnpsmalloc -lvfs    -lvcsnew -lsimprofile -luclinative /apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib/vcs_tls.o   -Wl,-whole-archive  -lvcsucli    -Wl,-no-whole-archive          /apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib/vcs_save_restore_new.o -ldl  -lc -lm -lpthread -ldl 
+../simv up to date
+CPU time: .441 seconds to compile + .407 seconds to elab + .360 seconds to link
+Chronologic VCS simulator copyright 1991-2023
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Nov 15 09:28 2025
+Initial Size: animal_q = 0
+Size: animal_q = 2
+-----------------------
+Size: animal_q = 5
+animal_q[0] = TIGER
+animal_q[1] = ELEPHANT
+animal_q[2] = LION
+animal_q[3] = FOX
+animal_q[4] = ZEBRA
+-----------------------
+--- Access queue item ---
+The second element of animal_q = LION
+The fourth element of animal_q = ZEBRA
+-----------------------
+--- Delete queue item ---
+animal_q[0] = TIGER
+animal_q[1] = ELEPHANT
+animal_q[2] = FOX
+animal_q[3] = ZEBRA
+-----------------------
+--- Delete complete queue ---
+Size after queue deletion: animal_q size = 0
+-----------------------
+--- push_back methods ---
+animal_q[0] = TIGER
+animal_q[1] = LION
+animal_q[2] = ELEPHANT
+-----------------------
+--- push_front methods ---
+animal_q[0] = FOX
+animal_q[1] = TIGER
+animal_q[2] = LION
+animal_q[3] = ELEPHANT
+-----------------------
+--- pop_back methods ---
+animal_q[0] = FOX
+animal_q[1] = TIGER
+animal_q[2] = LION
+-----------------------
+--- pop_front methods ---
+animal_q[0] = TIGER
+animal_q[1] = LION
+-----------------------
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 0 ns
+CPU Time:      0.420 seconds;       Data structure size:   0.0Mb
+Sat Nov 15 09:28:10 2025
+Done 
+   
+/******************************************************************************************************/
+   Queue : Example9 : 
+/*****************************************************************************************************/     
