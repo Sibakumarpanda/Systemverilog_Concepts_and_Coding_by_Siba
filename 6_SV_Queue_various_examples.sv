@@ -375,6 +375,78 @@ The values in the Queue are = '{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
            V C S   S i m u l a t i o n   R e p o r t 
 Time: 0 ns
 CPU Time:      0.540 seconds;       Data structure size:   0.0Mb   
-/***************************************************************************/
-   Queue : Example6 : 
-/**************************************************************************/   
+/******************************************************************************************************/
+   Queue : Example6 :  Example with Queue slicing , Mean Printing part of the elements in the Queue
+/*****************************************************************************************************/   
+module queue_slice_expression_example6; // Example with Queue slicing , Mean Printing part of the elements in the Queue
+    
+  //Creating queue for storing string values
+  string fruits[$]={"orange","apple","lemon","kiwi"}; 
+  
+  initial begin
+    
+    foreach(fruits[i]) begin
+      $display("fruits[%0d]=%s",i,fruits[i]);
+    end
+    
+    $display("Displaying subset of fruits=%p",fruits[1:2]); // '{"apple", "lemon"} 
+    
+    //Printing all fruits except last fruit
+    $display("Displaying all fruits except last fruit=%p",fruits[0:$-1]); // '{"orange", "apple", "lemon"}
+    
+     //Printing all fruits except first fruit
+    $display("Displaying all fruits except first fruit=%p",fruits[1:$-1]); //'{"apple", "lemon"}
+    
+     //Printing all fruits except Last fruit
+    $display("Displaying all fruits except Last fruit=%p",fruits[0:$-1]); //'{"orange", "apple", "lemon"} 
+    
+    //Printing the first and second fruit
+    $display("Displaying First and second fruits=%p",fruits[1:2]); //'{"apple", "lemon"} 
+    
+    fruits[$+1]="pineapple";
+    $display("Displaying all fruits =%p",fruits); // '{"orange", "apple", "lemon", "kiwi", "pineapple"} 
+    
+    $display ("The size of the Queue is = %0d", fruits.size());
+    
+    fruits={};
+    $display("After Queue Deletion : fruits=%p",fruits);
+    $display ("The size of the Queue is after deleting all = %0d", fruits.size());
+    
+  end
+  
+endmodule :queue_slice_expression_example6
+
+// LogFile Output
+   
+Starting vcs inline pass...
+1 module and 0 UDP read.
+recompiling module queue_slice_expression_example6
+rm -f _cuarc*.so _csrc*.so pre_vcsobj_*.so share_vcsobj_*.so
+if [ -x ../simv ]; then chmod a-x ../simv; fi
+g++  -o ../simv      -rdynamic  -Wl,-rpath='$ORIGIN'/simv.daidir -Wl,-rpath=./simv.daidir -Wl,-rpath=/apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib -L/apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib  -Wl,-rpath-link=./   objs/amcQw_d.o   _331_archive_1.so   SIM_l.o       rmapats_mop.o rmapats.o rmar.o rmar_nd.o  rmar_llvm_0_1.o rmar_llvm_0_0.o            -lvirsim -lerrorinf -lsnpsmalloc -lvfs    -lvcsnew -lsimprofile -luclinative /apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib/vcs_tls.o   -Wl,-whole-archive  -lvcsucli    -Wl,-no-whole-archive          /apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib/vcs_save_restore_new.o -ldl  -lc -lm -lpthread -ldl 
+../simv up to date
+CPU time: .374 seconds to compile + .406 seconds to elab + .333 seconds to link
+Chronologic VCS simulator copyright 1991-2023
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Nov 15 08:44 2025
+fruits[0]=orange
+fruits[1]=apple
+fruits[2]=lemon
+fruits[3]=kiwi
+Displaying subset of fruits='{"apple", "lemon"} 
+Displaying all fruits except last fruit='{"orange", "apple", "lemon"} 
+Displaying all fruits except first fruit='{"apple", "lemon"} 
+Displaying all fruits except Last fruit='{"orange", "apple", "lemon"} 
+Displaying First and second fruits='{"apple", "lemon"} 
+Displaying all fruits ='{"orange", "apple", "lemon", "kiwi", "pineapple"} 
+The size of the Queue is = 5
+After Queue Deletion : fruits='{}
+The size of the Queue is after deleting all = 0
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 0 ns
+CPU Time:      0.410 seconds;       Data structure size:   0.0Mb
+Sat Nov 15 08:44:07 2025
+Done 
+/******************************************************************************************************/
+   Queue : Example7 :  
+/*****************************************************************************************************/      
