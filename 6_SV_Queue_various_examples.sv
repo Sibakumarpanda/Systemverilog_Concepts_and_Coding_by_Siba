@@ -448,5 +448,132 @@ CPU Time:      0.410 seconds;       Data structure size:   0.0Mb
 Sat Nov 15 08:44:07 2025
 Done 
 /******************************************************************************************************/
-   Queue : Example7 :  
+   Queue : Example7 :  Example of string of queue with , queue method uses
 /*****************************************************************************************************/      
+module queue_of_string_elelments_with_uses_of_methods_example7; //Example of string of queue with , queue method uses
+    
+  //Creating queue for storing string values
+  string fruits[$]={ "apple","pear","mango","banana"}; 
+  
+  initial begin
+    
+    foreach(fruits[i]) begin
+      $display("fruits[%0d]=%s",i,fruits[i]);
+    end
+    
+    $display("Displaying subset of fruits=%p",fruits[1:2]);
+    
+    //use of size() method
+    $display("Size of the queue is fruits.size() =%0d",fruits.size());
+    
+    //use of insert() method- insert an element at given index
+    fruits.insert(1,"peach");
+    $display("Size of the queue after PEACH insertion at index1: fruits.size() =%0d",fruits.size());
+    
+    foreach(fruits[i]) begin
+      $display("fruits[%0d]=%s",i,fruits[i]);
+    end
+    
+    //use of delete() method- delete an element at given index
+    fruits.delete(3);
+    $display("Size of the queue after deletion at index3: fruits.size() =%0d",fruits.size());
+    
+    foreach(fruits[i]) begin
+      $display("fruits[%0d]=%s",i,fruits[i]);
+    end
+    
+    //use of pop_front() method- Poping the element from front side of queue :  fruits.pop_front();
+    $display("popped from front =%s,Size of the queue after poping : fruits.size() =%0d ",fruits.pop_front(),fruits.size());
+    
+    foreach(fruits[i]) begin
+      $display("fruits[%0d]=%s",i,fruits[i]);
+    end
+    
+    //use of push_front() method- Pushing the element to the front side of queue
+    fruits.push_front("apricot");
+    $display("The new queue now =%p,Size of the queue after pushing : fruits.size() =%0d ",fruits,fruits.size());
+    
+    foreach(fruits[i]) begin
+      $display("fruits[%0d]=%s",i,fruits[i]);
+    end
+    
+    //use of pop_back() method- Poping the element from Back side of queue : fruits.pop_back();
+    $display("popped from back =%s,Size of the queue after poping : fruits.size() =%0d ",fruits.pop_back(),fruits.size());
+    
+    foreach(fruits[i]) begin
+      $display("fruits[%0d]=%s",i,fruits[i]);
+    end
+    
+    //use of push_back() method- Pushing the element to the back side of queue
+    fruits.push_back("palm");
+    $display("The new queue now =%p,Size of the queue after pushing : fruits.size() =%0d ",fruits,fruits.size());
+    
+    foreach(fruits[i]) begin
+      $display("fruits[%0d]=%s",i,fruits[i]);
+    end
+    
+    fruits={};
+    $display("After Queue Deletion : fruits=%p,fruits.size()=%0d",fruits,fruits.size());
+         
+           
+  end
+  
+endmodule :queue_of_string_elelments_with_uses_of_methods_example7
+
+//Log File Output
+   
+Starting vcs inline pass...
+1 module and 0 UDP read.
+recompiling module queue_of_string_elelments_with_uses_of_methods_example7
+rm -f _cuarc*.so _csrc*.so pre_vcsobj_*.so share_vcsobj_*.so
+if [ -x ../simv ]; then chmod a-x ../simv; fi
+g++  -o ../simv      -rdynamic  -Wl,-rpath='$ORIGIN'/simv.daidir -Wl,-rpath=./simv.daidir -Wl,-rpath=/apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib -L/apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib  -Wl,-rpath-link=./   objs/amcQw_d.o   _331_archive_1.so   SIM_l.o       rmapats_mop.o rmapats.o rmar.o rmar_nd.o  rmar_llvm_0_1.o rmar_llvm_0_0.o            -lvirsim -lerrorinf -lsnpsmalloc -lvfs    -lvcsnew -lsimprofile -luclinative /apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib/vcs_tls.o   -Wl,-whole-archive  -lvcsucli    -Wl,-no-whole-archive          /apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib/vcs_save_restore_new.o -ldl  -lc -lm -lpthread -ldl 
+../simv up to date
+CPU time: .310 seconds to compile + .300 seconds to elab + .325 seconds to link
+Chronologic VCS simulator copyright 1991-2023
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Nov 15 08:55 2025
+fruits[0]=apple
+fruits[1]=pear
+fruits[2]=mango
+fruits[3]=banana
+Displaying subset of fruits='{"pear", "mango"} 
+Size of the queue is fruits.size() =4
+Size of the queue after PEACH insertion at index1: fruits.size() =5
+fruits[0]=apple
+fruits[1]=peach
+fruits[2]=pear
+fruits[3]=mango
+fruits[4]=banana
+Size of the queue after deletion at index3: fruits.size() =4
+fruits[0]=apple
+fruits[1]=peach
+fruits[2]=pear
+fruits[3]=banana
+popped from front =apple,Size of the queue after poping : fruits.size() =3 
+fruits[0]=peach
+fruits[1]=pear
+fruits[2]=banana
+The new queue now ='{"apricot", "peach", "pear", "banana"} ,Size of the queue after pushing : fruits.size() =4 
+fruits[0]=apricot
+fruits[1]=peach
+fruits[2]=pear
+fruits[3]=banana
+popped from back =banana,Size of the queue after poping : fruits.size() =3 
+fruits[0]=apricot
+fruits[1]=peach
+fruits[2]=pear
+The new queue now ='{"apricot", "peach", "pear", "palm"} ,Size of the queue after pushing : fruits.size() =4 
+fruits[0]=apricot
+fruits[1]=peach
+fruits[2]=pear
+fruits[3]=palm
+After Queue Deletion : fruits='{},fruits.size()=0
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 0 ns
+CPU Time:      0.420 seconds;       Data structure size:   0.0Mb
+Sat Nov 15 08:55:46 2025
+Done   
+/******************************************************************************************************/
+   Queue : Example8 :  
+/*****************************************************************************************************/         
