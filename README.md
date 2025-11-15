@@ -50,4 +50,8 @@ This repository contains the basic to advance level SV Concepts , code examples 
     
     Iterator index querying
 
-**6. SV Queue overview and its various methods with examples**    
+**6. SV Queue overview and its various methods with examples** 
+
+**7. SV Structure overview and its various methods with examples**
+
+**8. SV Union overview and its various methods with examples**
