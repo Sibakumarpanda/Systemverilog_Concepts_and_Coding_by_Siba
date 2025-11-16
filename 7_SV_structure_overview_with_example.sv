@@ -42,6 +42,7 @@ NOTE :
 - Now, if we want to store another set of information for an employee. The typedef keyword allows creating multiple sets of information with different reference handles.
 
 typedef structure in SV :
+--------------------------
   
 Syntax :
   typedef struct {
@@ -87,3 +88,7 @@ employee e2: '{name:"Bob", salary:'h20000, id:4321}
 employee e1: name = Alex, salary = 0x10000, id = 1234
 employee e2: name = Bob, salary = 0x20000, id = 4321
   
+Types of structures :
+---------------------
+   1. Packed structures
+   2. Unpacked structures
