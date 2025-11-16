@@ -158,3 +158,45 @@ endmodule :unpacked_struct_example4
 //Log File Output
 EMP1: '{name:"Alex", salary:'h10000, id:1234}
 EMP2: '{name:"John", salary:'h12000, id:4321}
+
+Passing a structure in function or task :
+- In the below example, two functions are used for allocating information to structure members and another function to print the structure. 
+- Similarly, a structure can be used as an input argument for tasks.
+ 
+/*************************************************/
+  Example5: Passing a structure in function
+/*************************************************/  
+module passing_struct_in_function_task_example5;
+  
+ typedef struct {      //Bydefault the structure is Unpacked 
+    string name;
+    bit[31:0] salary;
+    integer id;
+  } employee;
+    
+  function void print_struct(employee emp);
+    $display("EMP: %p", emp);
+  endfunction
+  
+  function employee create_struct(string name, bit [31:0] salary, integer id);
+    employee emp;
+    emp.name   = name;
+    emp.salary = salary;
+    emp.id     = id;
+    return emp;
+  endfunction
+  
+  initial begin
+    employee emp1, emp2;
+    emp1 = create_struct("Alex",'h10000, 'd1234);
+    emp2 = create_struct("John",'h12000, 'd4321);
+    print_struct(emp1);
+    print_struct(emp2);
+  end
+endmodule : passing_struct_in_function_task_example5
+
+//Log File Output
+EMP: '{name:"Alex", salary:'h10000, id:1234}
+EMP: '{name:"John", salary:'h12000, id:4321}
+ 
+ 
