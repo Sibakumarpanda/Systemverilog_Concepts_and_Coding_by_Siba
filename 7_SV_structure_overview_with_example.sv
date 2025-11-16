@@ -81,7 +81,6 @@ module typedef_struct_example2;
 endmodule :typedef_struct_example2
 
 //LogFile Output
-
 employee e1: '{name:"Alex", salary:'h10000, id:1234}
 employee e2: '{name:"Bob", salary:'h20000, id:4321}
 -------------------------------------------------
@@ -92,3 +91,70 @@ Types of structures :
 ---------------------
    1. Packed structures
    2. Unpacked structures
+
+Packed structures :
+ - Similar to a packed array, if memory allocated for variables in a structure is contiguous, then it is called a packed structure.
+ - For creating the packed structure , we need to explicitely declare the structure with keyword as packed . (By Default the structure is unpacked in nature) 
+ - Only packed data types are allowed in packed structures.
+ - Ex. A string is not a packed data type, so code will not compile. 
+ - To use string as a data type in structure, unpack structures can be used.
+ - The “packed” keyword is used to declare a packed structure.
+  
+/***********************************************/
+  Example3: example of typedef Packed Structure
+/**********************************************/
+module packed_struct_example3;
+  typedef struct packed {   
+    bit[31:0] salary;
+    integer   id;
+  } employee;
+    
+  initial begin
+    employee emp1, emp2;
+    emp1.salary = 'h10000;
+    emp1.id     = 'd1234;
+    $display("EMP1: %p", emp1);
+    
+    emp2.salary = 'h12000;
+    emp2.id     = 'd4321;
+    $display("EMP2: %p", emp2);
+  end
+endmodule  :packed_struct_example3
+
+//Log File Output
+
+EMP1: '{salary:'h10000, id:1234}
+EMP2: '{salary:'h12000, id:4321}
+
+Unpacked structures :
+ - A structure is said to be unpacked , if memory allocated for the variables inside struture are not contineous.
+ - An unpacked structure is not as memory efficient as packed data structures.
+ - By default, a structure is unpacked in nature.
+  
+/*************************************************/
+  Example4: example of typedef unpacked Structure
+/*************************************************/  
+ module unpacked_struct_example4;
+  typedef struct {
+    string     name;
+    bit [31:0] salary;
+    integer    id;
+  } employee;
+    
+  initial begin
+    employee emp1, emp2;
+    emp1.name = "Alex";
+    emp1.salary = 'h10000;
+    emp1.id     = 'd1234;
+    $display("EMP1: %p", emp1);
+    
+    emp2.name = "John";
+    emp2.salary = 'h12000;
+    emp2.id     = 'd4321;
+    $display("EMP2: %p", emp2);
+  end
+endmodule :unpacked_struct_example4
+
+//Log File Output
+EMP1: '{name:"Alex", salary:'h10000, id:1234}
+EMP2: '{name:"John", salary:'h12000, id:4321}
