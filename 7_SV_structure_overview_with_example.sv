@@ -199,4 +199,13 @@ endmodule : passing_struct_in_function_task_example5
 EMP: '{name:"Alex", salary:'h10000, id:1234}
 EMP: '{name:"John", salary:'h12000, id:4321}
  
- 
+NOTE:
+------ 
+ - In a packed structure, if any data type is 4-state, then the complete structure is treated as a 4-state structure.
+ - The packed structure is by default unsigned in nature. To declare a packed signed structure, the below syntax is used.
+ - Syntax for packed signed structure :
+      typedef struct packed signed {
+                <Data type> <member 1>;
+                <Data type> <member 2>;
+                ...;
+      } <struct_name>;
