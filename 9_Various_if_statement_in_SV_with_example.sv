@@ -35,3 +35,22 @@ Various if statement in SystemVerilog :
         else begin
         ...
         end
+/***********************************/
+  Example1 : If statement Example
+/***********************************/     
+module if_example1;  
+  initial begin
+    int a, b;
+    a = 10;
+    b = 20;
+    if(a>b)
+      $display("a is greater than b");
+    else if(a<b)
+      $display("a is less than b");
+    else 
+      $display("a is equal to b");
+  end
+endmodule :if_example1
+  
+//Log File Output
+a is less than b  
