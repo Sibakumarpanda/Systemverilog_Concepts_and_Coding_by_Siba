@@ -54,3 +54,5 @@ endmodule :if_example1
   
 //Log File Output
 a is less than b  
+
+3. unique if statement :  
