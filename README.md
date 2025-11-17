@@ -42,12 +42,9 @@ This repository contains the basic to advance level SV Concepts , code examples 
 
 **5. Array Manipulation Methods**
 
-    Array locator methods
-    
-    Array ordering methods
-    
-    Array reduction methods
-    
+    Array locator methods    
+    Array ordering methods    
+    Array reduction methods    
     Iterator index querying
 
 **6. SV Queue overview and its various methods with examples** 
@@ -57,3 +54,10 @@ This repository contains the basic to advance level SV Concepts , code examples 
 **8. SV Union overview and its various methods with examples**
 
 **9. Various if Statements in System Verilog with examples**
+
+     if
+     else if /else 
+     unique if
+     unique0 if
+     priority if
+     
