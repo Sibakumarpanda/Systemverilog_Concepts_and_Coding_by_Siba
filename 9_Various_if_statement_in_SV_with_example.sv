@@ -56,3 +56,34 @@ endmodule :if_example1
 a is less than b  
 
 3. unique if statement :  
+  - SystemVerilog allows us to use a ‘unique’ keyword before ‘if’ statement. 
+  - Following error/warnings are expected:
+  - None of ‘if’ conditions are true or there is no ‘else’ statement.
+  - More than one ‘if’ or ‘else if’ conditions are true.
+
+/**********************************/
+    Example2: unique if example
+/**********************************/  
+module unique_if_example2;  
+  initial begin
+    int a, b;
+    a = 10;
+    b = 20;
+    unique if(a>b)
+      $display("a is greater than b");
+    else if(a<b)
+      $display("a is less than b");
+    else 
+      $display("a is equal to b");
+  end
+endmodule    
+  
+//Log File Output
+  a is less than b  
+/*******************************************************************/
+  Example3: unique if example (An error/ warning Example)
+  (None of if conditions are true or there is no ‘else’ statement)  
+/******************************************************************/  
+ -In the below example, no ‘if’ or ‘else if’ the condition is true. 
+ -Also, ‘else’ condition is not written. Hence, run time error/ warning is expected. 
+   
