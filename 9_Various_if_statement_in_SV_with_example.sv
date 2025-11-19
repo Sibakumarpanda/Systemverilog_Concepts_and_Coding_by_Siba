@@ -132,4 +132,6 @@ Warning-[RT-MTOCMUIF] More than one condition match in statement
 testbench.sv, 9
   More than one condition matches are found in 'unique if' statement inside 
   unique_if_example4.unnamed$$_0, at time 0ns.  
-  Line number 11 and 13 are overlapping.   
+  Line number 11 and 13 are overlapping.  
+    
+4. unique0 if statement :  
