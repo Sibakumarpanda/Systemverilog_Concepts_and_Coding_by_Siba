@@ -87,3 +87,49 @@ endmodule
  -In the below example, no ‘if’ or ‘else if’ the condition is true. 
  -Also, ‘else’ condition is not written. Hence, run time error/ warning is expected. 
    
+module unique_if_example3;  
+  initial begin
+    int a, b;
+    a = 10;
+    b = 20;
+    unique if(a>30)
+      $display("a is greater than 30");
+    else if(b>30)
+      $display("b is greater than 30");
+  end
+endmodule :unique_if_example3
+   
+//Log File Output
+   
+Warning-[RT-NCMUIF] No condition matches in statement
+  No condition matches in 'unique if' statement. 'else' statement is missing 
+  for the last 'else if' block, inside unique_if_example.unnamed$$_0, at time 
+  0ns.   
+/*******************************************************************/
+  Example4: unique if example (An error/ warning Example)
+  - In the below example, more that ‘if’ or ‘else if’ condition is 
+    true which issues a compilation error/ warning.   
+/******************************************************************/
+module unique_if_example4;  
+  initial begin
+    int a, b;
+    a = 10;
+    b = 20;
+    unique if(a>b)
+      $display("a is greater than b");
+    else if(a<b)
+      $display("a is less than b");
+    else if(a<50)
+      $display("a is less than 50");
+    else 
+      $display("a is equal to b");
+  end
+endmodule : unique_if_example4
+   
+//Log File Output
+a is less than b
+Warning-[RT-MTOCMUIF] More than one condition match in statement
+testbench.sv, 9
+  More than one condition matches are found in 'unique if' statement inside 
+  unique_if_example4.unnamed$$_0, at time 0ns.  
+  Line number 11 and 13 are overlapping.   
