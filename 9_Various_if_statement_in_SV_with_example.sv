@@ -1,4 +1,9 @@
 Various if statement in SystemVerilog :
+      if statement 
+      else if or else statement 
+      unique if statement 
+      unique0 if statement 
+      priority if Statement 
   
 1. if statement :
   
@@ -155,3 +160,54 @@ endmodule :unique0_if_example5
    
 //Log file Output
 Here No run time warning is observed.   
+
+5. priority if Statement:
+  -The execution of ‘priority if’ is in sequential order.
+/*********************************/
+  Example6: priority if example  
+/********************************/
+module priority_if_example6;  
+  initial begin
+    int a, b;
+    a = 20;
+    b = 10;
+    priority if(a>b)
+      $display("a is greater than b");
+    else if(a<b)
+      $display("a is less than b");
+    else 
+      $display("a is equal to b");
+  end
+endmodule :priority_if_example6
+   
+//Log File Output
+ a is greater than b
+ The simulation issues following run time error/warning
+ None of ‘if’ conditions are true or there is no ‘else’ statement.
+   
+ /*********************************/
+  Example7: priority if example  
+    An error/ warning example
+/********************************/  
+-None of if conditions are true or there is no ‘else’ statement
+-In below example, no ‘if’ or ‘else if’ a condition is true. 
+-Also, ‘else’ condition is not written. Hence, run time error/ warning is expected.
+module priority_if_example7;  
+  initial begin
+    int a, b;
+    a = 20;
+    b = 10;
+    priority if(a>30)
+      $display("a is greater than 30");
+    else if(30<b)
+      $display("30 is less than b");
+  end
+endmodule :priority_if_example7
+   
+//Log File Output
+   
+Warning-[RT-NCMPRIF] No condition matches in statement
+testbench.sv, 9
+No condition matches in 'priority if' statement. 'else' statement is missing
+for the last 'else if' block, inside priority_if_example.unnamed$$_0, at 
+time 0ns.   
