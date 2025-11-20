@@ -107,3 +107,38 @@ Value of count = 2
 /////////////////////////////////////////////////////////////////
                        3. forever loop:  
 ///////////////////////////////////////////////////////////////// 
+- As the name suggests, a forever loop runs indefinitely.
+- To terminate the loop, a break statement can be used.
+- Syntax:
+        forever begin
+        ...
+        end                        
+/***************************************************/
+ Example5 : Using forever loop
+ To terminate the loop, $finish system call is used.
+/**************************************************/
+module forever_example5;  
+  int count;
+  initial begin
+    forever begin 
+      $display("Value of count = %0d", count);
+      count++;
+      #5;
+    end
+  end
+  
+  initial begin
+    #30;
+    $finish;
+  end
+endmodule :forever_example5
+
+//Log File Output
+Value of count = 0
+Value of count = 1
+Value of count = 2
+Value of count = 3
+Value of count = 4
+Value of count = 5
+$finish called from file "testbench.sv", line 16.
+$finish at simulation time 30
