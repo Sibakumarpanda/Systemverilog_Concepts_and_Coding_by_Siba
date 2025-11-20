@@ -171,3 +171,6 @@ Value of count = 6
 Value of count = 7
 Value of count = 8
 Value of count = 9
+
+Difference between always block and forever block :
+ 
