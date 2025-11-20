@@ -117,7 +117,7 @@ Value of count = 2
  Example5 : Using forever loop
  To terminate the loop, $finish system call is used.
 /**************************************************/
-module forever_example5;  
+module forever_with_finish_example5;  
   int count;
   initial begin
     forever begin 
@@ -131,7 +131,7 @@ module forever_example5;
     #30;
     $finish;
   end
-endmodule :forever_example5
+endmodule :forever_with_finish_example5
 
 //Log File Output
 Value of count = 0
@@ -142,3 +142,32 @@ Value of count = 4
 Value of count = 5
 $finish called from file "testbench.sv", line 16.
 $finish at simulation time 30
+
+/***************************************************/
+ Example6 : Using forever loop with a break statement
+ To terminate the loop, $finish system call is used.
+/**************************************************/
+-The break statement is used in the below example to terminate the loop based on the condition. 
+-The break statement will be discussed under the break and continue section.
+module forever_with_break_stmt_example6;  
+  int count;
+  initial begin
+    forever begin 
+      $display("Value of count = %0d", count);
+      count++;
+      if(count == 10) break;
+    end
+  end
+endmodule :forever_with_break_stmt_example6
+
+//Log file Output
+Value of count = 0
+Value of count = 1
+Value of count = 2
+Value of count = 3
+Value of count = 4
+Value of count = 5
+Value of count = 6
+Value of count = 7
+Value of count = 8
+Value of count = 9
