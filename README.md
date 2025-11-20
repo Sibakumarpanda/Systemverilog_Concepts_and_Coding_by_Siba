@@ -61,3 +61,12 @@ This repository contains the basic to advance level SV Concepts , code examples 
      unique0 if
      priority if
      
+**10. Looping Constructs in System Verilog with examples**
+
+     while loop
+     do while loop
+     forever loop
+     for Loop
+     foreach loop
+     repeat loop
+     break , continue
