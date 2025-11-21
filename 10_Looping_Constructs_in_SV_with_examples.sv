@@ -186,3 +186,30 @@ Difference between always block and forever block :
 
    // For single statement
    always <single statement> 
+    
+/***************************************************/
+ Example7 : Example using always block
+/**************************************************/
+module always_block_example7;  
+  int count;
+  always begin
+    $display("Value of count = %0d", count);
+    count++;
+    #5;
+  end
+  
+  initial begin
+    #30;
+    $finish;
+  end
+endmodule : always_block_example7
+ 
+//Log File Output
+Value of count = 0
+Value of count = 1
+Value of count = 2
+Value of count = 3
+Value of count = 4
+Value of count = 5
+$finish called from file "testbench.sv", line 14.
+$finish at simulation time 30 
