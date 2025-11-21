@@ -174,3 +174,15 @@ Value of count = 9
 
 Difference between always block and forever block :
  
+- Both always and forever block the same effect. 
+- The always block is a procedural block and it can not be placed inside other procedural blocks. 
+- Also, always block can not be used inside the class, where as we can use forever inside class
+- always block is synthesizable  , we are using in RTL/design code. where as forever is Non synthesizable
+- Syntax for always block:
+   // For multiple statements in always block
+   always begin
+   ...
+   end
+
+   // For single statement
+   always <single statement> 
