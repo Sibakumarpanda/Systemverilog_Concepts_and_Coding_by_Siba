@@ -46,7 +46,7 @@ Value of count = 8
 Value of count = 9
 
 /////////////////////////////////////////////////////////////////
-                       1. do while loop:  
+                       2. do while loop:  
 /////////////////////////////////////////////////////////////////  
 - A do while loop is a control flow statement that executes statements at least once and then the condition is checked. 
 - If the condition holds true, statements execute repeatedly else the loop terminates.
