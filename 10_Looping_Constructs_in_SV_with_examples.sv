@@ -346,4 +346,23 @@ Simulation complete via $finish(1) at time 100 NS + 0
  
 /////////////////////////////////////////////////////////////////
                        4. for loop:  
-/////////////////////////////////////////////////////////////////  
+/////////////////////////////////////////////////////////////////
+                        
+- The for loop iterates till the mentioned condition is satisfied. 
+- The execution of for loop depends on –
+     Initialization
+     Condition
+     Update 
+- Syntax:
+      for (<initialization>; <condition>; <update>) begin
+       ...
+      end   
+  
+- Initialization: An initial value of the variable is set. It is executed only once.
+- Condition: A condition or expression is evaluated. 
+             If it is evaluated to be the true body of for loop (statements inside begin and end) are executed else, the loop terminates.
+- Update: After execution of for loop body, the variable value is updated
+
+/************************************************************/
+ Example11 : Basic example using for loop constructs
+/************************************************************/ 
