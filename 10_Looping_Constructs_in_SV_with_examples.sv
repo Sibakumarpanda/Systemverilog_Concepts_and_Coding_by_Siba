@@ -213,3 +213,135 @@ Value of count = 4
 Value of count = 5
 $finish called from file "testbench.sv", line 14.
 $finish at simulation time 30 
+ 
+///////////////////////////////////////////////////////////////
+Different Examples to understand always block and forever loop 
+//////////////////////////////////////////////////////////////
+
+/************************************************************/
+ Example8 : A always block inside another procedural block
+/************************************************************/ 
+ - A compilation error is expected when always block is used inside another procedural block. 
+ - In such a case, a forever block can be used.
+  
+module always_block_inside_procedural_block_example8;  
+  int count;
+  initial begin
+    always begin // can not use inside other procedural block
+      $display("Value of count = %0d", count);
+      count++;
+      #5;
+    end
+  end
+  
+  initial begin
+    #30;
+    $finish;
+  end
+endmodule : always_block_inside_procedural_block_example8
+ 
+//Log File Output
+ Error-[SE] Syntax error
+  Following verilog source has syntax error :
+  "testbench.sv", 7: token is 'always'
+      always begin // can not use inside other procedural block
+            ^
+1 error
+ Error-[SE] Syntax error
+  Following verilog source has syntax error :
+  "testbench.sv", 7: token is 'always'
+      always begin // can not use inside other procedural block
+            ^
+1 error
+       
+/************************************************************/
+ Example9 : A always block inside a class  
+/************************************************************/ 
+- A compilation error is expected when always block is used inside a class. 
+- We will study the concept of class in the upcoming different section .
+- For the time being , below example will explain the concept , just understand it. 
+ 
+class transaction;
+  int count;
+  
+  task inc_cnt();
+    always begin
+      $display("Value of count = %0d", count);
+      count++;
+      #5;
+    end
+  endtask
+endclass : transaction
+
+module always_example9;
+  transaction tr;
+  initial begin
+    tr = new();
+    tr.inc_cnt();
+  end
+  
+  initial begin
+    #100;
+    $finish;
+  end
+endmodule : always_example9 
+  
+//Log File Output
+always begin
+         |
+xmvlog: *E,ALWILL (testbench.sv,8|9): The always construct is illegal in this context.  
+
+/************************************************************/
+ Example10 : forever loop inside a class
+/************************************************************/ 
+- Use the same example9 and now replace always block with forever block and check
+class transaction;
+  int count;
+  
+  task inc_cnt();
+    forever begin
+      $display("Value of count = %0d", count);
+      count++;
+      #5;
+    end
+  endtask
+endclass :transaction
+
+module always_example10;
+  transaction tr;
+  initial begin
+    tr = new();
+    tr.inc_cnt();
+  end
+  
+  initial begin
+    #100;
+    $finish;
+  end
+endmodule :always_example10
+
+//Log File Output
+Value of count = 0
+Value of count = 1
+Value of count = 2
+Value of count = 3
+Value of count = 4
+Value of count = 5
+Value of count = 6
+Value of count = 7
+Value of count = 8
+Value of count = 9
+Value of count = 10
+Value of count = 11
+Value of count = 12
+Value of count = 13
+Value of count = 14
+Value of count = 15
+Value of count = 16
+Value of count = 17
+Value of count = 18
+Value of count = 19
+Simulation complete via $finish(1) at time 100 NS + 0
+./testbench.sv:25     $finish; 
+ 
+ 
