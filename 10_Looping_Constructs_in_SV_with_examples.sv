@@ -471,3 +471,13 @@ cnt = 10
 /////////////////////////////////////////////////////////////////
                        5. foreach loop in System Verilog:  
 /////////////////////////////////////////////////////////////////
+- The foreach loop in SystemVerilog iterates over the array element. 
+- Unlike for loop, foreach loop does not require initialization, condition, or update value.
+- Syntax:   foreach (variable[iterator]) begin
+             ...
+            end        
+  
+/************************************************************/
+ Example14 : Basic example using foreach loop constructs
+ foreach loop in the single-dimensional (1D) array
+/************************************************************/  
