@@ -438,3 +438,33 @@ array[7] = 49
 array[8] = 64
 array[9] = 81  
   
+/************************************************************/
+ Example13 : Basic example using for loop constructs
+ for loop behaves as a while loop
+/************************************************************/  
+- A for loop behaves as a while loop if initializations, conditions, and update values are not written.  
+
+module for_loop_behaves_as_while_loop_example13;
+  int cnt;
+  initial begin
+    for (;;) begin
+      $display("cnt = %0d", cnt);
+      if(cnt == 10) break;
+      cnt++;
+    end
+  end
+endmodule :for_loop_behaves_as_while_loop_example13
+  
+//Log file Output
+cnt = 0
+cnt = 1
+cnt = 2
+cnt = 3
+cnt = 4
+cnt = 5
+cnt = 6
+cnt = 7
+cnt = 8
+cnt = 9
+cnt = 10  
+  
