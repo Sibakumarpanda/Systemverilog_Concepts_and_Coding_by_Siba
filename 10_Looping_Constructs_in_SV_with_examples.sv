@@ -345,7 +345,7 @@ Simulation complete via $finish(1) at time 100 NS + 0
 ./testbench.sv:25     $finish; 
  
 /////////////////////////////////////////////////////////////////
-                       4. for loop:  
+                       4. for loop in System Verilog:  
 /////////////////////////////////////////////////////////////////
                         
 - The for loop iterates till the mentioned condition is satisfied. 
@@ -468,3 +468,6 @@ cnt = 8
 cnt = 9
 cnt = 10  
   
+/////////////////////////////////////////////////////////////////
+                       5. foreach loop in System Verilog:  
+/////////////////////////////////////////////////////////////////
