@@ -481,3 +481,18 @@ cnt = 10
  Example14 : Basic example using foreach loop constructs
  foreach loop in the single-dimensional (1D) array
 /************************************************************/  
+module basic_foreach_example14;
+  int array[5] = '{100, 200, 300, 400, 500};
+  initial begin
+    foreach (array[i]) begin
+      $display("array[%0d] = %0d", i, array[i]);
+    end
+  end
+endmodule :basic_foreach_example14
+  
+//Log File Output
+array[0] = 100
+array[1] = 200
+array[2] = 300
+array[3] = 400
+array[4] = 500  
