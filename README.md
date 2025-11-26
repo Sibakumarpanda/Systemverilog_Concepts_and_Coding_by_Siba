@@ -70,3 +70,7 @@ This repository contains the basic to advance level SV Concepts , code examples 
      foreach loop
      repeat loop
      break , continue
+
+**11. SV Function Concept with example**
+
+**12. SV Task Concept with example**
