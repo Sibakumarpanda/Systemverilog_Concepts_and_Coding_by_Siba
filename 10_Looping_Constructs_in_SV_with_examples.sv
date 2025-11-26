@@ -496,3 +496,8 @@ array[1] = 200
 array[2] = 300
 array[3] = 400
 array[4] = 500  
+  
+/************************************************************/
+ Example15 : Basic example using foreach loop constructs
+  foreach loop in the Multi-dimensional (2D) array
+/************************************************************/
