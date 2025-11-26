@@ -501,3 +501,70 @@ array[4] = 500
  Example15 : Basic example using foreach loop constructs
   foreach loop in the Multi-dimensional (2D) array
 /************************************************************/
+module basic_foreach_example15;
+  int array[6][2] = '{'{1, 100}, '{2, 200}, '{3, 300}, '{4,400}, '{5, 500}, '{6, 600}};
+  initial begin
+    foreach (array[i,j]) begin
+      $display("array[%0d][%0d] = %0d", i,j, array[i][j]);
+    end
+  end
+endmodule :basic_foreach_example15
+  
+//Log File Output
+array[0][0] = 1
+array[0][1] = 100
+array[1][0] = 2
+array[1][1] = 200
+array[2][0] = 3
+array[2][1] = 300
+array[3][0] = 4
+array[3][1] = 400
+array[4][0] = 5
+array[4][1] = 500
+array[5][0] = 6
+array[5][1] = 600  
+/************************************************************/
+ Example16 : Basic example using foreach loop constructs
+  foreach loop in the Three dimensional (3D) array
+/************************************************************/
+module basic_foreach_example16;
+  int array[3][3][3] = '{'{'{1, 10, 100}, '{2, 20, 200}, '{3, 30, 300}},
+                         '{'{4, 40, 400}, '{5, 50, 500}, '{6, 60, 600}},
+                         '{'{7, 70, 700}, '{8, 80, 800}, '{9, 90, 900}}
+                        };
+  initial begin
+    foreach (array[i,j, k]) begin
+      $display("array[%0d][%0d][%0d] = %0d", i,j, k, array[i][j][k]);
+    end
+  end
+endmodule :basic_foreach_example16
+  
+//Log File Output  
+array[0][0][0] = 1
+array[0][0][1] = 10
+array[0][0][2] = 100
+array[0][1][0] = 2
+array[0][1][1] = 20
+array[0][1][2] = 200
+array[0][2][0] = 3
+array[0][2][1] = 30
+array[0][2][2] = 300
+array[1][0][0] = 4
+array[1][0][1] = 40
+array[1][0][2] = 400
+array[1][1][0] = 5
+array[1][1][1] = 50
+array[1][1][2] = 500
+array[1][2][0] = 6
+array[1][2][1] = 60
+array[1][2][2] = 600
+array[2][0][0] = 7
+array[2][0][1] = 70
+array[2][0][2] = 700
+array[2][1][0] = 8
+array[2][1][1] = 80
+array[2][1][2] = 800
+array[2][2][0] = 9
+array[2][2][1] = 90
+array[2][2][2] = 900
+   
