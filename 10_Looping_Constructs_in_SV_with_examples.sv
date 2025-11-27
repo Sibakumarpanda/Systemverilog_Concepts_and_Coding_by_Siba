@@ -571,4 +571,33 @@ array[2][2][2] = 900
 /////////////////////////////////////////////////////////////////
                        6. repeat loop in System Verilog:  
 /////////////////////////////////////////////////////////////////
-                        
+- A repeat loop is used to execute statements a given number of times.
+- Syntax:  repeat(<number>) begin   // <number> can be variable or fixed value
+           ...
+           end                         
+/************************************************************/
+ Example17 : Basic example using repeat loop constructs
+/************************************************************/
+module basic_repeat_example17;
+  int array[5] = '{100, 200, 300, 400, 500};
+  int i;
+  initial begin
+    repeat ($size(array)) begin
+      $display("array[%0d] = %0d", i, array[i]);
+      i++;
+    end
+    
+   repeat(3) begin
+     $display("WELCOME TO SIBA KUMAR'S GITHUB");
+   end
+  end
+endmodule :basic_repeat_example17
+//Log File Output
+array[0] = 100
+array[1] = 200
+array[2] = 300
+array[3] = 400
+array[4] = 500
+WELCOME TO SIBA KUMAR'S GITHUB
+WELCOME TO SIBA KUMAR'S GITHUB
+WELCOME TO SIBA KUMAR'S GITHUB  
