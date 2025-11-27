@@ -600,4 +600,60 @@ array[3] = 400
 array[4] = 500
 WELCOME TO SIBA KUMAR'S GITHUB
 WELCOME TO SIBA KUMAR'S GITHUB
-WELCOME TO SIBA KUMAR'S GITHUB  
+WELCOME TO SIBA KUMAR'S GITHUB 
+
+///////////////////////////////////////////////////////////////////////
+                  7. break and continue keyword/loop in System Verilog:  
+///////////////////////////////////////////////////////////////////////  
+- The break and continue keywords are used to control the loop flow. 
+- Both break and continue keywords can be used in all supported loops (while, do while, forever, for, foreach, repeat)
+- break    : The break keyword is used to terminate the loop prematurely. Generally, based on certain conditions the loop is terminated.
+- continue : The continue keyword is used to jump the next iteration immediately without executing statements after the continue keyword.
+ 
+/************************************************************/
+ Example18 : Basic example using break and continue
+/************************************************************/
+-When a break keyword is used, the loop immediately is terminated after printing array elements having an index from 0 to 5.
+-When a continue keyword is used, the loop is skipped without printing the array element having an index 6.
+ 
+ module break_continue_basic_example18;
+  int array[10];  
+  initial begin
+    for (int i = 0; i < $size(array); i++) begin
+      array[i] = i*i;
+    end
+  
+    // Using Break keyword
+    for (int i = 0; i < $size(array); i++) begin
+      if(i == 6) break;
+      $display("array[%0d] = %0d", i, array[i]);
+    end
+    $display("------------------------");
+    
+    // using Continue keyword
+    for (int i = 0; i < $size(array); i++) begin
+      if(i == 6) continue;
+      $display("array[%0d] = %0d", i, array[i]);
+    end
+    $display("------------------------");
+  end
+endmodule :break_continue_basic_example18
+                                                                       
+//Log File Output
+array[0] = 0
+array[1] = 1
+array[2] = 4
+array[3] = 9
+array[4] = 16
+array[5] = 25  // FYI , observe carefully : when index 5 reached , Its stopped . because for index 6 , it need to break 
+------------------------
+array[0] = 0
+array[1] = 1
+array[2] = 4
+array[3] = 9
+array[4] = 16
+array[5] = 25  // FYI , observe carefully :For index 6 , its skipped here while we used continue keyword
+array[7] = 49
+array[8] = 64
+array[9] = 81
+------------------------                                                                       
