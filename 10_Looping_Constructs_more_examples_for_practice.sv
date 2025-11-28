@@ -69,3 +69,13 @@ module multiple_var_in_for_loop;
   end
 endmodule
 //LogFile Output - Loop runs while both conditions are true, with multiple variables updating.
+
+Question 6: Reverse Counting with Step
+module reverse_count_using_for_loop;
+  initial begin
+    for (int i = 10; i > 0; i -= 2) begin
+      $display("i = %0d", i);
+    end
+  end
+endmodule
+//LogFile Output : Prints even numbers from 10 down to 2.
