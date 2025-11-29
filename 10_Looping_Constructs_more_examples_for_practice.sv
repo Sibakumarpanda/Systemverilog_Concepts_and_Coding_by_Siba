@@ -76,7 +76,25 @@ module while_conditional;
     end
   end
 endmodule
+  
 //Log File Output
+Starting vcs inline pass...
+1 module and 0 UDP read.
+recompiling module while_conditional
+rm -f _cuarc*.so _csrc*.so pre_vcsobj_*.so share_vcsobj_*.so
+if [ -x ../simv ]; then chmod a-x ../simv; fi
+g++  -o ../simv      -rdynamic  -Wl,-rpath='$ORIGIN'/simv.daidir -Wl,-rpath=./simv.daidir -Wl,-rpath=/apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib -L/apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib  -Wl,-rpath-link=./   
+objs/amcQw_d.o   _331_archive_1.so   SIM_l.o       rmapats_mop.o rmapats.o rmar.o rmar_nd.o  rmar_llvm_0_1.o rmar_llvm_0_0.o            -lvirsim -lerrorinf -lsnpsmalloc -lvfs    
+-lvcsnew -lsimprofile -luclinative /apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib/vcs_tls.o   -Wl,-whole-archive  -lvcsucli    -Wl,-no-whole-archive          /apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib/vcs_save_restore_new.o -ldl  -lc -lm -lpthread -ldl 
+../simv up to date
+CPU time: .417 seconds to compile + .483 seconds to elab + .396 seconds to link
+Chronologic VCS simulator copyright 1991-2023
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Nov 28 22:29 2025
+x=1, y=10
+x=2, y=10
+x=3, y=0
+           V C S   S i m u l a t i o n   R e p o r t   
 
 Question 3: do-while loop - Edge Cases, Always Execute Once
 module do_while_tricky_example ;
@@ -127,3 +145,22 @@ module reverse_count_using_for_loop;
   end
 endmodule
 //LogFile Output : Prints even numbers from 10 down to 2.
+  
+
+Question 7: Modifying Array During Iteration
+module foreach_modify_array_during_iteration_using_foreach;
+  int arr[6] = '{1, 2, 3, 4, 5, 6};
+  
+  initial begin
+    foreach (arr[i]) begin
+      $display("arr[%0d] = %0d", i, arr[i]);
+      if (i == 2) arr[4] = 99;  // Modify future element
+    end
+    
+    foreach (arr[i]) 
+      $display("Final arr[%0d] = %0d", i, arr[i]);
+  end
+endmodule :foreach_modify_array_during_iteration_using_foreach
+//LogFile Output - Modification affects future iterations - arr[4] becomes 99.  
+  
+  
