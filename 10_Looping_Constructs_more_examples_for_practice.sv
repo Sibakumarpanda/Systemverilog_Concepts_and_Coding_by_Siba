@@ -221,4 +221,22 @@ module continue_complex;
 endmodule
 //LogFile Output: Only odd numbers (1, 3) are displayed.  
 
+
+Question 12: Combined Constructs - Tricky Problems: Loop with Multiple Exit Conditions
+module multiple_exit;
+  int data[8] = '{3, 7, 2, 9, 1, 8, 4, 6};
+  int sum = 0;
+  int i = 0;
   
+  initial begin
+    while (i < 8) begin
+      sum += data[i];
+      if (sum > 15) break;
+      if (data[i] == 1) continue;
+      $display("Processing data[%0d] = %0d, sum = %0d", i, data[i], sum);
+      i++;
+    end
+    $display("Final sum = %0d", sum);
+  end
+endmodule
+//LogFile Output: Loop stops when sum exceeds 15, skipping display when value is 1.  
