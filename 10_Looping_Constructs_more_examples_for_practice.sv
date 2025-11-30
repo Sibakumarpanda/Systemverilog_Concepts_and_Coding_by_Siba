@@ -239,4 +239,33 @@ module multiple_exit;
     $display("Final sum = %0d", sum);
   end
 endmodule
-//LogFile Output: Loop stops when sum exceeds 15, skipping display when value is 1.  
+//LogFile Output: Loop stops when sum exceeds 15, skipping display when value is 1
+
+Question 13: Forever with Timeout
+module forever_timeout;
+  event done;
+  int counter = 0;
+  
+  initial begin
+    fork
+      begin : main_loop
+        forever begin
+          #10 counter++;
+          $display("Counter = %0d at time %0t", counter, $time);
+          if (counter >= 5) -> done;
+        end
+      end
+      
+      begin : timeout
+        #100 -> done;  // Force exit after 100 time units
+      end
+      
+      begin : wait_done
+        @(done);
+        disable main_loop;
+        $display("Loop terminated");
+      end
+    join
+  end
+endmodule
+//LogFile Output : Demonstrates controlling forever loop with events and disable.  
