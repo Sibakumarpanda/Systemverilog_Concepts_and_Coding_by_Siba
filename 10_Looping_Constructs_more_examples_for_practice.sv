@@ -163,4 +163,62 @@ module foreach_modify_array_during_iteration_using_foreach;
 endmodule :foreach_modify_array_during_iteration_using_foreach
 //LogFile Output - Modification affects future iterations - arr[4] becomes 99.  
   
+Question 8: Multi-dimensional foreach
+module foreach_2d;
+  int matrix[2][3] = '{'{1, 2, 3}, '{4, 5, 6}};
+  
+  initial begin
+    foreach (matrix[i,j]) begin
+      $display("matrix[%0d][%0d] = %0d", i, j, matrix[i][j]);
+    end
+  end
+endmodule
+//LogFile: Iterates through all elements of 2D array
+
+
+Question 9: repeat loop - Dynamic Repetition ,Variable Repeat Count
+
+module repeat_dynamic;
+  int repeat_count = 3;
+  
+  initial begin
+    $display("Starting repeat loop");
+    repeat (repeat_count) begin
+      $display("Iteration, count = %0d", repeat_count);
+      repeat_count--;  // Modifying count variable
+    end
+    $display("Loop completed");
+  end
+endmodule  
+
+
+Question 10: break and continue - Complex Logic : Nested Loop Control
+
+module break_continue;
+  initial begin
+    for (int i = 0; i < 3; i++) begin
+      $display("Outer loop i=%0d", i);
+      for (int j = 0; j < 3; j++) begin
+        if (i == 1 && j == 1) break;     // Which loop breaks?
+        if (i == 2 && j == 1) continue;  // Which loop continues?
+        $display("  Inner loop j=%0d", j);
+      end
+    end
+  end
+endmodule
+//LogFile Output- 
+break exits only the innermost loop
+continue skips to next iteration of innermost loop  
+
+Question 11: Continue with Conditional
+module continue_complex;
+  initial begin
+    for (int i = 0; i < 5; i++) begin
+      if (i % 2 == 0) continue;  // Skip even numbers
+      $display("Odd number: %0d", i);
+    end
+  end
+endmodule
+//LogFile Output: Only odd numbers (1, 3) are displayed.  
+
   
