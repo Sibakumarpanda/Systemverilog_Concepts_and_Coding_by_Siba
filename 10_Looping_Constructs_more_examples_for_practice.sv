@@ -269,3 +269,10 @@ module forever_timeout;
   end
 endmodule
 //LogFile Output : Demonstrates controlling forever loop with events and disable.  
+  
+Question 14: What happens when you modify the loop control variable inside a while loop condition itself, like while(++i < 5)? How many iterations execute if i starts at 0?
+
+Question 15: Can a while loop condition contain a function call that has side effects? What are the potential pitfalls?
+
+Question 16: What's the difference between while(!randomize()) and do...while(!randomize()) in constraint solving scenarios?  
+  
