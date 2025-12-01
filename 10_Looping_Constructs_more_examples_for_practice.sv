@@ -275,4 +275,8 @@ Question 14: What happens when you modify the loop control variable inside a whi
 Question 15: Can a while loop condition contain a function call that has side effects? What are the potential pitfalls?
 
 Question 16: What's the difference between while(!randomize()) and do...while(!randomize()) in constraint solving scenarios?  
+
+Question 17: In a do-while loop, if the condition fails on the first check, how many times does the loop execute? Provide a real verification scenario where this behavior is crucial.
+
+Question 18: Why might you prefer do-while over while loop when working with UVM phases or component initialization?
   
