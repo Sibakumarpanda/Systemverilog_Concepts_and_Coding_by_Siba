@@ -279,4 +279,27 @@ Question 16: What's the difference between while(!randomize()) and do...while(!r
 Question 17: In a do-while loop, if the condition fails on the first check, how many times does the loop execute? Provide a real verification scenario where this behavior is crucial.
 
 Question 18: Why might you prefer do-while over while loop when working with UVM phases or component initialization?
+
+ 
+Question 19: How do you safely terminate a forever loop running in a parallel process without using $finish?
+
+Question 20: In a clock generation module, what's the difference between:
+             forever #5 clk = ~clk;
+             and
+             always #5 clk = ~clk;
+  
+Question 21: What happens if you put a forever loop in a class method without forking it?
+
+
+Question 22: What's the scope of the loop variable in SystemVerilog for loops? Can you access it outside the loop?
+
+Question 23: How does modifying the loop index variable inside a for loop affect the iteration count? Is this legal?
+
+Question 24: What's the output of this code and why?
+
+            for (int i=0; i<5; i++) begin
+               if (i == 2) continue;
+               $display(i);
+               if (i == 3) break;
+            end
   
