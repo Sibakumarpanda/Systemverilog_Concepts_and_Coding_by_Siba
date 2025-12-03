@@ -303,21 +303,19 @@ Question 24: What's the output of this code and why?
                if (i == 3) break;
             end
   
-5. foreach loop
-Q12: When iterating a 2D array with foreach, what happens if you only specify one index: foreach(arr[i]) vs foreach(arr[i,j])?
 
-Q13: Can you use foreach with dynamic arrays that change size during iteration? What are the risks?
+Question 25: When iterating a 2D array with foreach, what happens if you only specify one index: foreach(arr[i]) vs foreach(arr[i,j])?
 
-Q14: How does foreach handle sparse arrays or arrays with holes?
+Question 26: Can you use foreach with dynamic arrays that change size during iteration? What are the risks?
 
-6. repeat loop
-Q15: If the repeat count expression evaluates to zero or negative, how many times does the loop execute?
+Question 27: How does foreach handle sparse arrays or arrays with holes?
 
-Q16: What's a practical verification scenario where repeat loop is more suitable than for loop?
+Question 28: If the repeat count expression evaluates to zero or negative, how many times does the loop execute?
 
-7. break & continue
-Q17: In nested loops, does break exit all nested levels or just the immediate containing loop?
+Question 29: What's a practical verification scenario where repeat loop is more suitable than for loop?
 
-Q18: What's the difference between using continue and nesting the loop body in an if condition?
+Question 30: In nested loops, does break exit all nested levels or just the immediate containing loop?
 
-Q19: Can you use break and continue in all types of loops? Are there any restrictions?
+Question 31: What's the difference between using continue and nesting the loop body in an if condition?
+
+Question 32: Can you use break and continue in all types of loops? Are there any restrictions?
