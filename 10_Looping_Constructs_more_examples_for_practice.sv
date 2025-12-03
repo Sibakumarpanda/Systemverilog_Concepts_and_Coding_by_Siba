@@ -319,3 +319,30 @@ Question 30: In nested loops, does break exit all nested levels or just the imme
 Question 31: What's the difference between using continue and nesting the loop body in an if condition?
 
 Question 32: Can you use break and continue in all types of loops? Are there any restrictions?
+
+Question 33: In a scoreboard, you are monitoring transactions with below:
+
+      while (transaction_queue.size() > 0) begin
+           trans = transaction_queue.pop_front();
+           // process transaction
+      end
+      What potential issue exists if another process is adding to the queue concurrently?
+
+Question 34: You need to find the first occurrence of a value in a 2D array and exit all nested loops immediately. How would you implement this efficiently?
+        
+Question 35: In a coverage collection loop, you have:
+
+     foreach(coverpoints[i]) begin
+        if (!coverpoints[i].is_enabled()) continue;
+       coverpoints[i].sample();
+     end
+     What optimization could you make if many coverpoints are disabled?
+
+Question 36: For a memory initialization routine, which loop construct would you choose and why?
+             while (address < max_address)
+             for (int addr=0; addr<max_addr; addr++)
+             repeat (memory_size)
+             foreach (memory[addr])
+
+Question 37: You're writing a recursive function that traverses a tree structure. Can you use looping constructs instead of recursion? What are the trade-offs?
+  
