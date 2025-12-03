@@ -415,49 +415,43 @@ Question 46: What's the issue with this array processing code?
           arr.delete(i);
      end
 
-1. Variable Scope & Lifetime
-Q1: What happens when you declare the same loop variable name in nested for loops? Does SystemVerilog allow this and what's the scope?
 
-Q2: Consider this code:
+Question 47: Variable Scope & Lifetime- What happens when you declare the same loop variable name in nested for loops? Does SystemVerilog allow this and what's the scope?
 
-systemverilog
-for (int i=0; i<3; i++) begin
-    int i = 10;
-    $display(i);
-end
-What values get displayed and why?
+Question 48: Consider this code:
+    for (int i=0; i<3; i++) begin
+       int i = 10;
+       $display(i);
+    end
+   What values get displayed and why?
 
-Q3: In a generate loop, can you use break or continue statements? What are the limitations?
+Question 49: In a generate loop, can you use break or continue statements? What are the limitations?
 
-Q4: How does a return statement inside a loop affect the loop execution compared to break?
+Question 50: How does a return statement inside a loop affect the loop execution compared to break?
 
-Q5: What's the difference between these two approaches for early loop termination?
+Question 51: What's the difference between these two approaches for early loop termination?
+       // Approach A
+      for (int i=0; i<100; i++) begin
+         if (condition) break;
+        // processing
+      end
 
-systemverilog
-// Approach A
-for (int i=0; i<100; i++) begin
-    if (condition) break;
-    // processing
-end
+      // Approach B  
+      for (int i=0; i<100 && !condition; i++) begin
+        // processing
+      end
 
-// Approach B  
-for (int i=0; i<100 && !condition; i++) begin
-    // processing
-end
-
-3. Performance & Optimization
-Q6: Which is more efficient for large arrays and why?
-
-systemverilog
-// Method 1
-for (int i=0; i < $size(array); i++)
-
-// Method 2
-int size = $size(array);
-for (int i=0; i < size; i++)
-
-// Method 3
-foreach (array[i])
+Question 52: Performance & Optimization -Which is more efficient for large arrays and why?
+   // Method 1
+   for (int i=0; i < $size(array); i++)
+     
+   // Method 2
+   int size = $size(array);
+   for (int i=0; i < size; i++)
+     
+   // Method 3
+   foreach (array[i])
+     
 Q7: In a forever loop with timing controls, what's the impact of using #0 versus @(posedge clk) for synchronization?
 
 4. Concurrent Loop Execution
