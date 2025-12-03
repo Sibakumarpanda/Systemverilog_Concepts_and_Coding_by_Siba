@@ -346,3 +346,74 @@ Question 36: For a memory initialization routine, which loop construct would you
 
 Question 37: You're writing a recursive function that traverses a tree structure. Can you use looping constructs instead of recursion? What are the trade-offs?
   
+Question 38: In a constraint solver, you have:
+          do begin
+           success = randomize();
+           attempts++;
+         end while (!success && attempts < max_attempts);
+         What's the maximum number of randomization attempts that will occur?
+
+Question 39: How would you rewrite this forever loop without using break?
+       forever begin
+          @(posedge clk);
+          if (reset) break;
+          // normal operation
+       end
+
+Question 40: In a packet processor, you have:
+       for (int i=0; i<packets.size(); i++) begin
+         if (packets[i].has_error()) continue;
+         process_packet(packets[i]);
+         packets.delete(i);
+         i--;  // why is this needed?
+      end
+      Explain why the i-- is necessary and what problem it solves.
+
+Question 41: What's wrong with this loop for finding a maximum value?
+      int arr[] = '{5, 2, 9, 1, 7};
+      int max_val = 0;
+      foreach (arr[i]) begin
+        if (arr[i] > max_val)
+          max_val = arr[i];
+          break;  // bug here!
+      end
+
+Question 42: In a multi-clock domain synchronizer, you have:
+     forever begin
+        @(posedge fast_clk);
+       if (data_available) begin
+          repeat (SYNC_STAGES) @(posedge slow_clk);
+          processed_data <= input_data;
+       end
+     end
+    What synchronization issue exists in this code?
+
+Question 43: Compare the performance implications of:
+    // Version A
+    for (int i=0; i<array.size(); i++) 
+       if (condition(array[i])) process(array[i]);
+
+   // Version B  
+   foreach (array[i])
+       if (condition(array[i])) process(array[i]);
+   Which is more efficient and why?
+
+Question 44: This loop should print values 0 through 4, but it prints only 0. Why?
+   int i = 0;
+   while (i < 5) begin
+      $display(i);
+   end
+
+Question 45: Why does this infinite loop occur and how would you fix it?
+    for (int i=5; i>=0; i++) 
+      $display("Countdown: %0d", i);
+
+Question 46: What's the issue with this array processing code?
+     int arr[5] = '{1, 2, 3, 4, 5};
+     foreach (arr[i]) begin
+        if (arr[i] == 3) 
+          arr.delete(i);
+     end
+
+  
+  
