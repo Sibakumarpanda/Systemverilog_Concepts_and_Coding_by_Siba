@@ -50,3 +50,56 @@ a is greater than b
 /**********************************************************/
   Example2: Premature Function Return Example
 /*********************************************************/  
+module premature_function_example2;
+  
+  function bit [1:0] compare(input int a, b);
+    if(a>b) begin 
+      return 2'h1;
+      $display("a > b comparison completed");
+    end
+    
+    if(a<b) begin
+      return 2'h2;
+      $display("a < b comparison completed");
+    end
+    
+    if(a == b) begin 
+      return 2'h3; 
+      $display("a == b comparison completed");
+    end
+  endfunction
+  
+  initial begin
+    bit [1:0] done;
+    int a, b;
+    
+    repeat(5) begin
+      a = $urandom_range(5, 20);
+      b = $urandom_range(5, 20);
+      $display("input a = %0d, input b = %0d", a, b);
+      done = compare(a,b);
+      if(done == 2'h1) $display("a is greater than b");
+      if(done == 2'h2) $display("a is less than b");
+      if(done == 2'h3) $display("a is equal to b");
+      $display("------------------------");
+    end
+  end
+endmodule :premature_function_example2
+  
+//Log File Output
+input a = 10, input b = 17
+a is less than b
+------------------------
+input a = 20, input b = 11
+a is greater than b
+------------------------
+input a = 6, input b = 20
+a is less than b
+------------------------
+input a = 7, input b = 15
+a is less than b
+------------------------
+input a = 15, input b = 14
+a is greater than b
+------------------------  
+  
