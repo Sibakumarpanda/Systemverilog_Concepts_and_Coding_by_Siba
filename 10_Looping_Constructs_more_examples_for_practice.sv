@@ -452,60 +452,66 @@ Question 52: Performance & Optimization -Which is more efficient for large array
    // Method 3
    foreach (array[i])
      
-Q7: In a forever loop with timing controls, what's the impact of using #0 versus @(posedge clk) for synchronization?
+Question 53: In a forever loop with timing controls, what's the impact of using #0 versus @(posedge clk) for synchronization?
 
-4. Concurrent Loop Execution
-Q8: You have multiple forever loops running in parallel processes. How can you coordinate their termination gracefully?
+Question 54: Concurrent Loop Execution- You have multiple forever loops running in parallel processes. How can you coordinate their termination gracefully?
 
-Q9: What happens when two parallel processes try to modify the same loop control variable simultaneously?
+Question 55: What happens when two parallel processes try to modify the same loop control variable simultaneously?
 
-Q10: In a fork-join block, if one process has an infinite loop, how do other processes get executed?
+Question 56: In a fork-join block, if one process has an infinite loop, how do other processes get executed?
 
-11. Write a loop that iterates through a queue but skips every second element without using continue statements.
-12. Implement a loop that processes a 3D array in reverse order (z, y, x) instead of the natural (x, y, z) order.
-13. Create a foreach loop that only processes elements at even indices of a dynamic array.
-14. Write a loop that finds all pairs of elements in an array that sum to a target value, without using nested loops.
-15. Implement a timeout mechanism for a while loop that should break if a condition isn't met within specific simulation time.
-16. Write a loop that traverses a associative array where keys are not consecutive integers.
-17. Create a forever loop that executes exactly N times without using break statement.
+Question 57: Write a loop that iterates through a queue but skips every second element without using continue statements.
+  
+Question 58: Implement a loop that processes a 3D array in reverse order (z, y, x) instead of the natural (x, y, z) order.
+  
+Question 59: Create a foreach loop that only processes elements at even indices of a dynamic array.
+  
+Question 60: Write a loop that finds all pairs of elements in an array that sum to a target value, without using nested loops.
+  
+Question 61: Implement a timeout mechanism for a while loop that should break if a condition isn't met within specific simulation time.
+  
+Question 62: Write a loop that traverses a associative array where keys are not consecutive integers.
+  
+Question 63: Create a forever loop that executes exactly N times without using break statement.
 
-18. Implement a loop that processes a circular buffer using any looping construct.
-19. Write a loop that converts a while loop into equivalent for loop without changing the behavior.
-20. Create a repeat loop where the repetition count is determined by a function that has side effects.
+Question 64: Implement a loop that processes a circular buffer using any looping construct.
+  
+Question 65: Write a loop that converts a while loop into equivalent for loop without changing the behavior.
+  
+Question 66: Create a repeat loop where the repetition count is determined by a function that has side effects.
 
-21. This code is supposed to copy array elements but has a bug. Identify it:
-systemverilog
-int src[5] = '{1,2,3,4,5};
-int dst[5];
-for (int i=0; i<=5; i++) begin
-    dst[i] = src[i];
-end
-22. Why does this loop sometimes miss elements?
-systemverilog
-queue = '{1,2,3,4,5};
-foreach (queue[i]) begin
-    if (queue[i] % 2 == 0) begin
-        queue.delete(i);
-    end
-end
+Question 67: This code is supposed to copy array elements but has a bug. Identify it:
+        int src[5] = '{1,2,3,4,5};
+        int dst[5];
+        for (int i=0; i<=5; i++) begin
+         dst[i] = src[i];
+        end
+  
+Question 68: Why does this loop sometimes miss elements?
+      queue = '{1,2,3,4,5};
+      foreach (queue[i]) begin
+        if (queue[i] % 2 == 0) begin
+           queue.delete(i);
+        end
+      end
 
-23. What's the issue with this clock generator?
-systemverilog
-initial begin
-    clk = 0;
-    forever begin
-        #5 clk = ~clk;
-        if ($time > 100) break;
-    end
-end
-24. Why does this loop create a simulation hang?
-systemverilog
-while (transaction_mailbox.num() == 0) begin
-    // wait for transaction
-end
+Question 69: What's the issue with this clock generator?
+      initial begin
+         clk = 0;
+         forever begin
+            #5 clk = ~clk;
+           if ($time > 100) break;
+         end
+      end
+  
+Question 70: Why does this loop create a simulation hang?
 
-25. Identify the race condition in this code:
-systemverilog
+     while (transaction_mailbox.num() == 0) begin
+        // wait for transaction
+     end
+
+Question 71: Identify the race condition in this code:
+
 bit done = 0;
 initial begin
     fork
@@ -522,79 +528,90 @@ initial begin
     join
 end
 
-Advanced Application Scenarios
-26. You're building a scoreboard that compares expected vs actual transactions. Write a loop that handles transaction reordering with a window of N transactions.
-27. Implement a loop for a memory tester that writes walking 1's pattern to all memory locations and verifies readback.
-28. Create a loop for a packet generator that creates packets with random sizes but ensures the total doesn't exceed a maximum frame size.
-29. Write a loop for a coverage collector that merges coverage from multiple test runs while excluding illegal bins.
-30. Implement a loop for a sequence generator that produces Fibonacci sequence until it exceeds a maximum value.
-31. Create a loop for a monitor that watches a bus and captures transactions until a timeout or reset occurs.
-32. Write a loop for a constraint solver that retries randomization with different seeds until all constraints are satisfied.
 
-33. Implement a loop for a scoreboard that matches request and response transactions using transaction ID.
-34. Create a loop for a memory allocator that finds the first free block of requested size in a bitmap.
-35. Write a loop for a CRC calculator that processes data in chunks with a sliding window.
-Conceptual Deep Dive
-36. How does SystemVerilog handle loop unrolling during synthesis versus simulation?
-37. What are the implications of using non-constant loop bounds in synthesizable code?
-38. Can you use loops to generate hardware instances? What are the rules and limitations?
+Question 72: You're building a scoreboard that compares expected vs actual transactions. Write a loop that handles transaction reordering with a window of N transactions.
+  
+Question 73: Implement a loop for a memory tester that writes walking 1's pattern to all memory locations and verifies readback.
+  
+Question 74: Create a loop for a packet generator that creates packets with random sizes but ensures the total doesn't exceed a maximum frame size.
+  
+Question 75: Write a loop for a coverage collector that merges coverage from multiple test runs while excluding illegal bins.
+  
+Question 76: Implement a loop for a sequence generator that produces Fibonacci sequence until it exceeds a maximum value.
+  
+Question 77: Create a loop for a monitor that watches a bus and captures transactions until a timeout or reset occurs.
+  
+Question 78: Write a loop for a constraint solver that retries randomization with different seeds until all constraints are satisfied.
 
-39. How do forever loops in always blocks differ from forever loops in initial blocks for synthesis?
-40. What's the difference between pre-test and post-test loops in terms of guaranteed execution?
-41. How does SystemVerilog handle loop variables in terms of hardware implementation?
-42. What are the simulation performance implications of deeply nested loops with large iteration counts?
-43. How can you optimize loops for better simulation performance without changing functionality?
-44. What's the difference between loop pipelining and loop unrolling in high-level synthesis?
-45. How do you handle loop-carried dependencies in pipelined designs?
+Question 79: Implement a loop for a scoreboard that matches request and response transactions using transaction ID.
+  
+Question 80: Create a loop for a memory allocator that finds the first free block of requested size in a bitmap.
+  
+Question 81: Write a loop for a CRC calculator that processes data in chunks with a sliding window.
 
-46. What does this code display and why?
-systemverilog
-int j = 0;
-for (int i=0; i<5; i++) begin
-    $display("i=%0d, j=%0d", i, j);
-    j++;
-    continue;
-    j = 100; // will this ever execute?
-end
+Question 82: How does SystemVerilog handle loop unrolling during synthesis versus simulation?
+  
+Question 83: What are the implications of using non-constant loop bounds in synthesizable code?
+  
+Question 84: Can you use loops to generate hardware instances? What are the rules and limitations?
 
-47. Predict the output:
-systemverilog
-for (int i=0; i<3; i++) begin
-    fork
-        automatic int k = i;
-        begin
+Question 85: How do forever loops in always blocks differ from forever loops in initial blocks for synthesis?
+  
+Question 86: What's the difference between pre-test and post-test loops in terms of guaranteed execution?
+  
+Question 87: How does SystemVerilog handle loop variables in terms of hardware implementation?
+  
+Question 88: What are the simulation performance implications of deeply nested loops with large iteration counts?
+  
+Question 89: How can you optimize loops for better simulation performance without changing functionality?
+  
+Question 90: What's the difference between loop pipelining and loop unrolling in high-level synthesis?
+  
+Question 91: How do you handle loop-carried dependencies in pipelined designs?
+
+Question 92: What does this code display and why?
+      int j = 0;
+       for (int i=0; i<5; i++) begin
+         $display("i=%0d, j=%0d", i, j);
+         j++;
+         continue;
+         j = 100; // will this ever execute?
+       end
+
+Question 93: Predict the output from the following code? 
+     for (int i=0; i<3; i++) begin
+       fork
+          automatic int k = i;
+          begin
             #(i*10);
             $display("k=%0d", k);
+          end
+       join_none
+     end
+    wait_fork;
+  
+Question 94: What's the final value of count?
+      int count = 0;
+        repeat (5) begin
+           for (int i=0; i<3; i++) begin
+             if (i == 1) continue;
+           count++;
+           end
         end
-    join_none
-end
-wait_fork;
-48. What's the final value of count?
-systemverilog
-int count = 0;
-repeat (5) begin
-    for (int i=0; i<3; i++) begin
-        if (i == 1) continue;
-        count++;
-    end
-end
 
-49. How many times is "Processing" displayed?
-systemverilog
-int arr[] = '{1,2,3,4,5};
-foreach (arr[i]) begin
-    if (arr[i] == 2) break;
-    $display("Processing %0d", arr[i]);
-    if (arr[i] == 4) continue;
-end
-50. What's the simulation time when this loop finishes?
-systemverilog
-initial begin
-    for (int i=0; i<4; i++) begin
-        #10;
-        $display("Time: %0t", $time);
-    end
-end  
+Question 95: How many times is "Processing" displayed?
+       int arr[] = '{1,2,3,4,5};
+       foreach (arr[i]) begin
+           if (arr[i] == 2) break;
+           $display("Processing %0d", arr[i]);
+           if (arr[i] == 4) continue;
+       end
   
-  
+Question 96: What's the simulation time when this loop finishes?
+      initial begin
+         for (int i=0; i<4; i++) begin
+         #10;
+         $display("Time: %0t", $time);
+        end
+      end  
   
