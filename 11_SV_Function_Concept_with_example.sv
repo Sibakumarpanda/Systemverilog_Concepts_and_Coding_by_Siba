@@ -113,4 +113,6 @@ Concept of Static and Automatic Functions :
 - All variables declared in an automatic function are automatic variables unless they are specifically mentioned as a static variable.
 - To understand the scope of variables in functions, static and automatic variables are declared in each static, automatic and normal function.
 
-  
+/**********************************************************/
+  Example3: Uses of static and automatic function Example
+/*********************************************************/ 
