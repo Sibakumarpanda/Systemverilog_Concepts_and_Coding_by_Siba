@@ -106,3 +106,11 @@ a is greater than b
 /////////////////////////////////////////////////  
 Concept of Static and Automatic Functions :
 ////////////////////////////////////////////////  
+- By default, functions declared are static except they are declared inside a class scope. 
+- If the function is declared within class scope, they behave as an automatic function by default unless they are specifically mentioned as static functions.
+- We will discuss more on this concept in class (OOP) concepts.
+- All variables declared in a static function are static variables unless they are specifically mentioned as an automatic variable.
+- All variables declared in an automatic function are automatic variables unless they are specifically mentioned as a static variable.
+- To understand the scope of variables in functions, static and automatic variables are declared in each static, automatic and normal function.
+
+  
