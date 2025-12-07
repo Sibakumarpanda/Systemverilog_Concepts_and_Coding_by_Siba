@@ -207,4 +207,38 @@ Automatic: count_A = 3
 Normal: count_A = 3
 
 Static: count_C = 3
-Normal: count_C = 3   
+Normal: count_C = 3  
+    
+/////////////////    
+  Void Functions:
+/////////////////    
+- A function that returns no value is called a void function. 
+- The ‘void’ keyword is used in a function definition.
+
+/**********************************************************/
+  Example4: void function Example
+/*********************************************************/   
+module void_function_example;
+  
+  function void compare(input int a, b);
+    if(a>b)
+      $display("a is greater than b");
+    else if(a<b)
+      $display("a is less than b");
+    else 
+      $display("a is equal to b");
+  endfunction
+  
+  initial begin
+    compare(10,10);
+    compare(5, 9);
+    compare(9, 5);
+  end
+  
+endmodule :void_function_example
+    
+//Log File Output
+    
+a is equal to b
+a is less than b
+a is greater than b    
