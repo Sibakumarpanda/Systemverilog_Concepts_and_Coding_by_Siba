@@ -244,5 +244,32 @@ a is less than b
 a is greater than b    
     
 //////////////////////////////////////////////////    
-  Concept of Pass by Value and Pass by reference :
-/////////////////////////////////////////////////
+Concept of Pass by Value and Pass by reference:
+/////////////////////////////////////////////////  
+    
+Pass by value Functions:
+- A pass by value argument passing mechanism does copy arguments locally and operate on those variables.
+- Any changes in variables in the function will not be visible outside of the function.
+  
+/**********************************************************/
+  Example5: pass by value function Example5
+/*********************************************************/  
+module pass_by_value_function_example5;
+  int a, b;
+  int out;
+  
+  function int multiply_fnct(int a, b);
+    a = a*b; //value of a is updated, it won't update global variables a and b
+    return a;
+  endfunction
+  
+  initial begin
+    a = 5;
+    b = 6;
+    out = multiply_fnct(a,b);
+    $display("Function: out = %0d for a = %0d and b = %0d", out, a, b);
+  end
+endmodule :pass_by_value_function_example5
+
+//Log File Output
+Function: out = 30 for a = 5 and b = 6    
