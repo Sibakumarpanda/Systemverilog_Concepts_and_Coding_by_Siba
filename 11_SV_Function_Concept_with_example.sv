@@ -331,3 +331,8 @@ endmodule  :pass_by_ref_function_example7
 //Log File Output
 Multiplication: out = 30, a = 30 and b = 6
   
+/**********************************************************/
+  Example8: pass by reference function Example8
+            With const ref keyword
+/*********************************************************/   
+  
