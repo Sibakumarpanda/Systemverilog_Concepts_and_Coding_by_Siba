@@ -303,4 +303,31 @@ endmodule :default_value_in_args_function_example6
 argument passed: out = 30, a = 0 and b = 0
 No arguments passed: out = 6 for a = 2 and b = 3  
 
-Pass by Reference Functions :  
+Pass by Reference Functions : 
+- A pass by reference argument passing mechanism does not copy arguments locally but reference to the original arguments is passed. 
+- This also means that any change in values for the argument inside the subroutine will affect the original values of the variables.
+- The ref keyword is used to denote pass by reference arguments.
+  
+/**********************************************************/
+  Example7: pass by reference function Example7
+/*********************************************************/  
+module pass_by_ref_function_example7;
+  int a, b;
+  int out;
+  
+  function automatic int multiply(ref int a, b);
+    a = a*b; //value of a is updated, it won't update global variables a and b
+    return a;
+  endfunction
+  
+  initial begin
+    a = 5;
+    b = 6;
+    out = multiply(a,b);
+    $display("Multiplication: out = %0d, a = %0d and b = %0d", out, a, b); //observe value of a is updated
+  end
+endmodule  :pass_by_ref_function_example7
+  
+//Log File Output
+Multiplication: out = 30, a = 30 and b = 6
+  
