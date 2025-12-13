@@ -335,4 +335,25 @@ Multiplication: out = 30, a = 30 and b = 6
   Example8: pass by reference function Example8
             With const ref keyword
 /*********************************************************/   
+-To ensure that the subroutine should not update any values, the ‘const ref’ keyword is used.  
+ module pass_by_ref_with_const_ref_keyword_example;
+  int a, b;
+  int out;
   
+  function automatic int fn_multiply(const ref int a, b);
+    a = a*b;          // expects compilation error when subroutine tries to modify argument value.
+    return a;
+  endfunction
+
+  initial begin
+    a = 5;
+    b = 6;
+    out = fn_multiply(a,b);
+    $display("Function: out = %0d, a = %0d and b = %0d", out, a, b);
+  end
+endmodule :pass_by_ref_with_const_ref_keyword_example
+  
+//Log File Output
+ a = a*b; // expects compilation error when subroutine tries to modify argument value.
+    |
+*E,CONASN (testbench.sv,9|4): Constant variable cannot be assigned outside of an initialization.  
