@@ -356,4 +356,37 @@ endmodule :pass_by_ref_with_const_ref_keyword_example
 //Log File Output
  a = a*b; // expects compilation error when subroutine tries to modify argument value.
     |
-*E,CONASN (testbench.sv,9|4): Constant variable cannot be assigned outside of an initialization.  
+*E,CONASN (testbench.sv,9|4): Constant variable cannot be assigned outside of an initialization. 
+  
+/**********************************************************/
+  Example9: pass by reference function Example9
+            With static Function
+/*********************************************************/
+- It is illegal to use pass by reference argument for static functions/tasks. 
+  
+module pass_by_ref_with_static_function_example;
+  int a, b;
+  int out;
+  
+  function int multiply(ref int a, b); // static function
+    a = a*b;
+    return a;
+  endfunction
+   
+  initial begin
+    a = 5;
+    b = 6;
+    out = multiply(a,b);
+    $display("Multiplication: out = %0d, a = %0d and b = %0d", out, a, b);
+  end
+endmodule :pass_by_ref_with_static_function_example
+  
+//Log File Output
+function int multiply(ref int a, b); // static function
+                                |
+*E,REFANA (testbench.sv,8|32): reference argument is illegal inside static task-function declaration.
+function int multiply(ref int a, b); // static function
+                                   |
+*E,REFANA (testbench.sv,8|35): reference argument is illegal inside static task-function declaration.  
+
+  
