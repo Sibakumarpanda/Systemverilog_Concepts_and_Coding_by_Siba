@@ -243,9 +243,9 @@ a is equal to b
 a is less than b
 a is greater than b    
     
-//////////////////////////////////////////////////    
-Concept of Pass by Value and Pass by reference:
-/////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////    
+  Concept of Pass by Value ,Pass by reference and Pass by Name:
+///////////////////////////////////////////////////////////////  
     
 Pass by value Functions:
 - A pass by value argument passing mechanism does copy arguments locally and operate on those variables.
@@ -387,6 +387,30 @@ function int multiply(ref int a, b); // static function
 *E,REFANA (testbench.sv,8|32): reference argument is illegal inside static task-function declaration.
 function int multiply(ref int a, b); // static function
                                    |
-*E,REFANA (testbench.sv,8|35): reference argument is illegal inside static task-function declaration.  
+*E,REFANA (testbench.sv,8|35): reference argument is illegal inside static task-function declaration.
+  
 
+Pass by name Function :
+-By default, SystemVerilog allows passing values in the same order which is specified in function.
+-But, passing a value by name and position allows arguments to be passed by name irrespective of their position mentioned in the function definition.  
+
+/**********************************************************/
+  Example10: pass by Name function Example10
+            
+/*********************************************************/  
+module pass_by_name_function_example10;
+  int a, b;
+  int out;
+  
+  function void fn_pass(string name, int val);
+    $display("Function: Values passed by name: %s, %0d", name, val);
+  endfunction
+
+  initial begin
+    fn_pass(.val(100), .name("SIBA"));
+  end
+endmodule :pass_by_name_function_example10
+
+//LOG File Output
+Function: Values passed by name: SIBA, 100  
   
