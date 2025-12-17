@@ -53,3 +53,63 @@ a is less than b
 comparison completed at time = 20
 a is greater than b
 comparison completed at time = 30  
+  
+////////////////////////////////////////////////////////////
+  Example2: Premature Task Return Example2
+///////////////////////////////////////////////////////////   
+module premature_task_example2;
+  
+  task compare(input int a, b, output bit [1:0] done);
+    if(a>b) begin 
+      done = 2'h1;
+      return;
+      $display("a > b comparison completed");
+    end
+    
+    if(a<b) begin
+      done = 2'h2;
+      return;
+      $display("a < b comparison completed");
+    end
+    
+    if(a == b) begin 
+      done = 2'h3; 
+      return;
+      $display("a == b comparison completed");
+    end
+  endtask
+  
+  initial begin
+    bit [1:0] done;
+    int a, b;
+    
+    repeat(5) begin
+      a = $urandom_range(5, 20);
+      b = $urandom_range(5, 20);
+      $display("input a = %0d, input b = %0d", a, b);
+      compare(a,b, done);
+      if(done == 2'h1) $display("a is greater than b");
+      if(done == 2'h2) $display("a is less than b");
+      if(done == 2'h3) $display("a is equal to b");
+      $display("------------------------");
+    end
+  end
+endmodule :premature_task_example2
+  
+//Log Fileoutput
+input a = 11, input b = 5
+a is greater than b
+------------------------
+input a = 15, input b = 10
+a is greater than b
+------------------------
+input a = 8, input b = 12
+a is less than b
+------------------------
+input a = 6, input b = 17
+a is less than b
+------------------------
+input a = 9, input b = 9
+a is equal to b
+------------------------  
+  
