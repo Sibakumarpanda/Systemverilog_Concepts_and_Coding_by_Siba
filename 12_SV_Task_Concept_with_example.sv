@@ -112,4 +112,6 @@ a is less than b
 input a = 9, input b = 9
 a is equal to b
 ------------------------  
-  
+///////////////////////////////////////////
+  Static Task and Automatic Task Concept
+//////////////////////////////////////////
