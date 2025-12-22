@@ -115,9 +115,14 @@ a is equal to b
 ///////////////////////////////////////////
   Static Task and Automatic Task Concept
 //////////////////////////////////////////
+  
 -By default, tasks declared are static except they are declared inside a class scope. 
 -If the task is declared within class scope, they behave like an automatic task by default unless they are specifically mentioned as static tasks. 
 -We will discuss more on this concept in class (OOP) concepts.
 -All variables declared in a static task are static variables unless they are specifically mentioned as an automatic variable.
 -All variables declared in an automatic task are automatic variables unless they are specifically mentioned as a static variable.
 -To understand the scope of variables in tasks, static and automatic variables are declared in each static, automatic, and normal task.
+
+ ////////////////////////////////////////////////////////////
+  Example3: static and automatic task Example3
+///////////////////////////////////////////////////////////
