@@ -123,7 +123,7 @@ a is equal to b
 -All variables declared in an automatic task are automatic variables unless they are specifically mentioned as a static variable.
 -To understand the scope of variables in tasks, static and automatic variables are declared in each static, automatic, and normal task.
 
- ////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
   Example3: static and automatic task Example3
 ///////////////////////////////////////////////////////////
 module static_and_automatic_task_example3;
@@ -216,5 +216,60 @@ Automatic: count_A = 3
 Normal: count_A = 3
 
 Static: count_C = 3
-Normal: count_C = 3   
+Normal: count_C = 3 
    
+//////////////////////   
+  Pass by value Tasks
+//////////////////////   
+- A pass by value argument passing mechanism does copy arguments locally and operate on those variables.
+- Any changes in variables in the task will not be visible outside of the task.
+ 
+////////////////////////////////////////////////////////////
+  Example4: Pass by value task Example4
+///////////////////////////////////////////////////////////
+module pass_by_value_task_example4;
+  int a, b;
+  int out;
+    
+  task tk_multiply(int a, b, output int out);
+    a = a*b; //value of a is updated, it won't update global variables a and b
+    out = a;
+  endtask
+  
+  initial begin
+    a = 5;
+    b = 6;
+
+    tk_multiply(a,b, out);
+    $display("Task: out = %0d for a = %0d and b = %0d", out, a, b);
+  end
+endmodule :pass_by_value_task_example4
+   
+//Log File Output
+Task: out = 30 for a = 5 and b = 6   
+
+////////////////////////////////////////////////////////////
+  Example5: Default values in the argument Example5
+/////////////////////////////////////////////////////////// 
+ -If no arguments are passed, default values are considered in the function/ task otherwise, default values will be overridden in case of passing any arguments
+module default_value_in_task_example5;
+  int a, b;
+  int out;
+    
+  task tk_multiply(int a = 5, b = 6, output int out);
+    a = a*b; //value of a is updated, it won't update global variables a and b
+    out = a;
+  endtask
+  
+  initial begin
+    a = 5;
+    b = 6;
+
+    tk_multiply(a,b, out);
+    $display("Task: out = %0d for a = %0d and b = %0d", out, a, b);
+  end
+endmodule :default_value_in_task_example5
+ 
+//Log File Output
+ Task: out = 30 for a = 5 and b = 6
+ 
