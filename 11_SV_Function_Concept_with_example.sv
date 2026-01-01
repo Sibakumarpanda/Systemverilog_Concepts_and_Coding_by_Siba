@@ -1,5 +1,5 @@
 SystemVerilog function Concept:
-  
+-------------------------------  
 - A function that does not consume simulation time (so delays are not allowed inside Function), returns a single value or an expression, and may or may not take arguments.
 - Function types :
   Automatic functions
