@@ -276,3 +276,30 @@ endmodule :default_value_in_task_example5
 ///////////////////////////   
   Pass by reference Tasks
 //////////////////////////  
+- A pass by reference argument passing mechanism does not copy arguments locally but reference to the original arguments is passed. 
+- This also means that any change in values for the argument inside the subroutine will affect the original values of the variables.
+- The ref keyword is used to denote pass by reference arguments.
+
+////////////////////////////////////////////////////////////
+  Example6: Pass by reference task Example6
+///////////////////////////////////////////////////////////  
+module pass_by_reference_task_example6;
+  int a, b;
+  int out;
+  
+  task automatic multiply(ref int a, b, output int out);
+    a = a*b; //value of a is updated, it won't update global variables a and b
+    out = a;
+  endtask
+  
+  initial begin
+    a = 5;
+    b = 6;
+    multiply(a,b, out);
+    $display("Multiplication: out = %0d, a = %0d and b = %0d", out, a, b); //observe value of a is updated
+  end
+endmodule :pass_by_reference_task_example6
+ 
+//Log File Output
+Multiplication: out = 30, a = 30 and b = 6 
+ 
