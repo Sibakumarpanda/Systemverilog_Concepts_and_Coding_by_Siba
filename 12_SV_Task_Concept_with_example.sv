@@ -334,3 +334,36 @@ a = a*b; // expects compilation error when subroutine tries to modify argument v
     |
 *E,CONASN (testbench.sv,9|4): Constant variable cannot be assigned outside of an initialization. 
  
+//////////////////////
+  With static task
+/////////////////////
+- It is illegal to use pass by reference argument for static tasks.
+ 
+/////////////////////////////////////////////
+  Example8: With static task Example8
+/////////////////////////////////////////////
+module static_task_example8;
+  int a, b;
+  int out;
+
+  task tk_multiply(ref int a, b, output int out);
+    a = a*b; // static task
+    out = a;
+  endtask
+  
+  initial begin
+    a = 5;
+    b = 6;
+ 
+    tk_multiply(a,b, out);
+    $display("Task: out = %0d, a = %0d and b = %0d", out, a, b);
+  end
+endmodule :static_task_example8
+ 
+//Log File Outut
+ task tk_multiply(ref int a, b, output int out);
+                           |
+   *E,REFANA (testbench.sv,8|27): reference argument is illegal inside static task-function declaration.
+  task tk_multiply(ref int a, b, output int out);
+                              |
+  *E,REFANA (testbench.sv,8|30): reference argument is illegal inside static task-function declaration. 
