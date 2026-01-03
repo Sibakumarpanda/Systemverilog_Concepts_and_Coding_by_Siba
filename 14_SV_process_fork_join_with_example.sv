@@ -1,9 +1,9 @@
 SystemVerilog fork join :
 - In fork-join, all processes start simultaneously and join will wait for all processes to be completed.
 
-////////////////////////////////////
-  fork...join Example1
-////////////////////////////////////
+/////////////////////////////
+  Basic fork...join Example1
+////////////////////////////
 - In the below example, there are three processes A, B, and C. All started at the same time.
 - Execution time for process A: 10ns
 - Execution time for process B: 15ns
@@ -33,3 +33,16 @@ module fork_join_example1;
     $display("fork-join completed at time = %0t", $time);
   end
 endmodule :fork_join_example1
+
+//Log File Output
+Process A started at time = 0
+Process B started at time = 0
+Process C started at time = 0
+Process A completed at time = 10
+Process B completed at time = 15
+Process C completed at time = 20
+fork-join completed at time = 20
+
+/////////////////////////////
+  fork...join Example2
+////////////////////////////
