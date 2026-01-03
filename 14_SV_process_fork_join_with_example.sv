@@ -1,6 +1,7 @@
 SystemVerilog fork join :
-- In fork-join, all processes start simultaneously and join will wait for all processes to be completed.
 
+- In fork-join, all processes start simultaneously and join will wait for all processes to be completed.
+  
 /////////////////////////////
   Basic fork...join Example1
 ////////////////////////////
