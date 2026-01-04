@@ -47,3 +47,51 @@ fork-join completed at time = 20
 /////////////////////////////
   fork...join Example2
 ////////////////////////////
+module fork_join_example2;
+   initial begin
+ 
+       #1 $display ("[%0t ns] Start fork ...", $time);
+ 
+       // Main Process: Fork these processes in parallel and wait untill all 
+       // of them finish
+      fork
+         // Thread1 : Print this statement after 5ns from start of fork
+         #5 $display ("[%0t ns] Thread1: Orange is named after orange", $time);
+ 
+         // Thread2 : Print these two statements after the given delay from start of fork
+         begin                                                
+            #2 $display ("[%0t ns] Thread2: Apple keeps the doctor away", $time);      
+            #4 $display ("[%0t ns] Thread2: But not anymore", $time);      
+         end                           
+ 
+         // Thread3 : Print this statement after 10ns from start of fork
+         #10 $display ("[%0t ns] Thread3: Banana is a good fruit", $time);  
+      join
+ 
+      // Main Process: Continue with rest of statements once fork-join is over
+      $display ("[%0t ns] After Fork-Join", $time);
+   end
+endmodule :fork_join_example2
+
+//Log File Output
+Starting vcs inline pass...
+1 module and 0 UDP read.
+recompiling module fork_join_example2
+rm -f _cuarc*.so _csrc*.so pre_vcsobj_*.so share_vcsobj_*.so
+if [ -x ../simv ]; then chmod a-x ../simv; fi
+g++  -o ../simv      -rdynamic  -Wl,-rpath='$ORIGIN'/simv.daidir -Wl,-rpath=./simv.daidir -Wl,-rpath=/apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib -L/apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib  -Wl,-rpath-link=./  
+  objs/amcQw_d.o   _333_archive_1.so   SIM_l.o       rmapats_mop.o rmapats.o rmar.o rmar_nd.o  rmar_llvm_0_1.o rmar_llvm_0_0.o           
+  -lvirsim -lerrorinf -lsnpsmalloc -lvfs    -lvcsnew -lsimprofile -luclinative /apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib/vcs_tls.o   -Wl,-whole-archive  -lvcsucli    -Wl,-no-whole-archive       
+  /apps/vcsmx/vcs/U-2023.03-SP2/linux64/lib/vcs_save_restore_new.o -ldl  -lc -lm -lpthread -ldl 
+../simv up to date
+CPU time: .418 seconds to compile + .428 seconds to elab + .416 seconds to link
+Chronologic VCS simulator copyright 1991-2023
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan  4 00:52 2026
+[1 ns] Start fork ...
+[3 ns] Thread2: Apple keeps the doctor away
+[6 ns] Thread1: Orange is named after orange
+[7 ns] Thread2: But not anymore
+[11 ns] Thread3: Banana is a good fruit
+[11 ns] After Fork-Join
+           V C S   S i m u l a t i o n   R e p o r t 
