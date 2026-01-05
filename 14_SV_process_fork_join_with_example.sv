@@ -1,6 +1,29 @@
 SystemVerilog fork join :
-
 - In fork-join, all processes start simultaneously and join will wait for all processes to be completed.
+  
+Key Interview Questions & Answers on fork...join :
+/*************************************************/
+  
+Q1: What does fork...join do?
+A: Creates parallel threads of execution and waits for ALL threads to complete before continuing.
+
+Q2: How does it differ from begin...end?
+A: begin...end is sequential, fork...join is parallel.
+
+Q3: What's the execution order of threads in fork...join?
+A: Threads start simultaneously, but completion order depends on their delays/logic.
+
+Q4: What happens if one thread in fork...join has an infinite loop?
+A: The join will wait forever, simulation will hang.
+
+Q5: Can we kill specific threads inside fork...join?
+A: Not directly with fork...join. Need named blocks and disable.
+
+Q6: How to handle shared resources in parallel threads?
+A: Use semaphores, mailboxes, or events for synchronization.
+
+Q7: Why use automatic variables in fork-join loops?
+A: Each thread gets its own copy of the variable, avoiding race conditions.  
   
 /////////////////////////////
   Basic fork...join Example1
