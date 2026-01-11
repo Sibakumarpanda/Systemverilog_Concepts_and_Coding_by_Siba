@@ -523,8 +523,36 @@ Loop completed :Likely WRONG output
 /////////////////////////////
   fork...join Example13
 ////////////////////////////
+ module fork_join_example13; // Example13: Fixedthe loop scope in Example12 , Corrected using automatic variable
+  initial begin
+    $display("Fixed version with automatic variable");
+    
+    fork
+      begin
+        for (int i = 0; i < 3; i++) begin
+          automatic int j = i;  // Each thread gets its own copy
+          fork           
+            #((j+1) * 5);
+            $display("Thread j=%0d at %0t", j, $time);
+          join  // Inner fork
+        end
+      end
+    join
+    
+    $display("Loop completed :CORRECT output");
+  end
+endmodule :fork_join_example13
   
-
+//Log File Output
+Fixed version with automatic variable
+Thread j=0 at 0
+Thread j=1 at 5
+Thread j=2 at 15
+Loop completed :CORRECT output
+           V C S   S i m u l a t i o n   R e p o r t   
+  
+NOTE : The reason both outputs in Example 12 and 13 , look the same is that join makes the loop sequential. 
+  It will show the corect analysis , when we will use the same example12 and example13 using fork..join_none
 /////////////////////////////
   fork...join Example14
 ////////////////////////////
