@@ -282,7 +282,39 @@ fork-join completed at time = 20
 /////////////////////////////
   fork...join Example7
 ////////////////////////////
+module fork_join_example7; // Example7: Simple parallel threads
+initial begin
+  $display("[T0] Start at time %0t", $time);
+  fork
+    begin
+      #10;
+      $display("[T1] Thread 1 complete at %0t", $time);
+    end
+    begin
+      #30;
+      $display("[T2] Thread 2 complete at %0t", $time);
+    end
+    begin
+      #20;
+      $display("[T3] Thread 3 complete at %0t", $time);
+    end
+  join  // Waits for ALL threads (T1, T2, T3)
+  $display("[T4] All threads finished at %0t", $time);
+  #13;
+  $display("[T5] All threads finished at %0t", $time);
+end
+endmodule : fork_join_example7
 
+//Log File Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 10 22:56 2026
+[T0] Start at time 0
+[T1] Thread 1 complete at 10
+[T3] Thread 3 complete at 20
+[T2] Thread 2 complete at 30
+[T4] All threads finished at 30
+[T5] All threads finished at 43
+           V C S   S i m u l a t i o n   R e p o r t   
 
 /////////////////////////////
   fork...join Example8
