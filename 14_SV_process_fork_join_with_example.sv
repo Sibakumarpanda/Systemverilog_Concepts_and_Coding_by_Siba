@@ -201,8 +201,42 @@ fork-join completed at time = 25
 /////////////////////////////
   fork...join Example5
 ////////////////////////////
-  
+module fork_join_example5;
 
+  initial begin
+    fork
+      begin // process A
+        $display("Process A started at time = %0t", $time);
+        #10;
+        $display("Process A completed at time = %0t", $time);
+      end
+      begin // process B
+        $display("Process B started at time = %0t", $time);
+        #15;
+        $display("Process B completed at time = %0t", $time);
+      end
+      begin // process C
+        $display("Process C started at time = %0t", $time);
+        #10;
+        $display("Process C completed at time = %0t", $time);
+      end
+    join
+    #5; 
+    $display("fork-join completed at time = %0t", $time);
+  end
+endmodule :fork_join_example5  
+  
+//Log File Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 10 22:24 2026
+Process A started at time = 0
+Process B started at time = 0
+Process C started at time = 0
+Process A completed at time = 10
+Process C completed at time = 10
+Process B completed at time = 15
+fork-join completed at time = 20
+           V C S   S i m u l a t i o n   R e p o r t  
 /////////////////////////////
   fork...join Example6
 ////////////////////////////
