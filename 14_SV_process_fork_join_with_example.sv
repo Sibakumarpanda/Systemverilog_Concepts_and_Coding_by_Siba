@@ -493,7 +493,34 @@ Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Ja
 /////////////////////////////
   fork...join Example12
 ////////////////////////////
+ module fork_join_example12; // Example12: Common pitfall with loop variables
+  initial begin
+    $display("Starting loop with fork-join...");
+    
+    fork
+      begin
+        for (int i = 0; i < 3; i++) begin // PROBLEM: All threads share same 'i'
+          fork
+            #(i * 5);
+            $display("Thread i=%0d at %0t", i, $time);
+          join  // Inner fork
+        end
+      end
+    join
+    
+    $display("Loop completed :Likely WRONG output");
+  end
+endmodule :fork_join_example12
   
+//Log File Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 11 07:06 2026
+Starting loop with fork-join...
+Thread i=0 at 0
+Thread i=1 at 0
+Thread i=2 at 5
+Loop completed :Likely WRONG output
+           V C S   S i m u l a t i o n   R e p o r t   
 
 /////////////////////////////
   fork...join Example13
