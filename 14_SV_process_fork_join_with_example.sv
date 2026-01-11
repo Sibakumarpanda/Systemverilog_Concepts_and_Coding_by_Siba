@@ -500,8 +500,8 @@ Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Ja
     fork
       begin
         for (int i = 0; i < 3; i++) begin // PROBLEM: All threads share same 'i'
-          fork
-            #(i * 5);
+          fork            
+            #((i+1) * 5);
             $display("Thread i=%0d at %0t", i, $time);
           join  // Inner fork
         end
@@ -513,14 +513,12 @@ Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Ja
 endmodule :fork_join_example12
   
 //Log File Output
-Contains Synopsys proprietary information.
-Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 11 07:06 2026
 Starting loop with fork-join...
 Thread i=0 at 0
-Thread i=1 at 0
-Thread i=2 at 5
+Thread i=1 at 5
+Thread i=2 at 15
 Loop completed :Likely WRONG output
-           V C S   S i m u l a t i o n   R e p o r t   
+           V C S   S i m u l a t i o n   R e p o r t 
 
 /////////////////////////////
   fork...join Example13
