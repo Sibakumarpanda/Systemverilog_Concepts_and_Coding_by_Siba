@@ -440,7 +440,55 @@ Final counter = 1 (Expected: 3)
 /////////////////////////////
   fork...join Example11
 ////////////////////////////
+module fork_join_example11; // Example11: Event synchronization between parallel threads
+  event trigger_event;
+  event done_event;
   
+  initial begin
+    $display("[Main] Starting at %0t", $time);
+    
+    fork
+      // Thread 1: Producer
+      begin
+        $display("[T1] Producer started at %0t", $time); //0ns
+        #15;
+        -> trigger_event;
+        $display("[T1] Event triggered at %0t", $time); //15ns
+      end
+      
+      // Thread 2: Consumer
+      begin
+        $display("[T2] Consumer waiting at %0t", $time); //0ns
+        @(trigger_event);
+        $display("[T2] Event received at %0t", $time); //15ns
+        #5;
+        -> done_event;
+      end
+      
+      // Thread 3: Monitor
+      begin
+        $display("[T3] Monitor started at %0t", $time); //0ns
+        @(done_event);
+        $display("[T3] Done event received at %0t", $time); //20ns
+      end
+    join
+    
+    $display("[Main] All threads synchronized at %0t", $time); //20ns
+  end
+endmodule :fork_join_example11
+  
+//LogFile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 11 06:52 2026
+[Main] Starting at 0
+[T1] Producer started at 0
+[T2] Consumer waiting at 0
+[T3] Monitor started at 0
+[T1] Event triggered at 15
+[T2] Event received at 15
+[T3] Done event received at 20
+[Main] All threads synchronized at 20
+           V C S   S i m u l a t i o n   R e p o r t   
 
 /////////////////////////////
   fork...join Example12
