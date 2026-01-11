@@ -240,7 +240,44 @@ fork-join completed at time = 20
 /////////////////////////////
   fork...join Example6
 ////////////////////////////
-
+module fork_join_example6;
+  initial begin
+    fork
+      begin // process A
+        #3;
+        $display("Process A started at time = %0t", $time); //3ns
+        #10;
+        $display("Process A completed at time = %0t", $time); //13ns
+      end
+      begin // process B
+        $display("Process B started at time = %0t", $time); //0ns
+        #15;
+        $display("Process B completed at time = %0t", $time); //15ns
+      end
+      begin // process C
+        #2;
+        $display("Process C started at time = %0t", $time); //2ns
+        #12;
+        $display("Process C completed at time = %0t", $time); //14ns
+      end
+    join
+    #5; 
+    $display("fork-join completed at time = %0t", $time); //15ns+5ns=20ns
+  end
+endmodule :fork_join_example6
+  
+//Log File Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 10 22:46 2026
+Process B started at time = 0
+Process C started at time = 2
+Process A started at time = 3
+Process A completed at time = 13
+Process C completed at time = 14
+Process B completed at time = 15
+fork-join completed at time = 20
+           V C S   S i m u l a t i o n   R e p o r t   
+  
 
 /////////////////////////////
   fork...join Example7
