@@ -399,7 +399,43 @@ Final counter = 1 (Expected: 3)
 /////////////////////////////
   fork...join Example10
 ////////////////////////////
+module fork_join_example10; // Example code for fixing Race issue in Example9
+  integer shared_counter = 0;
   
+  task increment_counter(string name);
+    // Add a unique delay to each thread to stagger accesses
+    #($random % 3);  // Random delay 0-2 time units
+    
+    // Critical section - simulate with a small atomic operation
+    begin
+      integer local_copy = shared_counter;
+      #1;  // Simulate some delay
+      shared_counter = local_copy + 1;
+    end
+    
+    $display("%s: counter = %0d at %0t", name, shared_counter, $time);
+  endtask
+  
+  initial begin
+    $display("Initial counter = %0d", shared_counter);
+    fork
+      increment_counter("Thread_A");
+      increment_counter("Thread_B");
+      increment_counter("Thread_C");
+    join
+    $display("Final counter = %0d (Expected: 3)", shared_counter);
+  end
+endmodule :fork_join_example10
+
+//LogFile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 11 01:31 2026
+Initial counter = 0
+Thread_C: counter = 1 at 1
+Thread_C: counter = 1 at 3
+Thread_C: counter = 1 at 4294967296
+Final counter = 1 (Expected: 3)
+           V C S   S i m u l a t i o n   R e p o r t   
 
 /////////////////////////////
   fork...join Example11
