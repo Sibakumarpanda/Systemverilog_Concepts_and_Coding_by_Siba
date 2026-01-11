@@ -319,7 +319,47 @@ Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Ja
 /////////////////////////////
   fork...join Example8
 ////////////////////////////
-  
+module fork_join_example8; // Example8: Multi-level nesting
+initial begin
+  $display("[MAIN] Level 0 start: %0t", $time); //0ns
+  fork
+    begin
+      $display("[A] Level1-A start: %0t", $time); //0ns
+      fork
+        begin
+          #5;
+          $display("[A1] Level2-A1: %0t", $time); //5ns
+        end
+        begin
+          #10;
+          $display("[A2] Level2-A2: %0t", $time); //10ns
+        end
+      join  // Inner fork-join
+      $display("[A3] Level1-A after inner join: %0t", $time); //10ns
+    end
+    
+    begin
+      $display("[B] Level1-B start: %0t", $time); //0ns
+      #15;
+      $display("[B1] Level1-B done: %0t", $time); //15ns
+    end
+  join  // Outer fork-join
+  #1;
+  $display("[MAIN] All complete: %0t", $time);//16ns
+end
+endmodule: fork_join_example8  
+
+//Log File Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 10 23:31 2026
+[MAIN] Level 0 start: 0
+[A] Level1-A start: 0
+[B] Level1-B start: 0
+[A1] Level2-A1: 5
+[A2] Level2-A2: 10
+[A3] Level1-A after inner join: 10
+[B1] Level1-B done: 15
+[MAIN] All complete: 16  
 
 /////////////////////////////
   fork...join Example9
