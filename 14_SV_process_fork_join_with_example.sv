@@ -364,7 +364,37 @@ Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Ja
 /////////////////////////////
   fork...join Example9
 ////////////////////////////
+ module fork_join_example9; // Example9: Shared resource race condition
+  integer shared_counter = 0;
   
+  task increment_counter(string name);
+    integer local_copy;
+    local_copy = shared_counter;
+    #1;  // Simulate some delay
+    shared_counter = local_copy + 1;
+    $display("%s: counter = %0d at %0t", name, shared_counter, $time);
+  endtask
+  
+  initial begin
+    $display("Initial counter = %0d", shared_counter);
+    fork
+      increment_counter("Thread_A");
+      increment_counter("Thread_B");
+      increment_counter("Thread_C");
+    join
+    $display("Final counter = %0d (Expected: 3)", shared_counter);
+    // Might output 1 instead of 3 due to race!
+  end
+endmodule :fork_join_example9
+//Log File Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 11 01:29 2026
+Initial counter = 0
+Thread_C: counter = 1 at 1
+Thread_C: counter = 1 at 1
+Thread_C: counter = 1 at 1
+Final counter = 1 (Expected: 3)
+           V C S   S i m u l a t i o n   R e p o r t   
 
 /////////////////////////////
   fork...join Example10
