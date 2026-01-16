@@ -46,3 +46,7 @@ fork-join_any completed at time = 10
 Process B completed at time = 15
 Process C completed at time = 20
            V C S   S i m u l a t i o n   R e p o r t 
+
+//////////////////////////////////
+  fork...join_any Example2
+//////////////////////////////////
