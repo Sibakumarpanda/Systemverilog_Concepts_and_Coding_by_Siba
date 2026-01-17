@@ -556,7 +556,55 @@ NOTE : The reason both outputs in Example 12 and 13 , look the same is that join
 /////////////////////////////
   fork...join Example14
 ////////////////////////////
+module fork_join_example14; // Example: Parallel clock generation
+  bit clk1, clk2, clk3;
+  
+  initial begin
+    $display("Starting multiple clocks at %0t", $time);
+    
+    fork
+      // Clock1: 10 time units period
+      begin
+        forever begin
+          #5 clk1 = ~clk1;
+        end
+      end
+      
+      // Clock2: 7 time units period
+      begin
+        #1;  // Phase shift
+        forever begin
+          #3.5 clk2 = ~clk2;
+        end
+      end
+      
+      // Clock3: 12 time units period
+      begin
+        #2;  // Phase shift
+        forever begin
+          #6 clk3 = ~clk3;
+        end
+      end
+      
+      // Monitor
+      begin
+        #50;
+        $display("Simulation complete at %0t", $time);
+        $finish;
+      end
+    join
+    // Note: This fork-join will never complete due to forever loops!
+  end
+endmodule :fork_join_example14
 
+//Log File Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 17 08:14 2026
+Starting multiple clocks at 0
+Simulation complete at 50
+$finish called from file "testbench.sv", line 36.
+$finish at simulation time 50
+           V C S   S i m u l a t i o n   R e p o r t   
 /////////////////////////////
   fork...join Example15
 ////////////////////////////
