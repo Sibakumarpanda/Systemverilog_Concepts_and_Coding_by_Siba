@@ -649,4 +649,45 @@ Thread1: a = 1 at 10
 Thread2: a = 3 at 10
 Thread3,2nd Statement: a = 3 at 15
 Ending of Simulation: a = 3 at 15
+           V C S   S i m u l a t i o n   R e p o r t 
+  
+/////////////////////////////
+  fork...join Example16
+////////////////////////////
+module fork_join_example16;
+  int a = 0, b = 0, c = 0;
+  
+  initial begin
+    $display("Starting of Simulation: a=%0d, b=%0d, c=%0d at %0t", a, b, c, $time);
+    
+    fork
+      begin
+        a = 1;
+        #0;  // What does this do?
+        b = a + 1; //2
+      end
+      
+      begin
+        #0;  // And this?
+        a = 2;
+        #0;
+        c = a + b; //4
+      end
+      
+      begin
+        #1;
+        $display("Thread3: a=%0d, b=%0d, c=%0d at %0t", a, b, c, $time);
+      end
+    join
+    
+    $display("Ending of Simulation: a=%0d, b=%0d, c=%0d at %0t", a, b, c, $time);
+  end
+endmodule :fork_join_example16  
+  
+//Log File output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 17 08:36 2026
+Start: a=0, b=0, c=0 at 0
+Thread3: a=2, b=2, c=4 at 1
+End: a=2, b=2, c=4 at 1
            V C S   S i m u l a t i o n   R e p o r t   
