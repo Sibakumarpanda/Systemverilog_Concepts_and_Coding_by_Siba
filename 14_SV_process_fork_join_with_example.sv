@@ -608,4 +608,45 @@ $finish at simulation time 50
 /////////////////////////////
   fork...join Example15
 ////////////////////////////
+module fork_join_example15; // Example : What's the output?
+  // Output depends on simulation scheduler!!!
+  int a = 0;
+  
+  initial begin
+    $display("Starting of Simulation: a = %0d at %0t", a, $time); //a =0 at 0ns
+    
+    fork
+      begin
+        #10;
+        a = a + 1;
+        $display("Thread1: a = %0d at %0t", a, $time); //a =1 at 10ns
+      end
+      
+      begin
+        #10;
+        a = a + 2;
+        $display("Thread2: a = %0d at %0t", a, $time); //a =3 at 10ns
+      end
+      
+      begin
+        #5;
+        $display("Thread3,1st Statement: a = %0d at %0t", a, $time); //a =0 at 5ns
+        #10;
+        $display("Thread3,2nd Statement: a = %0d at %0t", a, $time); //a =3 at 15ns
+      end
+    join
+    
+    $display("Ending of Simulation: a = %0d at %0t", a, $time); //a =3 at 15ns
+  end
+endmodule :fork_join_example15
 
+//Log File Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 17 08:26 2026
+Starting of Simulation: a = 0 at 0
+Thread3,1st Statement: a = 0 at 5
+Thread1: a = 1 at 10
+Thread2: a = 3 at 10
+Thread3,2nd Statement: a = 3 at 15
+Ending of Simulation: a = 3 at 15
+           V C S   S i m u l a t i o n   R e p o r t   
