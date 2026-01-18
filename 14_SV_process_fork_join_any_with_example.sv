@@ -251,3 +251,27 @@ Process B completed at time = 15
 //////////////////////////////////
   fork...join_any Example7
 //////////////////////////////////
+module fork_join_any_example7; // What prints and when?
+  initial begin
+    fork
+      #10 $display("A executed at %0t", $time);
+      #20 $display("B executed at %0t", $time);
+      #5  $display("C executed at %0t", $time);
+    join_any
+     $display("First done at %0t", $time); 
+  end
+  
+endmodule: fork_join_any_example7
+
+//Log File Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 17 20:13 2026
+C executed at 5
+First done at 5
+A executed at 10
+B executed at 20
+           V C S   S i m u l a t i o n   R e p o r t 
+
+//////////////////////////////////
+  fork...join_any Example8
+//////////////////////////////////
