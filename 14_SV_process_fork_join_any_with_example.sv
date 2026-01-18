@@ -275,3 +275,24 @@ B executed at 20
 //////////////////////////////////
   fork...join_any Example8
 //////////////////////////////////
+module fork_join_any_example8; // With little modification with delay ,What prints and when?
+  initial begin
+    fork
+      #10 $display("A executed at %0t", $time);
+      #20 $display("B executed at %0t", $time);
+      #5  $display("C executed at %0t", $time);
+    join_any
+     #6;
+     $display("First done at %0t", $time); 
+  end
+  
+endmodule: fork_join_any_example8
+
+//Log File Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 17 20:16 2026
+C executed at 5
+A executed at 10
+First done at 11
+B executed at 20
+           V C S   S i m u l a t i o n   R e p o r t 
