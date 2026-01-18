@@ -296,3 +296,34 @@ A executed at 10
 First done at 11
 B executed at 20
            V C S   S i m u l a t i o n   R e p o r t 
+
+//////////////////////////////////
+  fork...join_any Example9
+//////////////////////////////////
+module fork_join_any_example9; // With little modification with delay ,What prints and when?
+  initial begin
+    fork
+      #10 $display("A executed at %0t", $time);  //10ns
+      #20 $display("B executed at %0t", $time); //20ns
+      #5  $display("C executed at %0t", $time); //5ns
+    join_any
+     #2;
+     #1;
+     $display("First done at %0t", $time); //8ns
+  end
+  
+endmodule: fork_join_any_example9
+
+//LogFile Output
+Chronologic VCS simulator copyright 1991-2023
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 17 20:20 2026
+C executed at 5
+First done at 8
+A executed at 10
+B executed at 20
+           V C S   S i m u l a t i o n   R e p o r t 
+
+//////////////////////////////////
+  fork...join_any Example10
+//////////////////////////////////
