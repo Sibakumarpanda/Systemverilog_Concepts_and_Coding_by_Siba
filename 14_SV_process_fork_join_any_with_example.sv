@@ -377,3 +377,7 @@ DONE at 2
 Inner2 executed at 10
 Outer executed  at 15
 Inner1 executed at 30
+
+//////////////////////////////////
+  fork...join_any Example12
+//////////////////////////////////
