@@ -381,3 +381,31 @@ Inner1 executed at 30
 //////////////////////////////////
   fork...join_any Example12
 //////////////////////////////////
+module fork_join_any_example12; // Example of Nested join_any
+  initial begin
+    fork
+     fork
+       #30 $display("Inner1 executed at %0t", $time); //30ns
+       #10 $display("Inner2 executed at %0t", $time); //10ns
+     join_any
+       #2 $display("Middle executed  at %0t", $time); //2ns
+       #15 $display("Outer executed  at %0t", $time); //15ns
+    join_any
+    #3;
+    $display("DONE at %0t", $time); //5ns
+  end
+endmodule: fork_join_any_example12
+
+//Log File Outpt
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 18 02:09 2026
+Middle executed  at 2
+DONE at 5
+Inner2 executed at 10
+Outer executed  at 15
+Inner1 executed at 30
+           V C S   S i m u l a t i o n   R e p o r t 
+
+//////////////////////////////////
+  fork...join_any Example13
+//////////////////////////////////
