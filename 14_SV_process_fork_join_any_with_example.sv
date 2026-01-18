@@ -327,3 +327,31 @@ B executed at 20
 //////////////////////////////////
   fork...join_any Example10
 //////////////////////////////////
+module fork_join_any_example10; // Example of Nested join_any
+  initial begin
+    fork
+     fork
+       #30 $display("Inner1 executed at %0t", $time); //30ns
+       #10 $display("Inner2 executed at %0t", $time); //10ns
+     join_any
+       $display("Middle executed  at %0t", $time); //0ns
+       #15 $display("Outer executed  at %0t", $time); //15ns
+    join_any
+    $display("DONE at %0t", $time); //0ns
+  end
+endmodule: fork_join_any_example10
+
+//Log File Output
+Chronologic VCS simulator copyright 1991-2023
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 18 02:01 2026
+Middle executed  at 0
+DONE at 0
+Inner2 executed at 10
+Outer executed  at 15
+Inner1 executed at 30
+           V C S   S i m u l a t i o n   R e p o r t 
+
+//////////////////////////////////
+  fork...join_any Example11
+//////////////////////////////////
