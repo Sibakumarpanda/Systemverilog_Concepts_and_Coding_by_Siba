@@ -80,7 +80,35 @@ fork...join_any completed at time = 10
 //////////////////////////////////
   disable fork  Example3
 //////////////////////////////////  
+module disable_fork_example3; //disable fork example using fork...join_none process
+  initial begin
+    fork
+      begin // process A
+        $display("Process A started at time = %0t", $time); //It will not executed due to effect of disable fork
+        #10;
+        $display("Process A completed at time = %0t", $time); //It will not executed due to effect of disable fork
+      end
+      begin // process B
+        $display("Process B started at time = %0t", $time); //It will not executed due to effect of disable fork
+        #15;
+        $display("Process B completed at time = %0t", $time); //It will not executed due to effect of disable fork
+      end
+      begin // process C
+        $display("Process C started at time = %0t", $time); //It will not executed due to effect of disable fork
+        #20;
+        $display("Process C completed at time = %0t", $time); //It will not executed due to effect of disable fork
+      end
+    join_none
+    disable fork;
+    $display("fork...join_none completed at time = %0t", $time); //0ns
+  end
+endmodule :disable_fork_example3
 
+//Log File Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 19 09:25 2026
+fork...join_none completed at time = 0
+           V C S   S i m u l a t i o n   R e p o r t       
 
 //////////////////////////////////
   disable fork  Example4
