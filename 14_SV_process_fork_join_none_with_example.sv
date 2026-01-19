@@ -72,7 +72,7 @@ module fork_join_none_example2;
       end
     join_none
     #1;
-    $display("fork-join_none completed at time = %0t", $time); //0ns
+   $display("fork-join_none completed at time = %0t", $time); //1ns
   end
 endmodule :fork_join_none_example2
 
