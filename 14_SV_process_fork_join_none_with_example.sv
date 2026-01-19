@@ -131,7 +131,45 @@ Process C completed at time = 20
 //////////////////////////////////
   fork...join_none Example4
 //////////////////////////////////
+module fork_join_none_example4;
+  initial begin
+    fork
+      begin // process A
+        #1;
+        $display("Process A started at time = %0t", $time); //1ns
+        #10;
+        $display("Process A completed at time = %0t", $time); //10ns
+      end
+      begin // process B
+        #2;
+        $display("Process B started at time = %0t", $time); //2ns
+        #15;
+        $display("Process B completed at time = %0t", $time); //15ns
+      end
+      begin // process C
+        #3;
+        $display("Process C started at time = %0t", $time); //3ns
+        #20;
+        $display("Process C completed at time = %0t", $time); //20ns
+      end
+    join_none
+    #2;
+    $display("fork-join_none completed at time = %0t", $time); //2ns
+  end
+endmodule :fork_join_none_example4
 
+//Log File Output
+Chronologic VCS simulator copyright 1991-2023
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 19 00:58 2026
+Process A started at time = 1
+fork-join_none completed at time = 2
+Process B started at time = 2
+Process C started at time = 3
+Process A completed at time = 11
+Process B completed at time = 17
+Process C completed at time = 23
+           V C S   S i m u l a t i o n   R e p o r t 
 //////////////////////////////////
   fork...join_none Example5
 //////////////////////////////////
