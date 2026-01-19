@@ -103,7 +103,7 @@ module fork_join_none_example3;
         #1;
         $display("Process B started at time = %0t", $time); //1ns
         #15;
-        $display("Process B completed at time = %0t", $time); //15ns
+        $display("Process B completed at time = %0t", $time); //16ns
       end
       begin // process C
         $display("Process C started at time = %0t", $time); //0ns
@@ -138,19 +138,19 @@ module fork_join_none_example4;
         #1;
         $display("Process A started at time = %0t", $time); //1ns
         #10;
-        $display("Process A completed at time = %0t", $time); //10ns
+        $display("Process A completed at time = %0t", $time); //11ns
       end
       begin // process B
         #2;
         $display("Process B started at time = %0t", $time); //2ns
         #15;
-        $display("Process B completed at time = %0t", $time); //15ns
+        $display("Process B completed at time = %0t", $time); //17ns
       end
       begin // process C
         #3;
         $display("Process C started at time = %0t", $time); //3ns
         #20;
-        $display("Process C completed at time = %0t", $time); //20ns
+        $display("Process C completed at time = %0t", $time); //23ns
       end
     join_none
     #2;
