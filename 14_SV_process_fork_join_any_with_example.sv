@@ -597,7 +597,24 @@ First completed at 20
 //////////////////////////////////
   fork...join_any Example20
 //////////////////////////////////
+module fork_join_any_example20; // join_any with Immediate Statements
+  initial begin
+    fork
+      $display("Immediate A at %0t", $time);
+      #5 $display("Delayed B at %0t", $time);
+    join_any
+      $display("After join_any at %0t", $time);
+      // What's the output order?
+  end
+endmodule : fork_join_any_example20 
 
+ //Log File Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 20 08:25 2026
+Immediate A at 0
+After join_any at 0
+Delayed B at 5
+           V C S   S i m u l a t i o n   R e p o r t    
 
 //////////////////////////////////
   fork...join_any Example21
