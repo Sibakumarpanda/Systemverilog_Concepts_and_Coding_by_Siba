@@ -696,8 +696,41 @@ Outside of join_any block : Count = 6 at 4
 //////////////////////////////////
   fork...join_any Example23
 //////////////////////////////////
-
-
+module fork_join_any_example23; //Variable Race with join_any with modification
+  int count = 0;
+    initial begin
+      fork
+        begin
+         #10; 
+         count = count + 1;
+         $display("In First begin_end block : Count = %0d at %0t", count, $time); 
+        end
+        begin
+         #5; 
+         count = count + 2;
+         $display("In Second begin_end block : Count = %0d at %0t", count, $time);  
+        end
+        begin
+         #1;
+         count = count + 3;
+         $display("In Third begin_end block : Count = %0d at %0t", count, $time); 
+         end
+      join_any
+      $display("Outside of join_any block : Count = %0d at %0t", count, $time); //1ns+0ns=1ns
+      // What's the value of count?
+      // Does it wait for all increments?
+     end
+endmodule : fork_join_any_example23
+    
+//LogFile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 20 08:44 2026
+In Third begin_end block : Count = 3 at 1
+Outside of join_any block : Count = 3 at 1
+In Second begin_end block : Count = 5 at 5
+In First begin_end block : Count = 6 at 10
+           V C S   S i m u l a t i o n   R e p o r t
+    
 //////////////////////////////////
   fork...join_any Example24
 //////////////////////////////////
