@@ -947,13 +947,70 @@ LEVEL2-A at timestamp= 20ns
 //////////////////////////////////
   fork...join_any Example31
 //////////////////////////////////  
-
-
+module fork_join_any_example31; //join_any with Forever Loop
+  initial begin
+    fork
+      begin
+        forever #5 $display("Ping at Timestamp %0tns", $time);
+      end
+      #15 $display("Timeout at Timestamp %0tns", $time);
+    join_any
+    $display("Simulation Done at Timestamp %0tns", $time);
+    // Does simulation hang?
+    // How many "Ping"s print?
+  end
+endmodule : fork_join_any_example31  
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 20 11:39 2026
+Ping at Timestamp 5ns
+Ping at Timestamp 10ns
+Timeout at Timestamp 15ns
+Simulation Done at Timestamp 15ns
+Ping at Timestamp 15ns
+Ping at Timestamp 20ns
+Ping at Timestamp 25ns
+Ping at Timestamp 30ns
+Ping at Timestamp 35ns
+Ping at Timestamp 40ns
+Ping at Timestamp 45ns
+Ping at Timestamp 50ns
+Ping at Timestamp 55ns
+Ping at Timestamp 60ns
+.
+.      
+.
+Keep on printing the Ping statement      
 //////////////////////////////////
   fork...join_any Example32
 ////////////////////////////////// 
-
-
+module fork_join_any_example32; //join_any and Event Trigger
+  event e;
+  initial begin
+    fork
+      begin
+        @(e);
+        $display("Event received at %0t", $time);
+      end
+      begin
+        #5;
+        -> e;
+        $display("Event triggered at %0t", $time);
+      end
+    join_any
+    $display("After join_any at %0t", $time);
+    // What's the output order?
+    // Does join_any wait for event?
+  end
+endmodule : fork_join_any_example32  
+//Logfile Output
+Chronologic VCS simulator copyright 1991-2023
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 20 11:40 2026
+Event triggered at 5
+After join_any at 5
+Event received at 5
+           V C S   S i m u l a t i o n   R e p o r t       
 //////////////////////////////////
   fork...join_any Example33
 //////////////////////////////////   
