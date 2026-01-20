@@ -437,7 +437,29 @@ Inner1 executed at 30
 //////////////////////////////////
   fork...join_any Example14
 //////////////////////////////////
+module fork_join_any_example14; // Example for Disable Fork with join_any
+  initial begin
+    fork
+      begin
+       #50 $display("Long task at %0t", $time);
+      end
+      begin
+       #10 $display("Timeout at %0t", $time);
+       disable fork;
+      end
+    join_any
+    $display("After join_any at %0t", $time);
+    // What happens to the long task?
+  end
+endmodule: fork_join_any_example14   
 
+//Log File Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 20 08:03 2026
+Timeout at 10
+After join_any at 10
+Long task at 50
+           V C S   S i m u l a t i o n   R e p o r t       
 
 //////////////////////////////////
   fork...join_any Example15
