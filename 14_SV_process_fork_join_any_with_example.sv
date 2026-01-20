@@ -860,17 +860,89 @@ Executing:C at 10ns
 //////////////////////////////////
   fork...join_any Example28
 //////////////////////////////////
-
+module fork_join_any_example28; //join_any with wait fork
+  initial begin
+    fork
+      #10 $display("Slow");
+      #5  $display("Medium");
+      #1  $display("Fast");
+    join_any
+    $display("First completed");
+    wait fork;
+    $display("All completed");
+    // Does "Slow" print before "All completed"?
+  end  
+endmodule : fork_join_any_example28
+      
+//LogFile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 20 11:26 2026
+Fast
+First completed
+Medium
+Slow
+All completed
+           V C S   S i m u l a t i o n   R e p o r t      
 
 //////////////////////////////////
   fork...join_any Example29
 //////////////////////////////////
-
+module fork_join_any_example29; //join_any and disable Combination
+  initial begin
+     fork: main
+       fork
+         #100 $display("Should not print");
+         #10 begin
+         $display("Timeout");
+         disable main;
+         end
+       join_any
+       $display("This line?");
+     join
+     $display("This line??");
+     // What prints and what doesn't?
+  end
+endmodule : fork_join_any_example29
+      
+//LogFile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 20 11:28 2026
+This line?
+Timeout
+This line??
+           V C S   S i m u l a t i o n   R e p o r t       
+      
 
 //////////////////////////////////
   fork...join_any Example30
 //////////////////////////////////
-
+module fork_join_any_example30; //Multiple join_any Levels
+  initial begin
+    fork
+      begin
+        fork
+          #20 $display("LEVEL2-A at timestamp= %0tns",$time); //20ns
+          #10 $display("LEVEL2-B at timestamp= %0tns",$time); //10ns
+        join_any
+        $display("LEVEL1-A at timestamp= %0tns",$time); //10ns
+      end
+      begin
+        #5 $display("LEVEL1-B at timestamp= %0tns",$time); //5ns
+      end
+    join_any
+    $display("Main done at timestamp= %0tns",$time); //5ns
+  end
+endmodule : fork_join_any_example30
+      
+//LogFile Output
+ Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 20 11:43 2026
+LEVEL1-B at timestamp= 5ns
+Main done at timestamp= 5ns
+LEVEL2-B at timestamp= 10ns
+LEVEL1-A at timestamp= 10ns
+LEVEL2-A at timestamp= 20ns
+           V C S   S i m u l a t i o n   R e p o r t      
 
 //////////////////////////////////
   fork...join_any Example31
