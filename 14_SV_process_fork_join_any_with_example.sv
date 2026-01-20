@@ -516,7 +516,27 @@ After join_any at 10
 //////////////////////////////////
   fork...join_any Example17
 //////////////////////////////////
+module fork_join_any_example17; //Multiple Processes Complete Simultaneously
+  initial begin
+    fork
+      #10 $display("Executed-A");
+      #10 $display("Executed-B");
+      #10 $display("Executed-C");
+    join_any
+    $display("First completed at %0t", $time);
+    // Which one is "first"?
+    // Does this guarantee all 3 print?
+  end
+endmodule : fork_join_any_example17
 
+//Log File Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 20 08:25 2026
+Executed-A
+First completed at 10
+Executed-B
+Executed-C
+           V C S   S i m u l a t i o n   R e p o r t     
 
 //////////////////////////////////
   fork...join_any Example18
