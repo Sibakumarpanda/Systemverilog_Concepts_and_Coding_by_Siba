@@ -734,23 +734,129 @@ In First begin_end block : Count = 6 at 10
 //////////////////////////////////
   fork...join_any Example24
 //////////////////////////////////
-
+module fork_join_any_example24; //join_any in Loop
+  initial begin
+     for (int i = 0; i < 3; i++) begin
+       fork
+         #(i*10) $display("Task %0d at %0t", i, $time);
+        #5 $display("Quick at %0t", $time);
+      join_any
+      $display("Loop %0d done at %0t", i, $time);
+     end
+     // How many times does "Quick" print?
+     // What's the value of i in each task?
+  end
+endmodule:fork_join_any_example24
+    
+//Log File Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 20 08:53 2026
+Task 0 at 0
+Loop 0 done at 0
+Quick at 5
+Quick at 5
+Loop 1 done at 5
+Task 2 at 10
+Quick at 10
+Loop 2 done at 10
+Task 3 at 25
+           V C S   S i m u l a t i o n   R e p o r t     
 
 //////////////////////////////////
   fork...join_any Example25
 //////////////////////////////////
-
+module fork_join_any_example25; //join_any with Automatic Variables
+  initial begin
+    for (int i = 0; i < 3; i++) begin
+      automatic int j = i;
+      fork
+        #(j*5) $display("Value %0d at %0t", j, $time);
+        #1 $display("Fast %0d at %0t", j, $time);
+      join_any
+    end
+    // What's the output?
+    // Is it deterministic?
+  end
+endmodule : fork_join_any_example25
+    
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 20 08:55 2026
+Value 0 at 0
+Fast 0 at 1
+Fast 1 at 1
+Fast 2 at 2
+Value 1 at 5
+Value 2 at 11
+           V C S   S i m u l a t i o n   R e p o r t     
 
 //////////////////////////////////
   fork...join_any Example26
 //////////////////////////////////
-
+module fork_join_any_example26; //Complex Timing with join_any
+  initial begin
+    fork
+      fork
+        #10 
+        $display("Executing:A at %0tns",$time); //at 10ns
+        begin
+          #5;
+          $display("Executing:B at %0tns",$time); //at 5ns
+          #5;
+          $display("Executing:C at %0tns",$time); //at 10ns
+        end
+      join_any
+      $display("Executing:D at %0tns",$time); //at 0ns
+    join_any
+    $display("Executing:E at %0tns",$time); //at 0ns
+      // Timeline and output order?
+   end
+endmodule :  fork_join_any_example26
+    
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 20 09:13 2026
+Executing:D at 0ns
+Executing:E at 0ns
+Executing:B at 5ns
+Executing:A at 10ns
+Executing:C at 10ns
+           V C S   S i m u l a t i o n   R e p o r t     
+    
 
 //////////////////////////////////
   fork...join_any Example27
 //////////////////////////////////
-
-
+module fork_join_any_example27; //Complex Timing with join_any
+  initial begin
+    fork
+      fork
+        #10; //Look carefully the effect of semicoln present vs Not present(example26) 
+        $display("Executing:A at %0tns",$time); //at 0ns
+        begin
+          #5;
+          $display("Executing:B at %0tns",$time); //at 5ns
+          #5;
+          $display("Executing:C at %0tns",$time); //at 10ns
+        end
+      join_any
+      $display("Executing:D at %0tns",$time); //at 0ns
+    join_any
+    $display("Executing:E at %0tns",$time); //at 0ns
+      // Timeline and output order?
+   end
+endmodule : fork_join_any_example27
+    
+//Logfile Output    
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 20 09:14 2026
+Executing:D at 0ns
+Executing:E at 0ns
+Executing:A at 0ns
+Executing:B at 5ns
+Executing:C at 10ns
+           V C S   S i m u l a t i o n   R e p o r t 
+    
 //////////////////////////////////
   fork...join_any Example28
 //////////////////////////////////
