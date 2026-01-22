@@ -420,6 +420,27 @@ Long task Executed at 100
 //////////////////////////////////
   fork...join_none Example14
 //////////////////////////////////
+ module fork_join_none_example14; //Multiple fork-join_none
+  initial begin
+    fork
+      #10 $display("First fork Executed at %0t", $time);
+    join_none
+  
+    fork
+      #5 $display("Second fork Executed at %0t", $time);
+    join_none  
+    $display("Main thread Executed at %0t", $time);
+    // Output order?
+  end
+endmodule :fork_join_none_example14
+
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 21 20:38 2026
+Main thread Executed at 0
+Second fork Executed at 5
+First fork Executed at 10
+           V C S   S i m u l a t i o n   R e p o r t 
 
 
 //////////////////////////////////
