@@ -214,6 +214,24 @@ Process C completed at time = 23
 //////////////////////////////////
   fork...join_none Example6
 //////////////////////////////////
+module fork_join_none_example6; //Basic example
+  initial begin
+    fork
+      #10 $display("A at %0t", $time); //10ns
+      #20 $display("B at %0t", $time); //20ns
+    join_none
+      $display("Main at %0t", $time); //0ns
+     // What prints and when? Does B print?
+   end
+endmodule :fork_join_none_example6
+
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 21 20:27 2026
+Main at 0
+A at 10
+B at 20
+           V C S   S i m u l a t i o n   R e p o r t 
 
 //////////////////////////////////
   fork...join_none Example7
