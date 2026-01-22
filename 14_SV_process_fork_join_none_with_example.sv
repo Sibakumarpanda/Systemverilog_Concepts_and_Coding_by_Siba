@@ -259,6 +259,27 @@ Main done at 30
 //////////////////////////////////
   fork...join_none Example8
 //////////////////////////////////
+module fork_join_none_example8;// Very Important example join_none in Loop
+   initial begin
+     for (int i = 0; i < 3; i++) begin
+       fork
+         #(i*5) $display("i=%0d at %0t", i, $time);
+       join_none
+     end
+     $display("Loop done at %0t", $time);
+     // What value of i do threads see?
+     // How many threads print?
+   end
+endmodule :fork_join_none_example8
+
+//Log File Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 21 20:29 2026
+Loop done at 0
+i=3 at 15
+i=3 at 15
+i=3 at 15
+           V C S   S i m u l a t i o n   R e p o r t 
 
 //////////////////////////////////
   fork...join_none Example9
