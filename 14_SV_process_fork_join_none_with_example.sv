@@ -581,18 +581,137 @@ Event caught at 5
 //////////////////////////////////
   fork...join_none Example20
 //////////////////////////////////
-
+module fork_join_none_example20; //Resource Leak Pattern
+   initial begin
+     for (int i = 0; i < 100; i++) begin
+       fork
+         #1000 $display("Task Executed at %0dns", i);
+       join_none
+     end
+     $display("Spawned 100 tasks at %0tns", $time);
+     // What's the problem here?
+     // When do tasks complete?
+   end
+endmodule :fork_join_none_example20  
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 21 21:48 2026
+Spawned 100 tasks at 0ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+Task Executed at 100ns
+           V C S   S i m u l a t i o n   R e p o r t  
 //////////////////////////////////
   fork...join_none Example21
 //////////////////////////////////
+ 
 
 //////////////////////////////////
   fork...join_none Example22
 //////////////////////////////////
+ 
 
 //////////////////////////////////
   fork...join_none Example23
 //////////////////////////////////
+ 
 
 //////////////////////////////////
   fork...join_none Example24
@@ -601,5 +720,4 @@ Event caught at 5
 //////////////////////////////////
   fork...join_none Example25
 //////////////////////////////////
-
 
