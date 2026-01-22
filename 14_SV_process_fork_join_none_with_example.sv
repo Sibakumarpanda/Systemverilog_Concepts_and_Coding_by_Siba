@@ -528,10 +528,55 @@ Running Forever loop at 50 .... The loop will continue
 //////////////////////////////////
   fork...join_none Example18
 //////////////////////////////////
+ module fork_join_none_example18; //Complex Timing Puzzle
+   initial begin
+     fork
+       begin
+        #10;
+        fork
+          #5 $display("Nested Executed at %0t", $time); // (10+5)15ns
+        join_none
+         $display("Middle Executed at %0t", $time); //10ns
+       end
+     join_none
+     $display("Outer Executed at %0t", $time); //0ns
+     #20 $display("End Executed at %0t", $time); //20ns
+    // Complete timeline output?
+   end
+endmodule :fork_join_none_example18  
+//Logfile output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 21 21:41 2026
+Outer Executed at 0
+Middle Executed at 10
+Nested Executed at 15
+End Executed at 20
+           V C S   S i m u l a t i o n   R e p o r t  
 
 //////////////////////////////////
   fork...join_none Example19
 //////////////////////////////////
+ module fork_join_none_example19; //join_none and event
+   event trigger;
+   initial begin
+     fork
+       begin
+        @(trigger);
+        $display("Event caught at %0t", $time);
+       end
+     join_none
+  
+     #5 -> trigger;
+     $display("Event sent at %0t", $time);
+     // Does event handler print? When?
+   end
+endmodule :fork_join_none_example19  
+//Logfile outpt
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 21 21:42 2026
+Event sent at 5
+Event caught at 5
+           V C S   S i m u l a t i o n   R e p o r t 
 
 //////////////////////////////////
   fork...join_none Example20
