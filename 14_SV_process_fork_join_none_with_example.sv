@@ -393,6 +393,29 @@ j=2 at 20
 //////////////////////////////////
   fork...join_none Example13
 //////////////////////////////////
+module fork_join_none_example13; //join_none with disable fork
+  initial begin
+    fork
+      #100 $display("Long task Executed at %0t", $time); //100ns
+      #10 begin
+         $display("Timeout Executed at %0t", $time); //10ns
+      disable fork;
+      end
+    join_none
+    $display("Main continues Executed at %0t", $time); //0ns
+    #20 $display("Sim ends at %0t", $time); //20ns
+    // What prints? What doesn't?
+   end
+endmodule :fork_join_none_example13
+
+///Logile  Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 21 20:37 2026
+Main continues Executed at 0
+Timeout Executed at 10
+Sim ends at 20
+Long task Executed at 100
+           V C S   S i m u l a t i o n   R e p o r t      
 
 //////////////////////////////////
   fork...join_none Example14
