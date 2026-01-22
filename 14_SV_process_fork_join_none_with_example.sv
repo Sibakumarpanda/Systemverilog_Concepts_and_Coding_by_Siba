@@ -236,6 +236,25 @@ B at 20
 //////////////////////////////////
   fork...join_none Example7
 //////////////////////////////////
+module fork_join_none_example7; // basic example with little modification
+  initial begin
+    fork
+      #5 $display("Will I print?");
+      #20 $display("What about me?");
+    join_none
+      #30
+      $display("Main done at %0t", $time);
+      // Do any fork threads print? Why?
+   end
+endmodule : fork_join_none_example7
+
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 21 20:28 2026
+Will I print?
+What about me?
+Main done at 30
+           V C S   S i m u l a t i o n   R e p o r t 
 
 //////////////////////////////////
   fork...join_none Example8
