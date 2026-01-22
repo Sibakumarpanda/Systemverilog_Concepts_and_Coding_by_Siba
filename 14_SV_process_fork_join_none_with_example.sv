@@ -284,6 +284,33 @@ i=3 at 15
 //////////////////////////////////
   fork...join_none Example9
 //////////////////////////////////
+module fork_join_none_example9; //Variable Capture Race
+  int shared = 0;
+    initial begin
+      fork
+        begin          
+         shared = shared + 1;
+         $display("Inside First begin end loop : Shared = %0d at %0t", shared, $time);  
+         #10;
+        end
+        begin          
+         shared = shared + 2;
+         $display("Inside Second begin end loop : Shared = %0d at %0t", shared, $time); 
+         #5;
+        end
+       join_none
+        $display("Outside to join_none block : Shared = %0d at %0t", shared, $time);
+       // What's the value? When is it printed?
+     end
+endmodule :fork_join_none_example9
+
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 21 20:30 2026
+Outside to join_none block : Shared = 0 at 0
+Inside First begin end loop : Shared = 1 at 0
+Inside Second begin end loop : Shared = 3 at 0
+           V C S   S i m u l a t i o n   R e p o r t 
 
 //////////////////////////////////
   fork...join_none Example10
