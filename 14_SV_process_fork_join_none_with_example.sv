@@ -366,7 +366,28 @@ All done at 10
 //////////////////////////////////
   fork...join_none Example12
 //////////////////////////////////
+module fork_join_none_example12; //Automatic Variable Trap
+  initial begin
+     for (int i = 0; i < 3; i++) begin
+       automatic int j = i;
+        fork
+          #(j*10) $display("j=%0d at %0t", j, $time);
+        join_none
+      end
+    $display("Outside Loop complete at %0t", $time);
+      // What delays do threads have?
+      // Do all threads execute?
+   end
+endmodule:fork_join_none_example12
      
+//Logfile ouput       
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 21 20:35 2026
+Outside Loop complete at 0
+j=0 at 0
+j=1 at 10
+j=2 at 20
+           V C S   S i m u l a t i o n   R e p o r t      
 
 
 //////////////////////////////////
