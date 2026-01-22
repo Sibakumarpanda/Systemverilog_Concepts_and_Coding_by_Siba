@@ -446,7 +446,29 @@ First fork Executed at 10
 //////////////////////////////////
   fork...join_none Example15
 //////////////////////////////////
+module fork_join_none_example15;     //join_none with return
+   task automatic spawn_task(int delay);
+     fork
+      #delay $display("Task with delay %0d", delay);
+     join_none
+   endtask
 
+   initial begin
+     spawn_task(10);
+     spawn_task(5);
+     $display("Tasks spawned at %0t", $time);
+     // Do both tasks complete?
+   end
+  
+endmodule : fork_join_none_example15
+
+//Logfile Output
+ Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 21 20:39 2026
+Tasks spawned at 0
+Task with delay 5
+Task with delay 10
+           V C S   S i m u l a t i o n   R e p o r t 
 
 //////////////////////////////////
   fork...join_none Example16
