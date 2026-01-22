@@ -339,11 +339,34 @@ Inner Executed at 10
 //////////////////////////////////
   fork...join_none Example11
 //////////////////////////////////
-
+module fork_join_none_example11; // join_none with wait fork
+  initial begin
+    fork
+      #10 $display("Slow at %0t", $time); //10ns
+      #5  $display("Medium at %0t", $time); //5ns
+      #1  $display("Fast at %0t", $time); //1ns
+    join_none
+    $display("Immediate at %0t", $time); //0ns
+    wait fork;
+    $display("All done at %0t", $time); //10ns
+    
+  end
+endmodule :fork_join_none_example11 
+     
+//Logfile output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 21 20:34 2026
+Immediate at 0
+Fast at 1
+Medium at 5
+Slow at 10
+All done at 10
+           V C S   S i m u l a t i o n   R e p o r t      
 
 //////////////////////////////////
   fork...join_none Example12
 //////////////////////////////////
+     
 
 
 //////////////////////////////////
