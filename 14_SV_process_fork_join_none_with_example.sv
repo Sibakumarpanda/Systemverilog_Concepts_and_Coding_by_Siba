@@ -315,7 +315,26 @@ Inside Second begin end loop : Shared = 3 at 0
 //////////////////////////////////
   fork...join_none Example10
 //////////////////////////////////
+module fork_join_none_example10; //Nested join_none
+  initial begin
+    fork
+      fork
+        #10 $display("Inner Executed at %0t", $time); //10ns
+      join_none
+      $display("Middle Executed at %0t", $time); //0ns
+    join_none
+    $display("Outer Executed at %0t", $time); //0ns
+    // Execution order? Does "Inner" print?
+  end
+endmodule :fork_join_none_example10
 
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 21 20:31 2026
+Outer Executed at 0
+Middle Executed at 0
+Inner Executed at 10
+           V C S   S i m u l a t i o n   R e p o r t 
 
 //////////////////////////////////
   fork...join_none Example11
