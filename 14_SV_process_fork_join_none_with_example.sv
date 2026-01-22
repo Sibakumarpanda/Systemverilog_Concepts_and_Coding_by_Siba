@@ -473,6 +473,26 @@ Task with delay 10
 //////////////////////////////////
   fork...join_none Example16
 //////////////////////////////////
+ module fork_join_none_example16; //Race Condition Example
+   bit flag = 0;
+   initial begin
+    fork
+      #1 flag = 1;
+    join_none
+  
+    if (flag)
+      $display("Flag is true at %0t", $time);
+    else
+      $display("Flag is false at %0t", $time);
+    // What prints?
+   end
+endmodule :fork_join_none_example16
+ 
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 21 21:41 2026
+Flag is false at 0
+           V C S   S i m u l a t i o n   R e p o r t 
 
 //////////////////////////////////
   fork...join_none Example17
