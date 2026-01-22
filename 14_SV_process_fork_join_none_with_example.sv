@@ -497,7 +497,34 @@ Flag is false at 0
 //////////////////////////////////
   fork...join_none Example17
 //////////////////////////////////
-
+module fork_join_none_example17; //join_none with forever
+  initial begin
+    fork
+      forever begin
+        #5 $display("Running Forever loop at %0t", $time); //5ns,10ns,15ns,20ns,25ns..
+      end
+    join_none
+    $display("Main done at %0t", $time);   //0ns
+    #15 $display("Timeout at %0t", $time); // 15ns
+    // How many "Forever"s print?
+  end
+endmodule :fork_join_none_example17
+ 
+//Logile Outpt
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 21 21:41 2026
+Main done at 0
+Running Forever loop at 5
+Running Forever loop at 10
+Timeout at 15
+Running Forever loop at 15
+Running Forever loop at 20
+Running Forever loop at 25
+Running Forever loop at 30
+Running Forever loop at 35
+Running Forever loop at 40
+Running Forever loop at 45
+Running Forever loop at 50 .... The loop will continue
 //////////////////////////////////
   fork...join_none Example18
 //////////////////////////////////
