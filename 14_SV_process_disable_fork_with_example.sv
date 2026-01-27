@@ -937,11 +937,38 @@ All done: Executed at 15
 //////////////////////////////////
   disable fork  Example32
 //////////////////////////////////
+module disable_fork_example32; //Disable Specific Thread with little modification
+   initial begin
+     fork
+       begin: thread1
+         #30 $display("Thread1 Executed at %0t",$time);
+       end
+       begin: thread2
+          #10 begin
+          $display("Killing thread1: Executed at %0t",$time);
+          disable thread2;
+          #5 $display("Thread2 continues: Executed at %0t",$time);
+         end
+       end
+     join
+     #5
+     $display("All done: Executed at %0t",$time);
+     // Can we kill specific thread?
+  end  
+endmodule :disable_fork_example32
 
+//Log file Ouput
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 27 07:13 2026
+Killing thread1: Executed at 10
+Thread1 Executed at 30
+All done: Executed at 30
+           V C S   S i m u l a t i o n   R e p o r t     
 
 //////////////////////////////////
   disable fork  Example33
 //////////////////////////////////
+    
 
 
 //////////////////////////////////
