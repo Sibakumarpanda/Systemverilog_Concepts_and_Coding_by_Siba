@@ -373,17 +373,83 @@ Main Execution done at 13ns
 //////////////////////////////////
   disable fork  Example13
 ////////////////////////////////// 
+module disable_fork_example13; // Disable Fork with join_any
+   initial begin
+     fork
+       #100 $display("Statement with More delay : Executed Long process Statement at %0tns", $time);
+       #20 
+       begin
+         $display("Timeout: Printing the timeout Statement at %0tns", $time);
+         disable fork;
+       end
+     join_any
+         $display("Outside of fork...join_any Block :Executed at %0tns", $time);
+     // What's the output???
+   end
+endmodule : disable_fork_example13     
 
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 27 06:40 2026
+Timeout: Printing the timeout Statement at 20ns
+Outside of fork...join_any Block :Executed at 20ns
+Statement with More delay : Executed Long process Statement at 100ns
+           V C S   S i m u l a t i o n   R e p o r t        
 
 //////////////////////////////////
   disable fork  Example14
 //////////////////////////////////  
-
+module disable_fork_example14; //Updated version of example13
+   initial begin
+     fork: main_block
+       begin
+         #100 $display("Statement with More delay : Executed Long process Statement at %0tns", $time);
+       end
+       
+       begin
+         #20 begin
+           $display("Timeout: Printing the timeout Statement at %0tns", $time);
+           disable main_block;  // Use named block disable
+         end
+       end
+     join_any
+     $display("Outside of fork...join_any Block :Executed at %0tns", $time);
+     // What's the output???
+   end
+endmodule :disable_fork_example14
+    
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 27 06:41 2026
+Timeout: Printing the timeout Statement at 20ns
+Outside of fork...join_any Block :Executed at 20ns
+           V C S   S i m u l a t i o n   R e p o r t     
 
 //////////////////////////////////
   disable fork  Example15
 ////////////////////////////////// 
-
+module disable_fork_example15; // Disable Fork with join_any
+   initial begin
+     fork
+       #100 $display("Statement with More delay : Executed Long process Statement at %0tns", $time);
+       #20 
+       begin
+         $display("Timeout: Printing the timeout Statement at %0tns", $time);
+         //disable fork;
+       end
+     join_any
+         $display("Outside of fork...join_any Block :Executed at %0tns", $time);
+     // What's the output???
+   end
+endmodule : disable_fork_example15    
+ 
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 27 06:42 2026
+Timeout: Printing the timeout Statement at 20ns
+Outside of fork...join_any Block :Executed at 20ns
+Statement with More delay : Executed Long process Statement at 100ns
+           V C S   S i m u l a t i o n   R e p o r t     
 //////////////////////////////////
   disable fork  Example16
 //////////////////////////////////
