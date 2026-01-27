@@ -599,25 +599,155 @@ Outside of For Loop: Executed at 35ns
 //////////////////////////////////
   disable fork  Example21
 //////////////////////////////////
-
+module disable_fork_example21; //Disable Fork in Loop with Little modification
+   initial begin
+      for (int i = 0; i < 3; i++) begin
+        fork
+          #(i*10) $display("Task%0d :Executed at timestamp %0dns", i,$time); //0ns ,10ns,20ns
+          #5 
+          begin
+            $display("Timeout : Executed at timestamp %0dns",$time); //5ns, 15ns ,35ns
+          disable fork;
+         end
+       join
+      end
+       #15   
+      $display("Outside of For Loop: Executed at %0tns", $time); //50ns
+      // How many iterations complete?
+   end
+endmodule :disable_fork_example21
+          
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 27 06:49 2026
+Task0 :Executed at timestamp 0ns
+Timeout : Executed at timestamp 5ns
+Timeout : Executed at timestamp 10ns
+Task1 :Executed at timestamp 15ns
+Timeout : Executed at timestamp 20ns
+Task2 :Executed at timestamp 35ns
+Outside of For Loop: Executed at 50ns
+           V C S   S i m u l a t i o n   R e p o r t           
 
 //////////////////////////////////
   disable fork  Example22
 //////////////////////////////////
+module disable_fork_example22; // Partial Disable
+  initial begin
+    fork
+      begin
+        #10 $display("TaskA1 Executed at %0dns",$time);
+        #10 $display("TaskA2 Executed at %0dns",$time);
+      end
+      begin
+        #15 $display("TaskB Executed at %0dns",$time);
+        disable fork;
+        $display("After disable :Executed at %0dns",$time);
+      end
+    join
+    $display("Main: Outside of fork...join : Executed at %0dns",$time);
+    // What prints? What's killed?
+   end
+endmodule : disable_fork_example22
 
+//Logfile output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 27 06:49 2026
+TaskA1 Executed at 10ns
+TaskB Executed at 15ns
+After disable :Executed at 15ns
+TaskA2 Executed at 20ns
+Main: Outside of fork...join : Executed at 20ns
+           V C S   S i m u l a t i o n   R e p o r t       
 
 //////////////////////////////////
   disable fork  Example23
 //////////////////////////////////
-
-
+module disable_fork_example23; // Partial Disable
+  initial begin
+    fork :my_block
+      begin
+        #10 $display("TaskA1 Executed at %0dns",$time);
+        #10 $display("TaskA2 Executed at %0dns",$time);
+      end
+      begin
+        #15 $display("TaskB Executed at %0dns",$time);
+        disable my_block;  // Jumps to end of my_block
+        $display("After disable :Executed at %0dns",$time);
+      end
+    join
+    $display("Main: Outside of fork...join : Executed at %0dns",$time);
+    // What prints? What's killed?
+   end
+endmodule : disable_fork_example23
+    
+//Logfile output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 27 06:50 2026
+TaskA1 Executed at 10ns
+TaskB Executed at 15ns
+Main: Outside of fork...join : Executed at 15ns
+           V C S   S i m u l a t i o n   R e p o r t    
 //////////////////////////////////
   disable fork  Example24
 //////////////////////////////////
-
+module disable_fork_example24; // Partial Disable
+  initial begin
+    fork :my_block
+      begin
+        #10 $display("TaskA1 Executed at %0dns",$time);
+        #10 $display("TaskA2 Executed at %0dns",$time);
+      end
+      begin
+        #15 $display("TaskB Executed at %0dns",$time);
+        #1;  // Now time is 16ns, Thread A is in middle of #10 delay
+        disable my_block;  // Jumps to end of my_block
+        $display("After disable :Executed at %0dns",$time);
+      end
+    join
+    $display("Main: Outside of fork...join : Executed at %0dns",$time);
+    // What prints? What's killed?
+   end
+endmodule : disable_fork_example24
+    
+//Logfile output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 27 06:51 2026
+TaskA1 Executed at 10ns
+TaskB Executed at 15ns
+Main: Outside of fork...join : Executed at 16ns
+           V C S   S i m u l a t i o n   R e p o r t     
+        
 //////////////////////////////////
   disable fork  Example25
 //////////////////////////////////
+module disable_fork_example25; // Partial Disable
+  initial begin
+    fork :my_fork_block
+      begin :my_begin_block1
+        #10 $display("TaskA1 Executed at %0dns",$time);
+        #10 $display("TaskA2 Executed at %0dns",$time);
+      end
+      begin :my_begin_block2
+        #15 $display("TaskB Executed at %0dns",$time);
+        #1;  // Now time is 16ns, Thread A is in middle of #10 delay
+        disable my_begin_block1;  // Jumps to end of my_block
+        $display("After disable :Executed at %0dns",$time);
+      end
+    join
+    $display("Main: Outside of fork...join : Executed at %0dns",$time);
+    // What prints? What's killed?
+   end
+endmodule : disable_fork_example25
+    
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 27 06:52 2026
+TaskA1 Executed at 10ns
+TaskB Executed at 15ns
+After disable :Executed at 16ns
+Main: Outside of fork...join : Executed at 16ns
+           V C S   S i m u l a t i o n   R e p o r t     
 
 //////////////////////////////////
   disable fork  Example26
