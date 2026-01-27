@@ -1063,7 +1063,34 @@ Main Executed at 100
     
 //////////////////////////////////
   disable fork  Example36
-//////////////////////////////////  
+////////////////////////////////// 
+module disable_fork_example36; //Disable in Parallel Blocks
+  initial begin
+    fork
+      begin
+        #100 $display("BlockA Executed at %0t", $time); //100ns
+      end
+      begin
+        #10 $display("BlockB Executed at %0t", $time); //10ns
+        fork
+          #50 $display("Nested in B Executed at %0t", $time); //10+50=60ns
+        join_any
+        disable fork;
+      end
+    join
+        $display("Main Executed at %0t", $time); //100ns
+    // What gets killed? Block A?
+  end
+endmodule :disable_fork_example36  
+      
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 27 10:15 2026
+BlockB Executed at 10
+Nested in B Executed at 60
+BlockA Executed at 100
+Main Executed at 100
+           V C S   S i m u l a t i o n   R e p o r t       
 
 
 //////////////////////////////////
