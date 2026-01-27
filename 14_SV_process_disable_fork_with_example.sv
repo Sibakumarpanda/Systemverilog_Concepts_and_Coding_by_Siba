@@ -185,6 +185,32 @@ fork...join_none completed at time = 2
 //////////////////////////////////
   disable fork  Example6
 //////////////////////////////////
+module disable_fork_example6; 
+  initial begin
+    fork
+      #50 $display("Task1: Should print at %0tns", $time);
+      #10 
+      begin
+      $display("Task2: Timeout at %0tns", $time);
+      disable fork;
+      end
+    join
+    #5    
+    $display("After fork...join block: at %0tns", $time);
+    // What prints? What doesn't?
+   end
+endmodule: disable_fork_example6
+      
+//LogFile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 26 21:31 2026
+Task2: Timeout at 10ns
+Task1: Should print at 50ns
+After fork...join block: at 55ns
+           V C S   S i m u l a t i o n   R e p o r t      
+      
+      
+    
 
 //////////////////////////////////
   disable fork  Example7
