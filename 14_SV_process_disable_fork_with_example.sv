@@ -289,8 +289,30 @@ Main Execution done at 30ns
            V C S   S i m u l a t i o n   R e p o r t     
 //////////////////////////////////
   disable fork  Example10
-//////////////////////////////////     
-
+//////////////////////////////////  
+module disable_fork_example10; 
+  initial begin
+    fork: outer
+      fork: inner
+        #15 $display("Inner task1 at %0tns", $time);
+        #30 $display("Inner task2 at %0tns", $time);
+      join
+      #10 begin
+        $display("Disabling inner at %0tns", $time);
+        disable inner;
+      end
+    join
+    $display("Main Execution done at %0tns", $time);
+    // Does "Inner task" print?
+  end
+endmodule :disable_fork_example10
+    
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 26 21:34 2026
+Disabling inner at 10ns
+Main Execution done at 10ns
+           V C S   S i m u l a t i o n   R e p o r t     
 //////////////////////////////////
   disable fork  Example11
 ////////////////////////////////// 
