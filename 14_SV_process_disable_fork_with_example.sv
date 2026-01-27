@@ -453,27 +453,148 @@ Statement with More delay : Executed Long process Statement at 100ns
 //////////////////////////////////
   disable fork  Example16
 //////////////////////////////////
+module disable_fork_example16; //Updated version of example15
+   initial begin
+     fork: main_block
+       begin
+         #100 $display("Statement with More delay : Executed Long process Statement at %0tns", $time);
+       end
+       
+       begin
+         #20 begin
+           $display("Timeout: Printing the timeout Statement at %0tns", $time);
+           //disable main_block;  // Use named block disable
+         end
+       end
+     join_any
+     $display("Outside of fork...join_any Block :Executed at %0tns", $time);
+     // What's the output???
+   end
+endmodule :disable_fork_example16
 
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 27 06:43 2026
+Timeout: Printing the timeout Statement at 20ns
+Outside of fork...join_any Block :Executed at 20ns
+Statement with More delay : Executed Long process Statement at 100ns
+           V C S   S i m u l a t i o n   R e p o r t    
 
 //////////////////////////////////
   disable fork  Example17
 //////////////////////////////////
+module disable_fork_example17; // Multiple Level Disable
+   initial begin
+      fork: Level1
+         fork: Level2
+           #40 $display("Level2 task at %0tns", $time);
+         join
+        #10 
+        begin
+          $display("Disabling Level1 at %0tns", $time);
+          disable Level1;
+        end
+     join
+     $display("Outside of fork...join Block : Executed at %0t", $time);
+     // What gets killed? What prints?
+   end
+endmodule :disable_fork_example17
 
-
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 27 06:43 2026
+Disabling Level1 at 10ns
+Outside of fork...join Block : Executed at 10
+           V C S   S i m u l a t i o n   R e p o r t     
+  
 //////////////////////////////////
   disable fork  Example18
 //////////////////////////////////
+module disable_fork_example18; // Multiple Level Disable
+   initial begin
+      fork: Level1
+         fork: Level2
+           #5 $display("Level2 task at %0tns", $time);
+         join
+        #10 
+        begin
+          $display("Disabling Level1 at %0tns", $time);
+          disable Level1;
+        end
+     join
+     $display("Outside of fork...join Block : Executed at %0t", $time);
+     // What gets killed? What prints?
+   end
+endmodule :disable_fork_example18
 
-
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 27 06:43 2026
+Level2 task at 5ns
+Disabling Level1 at 10ns
+Outside of fork...join Block : Executed at 10
+           V C S   S i m u l a t i o n   R e p o r t     
+      
 //////////////////////////////////
   disable fork  Example19
 //////////////////////////////////
-
+module disable_fork_example19; // Multiple Level Disable
+   initial begin
+      fork: Level1
+         fork: Level2
+           #5 $display("Level2 task at %0tns", $time);
+         join
+        #10 
+        begin
+          $display("Disabling Level1 at %0tns", $time);
+          disable Level1;
+        end
+     join
+     #2
+     $display("Outside of fork...join Block : Executed at %0t", $time);
+     // What gets killed? What prints?
+   end
+endmodule :disable_fork_example19
+      
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 27 06:44 2026
+Level2 task at 5ns
+Disabling Level1 at 10ns
+Outside of fork...join Block : Executed at 12
+           V C S   S i m u l a t i o n   R e p o r t     
 
 //////////////////////////////////
   disable fork  Example20
 //////////////////////////////////
-
+module disable_fork_example20; //Disable Fork in Loop
+   initial begin
+      for (int i = 0; i < 3; i++) begin
+        fork
+          #(i*10) $display("Task%0d :Executed at timestamp %0dns", i,$time); //0ns ,10ns,20ns
+          #5 
+          begin
+            $display("Timeout : Executed at timestamp %0dns",$time); //5ns, 15ns ,35ns
+          disable fork;
+         end
+       join
+      end
+       $display("Outside of For Loop: Executed at %0tns", $time); //35ns
+      // How many iterations complete?
+   end
+endmodule :disable_fork_example20
+          
+//Logfile output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 27 06:44 2026
+Task0 :Executed at timestamp 0ns
+Timeout : Executed at timestamp 5ns
+Timeout : Executed at timestamp 10ns
+Task1 :Executed at timestamp 15ns
+Timeout : Executed at timestamp 20ns
+Task2 :Executed at timestamp 35ns
+Outside of For Loop: Executed at 35ns
+           V C S   S i m u l a t i o n   R e p o r t           
 
 //////////////////////////////////
   disable fork  Example21
