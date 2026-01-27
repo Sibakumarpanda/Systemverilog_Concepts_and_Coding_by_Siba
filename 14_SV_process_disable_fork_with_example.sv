@@ -1125,7 +1125,35 @@ Main done: at timestamp 5
 //////////////////////////////////
   disable fork  Example38
 ////////////////////////////////// 
-
+module disable_fork_example38; //Disable Fork with Events
+   event e;
+   initial begin
+     fork
+       begin        
+         @(e);
+         #3;
+         $display("Event received at timestamp %0t",$time);
+       end
+       begin
+         #5;
+         -> e;
+         disable fork;
+         $display("After disable at timestamp %0t",$time);
+       end
+     join
+     $display("Main done: at timestamp %0t",$time);
+     // Does event handler execute?
+   end
+endmodule :disable_fork_example38
+       
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 27 11:18 2026
+After disable at timestamp 5
+Event received at timestamp 8
+Main done: at timestamp 8
+           V C S   S i m u l a t i o n   R e p o r t        
+       
 //////////////////////////////////
   disable fork  Example39
 ////////////////////////////////// 
