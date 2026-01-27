@@ -875,7 +875,35 @@ Survived: Executed at 20
 //////////////////////////////////
   disable fork  Example30
 //////////////////////////////////
+module disable_fork_example30; //Disable Fork with Return
+   task automatic run_with_timeout(int delay);
+     fork
+       #delay $display("Task completed at timestamp %0d",$time);
+       #10 begin
+       $display("Timeout in task at timestamp %0d",$time);
+       disable fork;
+       end
+     join
+   endtask
 
+  initial begin
+    run_with_timeout(5);
+    run_with_timeout(20);
+    $display("Main done at timestamp %0d",$time);
+    // What prints from each call?
+  end
+endmodule : disable_fork_example30 
+
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 27 06:57 2026
+Task completed at timestamp 5
+Timeout in task at timestamp 10
+Timeout in task at timestamp 20
+Task completed at timestamp 30
+Main done at timestamp 30
+           V C S   S i m u l a t i o n   R e p o r t         
+         
 //////////////////////////////////
   disable fork  Example31
 //////////////////////////////////
