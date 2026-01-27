@@ -816,13 +816,62 @@ DONE Executed at 35
 //////////////////////////////////
   disable fork  Example28
 //////////////////////////////////
-
-
+module disable_fork_example28; //Disable Fork and wait fork
+   initial begin
+     fork
+       #100 $display("Slow: Executed at %0dns",$time);
+       #20 
+       begin
+       $display("Timeout: Executed at %0dns",$time);
+       disable fork;
+       end
+     join_none
+     wait fork;
+     $display("All Done : Executed at %0dns",$time);
+     // Does this finish? When?
+   end
+endmodule :disable_fork_example28
+       
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 27 06:55 2026
+Timeout: Executed at 20ns
+Slow: Executed at 100ns
+All Done : Executed at 100ns
+           V C S   S i m u l a t i o n   R e p o r t        
+       
 //////////////////////////////////
   disable fork  Example29
 //////////////////////////////////
-
-
+module disable_fork_example29; //Complex Nested Disable
+   initial begin
+     fork: A
+       fork: B
+         #50 $display("Deep task : Executed at %0d",$time);
+       join
+       fork: C
+         #10 begin
+         $display("Disabling B: Executed at %0d",$time); //10ns
+         disable B;
+         end
+         #20 begin
+         $display("Disabling A: Executed at %0d",$time); //20ns
+         disable A;
+        end
+       join
+     join
+     $display("Survived: Executed at %0d",$time); //20ns
+     // Execution timeline?
+   end
+endmodule :disable_fork_example29
+    
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 27 06:56 2026
+Disabling B: Executed at 10
+Disabling A: Executed at 20
+Survived: Executed at 20
+           V C S   S i m u l a t i o n   R e p o r t     
 //////////////////////////////////
   disable fork  Example30
 //////////////////////////////////
