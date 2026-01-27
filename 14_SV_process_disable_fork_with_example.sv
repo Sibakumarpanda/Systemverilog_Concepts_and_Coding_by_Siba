@@ -1092,12 +1092,36 @@ BlockA Executed at 100
 Main Executed at 100
            V C S   S i m u l a t i o n   R e p o r t       
 
-
 //////////////////////////////////
   disable fork  Example37
 ////////////////////////////////// 
-
-
+module disable_fork_example37; //Disable Fork with Events
+   event e;
+   initial begin
+     fork
+       begin
+         @(e);
+         $display("Event received at timestamp %0t",$time);
+       end
+       begin
+         #5;
+         -> e;
+         disable fork;
+         $display("After disable at timestamp %0t",$time);
+       end
+     join
+     $display("Main done: at timestamp %0t",$time);
+     // Does event handler execute?
+   end
+endmodule :disable_fork_example37  
+       
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 27 07:28 2026
+After disable at timestamp 5
+Event received at timestamp 5
+Main done: at timestamp 5
+           V C S   S i m u l a t i o n   R e p o r t        
 //////////////////////////////////
   disable fork  Example38
 ////////////////////////////////// 
