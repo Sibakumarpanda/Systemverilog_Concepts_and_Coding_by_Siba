@@ -998,11 +998,43 @@ Outer survived: : Executed at 40
 //////////////////////////////////
   disable fork  Example34
 //////////////////////////////////
-    
+module disable_fork_example34; //Disable Fork Scope Mystery with modification to example33
+  initial begin
+     fork
+       #45 $display("Outer fork...join task: Executed at %0t",$time);
+       fork
+         #40 $display("Inner fork...join task: Executed at %0t",$time);
+       join
+       #10 $display("Middle: Executed at %0t",$time);
+       #20 
+       begin
+         $display("Inner Disabling: Executed at %0t",$time);
+         disable fork;
+          #5  
+         $display("Outer Disabling: Executed at %0t",$time);  
+       end
+     join
+     $display("Outer survived: Executed at %0t",$time);
+     // What's the scope of disable fork?
+  end
+endmodule :disable_fork_example34   
 
+//Logfile output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 27 07:21 2026
+Middle: Executed at 10
+Inner Disabling: Executed at 20
+Outer Disabling: Executed at 25
+Inner fork...join task: Executed at 40
+Outer fork...join task: Executed at 45
+Outer survived: Executed at 45
+           V C S   S i m u l a t i o n   R e p o r t        
+       
 //////////////////////////////////
   disable fork  Example35
 //////////////////////////////////
+
+    
 
 //////////////////////////////////
   disable fork  Example36
