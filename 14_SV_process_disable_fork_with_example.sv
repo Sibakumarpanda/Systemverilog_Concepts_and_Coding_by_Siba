@@ -316,12 +316,60 @@ Main Execution done at 10ns
 //////////////////////////////////
   disable fork  Example11
 ////////////////////////////////// 
+module disable_fork_example11; 
+  initial begin
+    fork: outer
+      fork: inner
+        #5 $display("Inner task1 at %0tns", $time);
+        #30 $display("Inner task2 at %0tns", $time);
+      join
+      #10 begin
+        $display("Disabling inner at %0tns", $time);
+        disable inner;
+      end
+    join
+    $display("Main Execution done at %0tns", $time);
+    // Does "Inner task" print?
+  end
+endmodule :disable_fork_example11
+    
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 27 06:38 2026
+Inner task1 at 5ns
+Disabling inner at 10ns
+Main Execution done at 10ns
+           V C S   S i m u l a t i o n   R e p o r t     
 
 //////////////////////////////////
   disable fork  Example12
 ////////////////////////////////// 
-
-
+module disable_fork_example12; //Nested Disable Scope
+  initial begin
+    fork: outer
+      fork: inner
+        #5 $display("Inner task1 at %0tns", $time);
+        #30 $display("Inner task2 at %0tns", $time);
+      join
+      #10 begin
+        $display("Disabling inner at %0tns", $time);
+        disable inner;
+      end
+    join
+    #3
+    $display("Main Execution done at %0tns", $time);
+    // Does "Inner task" print?
+  end
+endmodule :disable_fork_example12
+    
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 27 06:39 2026
+Inner task1 at 5ns
+Disabling inner at 10ns
+Main Execution done at 13ns
+           V C S   S i m u l a t i o n   R e p o r t     
+    
 //////////////////////////////////
   disable fork  Example13
 ////////////////////////////////// 
