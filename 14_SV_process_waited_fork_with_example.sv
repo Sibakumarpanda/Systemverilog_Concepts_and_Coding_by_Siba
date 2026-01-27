@@ -1,5 +1,36 @@
 System Verilog wait fork :
 - The ‘wait fork’ statement is used to wait for all forked processes to be completed.
+  
+///////////////////////////////////////
+  Key Interview Questions and Answer:
+///////////////////////////////////////  
+  
+Q: What does wait fork do?
+A: Waits for ALL forked processes (including nested ones) to complete.
+
+Q: How is wait fork different from join?
+A: join waits for processes in its immediate fork; wait fork waits for ALL forked processes in current scope.
+
+Q: Can wait fork wait for processes created before it?
+A: Yes, it waits for all outstanding forked processes.
+
+Q: What happens if no processes are forked before wait fork?
+A: It returns immediately (no wait).
+
+Q: Does wait fork wait for processes in called tasks/functions?
+A: Yes, it waits for ALL forked processes in the current scope.
+
+Q: Can wait fork be used with join_any?
+A: Yes, common pattern: join_any for timeout, wait fork to clean up others.
+
+Q: What's the danger of using wait fork?
+A: Can wait forever if any process doesn't terminate (forever loops).
+
+Q: How to avoid hanging on wait fork?
+A: Use timeouts with fork...join_any and disable fork.
+
+Q: When should you use wait fork vs join?
+A: Use join when creating processes and immediately waiting. Use wait fork when processes are created at different times.  
 
 //////////////////////////////////
   wait fork  Example1
