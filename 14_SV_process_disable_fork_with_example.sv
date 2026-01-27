@@ -752,11 +752,67 @@ Main: Outside of fork...join : Executed at 16ns
 //////////////////////////////////
   disable fork  Example26
 //////////////////////////////////
+module disable_fork_example26; // Partial Disable
+  initial begin
+    fork :my_fork_block
+      begin :my_begin_block1
+        #10 $display("TaskA1 Executed at %0dns",$time);
+        #10 $display("TaskA2 Executed at %0dns",$time);
+      end
+      begin :my_begin_block2
+        #15 $display("TaskB Executed at %0dns",$time);
+        #1;  // Now time is 16ns, Thread A is in middle of #10 delay
+        disable my_begin_block2;  // Jumps to end of my_block
+        $display("After disable :Executed at %0dns",$time);
+      end
+    join
+    $display("Main: Outside of fork...join : Executed at %0dns",$time);
+    // What prints? What's killed?
+   end
+endmodule : disable_fork_example26
 
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 27 06:53 2026
+TaskA1 Executed at 10ns
+TaskB Executed at 15ns
+TaskA2 Executed at 20ns
+Main: Outside of fork...join : Executed at 20ns
+           V C S   S i m u l a t i o n   R e p o r t     
+    
 //////////////////////////////////
   disable fork  Example27
 //////////////////////////////////
-
+module disable_fork_example27; //Disable Fork with Automatic Variables
+   initial begin
+      for (int i = 0; i < 3; i++) begin
+         automatic int j = i;
+         fork
+           #(j*10) $display("TASK %0d Executed at %0d", j,$time);
+           #5 
+           begin
+           $display("KILL %0d Executed at %0d", j,$time);
+           disable fork;
+           end
+         join
+      end
+      $display("DONE Executed at %0d",$time);
+      // What's the behavior?
+    end
+endmodule : disable_fork_example27
+           
+//Logfile output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 27 06:54 2026
+TASK 0 Executed at 0
+KILL 0 Executed at 5
+KILL 1 Executed at 10
+TASK 1 Executed at 15
+KILL 2 Executed at 20
+TASK 2 Executed at 35
+DONE Executed at 35
+           V C S   S i m u l a t i o n   R e p o r t            
+           
 //////////////////////////////////
   disable fork  Example28
 //////////////////////////////////
