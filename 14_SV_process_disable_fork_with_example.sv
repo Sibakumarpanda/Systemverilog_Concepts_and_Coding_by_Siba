@@ -1157,10 +1157,54 @@ Main done: at timestamp 8
 //////////////////////////////////
   disable fork  Example39
 ////////////////////////////////// 
-
-
+module disable_fork_example39; //Disable Fork Race
+   initial begin
+      fork
+        #10 $display("Executed A at timestamp %0t",$time);
+        #5 begin
+           $display("Executed B at timestamp %0t",$time);
+           disable fork;
+           end
+        #1 $display("Executed C at timestamp %0t",$time);
+      join
+      $display("Executed D at timestamp %0t",$time);
+      // What's the output? Is C printed?
+   end
+endmodule :disable_fork_example39    
+  
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 27 07:32 2026
+Executed C at timestamp 1
+Executed B at timestamp 5
+Executed A at timestamp 10
+Executed D at timestamp 10
+           V C S   S i m u l a t i o n   R e p o r t         
 //////////////////////////////////
   disable fork  Example40
-//////////////////////////////////   
-
-    
+//////////////////////////////////  
+module disable_fork_example40; //Disable Fork Race
+   initial begin
+      fork
+        #10 $display("Executed A at timestamp %0t",$time);
+        #5 begin
+           $display("Executed B at timestamp %0t",$time);
+           disable fork;
+           end
+        #1 $display("Executed C at timestamp %0t",$time);
+       //join_any
+       join_none   
+       $display("Executed D at timestamp %0t",$time);
+      // What's the output? Is C printed?
+   end
+endmodule :disable_fork_example40
+        
+//Logfile output
+Chronologic VCS simulator copyright 1991-2023
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 27 07:34 2026
+Executed D at timestamp 0
+Executed C at timestamp 1
+Executed B at timestamp 5
+Executed A at timestamp 10
+           V C S   S i m u l a t i o n   R e p o r t         
