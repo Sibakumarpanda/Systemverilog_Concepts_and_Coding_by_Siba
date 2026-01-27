@@ -968,12 +968,37 @@ All done: Executed at 30
 //////////////////////////////////
   disable fork  Example33
 //////////////////////////////////
-    
-
+module disable_fork_example33; //Disable Fork Scope Mystery
+  initial begin
+     fork
+       fork
+         #40 $display("Inner fork...join task: Executed at %0t",$time);
+       join
+       #10 $display("Middle: Executed at %0t",$time);
+       #20 
+       begin
+       $display("Disabling: : Executed at %0t",$time);
+       disable fork;
+       end
+     join
+     $display("Outer survived: : Executed at %0t",$time);
+     // What's the scope of disable fork?
+  end
+endmodule :disable_fork_example33    
+       
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 27 10:12 2026
+Middle: Executed at 10
+Disabling: : Executed at 20
+Inner fork...join task: Executed at 40
+Outer survived: : Executed at 40
+           V C S   S i m u l a t i o n   R e p o r t        
 
 //////////////////////////////////
   disable fork  Example34
 //////////////////////////////////
+    
 
 //////////////////////////////////
   disable fork  Example35
