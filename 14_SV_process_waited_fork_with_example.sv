@@ -234,11 +234,32 @@ fork...join_none completed at time = 25
 //////////////////////////////////
   wait fork  Example6
 ////////////////////////////////// 
+module wait_fork_example6; //Basic Example
+  initial begin
+    fork
+      #10 $display("A Executed at %0t", $time); //10ns
+      #20 $display("B Executed at %0t", $time); //20ns
+    join_none
+    $display("Main Executed at %0t", $time); //0ns
+    wait fork;
+    $display("All done at %0t", $time); //20ns
+    // Timeline and output?
+  end
+endmodule :wait_fork_example6
 
-
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 27 20:23 2026
+Main Executed at 0
+A Executed at 10
+B Executed at 20
+All done at 20
+           V C S   S i m u l a t i o n   R e p o r t       
+    
 //////////////////////////////////
   wait fork  Example7
 //////////////////////////////////
+    
 
 
 
