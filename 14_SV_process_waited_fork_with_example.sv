@@ -309,8 +309,28 @@ All done at 50ns
 //////////////////////////////////
   wait fork  Example9
 //////////////////////////////////
-    
-
+module wait_fork_example9; //wait fork with join_any
+  initial begin
+    fork
+      #50 $display("Slow executed at %0tns", $time); //50ns
+      #10 $display("Fast executed at %0tns", $time); //10ns
+    join_any
+    #60
+    $display("First done at %0tns", $time); //10+60=70ns
+    wait fork;
+    $display("All done at %0tns", $time); //70ns
+      // What prints when?
+   end
+endmodule :wait_fork_example9
+      
+//Logfile Ouput
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 29 11:34 2026
+Fast executed at 10ns
+Slow executed at 50ns
+First done at 70ns
+All done at 70ns
+           V C S   S i m u l a t i o n   R e p o r t       
 
 //////////////////////////////////
   wait fork  Example10
