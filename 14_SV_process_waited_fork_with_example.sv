@@ -335,7 +335,31 @@ All done at 70ns
 //////////////////////////////////
   wait fork  Example10
 //////////////////////////////////
-
+module wait_fork_example10; // Nested wait fork
+  initial begin
+    fork
+      begin
+        fork
+          #30 $display("Inner Executed at %0t", $time);
+        join_none
+        wait fork;
+        $display("Middle Executed at %0t", $time);
+      end
+      #10 $display("Outer Executed at %0t", $time);
+    join
+    $display("Done at %0t", $time);
+    // Execution order?
+  end 
+endmodule :wait_fork_example10   
+      
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 29 11:39 2026
+Outer Executed at 10
+Inner Executed at 30
+Middle Executed at 30
+Done at 30
+           V C S   S i m u l a t i o n   R e p o r t       
 
 //////////////////////////////////
   wait fork  Example11
