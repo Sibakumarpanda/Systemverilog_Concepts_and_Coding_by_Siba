@@ -593,8 +593,49 @@ $finish at simulation time                   50
 //////////////////////////////////
   wait fork  Example19
 ////////////////////////////////// 
+module wait_fork_example19; // wait fork and Named Block
+  initial begin
+    fork: my_fork
+      #10 $display("Task1 Executed at timestamp =%0tns",$time); //10ns
+      #20 $display("Task2 Executed at timestamp =%0tns",$time); //20ns
+    join_none 
+    wait fork;
+    $display("Done at %0tns", $time); //20ns
+    disable my_fork;
+   // What happens?
+  end
+      
+endmodule :wait_fork_example19
+      
+//Logfile output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 30 21:55 2026
+Task1 Executed at timestamp =10ns
+Task2 Executed at timestamp =20ns
+Done at 20ns
+           V C S   S i m u l a t i o n   R e p o r t       
+    
+module wait_fork_example19_1; // wait fork and Named Block
+  initial begin
+    fork: my_fork
+      #10 $display("Task1 Executed at timestamp =%0tns",$time);
+      #20 $display("Task2 Executed at timestamp =%0tns",$time);
+    join_none 
+    disable my_fork;
+    wait fork;
+    $display("Done at %0tns", $time); //0ns
+   // What happens?
+  end
+      
+endmodule :wait_fork_example19_1      
 
-
+//Logfile Output
+Chronologic VCS simulator copyright 1991-2023
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 30 20:44 2026
+Done at 0ns
+           V C S   S i m u l a t i o n   R e p o r t       
+    
 //////////////////////////////////
   wait fork  Example20
 ////////////////////////////////// 
