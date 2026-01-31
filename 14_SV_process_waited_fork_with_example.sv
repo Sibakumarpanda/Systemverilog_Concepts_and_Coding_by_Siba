@@ -389,12 +389,56 @@ Outside of fork...join_none : Executed at 100
 //////////////////////////////////
   wait fork  Example12
 //////////////////////////////////
-
-
+module wait_fork_example12; // wait fork with disable fork with minor change
+  initial begin
+    fork
+      #100 $display("Long task Executed at %0t ",$time);
+      #20 begin
+          $display("Timeout: Executed at %0t ",$time);
+      disable fork;
+      end
+    join_none
+    wait fork;
+      #10
+      $display("Outside of fork...join_none : Executed at %0t ",$time);
+  // Does wait fork complete?
+  end
+endmodule:wait_fork_example12
+      
+//Logfile Output
+Chronologic VCS simulator copyright 1991-2023
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 30 20:36 2026
+Timeout: Executed at 20 
+Long task Executed at 100 
+Outside of fork...join_none : Executed at 110 
+           V C S   S i m u l a t i o n   R e p o r t 
+  
 //////////////////////////////////
   wait fork  Example13
 //////////////////////////////////
-
+module wait_fork_example13; // wait fork in Loop
+  initial begin
+     for (int i = 0; i < 3; i++) begin
+       fork
+         #(i*10) $display("Task%0d Executed at timestamp= %0tns", i,$time);
+       join_none
+    end
+    wait fork;
+    $display("Loop done at %0t", $time);
+    // What value of i do threads see?
+    // When does it finish?
+  end
+endmodule : wait_fork_example13   
+      
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 30 20:37 2026
+Task3 Executed at timestamp= 30ns
+Task3 Executed at timestamp= 30ns
+Task3 Executed at timestamp= 30ns
+Loop done at 30
+           V C S   S i m u l a t i o n   R e p o r t       
 
 //////////////////////////////////
   wait fork  Example14
