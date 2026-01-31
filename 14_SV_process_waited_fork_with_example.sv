@@ -695,7 +695,28 @@ Deep executed at 30ns
 //////////////////////////////////
   wait fork  Example22
 ////////////////////////////////// 
-
+module wait_fork_example22;  //wait fork with Return
+   task automatic spawn(int delay);
+     fork
+       #delay $display("Delay Executed at %0dns", delay);
+     join_none
+   endtask
+  initial begin
+     spawn(10);
+     spawn(5);
+     wait fork;
+    $display("Tasks done at %0t", $time);
+    // Completion order?
+   end
+endmodule :wait_fork_example22
+       
+//Logfile  Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 30 21:58 2026
+Delay Executed at 5ns
+Delay Executed at 10ns
+Tasks done at 10
+           V C S   S i m u l a t i o n   R e p o r t        
 
 //////////////////////////////////
   wait fork  Example23
