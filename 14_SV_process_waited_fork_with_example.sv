@@ -497,8 +497,34 @@ Loop Done at 60
 //////////////////////////////////
   wait fork  Example16
 ////////////////////////////////// 
-
-
+module wait_fork_example16; //Multiple wait fork Calls
+  initial begin
+     fork
+       #10 $display("First fork...join_none :Executed at %0tns", $time); //10ns , this stmt executed first , even if having higher delay
+     join_none
+  
+     wait fork;
+     $display("First wait Executed at %0tns", $time); //10ns
+  
+     fork
+       #5 $display("Second fork...join_none :Executed at %0tns", $time); // 5+10ns=15ns , Executed at 15ns
+     join_none
+  
+     wait fork;
+     $display("Second wait Executed at %0tns", $time); // Executed at 15ns
+     // Output timeline?
+  end
+endmodule: wait_fork_example16
+       
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 30 20:44 2026
+First fork...join_none :Executed at 10ns
+First wait Executed at 10ns
+Second fork...join_none :Executed at 15ns
+Second wait Executed at 15ns
+           V C S   S i m u l a t i o n   R e p o r t        
+    
 //////////////////////////////////
   wait fork  Example17
 ////////////////////////////////// 
