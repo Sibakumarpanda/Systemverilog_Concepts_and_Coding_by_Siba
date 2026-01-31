@@ -639,7 +639,33 @@ Done at 0ns
 //////////////////////////////////
   wait fork  Example20
 ////////////////////////////////// 
-
+module wait_fork_example20; //wait fork with Event
+   event done;
+   initial begin
+     fork
+       begin
+        #10;
+        -> done;
+        $display("Event sent at %0t", $time);
+       end
+       begin
+        @(done);
+        $display("Event received at %0t", $time);
+       end
+    join_none
+    wait fork;
+    $display("All at %0t", $time);
+    // Does wait fork wait for event?
+   end
+endmodule :wait_fork_example20
+      
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 30 20:44 2026
+Event sent at 10
+Event received at 10
+All at 10
+           V C S   S i m u l a t i o n   R e p o r t       
 
 //////////////////////////////////
   wait fork  Example21
