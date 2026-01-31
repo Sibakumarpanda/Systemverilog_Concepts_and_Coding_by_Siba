@@ -779,5 +779,29 @@ Wait returned : Executed at timetsmap=100ns
 
 //////////////////////////////////
   wait fork  Example25
-//////////////////////////////////     
-    
+////////////////////////////////// 
+module wait_fork_example25; // Complex wait fork Timing
+   initial begin
+     fork
+        begin
+          #10 $display("A: executed at timesatmp=%0tns", $time); //10ns
+        fork
+          #5 $display("B:executed at timesatmp=%0tns", $time); //15ns
+        join_none
+        end
+        #15 $display("C:executed at timesatmp=%0tns", $time); //15ns
+     join_none
+     wait fork;
+     $display("All: executed at timesatmp=%0tns", $time); //15ns
+    // Timeline output?
+   end
+endmodule :wait_fork_example25
+  
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 30 22:05 2026
+A: executed at timesatmp=10ns
+C:executed at timesatmp=15ns
+B:executed at timesatmp=15ns
+All: executed at timesatmp=15ns
+           V C S   S i m u l a t i o n   R e p o r t        
