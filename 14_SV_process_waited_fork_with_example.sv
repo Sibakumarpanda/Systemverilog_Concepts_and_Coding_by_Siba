@@ -721,7 +721,34 @@ Tasks done at 10
 //////////////////////////////////
   wait fork  Example23
 ////////////////////////////////// 
-
+module wait_fork_example23;  //wait fork Race Condition
+   int count = 0;
+   initial begin
+    fork
+      begin
+       #5;
+       count++;
+       $display("A: count=%0d", count);
+      end
+     begin
+        #5;
+        count++;
+        $display("B: count=%0d", count);
+      end
+    join_none
+    wait fork;
+    $display("Final: count=%0d", count);
+    // Final count value?
+   end
+endmodule :wait_fork_example23
+      
+//Logfile output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 30 21:58 2026
+A: count=1
+B: count=2
+Final: count=2
+           V C S   S i m u l a t i o n   R e p o r t       
 
 //////////////////////////////////
   wait fork  Example24
