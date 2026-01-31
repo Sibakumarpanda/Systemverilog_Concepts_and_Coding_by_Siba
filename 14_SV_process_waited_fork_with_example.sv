@@ -364,7 +364,27 @@ Done at 30
 //////////////////////////////////
   wait fork  Example11
 //////////////////////////////////
-
+module wait_fork_example11; // wait fork with disable fork
+  initial begin
+    fork
+      #100 $display("Long task Executed at %0t ",$time);
+      #20 begin
+          $display("Timeout: Executed at %0t ",$time);
+      disable fork;
+      end
+    join_none
+    wait fork;
+      $display("Outside of fork...join_none : Executed at %0t ",$time);
+  // Does wait fork complete?
+  end
+endmodule:wait_fork_example11
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 30 20:34 2026
+Timeout: Executed at 20 
+Long task Executed at 100 
+Outside of fork...join_none : Executed at 100 
+           V C S   S i m u l a t i o n   R e p o r t      
 
 //////////////////////////////////
   wait fork  Example12
