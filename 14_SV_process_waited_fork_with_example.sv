@@ -670,8 +670,28 @@ All at 10
 //////////////////////////////////
   wait fork  Example21
 ////////////////////////////////// 
-
-
+module wait_fork_example21; //wait fork Scope
+  initial begin
+    fork
+      fork
+        #30 $display("Deep executed at %0tns", $time);
+      join_none
+      #10 $display("Shallow executed at %0tns", $time);
+    join_none
+    wait fork;
+    $display("Done at %0t", $time);
+    // What does wait fork wait for?
+  end
+endmodule :wait_fork_example21
+      
+//Logfile output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 30 21:58 2026
+Shallow executed at 10ns
+Done at 10
+Deep executed at 30ns
+           V C S   S i m u l a t i o n   R e p o r t      
+  
 //////////////////////////////////
   wait fork  Example22
 ////////////////////////////////// 
