@@ -560,7 +560,35 @@ second wait Executed at 15ns
 //////////////////////////////////
   wait fork  Example18
 ////////////////////////////////// 
-
+module wait_fork_example18; //wait fork with Forever Loop
+   initial begin
+     fork
+       forever #5 $display("Forever Statement Executed at timestamp=%0tns",$time);
+       #50 $finish ;
+     join_none  
+     #15 $display("Timeout occur at timetsmap= %0tns", $time);
+     wait fork;
+     $display("Outside of wait form executed  at timestamp =%0tns", $time);
+     // Does wait fork return?
+   end
+endmodule :wait_fork_example18
+       
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 30 20:44 2026
+Forever Statement Executed at timestamp=5ns
+Forever Statement Executed at timestamp=10ns
+Timeout occur at timetsmap= 15ns
+Forever Statement Executed at timestamp=15ns
+Forever Statement Executed at timestamp=20ns
+Forever Statement Executed at timestamp=25ns
+Forever Statement Executed at timestamp=30ns
+Forever Statement Executed at timestamp=35ns
+Forever Statement Executed at timestamp=40ns
+Forever Statement Executed at timestamp=45ns
+$finish called from file "testbench.sv", line 5.
+$finish at simulation time                   50
+           V C S   S i m u l a t i o n   R e p o r t        
 
 //////////////////////////////////
   wait fork  Example19
