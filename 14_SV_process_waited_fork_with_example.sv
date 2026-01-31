@@ -528,8 +528,35 @@ Second wait Executed at 15ns
 //////////////////////////////////
   wait fork  Example17
 ////////////////////////////////// 
-
-
+module wait_fork_example17; //Multiple wait fork Calls
+  initial begin
+      
+     fork
+       #5 $display("First fork...join_none :Executed at %0tns", $time); //5ns , this stmt executed first 
+     join_none
+  
+     wait fork;
+     $display("First wait Executed at %0tns", $time); //5ns
+       
+     fork
+       #10 $display("Second fork...join_none :Executed at %0tns", $time); //10+5=15ns
+     join_none
+  
+     wait fork;
+     $display("second wait Executed at %0tns", $time);  //15ns
+     // Output timeline?
+  end
+endmodule: wait_fork_example17
+       
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 30 20:44 2026
+First fork...join_none :Executed at 5ns
+First wait Executed at 5ns
+Second fork...join_none :Executed at 15ns
+second wait Executed at 15ns
+           V C S   S i m u l a t i o n   R e p o r t        
+       
 //////////////////////////////////
   wait fork  Example18
 ////////////////////////////////// 
