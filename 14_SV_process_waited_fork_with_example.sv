@@ -443,12 +443,57 @@ Loop done at 30
 //////////////////////////////////
   wait fork  Example14
 //////////////////////////////////
+module wait_fork_example14; // wait fork with Automatic Variables- Updated version of Example13
+   initial begin
+     for (int i = 0; i < 3; i++) begin
+       automatic int j = i;
+       fork
+         #(j*10) $display("Task%0d Executed at timestamp= %0tns", j,$time);
+       join_none
+      end
+      wait fork;
+        $display("Loop Done at %0t", $time);
+      // Delays? Completion time?
+    end
+endmodule :wait_fork_example14
 
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 30 20:39 2026
+Task0 Executed at timestamp= 0ns
+Task1 Executed at timestamp= 10ns
+Task2 Executed at timestamp= 20ns
+Loop Done at 20
+           V C S   S i m u l a t i o n   R e p o r t         
 
 //////////////////////////////////
   wait fork  Example15
 //////////////////////////////////
-
+module wait_fork_example15; // wait fork with Automatic Variables- Updated version of Example13
+   initial begin
+     for (int i = 0; i < 3; i++) begin
+       automatic int j = i;
+       fork
+         #(j*10) $display("Task%0d Executed at timestamp= %0tns", j,$time);
+       join_none
+      end
+      wait fork;
+        #40
+        $display("Loop Done at %0t", $time); // 20+40=60ns
+      // Delays? Completion time?
+    end
+endmodule :wait_fork_example15
+        
+//Logfile Output
+Chronologic VCS simulator copyright 1991-2023
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 30 20:39 2026
+Task0 Executed at timestamp= 0ns
+Task1 Executed at timestamp= 10ns
+Task2 Executed at timestamp= 20ns
+Loop Done at 60
+           V C S   S i m u l a t i o n   R e p o r t         
+        
 //////////////////////////////////
   wait fork  Example16
 ////////////////////////////////// 
