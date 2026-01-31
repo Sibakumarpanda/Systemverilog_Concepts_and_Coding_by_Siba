@@ -753,7 +753,29 @@ Final: count=2
 //////////////////////////////////
   wait fork  Example24
 ////////////////////////////////// 
-
+module wait_fork_example24; //wait fork with Process Kill
+   initial begin
+     fork
+       #100 $display("Long : Executed at timetsmap=%0tns", $time);
+       begin
+        #10;
+         disable fork;
+         $display("Kill :Executed at timetsmap=%0tns", $time);
+       end
+     join_none
+     wait fork;
+     $display("Wait returned : Executed at timetsmap=%0tns", $time);
+    // Does wait fork return?
+   end
+endmodule :wait_fork_example24
+      
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Jan 30 22:04 2026
+Kill :Executed at timetsmap=10ns
+Long : Executed at timetsmap=100ns
+Wait returned : Executed at timetsmap=100ns
+           V C S   S i m u l a t i o n   R e p o r t        
 
 //////////////////////////////////
   wait fork  Example25
