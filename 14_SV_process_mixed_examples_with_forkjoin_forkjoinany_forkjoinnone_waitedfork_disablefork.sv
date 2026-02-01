@@ -19,7 +19,33 @@ A: Shared variable races and variable capture in loops
 //////////////////
   Example-1
 //////////////////
-
+module mixed_fork_example1; 
+   initial begin
+     fork
+       begin
+         fork
+           #10 $display("A : Executed at timestamp = %0tns", $time);
+           #20 $display("B : Executed at timestamp = %0tns", $time);
+         join_any
+         $display("C : Executed at timestamp = %0tns", $time);
+       end
+       #5 $display("D : Executed at timestamp = %0tns", $time);
+    join_none
+    wait fork;
+    $display("E : Executed at timestamp = %0tns", $time);
+    // Complete timeline output?
+  end
+endmodule: mixed_fork_example1
+     
+//Logfile output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb  1 08:23 2026
+D : Executed at timestamp = 5ns
+A : Executed at timestamp = 10ns
+C : Executed at timestamp = 10ns
+E : Executed at timestamp = 10ns
+B : Executed at timestamp = 20ns
+           V C S   S i m u l a t i o n   R e p o r t       
   
 //////////////////
   Example-2
