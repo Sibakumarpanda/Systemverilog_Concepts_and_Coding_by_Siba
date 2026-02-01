@@ -50,8 +50,32 @@ B : Executed at timestamp = 20ns
 //////////////////
   Example-2
 //////////////////
-
-
+module mixed_fork_example2; 
+  initial begin
+     fork: outer
+       fork
+         #30 $display("X: Executed at timestamp= %0tns", $time);
+         #10 begin
+           $display("Y: Executed at timestamp= %0tns", $time);
+         disable fork;
+        end
+       join_any
+       $display("Z: Executed at timestamp= %0tns", $time);
+     join
+      $display("W: Executed at timestamp= %0tns", $time);
+     // What prints? What order?
+   end
+endmodule : mixed_fork_example2;   
+         
+//Logfile output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb  1 08:31 2026
+Z: Executed at timestamp= 0ns
+Y: Executed at timestamp= 10ns
+W: Executed at timestamp= 10ns
+X: Executed at timestamp= 30ns
+           V C S   S i m u l a t i o n   R e p o r t          
+      
 //////////////////
   Example-3
 //////////////////
