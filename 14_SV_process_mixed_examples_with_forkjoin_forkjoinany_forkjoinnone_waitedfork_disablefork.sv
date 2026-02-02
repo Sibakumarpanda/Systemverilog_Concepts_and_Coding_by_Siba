@@ -79,7 +79,31 @@ X: Executed at timestamp= 30ns
 //////////////////
   Example-3
 //////////////////
-
+module mixed_fork_example3; //The "Nested Madness"
+  initial begin
+    fork
+     fork
+       #10 $display("LEVEL1 : Executed at timestamp =%0tns", $time);
+        fork
+          #5 $display("LEVEL2 : Executed at timestamp =%0tns", $time);
+        join_none
+      join
+      #15 $display("LEVEL2 : Executed at timestamp =%0tns", $time);
+    join_any
+    wait fork;
+    $display("DONE : Executed at timestamp =%0tns", $time);
+    // Output order with timing?
+  end
+endmodule: mixed_fork_example3   
+      
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb  2 06:55 2026
+LEVEL2 : Executed at timestamp =5ns
+LEVEL1 : Executed at timestamp =10ns
+LEVEL2 : Executed at timestamp =15ns
+DONE : Executed at timestamp =15ns
+           V C S   S i m u l a t i o n   R e p o r t       
 
 //////////////////
   Example-4
