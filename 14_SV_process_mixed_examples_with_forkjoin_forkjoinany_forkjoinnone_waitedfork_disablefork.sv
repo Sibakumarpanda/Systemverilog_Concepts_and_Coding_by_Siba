@@ -140,7 +140,31 @@ Final : Executed at timestamp =100ns
 //////////////////
   Example-5
 //////////////////
-
+module mixed_fork_example5; // The "Loop Variable Hell"
+  initial begin
+     for (int i = 0; i < 3; i++) begin
+      fork
+        #(i*5) $display("Task%0d: Executed at timestamp =%0tns", i, $time);
+        begin
+         #10;
+         disable fork;
+        end
+      join_none
+     end
+     wait fork;
+     $display("Complete: Executed at timestamp =%0tns", $time);
+     // How many tasks print? What values?
+   end
+endmodule: mixed_fork_example5  
+                   
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb  2 07:03 2026
+Task3:Executed at timestamp =15ns
+Task3:Executed at timestamp =15ns
+Task3:Executed at timestamp =15ns
+Complete: Executed at timestamp =15ns
+           V C S   S i m u l a t i o n   R e p o r t        
 
 //////////////////
   Example-6
