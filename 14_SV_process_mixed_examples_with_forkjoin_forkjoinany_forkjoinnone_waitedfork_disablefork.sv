@@ -108,7 +108,35 @@ DONE : Executed at timestamp =15ns
 //////////////////
   Example-4
 //////////////////
-
+module mixed_fork_example4; //The "Timeout Trap"
+  initial begin
+    fork
+      #100 $display("Success: Executed at timestamp =%0tns", $time);
+      begin
+        #10 $display("Timeout start : Executed at timestamp =%0tns", $time);
+        fork
+          #5 $display("Killing : Executed at timestamp =%0tns", $time);
+          disable fork;
+        join_any
+        $display("Timeout end : Executed at timestamp =%0tns", $time);
+      end
+    join_any
+    wait fork;
+    $display("Final : Executed at timestamp =%0tns", $time);
+    // What prints and what doesn't?
+  end
+endmodule: mixed_fork_example4   
+      
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb  2 06:59 2026
+Timeout start : Executed at timestamp =10ns
+Timeout end : Executed at timestamp =10ns
+Killing : Executed at timestamp =15ns
+Success: Executed at timestamp =100ns
+Final : Executed at timestamp =100ns
+           V C S   S i m u l a t i o n   R e p o r t       
+      
 //////////////////
   Example-5
 //////////////////
