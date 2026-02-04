@@ -85,6 +85,8 @@ endmodule :class_example
 //Output
 Printing Inside constructor
 Value of data = a  
-    
-
+ 
+///////////////////////////////    
+  Accessing class methods
+/////////////////////////////// 
     
