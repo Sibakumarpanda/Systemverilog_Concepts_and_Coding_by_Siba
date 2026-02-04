@@ -6,7 +6,7 @@ System Verilog Class Introduction :
 - Class properties include data members of the different data types.
 - Class methods include functions and tasks present inside classes.
 
-A basic class syntax:
+//A basic class syntax:
 class <class_name>;
   <data members>  // class properties
 
@@ -19,3 +19,19 @@ class <class_name>;
   . . .
   endtask
 endclass  
+
+A class instance, handle and object :
+- A class defines a data type and an object.
+- Basically the instance/variable of class is called handle .
+- Also an object handle is nothing but a pointer for an object.
+- Once the handle is newed ,means explicitely called with a constructor new (), at that time memory allocation is done .And we can say the object is created for the class.  
+- NOTE : If an object is not created, then the default value for the class handle is null. 
+  
+// Basic code Snippet
+class transaction;
+  // class properties and methods
+endclass
+
+transaction tr; // variable of class data_type transaction or class handle
+  tr = new(); // memory is allotted for class handle .
+ 
