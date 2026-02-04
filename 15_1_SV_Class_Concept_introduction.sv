@@ -62,7 +62,7 @@ tr = new(); // memory is allotted for class handle .
   //2nd way
   transaction tr = new(); // This is possible. Declaration of class handle and object creation in a single line
 
-//Example - constructor with passing argument
+//Example1 - constructor with passing argument
 - An argument can be passed to the constructor.
   
 class transaction;
@@ -75,18 +75,46 @@ class transaction;
   endfunction
 endclass : transaction
 
-module class_example;
+module class_example1;
   initial begin
     transaction tr = new(10);
     $display("Value of data = %0h", tr.data);
   end
-endmodule :class_example
+endmodule :class_example1
   
 //Output
 Printing Inside constructor
 Value of data = a  
  
 ///////////////////////////////    
-  Accessing class methods
+  Accessing class methods :
 /////////////////////////////// 
-    
+- Till now, we have seen how to access class properties. 
+- Similarly, class methods (tasks and functions) can be accessed using a class handle.
+- In the below example, update (task) and print (function) methods are accessed by handle tr.
+ 
+//Example2
+class transaction;
+  bit [31:0] data;
+  int id;
+  
+  task update(bit [31:0] m_data, int m_id);
+    data = m_data;
+    id = m_id;
+  endtask
+  
+  function print(transaction tr);
+    $display("Value of data = %0h and id = %0h", tr.data, tr.id);
+  endfunction
+endclass :transaction
+
+module class_example2;
+  initial begin
+    transaction tr = new();
+    tr.update(5, 9);
+    tr.print(tr);
+  end
+endmodule :class_example2  
+ 
+// Output
+ Value of data = 5 and id = 9
