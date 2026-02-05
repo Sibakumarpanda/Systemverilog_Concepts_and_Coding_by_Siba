@@ -304,8 +304,34 @@ Main: Executed at timestamp=5ns
 //////////////////
   Example-10
 //////////////////
-
-
+module mixed_fork_example10; //The "Mixed Termination"
+  initial begin
+    fork
+      begin
+        fork
+          #30 $display("Long : Executed at timestamp=%0tns",$time);
+          #10 $display("Short : Executed at timestamp=%0tns",$time);
+        join_any
+        disable fork;
+        $display("Killed : Executed at timestamp=%0tns",$time);
+      end
+      #5 $display("Parallel : Executed at timestamp=%0tns",$time);
+    join_none
+    wait fork;
+    $display("All done : Executed at timestamp=%0tns",$time);
+    // Complete output?
+  end
+endmodule : mixed_fork_example10 
+      
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb  5 09:30 2026
+Parallel : Executed at timestamp=5ns
+Short : Executed at timestamp=10ns
+Killed : Executed at timestamp=10ns
+All done : Executed at timestamp=10ns
+           V C S   S i m u l a t i o n   R e p o r t 
+      
 //////////////////
   Example-11
 //////////////////
