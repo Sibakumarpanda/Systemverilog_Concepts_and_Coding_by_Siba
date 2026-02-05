@@ -169,7 +169,40 @@ Complete: Executed at timestamp =15ns
 //////////////////
   Example-6
 //////////////////
-
+module mixed_fork_example6; //The "Order of Operations"
+  initial begin
+    fork
+      begin
+        fork
+          #5 $display("A: Executed at timestamp=%0t",$time);
+          #1 $display("B: Executed at timestamp=%0t",$time);
+        join
+        $display("C: Executed at timestamp=%0t",$time);
+      end
+      begin
+        fork
+          #3 $display("D: Executed at timestamp=%0t",$time);
+        join_none
+        $display("E: Executed at timestamp=%0t",$time);
+      end
+    join_any
+    $display("F: Executed at timestamp=%0t",$time);
+    wait fork;
+    $display("G: Executed at timestamp=%0t",$time);
+    // Execution sequence?
+  end
+endmodule : mixed_fork_example6 
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb  5 09:25 2026
+E: Executed at timestamp=0
+F: Executed at timestamp=0
+B: Executed at timestamp=1
+D: Executed at timestamp=3
+A: Executed at timestamp=5
+C: Executed at timestamp=5
+G: Executed at timestamp=5
+           V C S   S i m u l a t i o n   R e p o r t       
 
 //////////////////
   Example-7
