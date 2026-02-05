@@ -243,7 +243,31 @@ Inner1: Executed at timestamp=20
 //////////////////
   Example-8
 //////////////////
+module mixed_fork_example8; //The "Race Condition Mix"
+  int count = 0;
+  initial begin
+    fork
+      fork
+        #5 count = count + 1;
+        #5 count = count + 2;
+      join_none
+      begin
+        #1;
+        disable fork;
+        count = count + 10;
+      end
+    join_any
+    $display("Count = %0d", count);
+    wait fork;
+    // Final count value?
+  end
+endmodule : mixed_fork_example8   
 
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb  5 09:27 2026
+Count = 0
+           V C S   S i m u l a t i o n   R e p o r t       
 
 //////////////////
   Example-9
