@@ -207,7 +207,38 @@ G: Executed at timestamp=5
 //////////////////
   Example-7
 //////////////////
-
+module mixed_fork_example7; //The "Scope Confusion"
+  initial begin
+    fork: block1
+      fork
+        #20 $display("Inner1: Executed at timestamp=%0t",$time);
+        #10 begin
+          $display("Inner2 : Executed at timestamp=%0t",$time);
+        disable fork;
+        end
+      join_none
+      $display("Mid1: Executed at timestamp=%0t",$time);
+    join_none
+  
+    fork: block2
+       #5 $display("Outer: Executed at timestamp=%0t",$time);
+    join_none
+  
+    wait fork;
+    $display("End: Executed at timestamp=%0t",$time);
+    // What's killed? What prints?
+  end
+endmodule : mixed_fork_example7  
+      
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb  5 09:26 2026
+Mid1: Executed at timestamp=0
+Outer: Executed at timestamp=5
+End: Executed at timestamp=5
+Inner2 : Executed at timestamp=10
+Inner1: Executed at timestamp=20
+           V C S   S i m u l a t i o n   R e p o r t      
 
 //////////////////
   Example-8
