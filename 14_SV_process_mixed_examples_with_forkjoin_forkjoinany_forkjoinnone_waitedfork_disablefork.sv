@@ -272,8 +272,35 @@ Count = 0
 //////////////////
   Example-9
 //////////////////
-
-
+module mixed_fork_example9; //The "Event Deadlock"
+  event e1, e2;
+  initial begin
+    fork
+      begin
+        @(e1);
+        $display("Got e1 : Executed at timestamp=%0tns",$time);
+        -> e2;
+      end
+      begin
+        #5;
+        -> e1;
+        @(e2);
+        $display("Got e2 : Executed at timestamp=%0tns",$time);
+      end
+    join_any
+    disable fork;
+    $display("Main: Executed at timestamp=%0tns",$time);
+    // Does this deadlock? What prints?
+ end
+endmodule : mixed_fork_example9 
+      
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb  5 09:29 2026
+Got e1 : Executed at timestamp=5ns
+Main: Executed at timestamp=5ns
+           V C S   S i m u l a t i o n   R e p o r t 
+      
 //////////////////
   Example-10
 //////////////////
