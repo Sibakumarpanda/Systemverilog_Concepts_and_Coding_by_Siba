@@ -428,7 +428,38 @@ Outside: Executed at timestamp =10ns
 //////////////////
   Example-14
 //////////////////
+module mixed_fork_example14; //The "join_none Chain"
+  initial begin
+    fork
+      #10 $display("A: Executed at timestamp= %0tns", $time);
+    join_none
+  
+    fork
+      #5 $display("B: Executed at timestamp= %0tns", $time);
+    join_none
+  
+    fork
+      begin
+       wait fork;
+         $display("C: Executed at timestamp= %0tns", $time);
+      end
+         #15 $display("D: Executed at timestamp= %0tns", $time);
+    join_any
+  
+    $display("E: Executed at timestamp= %0tns", $time);
+    // Output order with timing?
+  end
+endmodule : mixed_fork_example14   
 
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb  6 21:45 2026
+C: Executed at timestamp= 0ns
+E: Executed at timestamp= 0ns
+B: Executed at timestamp= 5ns
+A: Executed at timestamp= 10ns
+D: Executed at timestamp= 15ns
+           V C S   S i m u l a t i o n   R e p o r t       
 
 //////////////////
   Example-15
