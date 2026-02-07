@@ -400,9 +400,31 @@ Finish
 //////////////////
   Example-13
 //////////////////
+ module mixed_fork_example13; //The "Multiple Levels"
+  initial begin
+    fork: L1
+      fork: L2
+        #30 $display("L2_task: Executed at timestamp =%0tns",$time);
+        #10 begin
+          $display("L2_kill: Executed at timestamp =%0tns",$time);
+          disable L1;
+         end
+      join
+      $display("L1_mid: Executed at timestamp =%0tns",$time);
+    join
+    $display("Outside: Executed at timestamp =%0tns",$time);
+    // What happens at time 10?
+  end
+endmodule : mixed_fork_example13  
+
+//Logfile Output    
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb  6 21:45 2026
+L1_mid: Executed at timestamp =0ns
+L2_kill: Executed at timestamp =10ns
+Outside: Executed at timestamp =10ns
+           V C S   S i m u l a t i o n   R e p o r t 
     
-
-
 //////////////////
   Example-14
 //////////////////
