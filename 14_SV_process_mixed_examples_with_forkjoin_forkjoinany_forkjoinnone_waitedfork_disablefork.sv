@@ -368,11 +368,39 @@ B: Executed at timestamp = 20ns
 //////////////////
   Example-12
 //////////////////
-
+module mixed_fork_example12; //The "Variable Capture Mix"
+  initial begin
+    for (int i = 0; i < 2; i++) begin
+      automatic int j = i;
+     fork
+       #(j*10) $display("Task j=%0d", j);
+      begin
+        #5;
+        disable fork;
+        $display("Kill j=%0d", j);
+      end
+    join_none
+  end
+  wait fork;
+  $display("Finish");
+  // What prints? What doesn't?
+end
+endmodule : mixed_fork_example12  
+      
+//Logfile Out
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb  6 21:45 2026
+Task j=0
+Kill j=0
+Kill j=1
+Task j=1
+Finish
+           V C S   S i m u l a t i o n   R e p o r t     
 
 //////////////////
   Example-13
 //////////////////
+    
 
 
 //////////////////
