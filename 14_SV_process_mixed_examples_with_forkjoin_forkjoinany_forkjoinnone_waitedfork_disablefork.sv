@@ -335,7 +335,35 @@ All done : Executed at timestamp=10ns
 //////////////////
   Example-11
 //////////////////
-
+module mixed_fork_example11; //The "Complex Wait"
+  initial begin
+    fork
+      fork
+        #10 $display("A: Executed at timestamp = %0tns",$time);
+        #20 $display("B: Executed at timestamp = %0tns",$time);
+      join_none
+      fork
+        #5 $display("C: Executed at timestamp = %0tns",$time);
+      join_any
+        $display("D: Executed at timestamp = %0tns",$time);
+    join_any
+    $display("E: Executed at timestamp = %0tns",$time);
+    wait fork;
+    $display("F: Executed at timestamp = %0tns",$time);
+    // Timeline from 0 to completion?
+   end
+endmodule : mixed_fork_example11  
+      
+//Logfile Ouput
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb  6 21:44 2026
+E: Executed at timestamp = 0ns
+D: Executed at timestamp = 0ns
+C: Executed at timestamp = 5ns
+F: Executed at timestamp = 5ns
+A: Executed at timestamp = 10ns
+B: Executed at timestamp = 20ns
+           V C S   S i m u l a t i o n   R e p o r t       
 
 //////////////////
   Example-12
