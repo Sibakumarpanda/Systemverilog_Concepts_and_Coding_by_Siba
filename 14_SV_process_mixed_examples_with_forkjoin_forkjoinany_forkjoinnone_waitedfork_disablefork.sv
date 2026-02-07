@@ -463,6 +463,38 @@ D: Executed at timestamp= 15ns
 
 //////////////////
   Example-15
-//////////////////
-  
-  
+//////////////////  
+module mixed_fork_example15; //The "Ultimate Mix"
+  initial begin
+    fork
+      begin
+        fork
+          #10 $display("X: Executed at timetsamp =%0tns",$time);
+          #20 $display("Y: Executed at timetsamp =%0tns",$time);
+        join_any
+        disable fork;
+        $display("Z: Executed at timetsamp =%0tns",$time);
+      end
+    
+      begin
+        #5 $display("W: Executed at timetsamp =%0tns",$time);
+        fork
+          #3 $display("V: Executed at timetsamp =%0tns",$time);
+        join_none
+      end
+    join_none
+    wait fork;
+    $display("END: Executed at timetsamp =%0tns",$time);
+    // Complete execution timeline?
+  end
+endmodule : mixed_fork_example15   
+
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb  6 21:45 2026
+W: Executed at timetsamp =5ns
+V: Executed at timetsamp =8ns
+X: Executed at timetsamp =10ns
+Z: Executed at timetsamp =10ns
+END: Executed at timetsamp =10ns
+           V C S   S i m u l a t i o n   R e p o r t       
