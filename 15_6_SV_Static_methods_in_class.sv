@@ -14,3 +14,17 @@ Static Methods (static functions and static tasks)
    Non-static     Static             Allowed
    static         static             Allowed
    Non static     Non-static         Allowed
+
+//Example-1 : Static Methods examples (with object creation )  
+   
+
+//Example-2 : Static Methods examples (with object creation ) - Method : Static ,Variable: Non-static 
+
+
+//Example-3 : Static Methods examples (with object creation ) - Method : Non Static ,Variable: static   
+
+
+//Example-4 : Static Methods examples (with object creation ) - Method : Static ,Variable: static 
+   
+
+//Example-5 : Static Methods examples (with object creation ) - Method : Non Static ,Variable: non static   
