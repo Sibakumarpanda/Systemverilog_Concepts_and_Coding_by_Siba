@@ -30,3 +30,5 @@ tr[1].data = 1, tr[1].id = 2
 tr[2].data = 4, tr[2].id = 3
 tr[3].data = 9, tr[3].id = 4
 tr[4].data = 16, tr[4].id = 5
+
+//Example2 - Dynamic array of Objects
