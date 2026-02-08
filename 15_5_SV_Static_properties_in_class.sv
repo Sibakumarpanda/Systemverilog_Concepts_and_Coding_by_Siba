@@ -5,8 +5,8 @@
   
 Static Properties (static variables) :
 - The static variable declared inside a class with static keyword shares a single memory location across all class instances.
--Synatx: 
-static <data type> <variable name>  
+- Synatx: static <data type> <variable name> 
+- NOTE: For unique value as per requirement, a user should use a static keyword in such a scenario.  
 
 //Example1 - Example with Non static and Static Static variable uses
 - In the below example, we will have two variables “static int s_id” (static variable) and “int id” (non-static variable). 
