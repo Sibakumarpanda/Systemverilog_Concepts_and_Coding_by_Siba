@@ -69,7 +69,44 @@ On calling incr_id: Value of s_id = 5, id = 1
            V C S   S i m u l a t i o n   R e p o r t    
       
 //Example-2 : Static Methods examples (with object creation ) - Method : Static ,Variable: Non-static 
+//Uses of Static Methods , Non-static Variable
+   
+class transaction; 
+  int id;
+  
+  static function void incr_s_id(); // Static function
+    id++; // illegal access
+  endfunction
+  
+endclass :transaction
 
+module class_example2;
+  transaction tr[10];
+  
+  initial begin
+    foreach (tr[i]) begin 
+      tr[i] = new();
+      tr[i].incr_s_id();
+      $display("On calling incr_s_id: Value of id = %0h ", tr[i].id);
+    end
+  end
+endmodule :class_example2 
+   
+//Logfile Output
+Parsing design file 'design.sv'
+Parsing design file 'testbench.sv'
+Top Level Modules:
+       class_example2
+TimeScale is 1 ns / 1 ns
+
+Error-[SV-AMC] Non-static member access
+testbench.sv, 7
+$unit, "id"
+  Illegal access of non-static member 'id' from static method 
+  'transaction::incr_s_id'.
+
+1 error
+CPU time: .313 seconds to compile   
 
 //Example-3 : Static Methods examples (with object creation ) - Method : Non Static ,Variable: static   
 
