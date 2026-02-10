@@ -149,6 +149,7 @@ On calling incr_id: Value of s_id = a
 
 //Example-4 : Static Methods examples (with object creation ) - Method : Static ,Variable: static 
 //Uses of Static Methods , static Variable
+   
 class transaction;
   static int s_id;
   
@@ -186,4 +187,40 @@ On calling incr_s_id: Value of s_id = a
 ***************************************************************************
            V C S   S i m u l a t i o n   R e p o r t    
 
-//Example-5 : Static Methods examples (with object creation ) - Method : Non Static ,Variable: non static   
+//Example-5 : Static Methods examples (with object creation ) - Method : Non Static ,Variable: non static 
+//Uses of Non Static Method ,Non static variable
+   
+class transaction;
+  int id;   
+  function void incr_id(); // Non-static function
+    id++;
+  endfunction  
+endclass :transaction
+
+module class_example5;
+  transaction tr[10];
+  
+  initial begin    
+    foreach (tr[i]) begin 
+      tr[i] = new();
+      tr[i].incr_id();
+      $display("On calling incr_id: Value of id = %0h", tr[i].id);
+    end
+  end
+endmodule :class_example5
+
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb  9 21:42 2026
+On calling incr_id: Value of id = 1
+On calling incr_id: Value of id = 1
+On calling incr_id: Value of id = 1
+On calling incr_id: Value of id = 1
+On calling incr_id: Value of id = 1
+On calling incr_id: Value of id = 1
+On calling incr_id: Value of id = 1
+On calling incr_id: Value of id = 1
+On calling incr_id: Value of id = 1
+On calling incr_id: Value of id = 1
+           V C S   S i m u l a t i o n   R e p o r t    
+   
