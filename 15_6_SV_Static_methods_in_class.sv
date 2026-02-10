@@ -108,8 +108,44 @@ $unit, "id"
 1 error
 CPU time: .313 seconds to compile   
 
-//Example-3 : Static Methods examples (with object creation ) - Method : Non Static ,Variable: static   
+//Example-3 : Static Methods examples (with object creation ) - Method : Non Static ,Variable: static
+//Uses of Non Static Methods , static Variable
 
+class transaction;
+  static int s_id;
+   
+  function void incr_id(); // Non-static function
+    s_id++;
+  endfunction
+  
+endclass :transaction
+
+module class_example3;
+  transaction tr[10];
+  
+  initial begin  
+    foreach (tr[i]) begin 
+      tr[i] = new();
+      tr[i].incr_id();
+      $display("On calling incr_id: Value of s_id = %0h", tr[i].s_id);
+    end
+  end
+endmodule :class_example3
+   
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb  9 21:42 2026
+On calling incr_id: Value of s_id = 1
+On calling incr_id: Value of s_id = 2
+On calling incr_id: Value of s_id = 3
+On calling incr_id: Value of s_id = 4
+On calling incr_id: Value of s_id = 5
+On calling incr_id: Value of s_id = 6
+On calling incr_id: Value of s_id = 7
+On calling incr_id: Value of s_id = 8
+On calling incr_id: Value of s_id = 9
+On calling incr_id: Value of s_id = a
+           V C S   S i m u l a t i o n   R e p o r t    
 
 //Example-4 : Static Methods examples (with object creation ) - Method : Static ,Variable: static 
    
