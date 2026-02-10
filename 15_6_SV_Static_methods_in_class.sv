@@ -148,6 +148,42 @@ On calling incr_id: Value of s_id = a
            V C S   S i m u l a t i o n   R e p o r t    
 
 //Example-4 : Static Methods examples (with object creation ) - Method : Static ,Variable: static 
+//Uses of Static Methods , static Variable
+class transaction;
+  static int s_id;
+  
+  static function void incr_s_id(); // Static function
+    s_id++;
+  endfunction  
+endclass :transaction
+
+module class_example4;
+  transaction tr[10];
+  
+  initial begin
+    foreach (tr[i]) begin 
+      tr[i] = new();
+      tr[i].incr_s_id();
+      $display("On calling incr_s_id: Value of s_id = %0h", tr[i].s_id);
+    end
+    $display("***************************************************************************");    
+  end
+endmodule :class_example4   
    
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb  9 21:42 2026
+On calling incr_s_id: Value of s_id = 1
+On calling incr_s_id: Value of s_id = 2
+On calling incr_s_id: Value of s_id = 3
+On calling incr_s_id: Value of s_id = 4
+On calling incr_s_id: Value of s_id = 5
+On calling incr_s_id: Value of s_id = 6
+On calling incr_s_id: Value of s_id = 7
+On calling incr_s_id: Value of s_id = 8
+On calling incr_s_id: Value of s_id = 9
+On calling incr_s_id: Value of s_id = a
+***************************************************************************
+           V C S   S i m u l a t i o n   R e p o r t    
 
 //Example-5 : Static Methods examples (with object creation ) - Method : Non Static ,Variable: non static   
