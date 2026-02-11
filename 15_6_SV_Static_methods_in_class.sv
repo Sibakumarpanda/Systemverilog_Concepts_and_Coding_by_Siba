@@ -425,4 +425,46 @@ Exit code expected: 0, received: 255
    function static int incr_id();
    ...
    endfunction
+
+//Example-1 : Uses of function static or task static method call
+   
+class transaction;
+  static int s_id;
+  int id;
+  
+  function static int incr_id(); // Non-static function
+    int status;                 // Behaves as a static variable.
+    status = s_id++;
+    id++;                      // non-static member is accessible
+    return status;
+  endfunction
+  
+endclass :transaction
+
+module class_example1;
+  transaction tr[5];
+  int local_status;
+
+  initial begin
+    foreach (tr[i]) begin 
+      tr[i] = new();
+      local_status = tr[i].incr_id();
+      $display("Value of s_id = %0h, id = %0h, local_status = %0h", tr[i].s_id, tr[i].id,  local_status);
+    end
+  end
+endmodule :class_example1  
+   
+//Logfile Output
+CPU time: .515 seconds to compile + .399 seconds to elab + .434 seconds to link
+Chronologic VCS simulator copyright 1991-2025
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 10 21:15 2026
+Value of s_id = 1, id = 1, local_status = 0
+Value of s_id = 2, id = 1, local_status = 1
+Value of s_id = 3, id = 1, local_status = 2
+Value of s_id = 4, id = 1, local_status = 3
+Value of s_id = 5, id = 1, local_status = 4
+           V C S   S i m u l a t i o n   R e p o r t    
+
+//Example-2   
      
