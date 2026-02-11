@@ -225,7 +225,54 @@ On calling incr_id: Value of id = 1
            V C S   S i m u l a t i o n   R e p o r t    
    
 //Example-6 : Static Methods examples (with out object creation ) - Method : Static ,Variable: static 
+//Uses of Static Methods , static Variable (without object creation )
+class transaction;
+  static int s_id;  
+  static function void incr_s_id(); // Static function
+    s_id++;
+  endfunction  
+endclass :transaction
 
+module class_example6;
+  transaction tr[5];  
+  initial begin
+    foreach (tr[i]) begin 
+      $display("Before the incr_s_id function call");
+      transaction::incr_s_id(); // Access static function without class handle
+      $display("Value of s_id = %0h using scope resolution operator", transaction::s_id);
+      $display("**********************************************************************");
+      tr[i].incr_s_id(); // Access static function with class handle
+      $display("Value of s_id = %0h using tr handle", tr[i].s_id);           
+    end        
+  end
+endmodule :class_example6
+
+//Logfile  Output
+   
+Chronologic VCS simulator copyright 1991-2025
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 10 20:28 2026
+Before the incr_s_id function call
+Value of s_id = 1 using scope resolution operator
+**********************************************************************
+Value of s_id = 2 using tr handle
+Before the incr_s_id function call
+Value of s_id = 3 using scope resolution operator
+**********************************************************************
+Value of s_id = 4 using tr handle
+Before the incr_s_id function call
+Value of s_id = 5 using scope resolution operator
+**********************************************************************
+Value of s_id = 6 using tr handle
+Before the incr_s_id function call
+Value of s_id = 7 using scope resolution operator
+**********************************************************************
+Value of s_id = 8 using tr handle
+Before the incr_s_id function call
+Value of s_id = 9 using scope resolution operator
+**********************************************************************
+Value of s_id = a using tr handle
+           V C S   S i m u l a t i o n   R e p o r t    
 
 //Example-7 : Static Methods examples (with out object creation ) - Method : Static ,Variable: Non static 
 
