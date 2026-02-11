@@ -106,6 +106,39 @@ Value of data = 5, id = a
            V C S   S i m u l a t i o n   R e p o r t    
 
 //Example4 :
+//Example for this keyword with static method
+//Note that , this keyword usage in the static method is illegal. A compilation error is expected.  
+class transaction;
+  bit [31:0] data;
+  int id;
+  
+  static function assign_val (bit [31:0] data, int id);
+    this.data = data;
+    this.id = id;
+  endfunction
+endclass :transaction
 
-
+module class_example4;
+  initial begin
+    transaction tr = new();
+    tr.assign_val(5,10);
+    $display("Value of data = %0h, id = %0h", tr.data, tr.id);
+  end
+endmodule :class_example4
+   
+//Logfile Output
+Parsing design file 'design.sv'
+Parsing design file 'testbench.sv'
+Error-[SV-IUTS] Illegal use of this and super
+testbench.sv, 9
+  Use of 'this' and 'super' is not allowed inside 'static' class-method or 
+  class-member
+Error-[SV-IUTS] Illegal use of this and super
+testbench.sv, 10
+  Use of 'this' and 'super' is not allowed inside 'static' class-method or 
+  class-member
+2 errors
+CPU time: .416 seconds to compile
+Exit code expected: 0, received: 255
+Done   
 //Example5 :
