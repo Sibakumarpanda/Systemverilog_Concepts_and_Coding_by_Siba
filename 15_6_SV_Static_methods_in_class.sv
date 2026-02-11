@@ -224,3 +224,14 @@ On calling incr_id: Value of id = 1
 On calling incr_id: Value of id = 1
            V C S   S i m u l a t i o n   R e p o r t    
    
+//Example-6 : Static Methods examples (with out object creation ) - Method : Static ,Variable: static 
+
+
+//Example-7 : Static Methods examples (with out object creation ) - Method : Static ,Variable: Non static 
+
+
+
+//Example-8 : Static Methods examples (with out object creation ) - Method : Non Static ,Variable: static 
+
+
+//Example-9 : Static Methods examples (with out object creation ) - Method : Non Static ,Variable: Non static    
