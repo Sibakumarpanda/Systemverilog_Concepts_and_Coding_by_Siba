@@ -466,5 +466,46 @@ Value of s_id = 4, id = 1, local_status = 3
 Value of s_id = 5, id = 1, local_status = 4
            V C S   S i m u l a t i o n   R e p o r t    
 
-//Example-2   
-     
+//Example-2  : Uses of function static or task static method call
+class transaction; 
+  int id;
+  
+  /* 
+  static function void incr_s_id(); // Static function
+    id++; // illegal access , But Still wanted to acess and see what error is coming
+  endfunction
+  */
+  
+  function static int incr_s_id(); // function static
+    id++;                          // Inside function static , we can acess Non static variable
+  endfunction
+  
+endclass :transaction
+
+module class_example2;
+  transaction tr[10];
+  
+  initial begin
+    foreach (tr[i]) begin 
+      tr[i] = new();
+      tr[i].incr_s_id();
+      $display("On calling incr_s_id: Value of id = %0h ", tr[i].id);
+    end
+  end
+endmodule :class_example2    
+
+//Logfile Output
+Chronologic VCS simulator copyright 1991-2025
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 10 21:19 2026
+On calling incr_s_id: Value of id = 1 
+On calling incr_s_id: Value of id = 1 
+On calling incr_s_id: Value of id = 1 
+On calling incr_s_id: Value of id = 1 
+On calling incr_s_id: Value of id = 1 
+On calling incr_s_id: Value of id = 1 
+On calling incr_s_id: Value of id = 1 
+On calling incr_s_id: Value of id = 1 
+On calling incr_s_id: Value of id = 1 
+On calling incr_s_id: Value of id = 1 
+           V C S   S i m u l a t i o n   R e p o r t    
