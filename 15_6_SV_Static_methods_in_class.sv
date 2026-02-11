@@ -404,7 +404,25 @@ testbench.sv, 17
 "transaction::incr_id"
   Scoped reference to non-static class task/function 'transaction::incr_id' is
   not allowed.
-
 1 error
 CPU time: .455 seconds to compile
 Exit code expected: 0, received: 255     
+
+////////////////////////////////////////////////////////////////////////////
+  Concept of function static /task static (method static) in SV classes :
+/////////////////////////////////////////////////////////////////////////////
+        
+- First of all , function static / task static method call is different from static function/static task as we discussed in above.
+- It is now clear that non-static class members/variables can not be accessible from the static method. 
+- What if the user wants to access automatic (non-static) members of the class ???
+- It is possible to use the “function static” method call. This is also known as a non-static method call with a static variable lifetime. On calling “function static”, variables declared in function will be static.
+- Note:
+// static function
+   static function void incr_s_id();
+   ...
+   endfunction
+// Non-static function and variables declared in function will be static.
+   function static int incr_id();
+   ...
+   endfunction
+     
