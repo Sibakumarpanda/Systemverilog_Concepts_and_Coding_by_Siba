@@ -38,9 +38,40 @@ Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Fe
 Value of data = 0, id = 0
            V C S   S i m u l a t i o n   R e p o r t   
    
-//Example2 :
+//Example2 : Example without using this keyword : Here the properties/variable name declered in side class is DIFFERENT as the name passed as argument inside the method of class (Here we will not see any issue/confusion)
+class transaction;
+  bit [31:0] data;
+  int id;
+  
+  function new (bit [31:0] data1, int id1);
+    data = data1; // Means Properties value (data) declered inside class  = Passed argument value (data1)
+    id = id1;
+  endfunction
+endclass :transaction
 
-
+module class_example2;
+  initial begin
+    transaction tr = new(5, 10);
+    $display("Value of data = %0h, id = %0h", tr.data, tr.id);
+  end
+endmodule :class_example2
+   
+//Logfile Output
+TimeScale is 1 ns / 1 ns
+Starting vcs inline pass...
+1 module and 0 UDP read.
+recompiling module class_example2
+rm -f _cuarc*.so _csrc*.so pre_vcsobj_*.so share_vcsobj_*.so
+if [ -x ../simv ]; then chmod a-x ../simv; fi
+g++  -o ../simv      -rdynamic  -Wl,-rpath='$ORIGIN'/simv.daidir -Wl,-rpath=./simv.daidir -Wl,-rpath=/apps/vcsmx/vcs/X-2025.06-SP1/linux64/lib -L/apps/vcsmx/vcs/X-2025.06-SP1/linux64/lib  -Wl,-rpath-link=./   objs/amcQw_d.o  _286_archive_1.so  SIM_l.o       rmapats_mop.o rmapats.o rmar.o rmar_nd.o  rmar_llvm_0_1.o rmar_llvm_0_0.o            -lvirsim -lerrorinf -lsnpsmalloc -lvfs      -lvcsnew -ldistsimclient -lsimprofile -luclinative /apps/vcsmx/vcs/X-2025.06-SP1/linux64/lib/vcs_tls.o   -Wl,-whole-archive  -lvcsucli    -Wl,-no-whole-archive          /apps/vcsmx/vcs/X-2025.06-SP1/linux64/lib/vcs_save_restore_new.o -ldl  -lc -lm -lpthread -ldl 
+../simv up to date
+CPU time: .504 seconds to compile + .412 seconds to elab + .470 seconds to link
+Chronologic VCS simulator copyright 1991-2025
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 11 06:48 2026
+Value of data = 5, id = a
+           V C S   S i m u l a t i o n   R e p o r t    
+   
 //Example3 :
 
 
