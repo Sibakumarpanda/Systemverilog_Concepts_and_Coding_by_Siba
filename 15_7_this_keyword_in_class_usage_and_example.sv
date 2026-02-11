@@ -141,4 +141,41 @@ testbench.sv, 10
 CPU time: .416 seconds to compile
 Exit code expected: 0, received: 255
 Done   
+     
 //Example5 :
+//Example for this keyword with non-static method call with static variable type
+//Note that : function static or task static method call, it is possible to use this keyword.
+
+class transaction;
+  bit [31:0] data;
+  int id;
+  
+  function static assign_val (bit [31:0] data, int id);
+    this.data = data;
+    this.id = id;
+  endfunction
+endclass :transaction
+
+module class_example5;
+  initial begin
+    transaction tr = new();
+    tr.assign_val(5,10);
+    $display("Value of data = %0h, id = %0h", tr.data, tr.id);
+  end
+endmodule :class_example5
+
+//Logfile Output
+     
+Starting vcs inline pass...
+1 module and 0 UDP read.
+recompiling module class_example5
+rm -f _cuarc*.so _csrc*.so pre_vcsobj_*.so share_vcsobj_*.so
+if [ -x ../simv ]; then chmod a-x ../simv; fi
+g++  -o ../simv      -rdynamic  -Wl,-rpath='$ORIGIN'/simv.daidir -Wl,-rpath=./simv.daidir -Wl,-rpath=/apps/vcsmx/vcs/X-2025.06-SP1/linux64/lib -L/apps/vcsmx/vcs/X-2025.06-SP1/linux64/lib  -Wl,-rpath-link=./   objs/amcQw_d.o  _286_archive_1.so  SIM_l.o       rmapats_mop.o rmapats.o rmar.o rmar_nd.o  rmar_llvm_0_1.o rmar_llvm_0_0.o            -lvirsim -lerrorinf -lsnpsmalloc -lvfs      -lvcsnew -ldistsimclient -lsimprofile -luclinative /apps/vcsmx/vcs/X-2025.06-SP1/linux64/lib/vcs_tls.o   -Wl,-whole-archive  -lvcsucli    -Wl,-no-whole-archive          /apps/vcsmx/vcs/X-2025.06-SP1/linux64/lib/vcs_save_restore_new.o -ldl  -lc -lm -lpthread -ldl 
+../simv up to date
+CPU time: .538 seconds to compile + .443 seconds to elab + .517 seconds to link
+Chronologic VCS simulator copyright 1991-2025
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 11 06:49 2026
+Value of data = 5, id = a
+           V C S   S i m u l a t i o n   R e p o r t      
