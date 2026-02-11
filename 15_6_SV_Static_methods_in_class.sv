@@ -368,3 +368,43 @@ CPU time: .357 seconds to compile
 Exit code expected: 0, received: 255   
 
 //Example-9 : Static Methods examples (with out object creation ) - Method : Non Static ,Variable: Non static    
+//Uses of Non Static Methods , Non static Variable (without object creation )
+class transaction;
+  int id;  
+  function void incr_id(); // Non Static function
+    id++;
+  endfunction  
+endclass :transaction
+
+module class_example8;
+  transaction tr[5];
+  
+  initial begin
+    foreach (tr[i]) begin 
+      $display("Before the incr_id function call");
+      transaction::incr_id(); // Access Non static function without class handle
+      $display("Value of id = %0h using scope resolution operator", transaction::id);
+      $display("**********************************************************************");
+      tr[i].incr_id(); // Access Non static function with class handle
+      $display("Value of id = %0h using tr handle", tr[i].id);           
+    end    
+    
+  end
+endmodule :class_example8
+
+//Logfile Output     
+Parsing design file 'design.sv'
+Parsing design file 'testbench.sv'
+Top Level Modules:
+       class_example8
+TimeScale is 1 ns / 1 ns
+
+Error-[ISRF] Illegal scoped reference found
+testbench.sv, 17
+"transaction::incr_id"
+  Scoped reference to non-static class task/function 'transaction::incr_id' is
+  not allowed.
+
+1 error
+CPU time: .455 seconds to compile
+Exit code expected: 0, received: 255     
