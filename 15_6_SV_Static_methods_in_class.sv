@@ -275,9 +275,56 @@ Value of s_id = a using tr handle
            V C S   S i m u l a t i o n   R e p o r t    
 
 //Example-7 : Static Methods examples (with out object creation ) - Method : Static ,Variable: Non static 
+//Uses of Static Methods , Non static Variable (without object creation )
 
+class transaction;
+  int id;
+  
+  static function void incr_s_id(); // Static function
+    id++;
+  endfunction
+  
+endclass :transaction
 
+module class_example7;
+  transaction tr[5];
+  
+  initial begin
+    foreach (tr[i]) begin 
+      $display("Before the incr_s_id function call");
+      transaction::incr_s_id(); // Access static function without class handle
+      $display("Value of id = %0h using scope resolution operator", transaction::id);
+      $display("**********************************************************************");
+      tr[i].incr_s_id(); // Access static function with class handle
+      $display("Value of id = %0h using tr handle", tr[i].id);           
+    end    
+    
+  end
+endmodule :class_example7
+   
+//Logfile Output
+Top Level Modules:
+       class_example7
+TimeScale is 1 ns / 1 ns
 
+Error-[SV-AMC] Non-static member access
+testbench.sv, 7
+$unit, "id"
+  Illegal access of non-static member 'id' from static method 
+  'transaction::incr_s_id'.
+
+Error-[SV-IRTAV] Illegal reference to automatic variable
+testbench.sv, 19
+"$unit::transaction::id"
+  Hierarchical reference to automatic variable 'id' is not legal.
+  Declared at:
+  "testbench.sv", 4
+
+2 errors
+CPU time: .355 seconds to compile
+Exit code expected: 0, received: 255
+Done   
+   
 //Example-8 : Static Methods examples (with out object creation ) - Method : Non Static ,Variable: static 
 
 
