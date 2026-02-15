@@ -92,3 +92,9 @@ transaction: data = 100, id = 1
 error_trans: err_data = 1234, error = 0
 
            V C S   S i m u l a t i o n   R e p o r t 
+
+NOTE:
+- Here, error data is defined as ‘hFFFF_FFFF and the error bit is also set to 1. For any other value of err_data, the error bit is set to 0.
+- Notice that , The data and id class properties are copied. The tr1 and tr2 class handles refer to separate memory locations. Thus, changing values using the tr1 class handle does not affect accessing class properties with the tr2 handle.
+- The err_tr object handle is copied alone. On changing err_data = 32’h1234 and error = 0 using tr1 class handle, the same is accessible using tr2 class handle.
+- To have separate memory for nested objects, deep copy provides a solution.
