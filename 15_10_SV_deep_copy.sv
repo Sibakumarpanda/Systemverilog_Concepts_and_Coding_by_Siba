@@ -101,3 +101,9 @@ transaction: data = 100, id = 1
 error_trans: err_data = ffffffff, error = 1
 
            V C S   S i m u l a t i o n   R e p o r t 
+/////////
+  NOTE: 
+////////
+-In Deep copy , here the object tr2 is separately created.
+-The deep_copy() extra method is written that does value assignments for an object which has to be copied (tr1 object). 
+-This ensures that tr1 class properties are copied to the newly created tr2 object.
