@@ -10,6 +10,11 @@
     tr2=new()
     tr2.deep_copy(tr1);
 
+///////////////////////////////////////////////////
+   Difference between Shallow copy and Deep copy : 
+//////////////////////////////////////////////////
+-In Shallow copy ,Only Instance handles are copied but Nested objects are not copied . Where as , In Deep copy , nested Objects are also copied.
+
 //Example-1
 class error_trans;
   bit [31:0] err_data;
