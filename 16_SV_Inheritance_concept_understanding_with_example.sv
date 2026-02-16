@@ -58,3 +58,74 @@ Value of data = 5
 Value of id = 1
            V C S   S i m u l a t i o n   R e p o r t     
     
+/////////////////////////////////////////////////////////////////////// 
+  Example-2 : Inheritance Example2
+  Multilevel Inheritance Example1
+//////////////////////////////////////////////////////////////////////// 
+class parent_trans;
+  bit [31:0] data_p;
+  
+  function void disp_p();
+    $display("parent_trans: Value of data = %0h", data_p);
+  endfunction
+endclass :parent_trans
+
+class child1_trans extends parent_trans;
+  bit [31:0] data_c1;
+  
+  function void disp_c1();
+    $display("child1_trans: Value of data = %0h", data_c1);
+  endfunction
+endclass :child1_trans
+
+class child2_trans extends parent_trans;
+  bit [31:0] data_c2;
+  
+  function void disp_c2();
+    $display("child2_trans: Value of data = %0h", data_c2);
+  endfunction
+endclass :child2_trans
+
+class child_A_trans extends child1_trans;
+  bit [31:0] data_cA;
+  
+  function void disp_cA();
+    $display("child_A_trans: Value of data = %0h", data_cA);
+  endfunction
+endclass :child_A_trans
+
+class child_B_trans extends child_A_trans;
+  bit [31:0] data_cB;
+  
+  function void disp_cB();
+    $display("child1_2_trans: Value of data = %0h", data_cB);
+  endfunction
+endclass :child_B_trans
+
+module class_example2;
+  initial begin
+    child_B_trans cB_tr;
+    cB_tr = new();
+    cB_tr.data_p = 2;
+    cB_tr.data_c1 = 4;
+    cB_tr.data_cA = 6;
+    cB_tr.data_cB = 8;
+    //cB_tr.data_c2 = 3;  // Not possible as child_B_trans is not child class of child2_trans.
+    
+    cB_tr.disp_p();
+    cB_tr.disp_c1();
+    cB_tr.disp_cA();
+    cB_tr.disp_cB();
+  end
+endmodule :class_example2  
+    
+//Logfile Output
+Chronologic VCS simulator copyright 1991-2025
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 16 10:32 2026
+parent_trans: Value of data = 2
+child1_trans: Value of data = 4
+child_A_trans: Value of data = 6
+child1_2_trans: Value of data = 8
+           V C S   S i m u l a t i o n   R e p o r t     
+    
