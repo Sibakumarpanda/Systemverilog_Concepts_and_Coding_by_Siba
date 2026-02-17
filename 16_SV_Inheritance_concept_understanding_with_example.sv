@@ -131,12 +131,46 @@ child1_2_trans: Value of data = 8
     
 /////////////////////////////////////////////////////////////////////// 
   Example-3 : Inheritance Example3
-  
+  //Overriding base class members (when both the child and base class 
+    have the same naming convention for class properties and method)
+ //The child class properties and methods override base class properties 
+  and methods when both the child and base class have the same naming convention 
+  for class properties and method.
 //////////////////////////////////////////////////////////////////////// 
+class parent_trans;
+  bit [31:0] data = 100;
+  int id = 1;
+  
+  function void display();
+    $display("From Base Class: Value of data = %0d and id = %0d", data, id);
+  endfunction
+endclass :parent_trans
 
+class child_trans extends parent_trans;
+  bit [31:0] data = 200;
+  int id = 2;
+  
+  function void display();
+    $display("From Child Class: Value of data = %0d and id = %0d", data, id);
+  endfunction
+endclass :child_trans
 
+module class_example;
+  initial begin
+    child_trans c_tr;
+    c_tr = new();
 
-
+    c_tr.display();
+  end
+endmodule :class_example
+    
+//Logfile Output
+Chronologic VCS simulator copyright 1991-2025
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 16 21:45 2026
+From Child Class: Value of data = 200 and id = 2
+           V C S   S i m u l a t i o n   R e p o r t    
+    
 /////////////////////////////////////////////////////////////////////// 
   Example-4 : Inheritance Example4
   
