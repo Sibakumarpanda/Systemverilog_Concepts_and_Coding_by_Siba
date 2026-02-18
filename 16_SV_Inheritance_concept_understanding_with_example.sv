@@ -329,4 +329,51 @@ FROM BASE CLASS=>mypacket CLASS: Header =0x1,encode=0,mode=0x5,stop=1
 FROM DERIVED CLASS=>networkpacket CLASS: Header =0x1,encode=0,mode=0x5,stop=1,parity=1,crc=3
            V C S   S i m u l a t i o n   R e p o r t 
 
+/////////////////////////////////////////////////////////////////////// 
+  Example-7 : Inheritance Example7
+//////////////////////////////////////////////////////////////////////// 
+class Packet;
+   int addr; 
+   function new (int addr);
+      this.addr = addr;
+   endfunction
+  
+  function display ();
+    $display ("[FROM_BASE_CLASS] addr=0x%0h", addr);
+  endfunction  
+endclass :Packet
+ 
+class ExtPacket extends Packet;
+  int data;
+ 
+   function new (int addr, data);
+      super.new (addr);
+      this.data = data;
+   endfunction
+ 
+  function display ();
+    $display ("[FROM_CHILD_CLASS] addr=0x%0h data=0x%0h", addr, data);
+  endfunction
+  
+endclass :ExtPacket
+ 
+module tb_top;
+  Packet      bc;   // bc stands for BaseClass
+  ExtPacket   sc;   // sc stands for SubClass
+ 
+  initial begin
+    bc = new (32'hface_cafe);
+    bc.display ();
+ 
+    sc = new (32'hfeed_feed, 32'h1234_5678);  
+    sc.display ();
+  end
+  
+endmodule :tb_top
     
+//Logfile output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 17 21:36 2026
+[FROM_BASE_CLASS] addr=0xfacecafe
+[FROM_CHILD_CLASS] addr=0xfeedfeed data=0x12345678
+           V C S   S i m u l a t i o n   R e p o r t     
