@@ -212,4 +212,57 @@ Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Fe
 From Child Class: Value of data = 100 and id = 1
 From Child Class: Value of data1 = 200 and id1 = 2
 From Base Class: Value of data = 100 and id = 1
-           V C S   S i m u l a t i o n   R e p o r t     
+           V C S   S i m u l a t i o n   R e p o r t 
+
+/////////////////////////////////////////////////////////////////////// 
+  Example-5 : Inheritance Example5
+  //Accessing class members in Inheritance
+ //Based on the handle of a class, the corresponding method will be 
+  called.
+////////////////////////////////////////////////////////////////////////       
+
+class parent_trans;
+  bit [31:0] data;
+  int id;
+  
+  function void display();
+    $display("Base: Value of data = %0d and id = %0d", data, id);
+  endfunction
+endclass :parent_trans
+
+class child_trans extends parent_trans;
+  bit [31:0] data;
+  int id;
+  
+  function void display();
+    $display("Child: Value of data = %0d and id = %0d", data, id);
+  endfunction
+endclass :child_trans
+
+module class_example;
+  initial begin
+    parent_trans p_tr;
+    child_trans c_tr;
+    
+    p_tr = new();
+    c_tr = new();
+    
+    p_tr.data = 100;
+    p_tr.id = 1;
+
+    c_tr.data = 200;
+    c_tr.id = 2;
+    
+    p_tr.display();
+    c_tr.display();
+  end
+endmodule :class_example
+    
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 17 21:28 2026
+Base: Value of data = 100 and id = 1
+Child: Value of data = 200 and id = 2
+           V C S   S i m u l a t i o n   R e p o r t 
+
+    
