@@ -264,5 +264,69 @@ Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Fe
 Base: Value of data = 100 and id = 1
 Child: Value of data = 200 and id = 2
            V C S   S i m u l a t i o n   R e p o r t 
+   
+/////////////////////////////////////////////////////////////////////// 
+  Example-6 : Inheritance Example6
+////////////////////////////////////////////////////////////////////////    
+class mypacket;  
+  bit [2:0] header;
+  bit       encode;
+  bit [2:0] mode;
+  bit [7:0] data;
+  bit       stop;
+  
+  function new (bit [2:0] header=3'h1 ,bit[2:0] mode=5);   
+    this.header  =header;
+    this.encode  =0;
+    this.mode    =mode;
+    //this.data  =data;
+    this.stop    =1;   
+  endfunction
+  
+  function display();
+    $display ("FROM BASE CLASS=>mypacket CLASS: Header =0x%0h,encode=%0b,mode=0x%0h,stop=%0b",this.header,this.encode,this.mode,this.stop);   
+  endfunction
+  
+endclass :mypacket
+
+class networkpacket extends mypacket;
+  bit       parity;
+  bit [1:0] crc;
+  
+  function new ();   
+    super.new();
+    this.parity=1;
+    this.crc=3;    
+  endfunction
+  
+  function display();   
+    super.display();
+    $display ("FROM DERIVED CLASS=>networkpacket CLASS: Header =0x%0h,encode=%0b,mode=0x%0h,stop=%0b,parity=%0b,crc=%0h",this.header,this.encode,this.mode,this.stop,this.parity,this.crc);    
+  endfunction
+     
+endclass :networkpacket
+
+module tb_top;
+  
+  initial begin    
+    mypacket      pkt0;
+    networkpacket pkt1;
+        
+    pkt0=new( ); 
+    pkt0.display();//Means here : header=1 , encode=0, mode=5, stop=1     
+    pkt1=new();
+    pkt1.display();//Means here : header=1 , encode=0, mode=5, stop=1 ,parity= 1, crc=3        
+  end     
+endmodule :tb_top
+    
+//Logfile Output
+    
+Chronologic VCS simulator copyright 1991-2025
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 17 21:30 2026
+FROM BASE CLASS=>mypacket CLASS: Header =0x1,encode=0,mode=0x5,stop=1
+FROM BASE CLASS=>mypacket CLASS: Header =0x1,encode=0,mode=0x5,stop=1
+FROM DERIVED CLASS=>networkpacket CLASS: Header =0x1,encode=0,mode=0x5,stop=1,parity=1,crc=3
+           V C S   S i m u l a t i o n   R e p o r t 
 
     
