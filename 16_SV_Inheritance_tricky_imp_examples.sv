@@ -1,8 +1,54 @@
 /////////////////////////////////////////////
  Tricky examples based on SV Inheritance:
 ////////////////////////////////////////////
-//Example1:
+//Example1: Virtual method vs Non-virtual method Surprise
+class base_class;
+  
+  function void display ();
+    $display ("From Base Class Non Virtual Function Print");
+  endfunction
+  
+  virtual function void vdisplay ();
+    $display ("From Base Class Virtual Function Print");
+  endfunction
+  
+endclass: base_class
 
+class derived_class extends base_class;
+  
+  function void display ();
+    $display ("From Derived Class Non Virtual Function Print");
+  endfunction
+  
+  virtual function void vdisplay ();
+    $display ("From Derived Class Virtual Function Print");
+  endfunction
+  
+endclass: derived_class
+
+module tb_top;  
+  initial begin   
+     base_class b;
+     derived_class d;
+     d = new();
+     b = d;
+     b.display();
+     b.vdisplay();
+     $display ("--------------------------");
+     d.display();
+     d.vdisplay();
+  end  
+endmodule:tb_top
+
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 18 21:15 2026
+From Base Class Non Virtual Function Print
+From Derived Class Virtual Function Print
+--------------------------
+From Derived Class Non Virtual Function Print
+From Derived Class Virtual Function Print
+           V C S   S i m u l a t i o n   R e p o r t 
 
 //Example2:
 
