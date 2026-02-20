@@ -242,8 +242,35 @@ From Base Class Non Virtual Function Print
 From Base Class Non Virtual Function Print
            V C S   S i m u l a t i o n   R e p o r t 
 
-//Example6:
+//Example6: Constructor Execution Order
+class base_class;  
+  function new ();
+    $display ("From Base class ");
+  endfunction  
+endclass: base_class
 
+class derived_class extends base_class;  
+  function new ();
+    //$display ("From Derived class :Before super.new");
+    super.new();
+    $display ("From Derived class: After super.new");
+  endfunction  
+endclass :derived_class
+
+module tb_top;
+  initial begin
+    derived_class d;
+    d=new();    
+  end   
+endmodule :tb_top
+
+//Logfile Output
+Chronologic VCS simulator copyright 1991-2025
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 20 08:59 2026
+From Base class 
+From Derived class: After super.new
+           V C S   S i m u l a t i o n   R e p o r t 
 
 //Example7:
 
