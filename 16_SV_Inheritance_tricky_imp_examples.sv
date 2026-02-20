@@ -372,7 +372,37 @@ From DERIVED_CLASS : My name is Siba K Panda
 From DERIVED_CLASS : My name is Siba K Panda
            V C S   S i m u l a t i o n   R e p o r t 
 
-//Example10:
+//Example10: super Keyword Usage
+class base_class;
+  int x = 10;
+  function int get();
+    return x; 
+  endfunction
+endclass :base_class
+
+class derived_class extends base_class;
+  int x = 20;
+  function int get() ;
+    return x + super.x + super.get();   // 20 + 10 + 10 = 40
+  endfunction
+endclass : derived_class
+
+module tb_top;
+  initial begin
+     base_class b= new();
+     derived_class d = new();
+     $display ("The Value in Derived class is = %0d",d.get()); //40
+     $display ("The Value in Base class is = %0d",b.get()); //10
+   end
+endmodule:tb_top
+ 
+//Logfile Output
+ Chronologic VCS simulator copyright 1991-2025
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 20 09:10 2026
+The Value in Derived class is = 40
+The Value in Base class is = 10
+           V C S   S i m u l a t i o n   R e p o r t 
 
 //Example11:
 
