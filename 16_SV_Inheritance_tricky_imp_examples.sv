@@ -195,7 +195,52 @@ From Derived Class Non Virtual Function Print
 From Derived Class Non Virtual Function Print
            V C S   S i m u l a t i o n   R e p o r t 
 //Example5:
+class base_class;
+  
+  function void display ();
+    $display ("From Base Class Non Virtual Function Print");
+  endfunction
+  
+  function void vdisplay ();
+    $display ("From Base Class Non Virtual Function Print");
+  endfunction
+  
+endclass: base_class
 
+class derived_class extends base_class;
+  
+  function void display1 ();
+    $display ("From Derived Class Non Virtual Function Print");
+  endfunction
+  
+  function void vdisplay1 ();
+    $display ("From Derived Class Non Virtual Function Print");
+  endfunction
+  
+endclass: derived_class
+
+module tb_top;  
+  initial begin   
+     //base_class b;     
+     derived_class d;
+     d = new();     
+     d.display1();
+     d.vdisplay1();
+     $display ("--------------------------");
+     d.display();
+     d.vdisplay();
+  end   
+endmodule:tb_top
+//Logfile Output
+Chronologic VCS simulator copyright 1991-2025
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 20 08:59 2026
+From Derived Class Non Virtual Function Print
+From Derived Class Non Virtual Function Print
+--------------------------
+From Base Class Non Virtual Function Print
+From Base Class Non Virtual Function Print
+           V C S   S i m u l a t i o n   R e p o r t 
 
 //Example6:
 
