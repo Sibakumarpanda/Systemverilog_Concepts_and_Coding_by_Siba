@@ -272,8 +272,37 @@ From Base class
 From Derived class: After super.new
            V C S   S i m u l a t i o n   R e p o r t 
 
-//Example7:
+//Example7: $cast and Handle Assignment (Upcasting and Downcasting uses understanding)
+class base_class;
+  
+endclass : base_class
 
+class derived_class extends base_class;
+  
+endclass : derived_class
+
+module tb_top;
+  initial begin
+    base_class b1,b2;
+    derived_class d1,d2;
+    d1= new();
+    b1=d1; // Allowed : Upcast (implicit)
+    
+    //d2=b2; // Error: Downcast not allowed directly, so commented here
+    //Hence we can use $cast to do Downcasting as below .Use $cast for safe downcasting
+    if ($cast(d2, b2))         // OK: $cast returns 1 if successful
+      $display("Casting worked Successfully");
+    else
+      $display("Casting failed");  
+  end    
+endmodule :tb_top
+ 
+//Logfile Output
+Chronologic VCS simulator copyright 1991-2025
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 20 09:00 2026
+Casting worked Successfully
+           V C S   S i m u l a t i o n   R e p o r t  
 
 //Example8:
 
