@@ -436,8 +436,65 @@ The Value in Derived class is = 40
 The Value in Base class is = 10
            V C S   S i m u l a t i o n   R e p o r t
  
-//Example12:
+//Example12: Polymorphic Array
+class base_class;
+  function new();
+  endfunction
+  virtual function string id(); 
+    return "BASE_CLASS"; 
+  endfunction
+endclass :base_class
 
+class derived_class1 extends base_class; 
+  function new(); 
+    super.new(); 
+  endfunction  
+  function string id(); 
+    return "DERIVED1_CLASS"; 
+  endfunction
+endclass :derived_class1
+
+class derived_class2 extends base_class;
+  function new(); 
+    super.new(); 
+  endfunction  
+  function string id(); 
+    return "DERIVED2_CLASS"; 
+  endfunction
+endclass :derived_class2
+
+module tb_top;
+  initial begin
+    base_class arr[3];
+    derived_class1 d1;
+    derived_class2 d2;
+    base_class b;      
+    // Create objects separately first
+    d1 = new();
+    d2 = new();
+    b = new();
+    
+    //arr[0] = new derived_class1();  // Simulator gets confused , This approach is not working
+    // Then assign to array
+    arr[0] = d1;
+    arr[1] = d2;
+    arr[2] = b;
+  
+    foreach(arr[i]) begin
+      $display(arr[i].id());
+    end
+  end
+endmodule :tb_top
+ 
+//Logfile Output
+ 
+Chronologic VCS simulator copyright 1991-2025
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 20 09:10 2026
+DERIVED1_CLASS
+DERIVED2_CLASS
+BASE_CLASS
+           V C S   S i m u l a t i o n   R e p o r t  
 
 //Example13:
 
