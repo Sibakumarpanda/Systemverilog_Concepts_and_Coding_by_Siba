@@ -528,7 +528,49 @@ Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Fe
 Cast failed
            V C S   S i m u l a t i o n   R e p o r t 
 
-//Example14:
+//Example14: Override vs New Method
+
+class base_class;
+  function new();
+  endfunction 
+  virtual function void doit(); 
+    $display("FROM_BASE_CLASS : doit"); 
+  endfunction  
+  function void run(); 
+    $display("FROM_BASE_CLASS: run"); 
+  endfunction
+endclass :base_class
+
+class derived_class extends base_class;
+  function new();
+    super.new();
+  endfunction  
+  function void doit(); 
+    $display("FROM_DERIVED_CLASS: doit"); 
+  endfunction  
+  function void run();
+    $display("FROM_DERIVED_CLASS: run"); 
+  endfunction
+endclass :derived_class
+
+module tb_top;
+  initial begin
+    derived_class d;
+    base_class b;    
+    d = new();   // Create derived object first
+    b = d;       // Then assign to base handle (upcasting)   
+    b.doit();   // "FROM_DERIVED_CLASS: doit" (virtual)
+    b.run();    // "FROM_BASE_CLASS: run" (non-virtual)
+  end
+endmodule :tb_top
+
+//Logfile Output
+ Chronologic VCS simulator copyright 1991-2025
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 20 09:11 2026
+FROM_DERIVED_CLASS: doit
+FROM_BASE_CLASS: run
+           V C S   S i m u l a t i o n   R e p o r t 
 
 //Example15:
 
