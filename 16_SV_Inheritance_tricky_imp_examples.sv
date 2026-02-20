@@ -339,7 +339,38 @@ From DERIVED_CLASS : My name is Siba K Panda
            V C S   S i m u l a t i o n   R e p o r t 
 
 //Example9:
+class base_class;
+  virtual function display ();
+  //function display ();
+    $display ("From BASE_CLASS : My name is Siba K Panda");
+  endfunction  
+endclass : base_class
 
+class derived_class extends base_class;
+  function display ();
+    $display ("From DERIVED_CLASS : My name is Siba K Panda");
+  endfunction  
+endclass : derived_class
+
+module tb_top;
+  initial begin
+    base_class    b;
+    derived_class d;
+    d=new ();
+    b=d;
+    b.display();//Expectation is Derived class content should print(since b=d) , 
+    //Since in base class virtual function is used, hence we can get the Derived class content , But in previous example , it was not coming due to Non-virtual function
+    d.display(); 
+  end    
+endmodule :tb_top
+ 
+//Logfile Output
+ Chronologic VCS simulator copyright 1991-2025
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 20 09:00 2026
+From DERIVED_CLASS : My name is Siba K Panda
+From DERIVED_CLASS : My name is Siba K Panda
+           V C S   S i m u l a t i o n   R e p o r t 
 
 //Example10:
 
