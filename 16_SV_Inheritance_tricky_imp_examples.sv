@@ -496,7 +496,37 @@ DERIVED2_CLASS
 BASE_CLASS
            V C S   S i m u l a t i o n   R e p o r t  
 
-//Example13:
+//Example13: Type Checking with $cast
+
+class base_class; 
+endclass :base_class
+
+class derived_class1 extends base_class; 
+endclass :derived_class1
+
+class derived_class2 extends base_class; 
+endclass :derived_class2
+
+module tb_top;
+  initial begin
+    base_class b;
+    derived_class1 d1 = new();
+    derived_class2 d2 ; 
+    b = d1; //Allowed , Upcasting
+    //d2=b; // Downcasting ,Not Allowed 
+    if ($cast(d2, b))  
+      $display("Casting Works");
+    else
+      $display("Cast failed");
+   end
+ endmodule :tb_top
+
+ //Logfile Output
+Chronologic VCS simulator copyright 1991-2025
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 20 09:11 2026
+Cast failed
+           V C S   S i m u l a t i o n   R e p o r t 
 
 //Example14:
 
