@@ -113,15 +113,52 @@ NOTE:
  //////////////////////////////////////////////////
  - By default, the SystemVerilog compiler calls super.new() function calls automatically from extended class. 
  - But if there are any arguments used in the new() function call, then the user has to call super.new(<argument_list>) explicitly. 
- - The super.new() function call shall be the first line in the derived class constructor because the parent class must be initialized before the derived class.
+  - The super.new() function call shall be the first line in the derived class constructor because the Base class must be initialized before the derived class.
    
-  
  ///////////////////////////////////////////////
    Example3: Example of super keyword 
              with arguments in the constructor
  ///////////////////////////////////////////////
+/*
+-By default, the SystemVerilog compiler calls super.new() function calls automatically from extended class. 
+ - But if there are any arguments used in the new() function call, then the user has to call super.new(<argument_list>) explicitly. 
+ - The super.new() function call shall be the first line in the derived class constructor because the base class must be initialized before the derived class.
+ */
+class base_trans;
+  bit [31:0] data;
+  
+  function new(bit [31:0] data);
+    this.data = data;
+    $display("FROM_BASE_CLASS: Value of data = %0h", data);
+  endfunction
+  
+endclass :base_trans
 
+class derived_trans extends base_trans;
+  bit [31:0] data;
+  
+  function new(bit [31:0] data_b, data_d);
+    super.new(data_b);
+    this.data = data_d;
+    $display("FROM_DERIVED_CLASS : Value of data = %0h", data);
+  endfunction
 
+endclass :derived_trans
+
+module class_example1;
+  initial begin
+    derived_trans d_tr;
+    d_tr = new(5, 7);
+  end
+endmodule :class_example1
+
+//Logfile Output
+Chronologic VCS simulator copyright 1991-2025
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 22 09:31 2026
+FROM_BASE_CLASS: Value of data = 5
+FROM_DERIVED_CLASS : Value of data = 7
+           V C S   S i m u l a t i o n   R e p o r t    
 
  /////////////////////////////////////////////////
    Example4: Example of super keyword
