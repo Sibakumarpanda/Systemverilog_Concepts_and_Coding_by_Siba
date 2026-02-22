@@ -164,4 +164,61 @@ FROM_DERIVED_CLASS : Value of data = 7
    Example4: Example of super keyword
              without arguments in the constructor
  //////////////////////////////////////////////////
- 
+/*
+- This example is a little tricky. 
+- Usually, we create an object for both base and derived class and then do a method call and assign values to their class properties. 
+- To prove that SystemVerilog does super.new() function calls internally. 
+- An object is only created for the derived class and then the derived class handle is assigned to its base class. 
+- This is required to refer to the memory location for a base class that is created on super.new() call. 
+- Later base class data variable value is assigned. 
+- On calling display() method for the corresponding class handle, to print respective class properties.
+- Notice that the data variable has different values for base and child class since they are declared in both classes.
+*/
+    
+class base_trans;
+  bit [31:0] data;
+  int id;
+  
+  function void display();
+    $display("FROM_BASE_CLASS : Value of data = %0d, id = %0d", data, id);
+  endfunction
+endclass :base_trans
+
+class derived_trans extends base_trans;
+  bit [31:0] data;
+  
+  function void display();
+    $display("FROM_DERIVED_CLASS : Value of data = %0d, id = %0d", data, id);
+  endfunction
+endclass :derived_trans
+
+module class_example2;
+  initial begin
+    base_trans b_tr;
+    derived_trans d_tr;
+    d_tr = new();
+    
+    d_tr.data = 5;
+    d_tr.id   = 2;
+    
+    b_tr = d_tr;
+    b_tr.display();
+    d_tr.display();
+    $display ("---------------------------------------------");
+    
+    b_tr.data = 10;
+    b_tr.id   = 1;  
+    b_tr.display();
+    d_tr.display();
+  end
+endmodule :class_example2  
+
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 22 09:44 2026
+FROM_BASE_CLASS : Value of data = 0, id = 2
+FROM_DERIVED_CLASS : Value of data = 5, id = 2
+---------------------------------------------
+FROM_BASE_CLASS : Value of data = 10, id = 1
+FROM_DERIVED_CLASS : Value of data = 5, id = 1
+           V C S   S i m u l a t i o n   R e p o r t    
