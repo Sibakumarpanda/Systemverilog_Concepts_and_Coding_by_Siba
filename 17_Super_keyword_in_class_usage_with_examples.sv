@@ -11,3 +11,13 @@
 - In the below examples, 
 - The data variable is a class property of both base and derived class.
 - The display() method is also used in both classes
+
+ ////////////////////////////////////////////
+   Example1: Example without super keyword
+ ////////////////////////////////////////////
+ 
+
+ ////////////////////////////////////////////
+   Example2: Example with super keyword
+ ////////////////////////////////////////////
+ 
