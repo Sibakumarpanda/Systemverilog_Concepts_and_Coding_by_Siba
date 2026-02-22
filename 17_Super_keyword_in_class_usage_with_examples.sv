@@ -95,21 +95,27 @@ module class_example2;
 endmodule :class_example2
  
  //Logfile Output
- Contains Synopsys proprietary information.
+Contains Synopsys proprietary information.
 Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 21 23:26 2026
 FROM_BASE_CLASS: Value of data = 3
 FROM_DERIVED_CLASS: Value of data = 5
 FROM_BASE_CLASS: Value of data = 0
            V C S   S i m u l a t i o n   R e p o r t 
 
-  ///////////////////////////////////////////////
+NOTE: 
+- In the first example, the value for the data variables in the child class is updated. The display method from the child class is called using the child class handle.
+- Similarly, in the second example, the display() method from child class is called using child class handle, but the super keyword makes a difference. 
+- The super.data assignment assigns value to the data variable of the base class. Also, super.display() method calls display() method of its base class.
+- In the case of multilevel inheritance, class members are inherited one level up. The super.super.<class_member> is not allowed.
+
+ ///////////////////////////////////////////////
    Example3: Example of super keyword 
              with arguments in the constructor
  ///////////////////////////////////////////////
 
 
 
-  /////////////////////////////////////////////////
+ /////////////////////////////////////////////////
    Example4: Example of super keyword
              without arguments in the constructor
  //////////////////////////////////////////////////
