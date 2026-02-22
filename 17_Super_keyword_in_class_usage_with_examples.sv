@@ -15,7 +15,46 @@
  ////////////////////////////////////////////
    Example1: Example without super keyword
  ////////////////////////////////////////////
+ /* Example1 : Example without super keyword
+- In the below examples, 
+- The data variable is a class property of both base and derived class.
+- The display() method is also used in both classes
+*/
+
+class base_trans;
+  bit [31:0] data;  
+  function void display();
+    $display("FROM_BASE_CLASS: Value of data = %0h", data);
+  endfunction  
+endclass :base_trans
+
+class derived_trans extends base_trans;
+  bit [31:0] data;  
+  function void display();
+    $display("FROM_DERIVED_CLASS: Value of data = %0h", data);
+  endfunction  
+endclass :derived_trans
+
+module class_example1;
+  initial begin
+    base_trans b;
+    derived_trans d;
+    b = new();
+    d = new();   
+    
+    d.data = 5; // data variable in base class will have default value as 0.
+    d.display();
+    
+    b.display();
+  end
+endmodule :class_example1
  
+//Logfile Output
+ Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 21 23:22 2026
+FROM_DERIVED_CLASS: Value of data = 5
+FROM_BASE_CLASS: Value of data = 0
+           V C S   S i m u l a t i o n   R e p o r t 
 
  ////////////////////////////////////////////
    Example2: Example with super keyword
