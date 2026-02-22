@@ -111,6 +111,9 @@ NOTE:
 ////////////////////////////////////////////////////
   Usage of the super keyword in the constructor :
  //////////////////////////////////////////////////
+ - By default, the SystemVerilog compiler calls super.new() function calls automatically from extended class. 
+ - But if there are any arguments used in the new() function call, then the user has to call super.new(<argument_list>) explicitly. 
+ - The super.new() function call shall be the first line in the derived class constructor because the parent class must be initialized before the derived class.
    
   
  ///////////////////////////////////////////////
