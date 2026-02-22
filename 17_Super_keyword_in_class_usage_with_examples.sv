@@ -107,7 +107,12 @@ NOTE:
 - Similarly, in the second example, the display() method from child class is called using child class handle, but the super keyword makes a difference. 
 - The super.data assignment assigns value to the data variable of the base class. Also, super.display() method calls display() method of its base class.
 - In the case of multilevel inheritance, class members are inherited one level up. The super.super.<class_member> is not allowed.
-
+ 
+////////////////////////////////////////////////////
+  Usage of the super keyword in the constructor :
+ //////////////////////////////////////////////////
+   
+  
  ///////////////////////////////////////////////
    Example3: Example of super keyword 
              with arguments in the constructor
