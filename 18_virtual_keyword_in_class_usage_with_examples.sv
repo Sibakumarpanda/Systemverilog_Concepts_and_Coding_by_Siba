@@ -139,9 +139,8 @@ FROM_DERIVED_CLASS: Value of data = 5 and id = 1
 
 /////////////////////////////////////////////////////////////////////// ///////////////////////////////////////////////////
   Example3: Example with virtual keyword with different signature (Difference in argument list)
-//Both Base and Derived class should have the same number of arguments otherwise, a compilation error is expected. 
-//Notice that the Derived class display method has only one argument whereas the base class display method has two arguments
-  
+  Both Base and Derived class should have the same number of arguments otherwise, a compilation error is expected. 
+  Notice that the Derived class display method has only one argument whereas the base class display method has two arguments 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class base_trans;
   bit [31:0] data;
@@ -191,9 +190,9 @@ CPU time: .428 seconds to compile
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
   Example4: Example without virtual keyword with different signature (Difference in argument list)
-//Both Base and Derived class should have the same number of arguments otherwise, a compilation error is expected., if we are using virtual keyword in base class
-// If Virtual keyword is not used in base class , then it will give result
-//Notice that the Derived class display method has only one argument whereas the base class display method has two arguments. 
+  Both Base and Derived class should have the same number of arguments otherwise, a compilation error is expected., if we are using virtual keyword in base class
+  If Virtual keyword is not used in base class , then it will give result
+  Notice that the Derived class display method has only one argument whereas the base class display method has two arguments. 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////    
 class base_trans;
   bit [31:0] data;
@@ -241,8 +240,8 @@ FROM_BASE_CLASS: Value of data = 5 and id = 1
            V C S   S i m u l a t i o n   R e p o r t      
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
   Example5:Example with virtual keyword with the same signature
-  //Both Base and Derived class should have the same number of arguments otherwise, a compilation error is expected., if we are using virtual keyword in base class
- //Notice that the Derived class display method and the base class display method has same two arguments. 
+  Both Base and Derived class should have the same number of arguments otherwise, a compilation error is expected., if we are using virtual keyword in base class
+  Notice that the Derived class display method and the base class display method has same two arguments. 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////     
 
 class base_trans;
