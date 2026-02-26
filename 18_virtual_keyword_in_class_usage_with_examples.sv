@@ -72,11 +72,70 @@ FROM_DERIVED_CLASS: Value of data = 5 and id = 1
            V C S   S i m u l a t i o n   R e p o r t       
 
 /////////////////////////////////////////////////////////////////////// 
-  Example-2 : Inheritance Example2
+  Example2: with virtual Keyword
+  Notice that in the below example derived class display() method
+  is printing when it is declared as virtual.
+//////////////////////////////////////////////////////////////////////// 
+class base_trans;
+  bit [31:0] data;
+  int id;
   
-////////////////////////////////////////////////////////////////////////    
+  virtual function void display();
+    $display("FROM_BASE_CLASS: Value of data = %0h and id = %0h", data, id);
+  endfunction
+  
+endclass :base_trans
 
+class derived_trans extends base_trans;
+  function void display();
+    $display("FROM_DERIVED_CLASS: Value of data = %0h and id = %0h", data, id);
+  endfunction  
+endclass :derived_trans
 
+module class_example2;
+  initial begin
+    derived_trans d;
+    base_trans b;
+    d = new();
+    
+    b = d;
+    b.data = 5;
+    b.id = 1;
+    
+    b.display();
+    d.display();
+    
+    $display ("----------------------------------");
+    
+    d.data = 10;
+    d.id = 2;
+    
+   
+    b.display();
+    d.display();
+    
+    $display ("----------------------------------");
+    b.data = 5;
+    b.id = 1;
+    
+    b.display();
+    d.display();    
+  end
+endmodule :class_example2
+   
+//Logfile Output
+Chronologic VCS simulator copyright 1991-2025
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 26 10:41 2026
+FROM_DERIVED_CLASS: Value of data = 5 and id = 1
+FROM_DERIVED_CLASS: Value of data = 5 and id = 1
+----------------------------------
+FROM_DERIVED_CLASS: Value of data = a and id = 2
+FROM_DERIVED_CLASS: Value of data = a and id = 2
+----------------------------------
+FROM_DERIVED_CLASS: Value of data = 5 and id = 1
+FROM_DERIVED_CLASS: Value of data = 5 and id = 1
+           V C S   S i m u l a t i o n   R e p o r t      
 
 /////////////////////////////////////////////////////////////////////// 
   Example-3 : Inheritance Example3
