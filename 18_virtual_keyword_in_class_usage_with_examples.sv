@@ -239,8 +239,51 @@ Contains Synopsys proprietary information.
 Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 26 10:55 2026
 FROM_BASE_CLASS: Value of data = 5 and id = 1
            V C S   S i m u l a t i o n   R e p o r t      
-/////////////////////////////////////////////////////////////////////// 
-  Example-5 : Inheritance Example5
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+  Example5:Example with virtual keyword with the same signature
+  //Both Base and Derived class should have the same number of arguments otherwise, a compilation error is expected., if we are using virtual keyword in base class
+ //Notice that the Derived class display method and the base class display method has same two arguments. 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////     
+
+class base_trans;
+  bit [31:0] data;
+  int id;
   
-////////////////////////////////////////////////////////////////////////     
+  virtual function void display(bit [31:0] data, int id);
+    $display("FROM_BASE_CLASS: Value of data = %0h and id = %0h", data, id);
+  endfunction
+endclass :base_trans
+
+class derived_trans extends base_trans;
+  function void display(bit [31:0] data, int id);
+    $display("FROM_DERIVED_CLASS: data = %0h and id = %0h", data, id);
+  endfunction  
+endclass :derived_trans
+
+module class_example5;
+  initial begin
+    base_trans b;
+    derived_trans d;
+    d = new();
+    b = d;
+    
+    b.data = 5;
+    b.id = 1;
+    b.display(b.data, b.id);
+    $display ("--------------------------------");
+    d.data=11;
+    d.id=2;
+    b.display(b.data, b.id);
+    d.display(b.data, b.id);
+  end
+endmodule :class_example5   
    
+//Logfile Output
+Chronologic VCS simulator copyright 1991-2025
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 26 10:57 2026
+FROM_DERIVED_CLASS: data = 5 and id = 1
+--------------------------------
+FROM_DERIVED_CLASS: data = b and id = 2
+FROM_DERIVED_CLASS: data = b and id = 2
+           V C S   S i m u l a t i o n   R e p o r t    
