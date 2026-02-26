@@ -137,12 +137,58 @@ FROM_DERIVED_CLASS: Value of data = 5 and id = 1
 FROM_DERIVED_CLASS: Value of data = 5 and id = 1
            V C S   S i m u l a t i o n   R e p o r t      
 
-/////////////////////////////////////////////////////////////////////// 
-  Example-3 : Inheritance Example3
+/////////////////////////////////////////////////////////////////////// ///////////////////////////////////////////////////
+  Example3: Example with virtual keyword with different signature (Difference in argument list)
+//Both Base and Derived class should have the same number of arguments otherwise, a compilation error is expected. 
+//Notice that the Derived class display method has only one argument whereas the base class display method has two arguments
   
-////////////////////////////////////////////////////////////////////////   
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class base_trans;
+  bit [31:0] data;
+  int id;
+  
+  virtual function void display(bit [31:0] data, int id);
+  //function void display(bit [31:0] data, int id);
+    $display("FROM_BASE_CLASS: Value of data = %0h and id = %0h", data, id);
+  endfunction
+endclass :base_trans
 
+class derived_trans extends base_trans;
+  function void display(bit [31:0] data);
+    $display("FROM_DERIVED_CLASS: Value of data = %0h", data);
+  endfunction  
+endclass :derived_trans
 
+module class_example3;
+  initial begin
+    base_trans b;
+    derived_trans d;
+    d = new();
+    
+    b = d;
+    b.data = 5;
+    b.id = 1;
+    
+    b.display(b.data, b.id);
+  end
+endmodule :class_example3
+     
+//Logfile Output
+Parsing design file 'design.sv'
+Parsing design file 'testbench.sv'
+Top Level Modules:
+       class_example3
+TimeScale is 1 ns / 1 ns
+
+Error-[SV-INACF] Invalid number of args to class function
+  Too few arguments in class-method 'display' in derived class 
+  'derived_trans'.
+  Base class-method declared at "testbench.sv", 9
+  Derived class-method declared at "testbench.sv", 16
+  Please make sure that correct number of arguments are specified.
+
+1 error
+CPU time: .428 seconds to compile     
 
 /////////////////////////////////////////////////////////////////////// 
   Example-4 : Inheritance Example4
