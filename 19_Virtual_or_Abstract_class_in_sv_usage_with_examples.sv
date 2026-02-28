@@ -17,12 +17,37 @@
   To keep the program organized and understandable, it forms a group of classes.
   Common methods can be placed in the abstract class and these methods can be inherited by derived classes.
     
-/////////////////////////////////////////////////////////////////////// 
-  Example1: without virtual Keyword in class
-//////////////////////////////////////////////////////////////////////// 
+///////////////////////////////////////////////////////////////////////////////////////////////////// 
+  Example1: Virtual/Abstract Class example- Behaviour check , Without virtual keyword in the class
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Example-1 : Behaviour check , Without virtual keyword in the class
+class base_trans;
+  bit [31:0] data;
+  int id;
+  
+  function void display();
+    $display("FROM_BASE_CLASS : Value of data = %0h and id = %0h", data, id);
+  endfunction
+  
+endclass : base_trans
 
-
+module class_example1;
+  initial begin
+    base_trans b;
+    b = new();
     
+    b.data = 5;
+    b.id = 1;
+    b.display();
+  end
+endmodule :class_example1
+    
+//Logfile Output
+Chronologic VCS simulator copyright 1991-2025
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 28 09:06 2026
+FROM_BASE_CLASS : Value of data = 5 and id = 1
+           V C S   S i m u l a t i o n   R e p o r t         
 /////////////////////////////////////////////////////////////////////// 
   Example2: 
 //////////////////////////////////////////////////////////////////////// 
