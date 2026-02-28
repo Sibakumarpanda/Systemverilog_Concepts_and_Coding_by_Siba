@@ -47,12 +47,47 @@ Chronologic VCS simulator copyright 1991-2025
 Contains Synopsys proprietary information.
 Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 28 09:06 2026
 FROM_BASE_CLASS : Value of data = 5 and id = 1
-           V C S   S i m u l a t i o n   R e p o r t         
-/////////////////////////////////////////////////////////////////////// 
-  Example2: 
-//////////////////////////////////////////////////////////////////////// 
+           V C S   S i m u l a t i o n   R e p o r t   
+    
+///////////////////////////////////////////////////////////////////////////////////////////// 
+  Example2: Virtual/Abstract Class example- An Abstract class/Virtual class instantiation
+////////////////////////////////////////////////////////////////////////////////////////////// 
+// As we know , virtual class is a class , when there is NO object associated to it 
+//As discussed earlier abstract class is not expected to be instantiated. Hence , In the below example,Since we are instantiating an virtual/abstrace class ,  a compilation error is expected for the abstract class
 
+virtual class base_trans; //Virtual or Abstract class created with keyword virtual
+  bit [31:0] data;
+  int id;
+  
+   function void display();
+     $display("FROM_BASE_CLASS: Value of data = %0h and id = %0h", data, id);
+  endfunction
+endclass :base_trans
 
+module class_example2;
+  initial begin
+    base_trans b;
+    b = new();
+    
+    b.data = 5;
+    b.id = 1;
+    b.display();
+  end
+endmodule :class_example2
+
+//Logfile Output
+    
+Top Level Modules:
+       class_example2
+TimeScale is 1 ns / 1 ns
+Error-[SV-ACCNBI] An abstract class cannot be instantiated
+testbench.sv, 18
+class_example2, "b = new();"
+  Instantiation of the object 'b' can not be done because its type 
+  'base_trans' is an abstract base class.
+  Perhaps there is a derived class that should be used.
+1 error    
+    
 /////////////////////////////////////////////////////////////////////// 
   Example3: 
 ////////////////////////////////////////////////////////////////////////   
