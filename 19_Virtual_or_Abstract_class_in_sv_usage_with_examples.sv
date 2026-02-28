@@ -13,3 +13,10 @@
   virtual class <class_name>
    ...
   endclass
+- Advantages of Abstract class :
+  To keep the program organized and understandable, it forms a group of classes.
+  Common methods can be placed in the abstract class and these methods can be inherited by derived classes.
+    
+/////////////////////////////////////////////////////////////////////// 
+  Example1: without virtual Keyword in class
+//////////////////////////////////////////////////////////////////////// 
