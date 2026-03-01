@@ -88,12 +88,51 @@ class_example2, "b = new();"
   Perhaps there is a derived class that should be used.
 1 error    
     
-/////////////////////////////////////////////////////////////////////// 
-  Example3: 
-////////////////////////////////////////////////////////////////////////   
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+  Example3: Examples for abstract class- An abstract class with a derived class
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+// Example-3 : Examples for abstract class- An abstract class with a derived class
+//A Derived class can be extended from an abstract class is the same as how it is extended normally using the extends keyword. 
+//The Derived class is instantiated as shown in the below example.
+virtual class base_trans;
+  bit [31:0] data;
+  int id;
+  
+  function void display();
+    $display("FROM_BASE_CLASS: Value of data = %0h and id = %0h", data, id);
+  endfunction
+endclass :base_trans
 
+class derived_trans extends base_trans;
+  function void display();
+    $display("FROM_DERIVED_CLASS: Value of data = %0h and id = %0h", data, id);
+  endfunction  
+endclass :derived_trans
 
+module class_example3;
+  initial begin
+    derived_trans d;
+    d = new();
+    
+    d.display();
+    
+    d.data = 5;
+    d.id = 1;
+    d.display();      
+  end
+endmodule :class_example3
 
+//Logfile Outpt
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Mar  1 01:10 2026
+Warning : License for product VCS-BASE-RUNTIME will expire within 30 days, on: 30-mar-2026.
+If you would like to temporarily disable this message, set 
+ the VCS_LIC_EXPIRE_WARNING environment variable to the number of days
+before expiration that you want this message to start (the minimum is 0).
+FROM_DERIVED_CLASS: Value of data = 0 and id = 0
+FROM_DERIVED_CLASS: Value of data = 5 and id = 1
+           V C S   S i m u l a t i o n   R e p o r t     
+    
 /////////////////////////////////////////////////////////////////////// 
   Example4: 
 ////////////////////////////////////////////////////////////////////////  
