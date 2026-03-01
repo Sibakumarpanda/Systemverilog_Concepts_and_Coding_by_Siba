@@ -230,12 +230,59 @@ FROM_DERIVED_CLASS: Value of data2 = a and id2 = 2
 FROM_DERIVED_CLASS: Value of data1 = 0 and id1 = 0
            V C S   S i m u l a t i o n   R e p o r t     
 
-/////////////////////////////////////////////////////////////////////// 
-  Example6: 
-////////////////////////////////////////////////////////////////////////   
+///////////////////////////////////////////////////////////////////////////////////// 
+  Example6: Virtual/Abstract Class example- An abstract class with a virtual method
+////////////////////////////////////////////////////////////////////////////////////   
+// Example-6 : An abstract class /Virtual class with a virtual method
+virtual class base_trans;
+  bit [31:0] data;
+  int id;
+  
+  virtual function void display();
+    $display("FROM_BASE_CLASS: Value of data = %0h and id = %0h", data, id);
+  endfunction
+endclass :base_trans
 
+class derived_trans extends base_trans;
+  function void display();
+    $display("FROM_DERIVED_CLASS: Value of data = %0h and id = %0h", data, id);
+  endfunction  
+endclass :derived_trans
 
+module class_example6;
+  initial begin
+    base_trans b;
+    derived_trans d;
+    d = new();
+    
+    b = d;
+    b.data = 5;
+    b.id = 1;
+    b.display();
+    d.display();
+    $display ("-----------------------------------------");
+    d.data=10;
+    d.id=2;
+    d.display();
+    b.display();
+    
+  end
+endmodule :class_example6
 
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Mar  1 01:20 2026
+Warning : License for product VCS-BASE-RUNTIME will expire within 30 days, on: 30-mar-2026.
+If you would like to temporarily disable this message, set 
+ the VCS_LIC_EXPIRE_WARNING environment variable to the number of days
+before expiration that you want this message to start (the minimum is 0).
+FROM_DERIVED_CLASS: Value of data = 5 and id = 1
+FROM_DERIVED_CLASS: Value of data = 5 and id = 1
+-----------------------------------------
+FROM_DERIVED_CLASS: Value of data = a and id = 2
+FROM_DERIVED_CLASS: Value of data = a and id = 2
+           V C S   S i m u l a t i o n   R e p o r t 
+  
 /////////////////////////////////////////////////////////////////////// 
   Example7: 
 ////////////////////////////////////////////////////////////////////////  
