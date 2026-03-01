@@ -180,11 +180,55 @@ FROM_BASE_CLASS: Value of data = 5 and id = 1
 FROM_DERIVED_CLASS: Value of data = 5 and id = 1
            V C S   S i m u l a t i o n   R e p o r t     
 
-/////////////////////////////////////////////////////////////////////// 
-  Example5: 
-////////////////////////////////////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////////////////// 
+  Example5: An abstract class with Derived class handle assignment with little modification
+/////////////////////////////////////////////////////////////////////////////////////////////    
+virtual class base_trans;
+  bit [31:0] data1;
+  int id1;
+  
+  function void display();
+    $display("FROM_BASE_CLASS: Value of data1 = %0h and id1 = %0h", data1, id1);
+  endfunction
+endclass :base_trans
 
+class derived_trans extends base_trans;
+  bit [31:0] data2;
+  int id2;
+  
+  function void display();
+    $display("FROM_DERIVED_CLASS: Value of data2 = %0h and id2 = %0h", data2, id2);
+    $display("FROM_DERIVED_CLASS: Value of data1 = %0h and id1 = %0h", data1, id1);
+  endfunction  
+endclass : derived_trans
 
+module class_example5;
+  initial begin
+    base_trans b;
+    derived_trans d;
+    d = new();
+    
+    d.data2 = 10;
+    d.id2 = 2;
+    b = d;
+    
+    b.display();
+    d.display();
+  end
+endmodule :class_example5
+
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Mar  1 01:16 2026
+Warning : License for product VCS-BASE-RUNTIME will expire within 30 days, on: 30-mar-2026.
+
+If you would like to temporarily disable this message, set 
+ the VCS_LIC_EXPIRE_WARNING environment variable to the number of days
+before expiration that you want this message to start (the minimum is 0).
+FROM_BASE_CLASS: Value of data1 = 0 and id1 = 0
+FROM_DERIVED_CLASS: Value of data2 = a and id2 = 2
+FROM_DERIVED_CLASS: Value of data1 = 0 and id1 = 0
+           V C S   S i m u l a t i o n   R e p o r t     
 
 /////////////////////////////////////////////////////////////////////// 
   Example6: 
