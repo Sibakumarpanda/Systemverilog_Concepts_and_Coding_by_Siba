@@ -335,11 +335,54 @@ FROM_DERIVED_CLASS: Value of data = b and id = 7
 FROM_DERIVED_CLASS: Value of data = b and id = 7
            V C S   S i m u l a t i o n   R e p o r t     
 
-/////////////////////////////////////////////////////////////////////// 
-  Example8: 
-////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////// 
+  Example8: Virtual/Abstract Class example- A Normal class with pure virtual methods
+/////////////////////////////////////////////////////////////////////////////////////////  
+//Example-8 : A Normal class with pure virtual methods - A compile error is expected.Becuase , 
+// Pure virtual method must be used in side Virtual/abstract class
+//Pure virtual methods include the pure virtual function and the pure virtual task.
+//Pure virtual method -Means Just Prototype present in the base class and Implementation of method present in Derived class
+class base_trans;
+//virtual class base_trans;
+  bit [31:0] data;
+  int id;
+  
+  pure virtual function void display(); 
+endclass :base_trans
 
+class derived_trans extends base_trans;
+  function void display();
+    $display("FROM_DERIVED_CLASS: Value of data = %0h and id = %0h", data, id);
+  endfunction  
+endclass
 
-
-
+module class_example7;
+  initial begin
+    base_trans b;
+    derived_trans d;
+    d = new();
     
+    b = d;
+    b.data = 10;
+    b.id = 3;
+    d.display();
+    b.display();
+    $display ("-------------------------------");
+    d.data = 11;
+    d.id = 7;
+    d.display();
+    b.display();
+  end
+endmodule :class_example7
+
+//Logfile Output
+Parsing design file 'design.sv'
+Parsing design file 'testbench.sv'
+    
+Error-[PVMNA] Pure virtual method not allowed
+testbench.sv, 12
+"base_trans::display"
+  A pure virtual method cannot be defined in a non-abstract class 
+  'base_trans'.
+1 error
+CPU time: .445 seconds to compile    
