@@ -202,11 +202,61 @@ FROM_DERIVED_CLASS: Value of data = 5, id = 2
 FROM_DERIVED_CLASS: Value of data = 5, id = 2
            V C S   S i m u l a t i o n   R e p o r t                  
 
-////////////////////////////////////
- Example3_1 :
-///////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ Example3_1 : Polymorphism -Derived class handle is assigned to the base class (base_class_handle = derived_class_handle , ie b=d)
+              Only base class has class properties declared.
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////    
+//Example-3_1 : Polymorphism -Derived class handle is assigned to the base class (base_class_handle = derived_class_handle , ie b=d)
+//Part B: Only base class has class properties declared.
+//In this example a derived_trans class is extended from the base_trans class.
+//An object is created from the derived class. 
+//Later a derived class handle is assigned to the base class handle. 
+//Depending on properties declaration (class variables) in base and derived class, memory allocation differs.
+//Notice that in both examples, value assignment (data and id variables) using the base class handle is written first and then a derived class handle is used to assign the values to variables.
+//Since here ,variables are only declared in the base class, both classes will have access to the same memory location. Hence, values changed by child class also reflect when it is accessed by the base class handle.
 
-                  
+class base_trans;
+  bit [31:0] data;
+  int id;
+  
+  function void display();
+    $display("FROM_BASE_CLASS: Value of data = %0d, id = %0d", data, id);
+  endfunction
+endclass :base_trans
+
+class derived_trans extends base_trans;
+   
+  function void display();
+    $display("FROM_DERIVED_CLASS: Value of data = %0d, id = %0d", data, id);
+  endfunction
+endclass :derived_trans
+
+module class_example3;
+  initial begin
+    base_trans b;
+    derived_trans d;
+    d = new();
+        
+    b = d;
+    
+    b.data = 10;
+    b.id   = 1;
+    
+    d.data = 5;
+    d.id   = 2;
+    
+    b.display();
+    d.display();
+  end
+endmodule :class_example3
+
+//Logfile Output
+Chronologic VCS simulator copyright 1991-2025
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Mar  5 06:17 2026
+FROM_BASE_CLASS: Value of data = 5, id = 2
+FROM_DERIVED_CLASS: Value of data = 5, id = 2
+           V C S   S i m u l a t i o n   R e p o r t                   
 
 ////////////////////////////////////
  Example3_2 :
