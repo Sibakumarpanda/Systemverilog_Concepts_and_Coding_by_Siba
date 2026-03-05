@@ -8,10 +8,86 @@
 -To use many forms of the method, the virtual keyword must be used in the method definition.
 
     
-////////////////////////////////////
-  Example1 :
-///////////////////////////////////    
+/////////////////////////////////////////
+  Example1 : Polymorphism Basic Example
+/////////////////////////////////////////  
+//Example-1 : Polymorphism Basic Example
+//In this example, derived_a, derived_b and derived_c are derived from the base class. 
+//All Derived class handles are assigned to the base class handle. 
+//Using Polymorphism concept, the base class handle can invoke Derived class methods as shown here .
 
+class base_trans;
+  bit [31:0] data;
+  int id;
+  
+  virtual function void display();
+    $display("FROM_BASE_CLASS: Value of data = %0d, id = %0d", data, id);
+  endfunction
+endclass :base_trans
+
+class derived_trans_a extends base_trans;
+  function void display();
+    $display("FROM_DERIVED_A_CLASS: Value of data = %0d, id = %0d", data, id);
+  endfunction
+endclass : derived_trans_a
+
+class derived_trans_b extends base_trans;
+  function void display();
+    $display("FROM_DERIVED_B_CLASS: Value of data = %0d, id = %0d", data, id);
+  endfunction
+endclass :derived_trans_b
+
+class derived_trans_c extends base_trans;
+  function void display();
+    $display("FROM_DERIVED_C_CLASS: Value of data = %0d, id = %0d", data, id);
+  endfunction
+endclass :derived_trans_c
+
+module class_example1;
+  initial begin
+    base_trans b1, b2, b3;
+    derived_trans_a d1 = new();
+    derived_trans_b d2 = new();
+    derived_trans_c d3 = new();
+    
+    d1.data = 200;
+    d1.id   = 2;
+    
+    d2.data = 300;
+    d2.id   = 3;
+    
+    d3.data = 400;
+    d3.id   = 4;
+     
+    b1 = d1;
+    b2 = d2;
+    b3 = d3;
+    
+    b1.display();
+    b2.display();
+    b3.display();
+    $display ("**************************************************");
+    
+    b1.data = 100;
+    b1.id   = 1;
+    
+    b1.display();
+    b2.display();
+    b3.display();
+  end
+endmodule :class_example1
+    
+//Log File Output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Mar  4 20:26 2026
+FROM_DERIVED_A_CLASS: Value of data = 200, id = 2
+FROM_DERIVED_B_CLASS: Value of data = 300, id = 3
+FROM_DERIVED_C_CLASS: Value of data = 400, id = 4
+**************************************************
+FROM_DERIVED_A_CLASS: Value of data = 100, id = 1
+FROM_DERIVED_B_CLASS: Value of data = 300, id = 3
+FROM_DERIVED_C_CLASS: Value of data = 400, id = 4
+           V C S   S i m u l a t i o n   R e p o r t     
 
 ////////////////////////////////////
  Example2 :
