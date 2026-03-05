@@ -314,10 +314,60 @@ FROM_DERIVED_CLASS: Value of data = 5, id = 2
 FROM_DERIVED_CLASS: Value of data = 5, id = 2
            V C S   S i m u l a t i o n   R e p o r t                    
 
-////////////////////////////////////
- Example4 :
-///////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Example4 : Polymorphism - A base class handle is assigned to the Derived class (Derived_class_handle = base_class_handle that is d=b)
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+//Example-4: A base class handle is assigned to the Derived class (Derived_class_handle = base_class_handle that is d=b)
+// Now, let’s try to assign a base class handle to the Derived class. This will lead to a compilation error. 
+//As we observe compilation error when a base class handle is assigned to the child class. 
+//Let’s see how to resolve this problem using “Dynamic Casting” in coming Example5
+//Now, replace assignment = with $cast(, ). The run time error is still expected because the base handle is not pointing to an object that is compatible with Derived handle
 
+class base_trans;
+  bit [31:0] data;
+  int id;
+  
+  function void display();
+    $display("FROM_BASE_CLASS: Value of data = %0d, id = %0d", data, id);
+  endfunction
+endclass :base_trans
+
+class derived_trans extends base_trans;
+   
+  function void display();
+    $display("FROM_DERIVED_CLASS: Value of data = %0d, id = %0d", data, id);
+  endfunction
+endclass :derived_trans
+
+module class_example4;
+  initial begin
+    base_trans b;
+    derived_trans d;
+    d = new();
+
+    d = b; //base class handle is assigned to the Derived class
+
+    b.data = 10;
+    b.id   = 1;
+    
+    d.data = 5;
+    d.id   = 2;
+    
+    b.display();
+  end
+endmodule :class_example4
+
+//Logfile Output
+Error-[SV-ICA] Illegal class assignment
+testbench.sv, 29
+"d = b;"
+  Expression 'b' on rhs is not a class or a compatible class and hence cannot 
+  be assigned to a class handle on lhs.
+  Source type: class $unit::base_trans
+  Target type: class $unit::derived_trans
+  Please make sure that the lhs and rhs expressions are compatible.
+1 error
+CPU time: .410 seconds to compile      
 
 ////////////////////////////////////
  Example5 :
