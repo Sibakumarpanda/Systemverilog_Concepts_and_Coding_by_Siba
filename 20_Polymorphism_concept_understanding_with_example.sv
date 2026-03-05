@@ -369,11 +369,54 @@ testbench.sv, 29
 1 error
 CPU time: .410 seconds to compile      
 
-////////////////////////////////////
- Example5 :
-///////////////////////////////////  
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ Example5 : Polymorphism -A base class handle is assigned to the Derived class (Derived_class_handle = base_class_handle) with dynamic casting
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Example-5 : A base class handle is assigned to the Derived class (Derived_class_handle = base_class_handle) with dynamic casting
+//Now, replace assignment = with $cast(, ). The run time error is still expected because the base handle is not pointing to an object that is compatible with child handle
 
+class base_trans;
+  bit [31:0] data;
+  int id;
+  
+  function void display();
+    $display("FROM_BASE_CLASS: Value of data = %0d, id = %0d", data, id);
+  endfunction
+endclass : base_trans
 
+class derived_trans extends base_trans;
+   
+  function void display();
+    $display("FROM_DERIVED_CLASS: Value of data = %0d, id = %0d", data, id);
+  endfunction
+endclass :derived_trans
+
+module class_example5;
+  initial begin
+    base_trans b;
+    derived_trans d;
+    b = new();
+
+    $cast(d, b);
+
+    b.data = 10;
+    b.id   = 1;
+    
+    d.data = 5;
+    d.id   = 2;
+    
+    b.display();
+  end
+endmodule : class_example5     
+
+//Logfile Output
+Error-[DCF] Dynamic cast failed
+testbench.sv, 26
+  Casting of source class type 'base_trans' to destination class type 
+  'derived_trans' failed due to type mismatch.
+  Please ensure matching types for dynamic cast
+           V C S   S i m u l a t i o n   R e p o r t 
+      
 ////////////////////////////////////
  Example6 :
 ///////////////////////////////////
