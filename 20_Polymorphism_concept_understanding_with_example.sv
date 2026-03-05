@@ -417,11 +417,56 @@ testbench.sv, 26
   Please ensure matching types for dynamic cast
            V C S   S i m u l a t i o n   R e p o r t 
       
-////////////////////////////////////
- Example6 :
-///////////////////////////////////
+///////////////////////////////////////////////////////////////
+ Example6 :  Polymorphism : Solution to Example 4 and 5
+///////////////////////////////////////////////////////////////
+//Example-6: Solution to Example4 and Example5
+//To resolve this, we need to assign a Derived class handle to the base class handle so that the base class handle should be compatible with the child class. 
+//Notice that an object is created for the Derived class here whereas, in example5, an object was created for the base class. //This was required otherwise null pointer dereference is expected.
 
+class base_trans;
+  bit [31:0] data;
+  int id;
+  
+  function void display();
+    $display("FROM_BASE_CLASS: Value of data = %0d, id = %0d", data, id);
+  endfunction
+endclass :base_trans
 
+class derived_trans extends base_trans;
+   
+  function void display();
+    $display("FROM_DERIVED_CLASS: Value of data = %0d, id = %0d", data, id);
+  endfunction
+endclass :derived_trans
+
+module class_example6;
+  initial begin
+    base_trans b;
+    derived_trans d;
+    d = new();
+
+    b = d; //or $cast(b, d);
+    $cast(d, b);
+
+    b.data = 10;
+    b.id   = 1;
+    
+    d.data = 5;
+    d.id   = 2;
+    
+    d.display();
+    b.display();
+  end
+endmodule :class_example6      
+
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Mar  5 10:01 2026
+FROM_DERIVED_CLASS: Value of data = 5, id = 2
+FROM_BASE_CLASS: Value of data = 5, id = 2
+           V C S   S i m u l a t i o n   R e p o r t   
+      
 ////////////////////////////////////
  Example7 :
 ///////////////////////////////////   
