@@ -43,4 +43,49 @@ endmodule :class_example1
 Contains Synopsys proprietary information.
 Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Mar  7 09:14 2026
 PRINTING_FROM_STATIC_FUNC: Value of id = 5
-           V C S   S i m u l a t i o n   R e p o r t   
+           V C S   S i m u l a t i o n   R e p o r t  
+  
+///////////////////////////////////////////////////////////////////////////////////////////////////
+  Example2: Acessing NON static properties and NON static methods using Scope Resolution Operator
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//Example2: Acessing NON static properties and NON static methods using Scope Resolution Operator 
+class packet_trans;
+  bit [31:0] data; //Non Static Properties
+  int id;          //Non Static Properties
+  
+  function auto_disp1(int id);   //Non Static Method
+    $display("PRINTING_FROM_NONSTATIC_FUNC: Value of id = %0h", id);
+  endfunction
+  
+  function auto_disp2(int id);  //Non Static Method
+    $display("PRINTING_FROM_NONSTATIC_FUNC:Value of id = %0h", id);
+  endfunction
+endclass : packet_trans
+
+module class_example2;
+  initial begin
+    packet_trans::id = 5; //illegal
+    packet_trans::auto_disp1(packet_trans::id); //illegal
+    
+    packet_trans::data = 2; // illegal
+    packet_trans::auto_disp2(packet_trans::id); // illegal
+  end
+endmodule :class_example2
+  
+//Logfile Output
+Error-[ISRF] Illegal scoped reference found
+testbench.sv, 19
+"packet_trans::auto_disp1"
+  Scoped reference to non-static class task/function 
+  'packet_trans::auto_disp1' is not allowed.
+    
+Error-[ISRF] Illegal scoped reference found
+testbench.sv, 22
+"packet_trans::auto_disp2"
+  Scoped reference to non-static class task/function 
+  'packet_trans::auto_disp2' is not allowed.
+
+2 errors
+CPU time: .690 seconds to compile
+Exit code expected: 0, received: 255
+Done    
