@@ -10,3 +10,4 @@
 - The derived classes can access public or protected class members of their base class.
 - Access to type declarations and enumeration named constants declared inside the class from outside the class hierarchy or from within derived classes.
 - Accessing automatic class members (class properties and methods) has an illegal scope of access.
+- Also, scope resolution operator can be used to access package members.  
