@@ -41,6 +41,10 @@ module class_example1;
     tr.delay();
   end
 endmodule :class_example1 
+     
 //Logfile Output
-     
-     
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Mar  7 21:49 2026
+data = 100 and id = 1
+Time = 50, delayed data = 100
+           V C S   S i m u l a t i o n   R e p o r t      
