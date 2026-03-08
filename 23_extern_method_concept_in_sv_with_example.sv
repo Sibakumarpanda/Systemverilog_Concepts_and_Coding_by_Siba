@@ -6,3 +6,41 @@
 - An extern keyword is used for method declaration and a class name with a scope resolution operator is used for method definition.
 - Method definition and declaration should have the same number of argument lists, data types, and argument names.
 - For the extern function return type should be the same if used.
+
+///////////////////////////////////////////////////////
+   Example1:  Extern method in Classes, basic example
+//////////////////////////////////////////////////////
+//The following example has both extern function and extern task implemented.
+class pkt_trans;
+  bit [31:0] data;
+  int id;
+
+  extern function void display();
+  extern task delay();
+endclass :pkt_trans
+
+function void pkt_trans::display();
+  $display("data = %0d and id = %0d", data, id);
+endfunction :display
+    
+task pkt_trans::delay();
+  #50;
+  $display("Time = %0.0t, delayed data = %0d", $time, data);
+endtask :delay
+
+module class_example1;
+  pkt_trans tr;
+  
+  initial begin
+    tr = new();
+   
+    tr.data = 100;
+    tr.id = 1;
+    
+    tr.display();
+    tr.delay();
+  end
+endmodule :class_example1 
+//Logfile Output
+     
+     
