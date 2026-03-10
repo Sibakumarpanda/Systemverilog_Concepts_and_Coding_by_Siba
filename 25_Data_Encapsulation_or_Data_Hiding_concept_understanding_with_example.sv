@@ -35,11 +35,15 @@ module class_example1;
 endmodule :class_example1
 
 //Logfileoutput
-     
-     
-     
-
-
+ Error-[SV-ICVA-L] Illegal class variable access
+testbench.sv, 22
+  Local member 'id' of class 'pkt_trans' is not visible to scope 
+  'class_example1'.
+  Please make sure that the above member is accessed only from its own class 
+  methods as it is declared as local.
+  Please refer to the SystemVerilog LRM (1800-2012) Section 8.18 Data hiding 
+  and encapsulation.
+1 error    
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
   Example2: 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
