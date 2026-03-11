@@ -305,10 +305,37 @@ testbench.sv, 23
 1 error     
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
-  Example9: 
+  Example9: Data Encapsulation and Hiding - protected Access method Examples ,Access within the class scope
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
+//There is no compilation error expected if the protected display() method is accessed within the class scope.
+class pkt_tran;
+  bit [31:0] data;
+  int id;
 
+  function new();
+    data = 100;
+    id = 1;
+    display();
+  endfunction
+  
+  protected function void display();
+    $display("data = %0d and id = %0d", data, id);
+  endfunction
+endclass :pkt_tran
 
+module class_example9;
+  pkt_tran tr;
+  
+  initial begin
+    tr = new();
+  end
+endmodule :class_example9
+     
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Mar 11 10:17 2026
+data = 100 and id = 1
+           V C S   S i m u l a t i o n   R e p o r t      
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
   Example10: 
