@@ -45,9 +45,37 @@ testbench.sv, 22
   and encapsulation.
 1 error    
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-  Example2: 
+  Example2: Data Encapsulation and Hiding -Local Access variable Examples ,Access With in the class scope
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//There is no compilation error expected if the local variable is accessed within the class scope.
+class pkt_trans;
+  bit [31:0] data;
+  local int id;
 
+  function new();
+    data = 100;
+    id = 1;
+  endfunction
+  
+  function void display();
+    $display("data = %0d and id = %0d", data, id);
+  endfunction
+endclass :pkt_trans
+
+module class_example2;
+  pkt_trans tr;
+  
+  initial begin
+    tr = new();
+    tr.display();
+  end
+endmodule :class_example2
+     
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Mar 10 22:20 2026
+data = 100 and id = 1
+           V C S   S i m u l a t i o n   R e p o r t      
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
   Example3: 
