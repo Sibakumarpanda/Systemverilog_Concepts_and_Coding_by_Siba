@@ -234,9 +234,40 @@ testbench.sv, 25
   Please refer to the SystemVerilog LRM (1800-2012) Section 8.18 Data hiding 
   and encapsulation.
 1 error     
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-  Example7: 
-////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Example7: Data Encapsulation and Hiding -Protected Access variable Examples ,Access with in the class scope
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Example7: Data Encapsulation and Hiding -Protected Access variable Examples ,Access with in the class scope
+//In the below example, the variable id is declared as a protected variable. It is tried to access with in  class scope,so It will not leads to a compilation error.
+class pkt_trans;
+  bit [31:0] data;
+  protected int id;
+
+  function new();
+    data = 100;
+    id = 1;
+  endfunction
+  
+  function void display();
+    $display("data = %0d and id = %0d", data, id);
+  endfunction
+endclass :pkt_trans
+
+module class_example7;
+  pkt_trans tr;
+  
+  initial begin
+    tr = new();
+    tr.display();
+  end
+endmodule :class_example7 
+     
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Mar 11 10:12 2026
+data = 100 and id = 1
+           V C S   S i m u l a t i o n   R e p o r t      
+     
      
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
   Example8: 
