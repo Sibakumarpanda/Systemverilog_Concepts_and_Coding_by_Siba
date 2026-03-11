@@ -194,11 +194,46 @@ testbench.sv, 26
   properties as it is declared as local.
 1 error     
      
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-  Example6: 
-////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Example6: Data Encapsulation and Hiding -Protected Access variable Examples ,Access outside of the class scope
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//As discussed earlier, local access qualifiers can not be accessed outside of the class scope. 
+//But sometimes it is required to provide class member access to derived classes. This access is provided by a protected access qualifier.
+//A protected class member can not be accessed outside class scope except access by their Derived classes.
+//Example6: Data Encapsulation and Hiding -Protected Access variable Examples ,Access outside of the class scope
+//In the below example, the variable id is declared as a protected variable. It is tried to access outside of class scope, which leads to a compilation error.
+class pkt_trans;
+  bit [31:0] data;
+  protected int id;
 
+  function void display();
+    $display("data = %0d and id = %0d", data, id);
+  endfunction
+endclass :pkt_trans
 
+module class_example6;
+  pkt_trans tr;
+  
+  initial begin
+    tr = new();
+   
+    tr.data = 100;
+    tr.id = 1;
+    
+    tr.display();
+  end
+endmodule :class_example6
+
+//Logfile Output
+Error-[SV-ICVA] Illegal class variable access
+testbench.sv, 25
+  Protected member 'id' of class 'pkt_trans' is not visible to scope 
+  'class_example6'.
+  Please make sure that the above member is accessed only from its own class 
+  or inherited class properties as it is declared as protected.
+  Please refer to the SystemVerilog LRM (1800-2012) Section 8.18 Data hiding 
+  and encapsulation.
+1 error     
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
   Example7: 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
