@@ -112,10 +112,39 @@ testbench.sv, 23
   Please make sure that the above method is called only from its own class 
   properties as it is declared as local.
 1 error     
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-  Example4: 
-////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Example4: Data Encapsulation and Hiding - Local Access method Examples ,Access within the class scope
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//There is no compilation error expected if the local display() method is accessed within the class scope.
+class pkt_tran;
+  bit [31:0] data;
+  int id;
 
+  function new();
+    data = 100;
+    id = 1;
+    display();
+  endfunction
+  
+  local function void display();
+    $display("data = %0d and id = %0d", data, id);
+  endfunction
+endclass :pkt_tran
+
+module class_example4;
+  pkt_tran tr;
+  
+  initial begin
+    tr = new();
+  end
+endmodule :class_example4
+     
+//Logfile Output
+Chronologic VCS simulator copyright 1991-2025
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Mar 10 22:25 2026
+data = 100 and id = 1
+           V C S   S i m u l a t i o n   R e p o r t 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
   Example5: 
