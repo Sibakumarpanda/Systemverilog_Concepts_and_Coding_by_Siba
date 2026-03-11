@@ -337,6 +337,48 @@ Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Ma
 data = 100 and id = 1
            V C S   S i m u l a t i o n   R e p o r t      
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-  Example10: 
-//////////////////////////////////////////////////////////////////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Example10: Data Encapsulation and Hiding -The Derived class access protected member of the Base class
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+//A derived_trans is a derived class of base class transaction. 
+//A protected method display() is defined in the base class and it is accessed by its derived class derived_trans.
+//Since here it is allowed, a compilation error will not come
+class pkt_trans;
+  bit [31:0] data;
+  int id;
+
+  function new();
+    data = 100;
+    id = 1;
+  endfunction
+  
+  protected function void display();
+    $display("data = %0d and id = %0d", data, id);
+  endfunction
+endclass :pkt_trans
+
+class derived_trans extends pkt_trans;
+  bit [31:0] addr;
+  
+  task calc_addr;
+    addr = data * id;
+    display();         // Derived class is accessing Local method of Base class
+    $display("addr = %0d", addr);
+  endtask
+endclass :derived_trans
+
+module class_example10;
+  derived_trans tr;
+  
+  initial begin
+    tr = new();
+    tr.calc_addr();
+  end
+endmodule :class_example10
+
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Mar 11 10:19 2026
+data = 100 and id = 1
+addr = 100
+           V C S   S i m u l a t i o n   R e p o r t      
