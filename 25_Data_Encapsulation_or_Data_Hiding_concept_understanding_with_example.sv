@@ -237,7 +237,6 @@ testbench.sv, 25
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
   Example7: Data Encapsulation and Hiding -Protected Access variable Examples ,Access with in the class scope
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Example7: Data Encapsulation and Hiding -Protected Access variable Examples ,Access with in the class scope
 //In the below example, the variable id is declared as a protected variable. It is tried to access with in  class scope,so It will not leads to a compilation error.
 class pkt_trans;
   bit [31:0] data;
@@ -269,10 +268,41 @@ data = 100 and id = 1
            V C S   S i m u l a t i o n   R e p o r t      
      
      
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-  Example8: 
-////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Example8: Data Encapsulation and Hiding - protected Access method Examples ,Access outside of the class scope
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//A class method display() is declared as protected. So, calling the display() method outside of the class scope will lead to a compilation error.
+class pkt_trans;
+  bit [31:0] data;
+  int id;
 
+  function new();
+    data = 100;
+    id = 1;
+  endfunction
+  
+  protected function void display();
+    $display("data = %0d and id = %0d", data, id);
+  endfunction
+endclass :pkt_trans
+
+module class_example8;
+  pkt_trans tr;
+  
+  initial begin
+    tr = new();
+    tr.display();
+  end
+endmodule :class_example8
+     
+//Logfile Output
+Error-[SV-ICMA] Illegal class method access
+testbench.sv, 23
+  Protected method 'display' of class 'pkt_trans' is not visible to scope 
+  'class_example8'.
+  Please make sure that the above method is called only from its own class 
+  properties as it is declared as local.
+1 error     
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
   Example9: 
