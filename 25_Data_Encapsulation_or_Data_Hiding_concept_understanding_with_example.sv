@@ -78,10 +78,40 @@ data = 100 and id = 1
            V C S   S i m u l a t i o n   R e p o r t      
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-  Example3: 
+  Example3: Data Encapsulation and Hiding - Local Access method Examples ,Access outside of the class scope
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
+//A class method display() is declared as local. So, calling the display() method outside of the class scope will lead to a compilation error.
+class pkt_trans;
+  bit [31:0] data;
+  int id;
 
+  function new();
+    data = 100;
+    id = 1;
+  endfunction
+  
+  local function void display();
+    $display("data = %0d and id = %0d", data, id);
+  endfunction
+endclass :pkt_trans
 
+module class_example3;
+  pkt_trans tr;
+  
+  initial begin
+    tr = new();
+    tr.display();
+  end
+endmodule :class_example3
+     
+//Logfile Output
+Error-[SV-ICMA] Illegal class method access
+testbench.sv, 23
+  Local method 'display' of class 'pkt_trans' is not visible to scope 
+  'class_example3'.
+  Please make sure that the above method is called only from its own class 
+  properties as it is declared as local.
+1 error     
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
   Example4: 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
