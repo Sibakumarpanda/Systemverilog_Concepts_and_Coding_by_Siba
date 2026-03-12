@@ -34,6 +34,10 @@ module class_example1;
 endmodule :class_example1   
 
 //Logfile output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Mar 12 09:42 2026
+data = 100 and id = 1
+           V C S   S i m u l a t i o n   R e p o r t     
    
 ////////////////////////////////////////////////////////////////
  Example2 : Constant class properties in SV -Instant constants
@@ -66,5 +70,8 @@ module class_example2;
 endmodule :class_example2
 
 //Logfile Output
-   
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Mar 12 09:42 2026
+data = 200 and id = 1
+           V C S   S i m u l a t i o n   R e p o r t    
    
