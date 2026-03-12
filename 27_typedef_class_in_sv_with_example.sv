@@ -44,6 +44,41 @@ Error-[SE] Syntax error
                         ^
 1 error   
 ///////////////////////////////////////////////////////////
-   Example2: 
-///////////////////////////////////////////////////////////      
+   Example2: typedef Class in SV - With typedef keyword
+///////////////////////////////////////////////////////////   
+//Here ,The forward declaration is done with a typedef declaration as follows. So Compilation error will not occur
+typedef class transaction_B;
+
+class transaction_A;
+  bit [31:0] data;
+  int id;
+  transaction_B tr_B = new();
+      
+  function void display();
+    $display("From transaction_A Class: data = %0d and id = %0d", data, id);
+    $display("From transaction_B Class: addr = %0d", tr_B.addr);
+  endfunction
+endclass :transaction_A
+
+class transaction_B;
+  bit [31:0] addr = 200;
+endclass :transaction_B
+
+module class_example2;
+  transaction_A tr_A;
+  
+  initial begin
+    tr_A = new();
    
+    tr_A.data = 100;
+    tr_A.id = 1;
+    tr_A.display();
+  end
+endmodule :class_example2
+
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Mar 12 09:47 2026
+From transaction_A Class: data = 100 and id = 1
+From transaction_B Class: addr = 200
+           V C S   S i m u l a t i o n   R e p o r t       
