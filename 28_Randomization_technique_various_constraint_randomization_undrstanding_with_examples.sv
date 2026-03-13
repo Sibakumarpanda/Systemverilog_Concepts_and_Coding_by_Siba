@@ -35,3 +35,11 @@
 - Syntax : randc bit [1:0] value;   // Possible values = 0, 1, 2, 3
 - Possible random value generated:  2, 3, 1, 0, 3, 2, 0, 1..
     
+////////////////////////////////////////
+  Need of Constraints in Randomizaion:
+///////////////////////////////////////
+
+
+
+
+   
