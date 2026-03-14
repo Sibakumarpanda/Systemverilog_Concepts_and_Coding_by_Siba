@@ -38,6 +38,14 @@
 ////////////////////////////////////////
   Need of Constraints in Randomizaion:
 ///////////////////////////////////////
+- In a design-specific scenario, DUT works only for a particular range of inputs as per feature. 
+- To satisfy this need, constraint becomes extremely important in randomization. Constraint block represents constraints for random variables. 
+- Syntax for constraint block:         constraint <constraint_name> {<expression/ condition>; }
+- Constraints block must have a unique name within a class.
+- Constraint block can call a function to get constraint values as the return value from the function.
+- Constraints are written inside curly braces.
+- For a particular class, constraint blocks can be written inside a class or outside a class using extern keywords.
+- Expressions or conditions can be written inside a constraint block.   
 
 
 
