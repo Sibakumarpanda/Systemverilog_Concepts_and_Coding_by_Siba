@@ -47,7 +47,27 @@
 - For a particular class, constraint blocks can be written inside a class or outside a class using extern keywords.
 - Expressions or conditions can be written inside a constraint block.   
 
-
+/////////////////////////////////////////
+   Various types of Constraints: 
+////////////////////////////////////////
+- Inside keyword in constraints with rand Keyword
+- Inside keyword in constraints with randc Keyword   
+- If else in constraints
+- Implication operator in constraint
+- foreach loop in constraint
+- Dist keyword in constraints
+- Inheritance in constraint
+- Function in constraint
+- Disable randomization
+- Static constraints
+- Unique constraint
+- Bidirectional constraint
+- Solve Before in constraint
+- Inline constraints
+- Soft constraint
+- Randomization methods
+- randcase in SV
+   
 
 
    
