@@ -399,11 +399,37 @@ scale = HIGH, value = 150
            V C S   S i m u l a t i o n   R e p o r t       
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example6: 
+   Example6: Constraints Randomization - Using conditional operator (Will work like if -else condition)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////   
+//Example6: Constraints Randomization - Using conditional operator (Will work like if -else condition)
+class packet_item;
+  rand bit [7:0] value;
+  rand enum {LOW, HIGH} scale;
 
+  constraint c1 { value == ((scale == LOW) ? 20: 90); }
+  
+endclass : packet_item
 
-
+module constraint_example6;
+  packet_item pkt;
+  
+  initial begin
+    pkt = new();
+    
+    repeat(5) begin
+      pkt.randomize();
+      $display("scale = %s, value = %0d", pkt.scale.name(), pkt.value);
+    end
+  end
+endmodule :constraint_example6
+                                                                     
+//Logfile Output
+scale = HIGH, value = 90
+scale = LOW, value = 20
+scale = HIGH, value = 90
+scale = LOW, value = 20
+scale = LOW, value = 20
+           V C S   S i m u l a t i o n   R e p o r t                                                                      
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example7: 
