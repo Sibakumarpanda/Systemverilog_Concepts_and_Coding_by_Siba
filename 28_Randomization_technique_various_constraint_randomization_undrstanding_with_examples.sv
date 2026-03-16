@@ -326,11 +326,38 @@ value1 = 1, value2 = 6, value3 = 7, value4 = 3, value5 = 3, value6 = 5, value7 =
            V C S   S i m u l a t i o n   R e p o r t       
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example4: 
+   Example4: Constraints Randomization -If else in constraints
 /////////////////////////////////////////////////////////////////////////////////////////////////////////   
+//Based on the If-else condition, values for the variable can be assigned. It is similar to a normal if-else condition.
+class packet_item;
+  rand bit [7:0] value;
+  rand enum {LOW, HIGH} scale;
 
+  constraint scale_c { if(scale == LOW) value < 50;
+                       else             value >= 50;
+                     }
+endclass :packet_item
 
-
+module constraint_example4;
+  packet_item pkt;
+  
+  initial begin
+    pkt = new();
+    
+    repeat(5) begin
+      pkt.randomize();
+      $display("scale = %s, value = %0d", pkt.scale.name(), pkt.value);
+    end
+  end
+endmodule :constraint_example4
+      
+//Logfile Output
+scale = HIGH, value = 150
+scale = HIGH, value = 121
+scale = HIGH, value = 192
+scale = HIGH, value = 104
+scale = LOW, value = 34
+           V C S   S i m u l a t i o n   R e p o r t       
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example5: 
