@@ -563,10 +563,58 @@ array[2] = 13
 ***************************************
            V C S   S i m u l a t i o n   R e p o r t                          
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example9: 
+  Example9: Constraints Randomization -Distribution constraint using dist keyword
 /////////////////////////////////////////////////////////////////////////////////////////////////////////   
+//The dist keyword is helpful whenever to have weighed distribution during randomization.
+//The probability occurrence of random values can be controlled using the dist keyword.
+//How to allocate weighted distribution?
+//There are two ways to provide weightage for values.
+//Using :/ operator
+//Using := operator
+
+//Syntax for the operator:
+//value :/ weightage
+//value := weightage
+//Where ,Value - Random value of the variable
+//Where, Weightage - weight for random variable i.e. occurrence of value can be specified.
+
+//:/ operator
+//For specific value: Assign mentioned weight to that value
+//For range of values ([<range1>: <range2>]):  Assigns weight/(number of value) to each value in that range
+
+//:= operator
+//For a specific value or range of value, the mentioned weight is assigned.
 
 
+class packet_item;
+  rand bit [7:0] value1;
+  rand bit [7:0] value2;
+
+  constraint value1_c {value1 dist {3:/4, [5:8] :/ 7}; }
+  constraint value2_c {value2 dist {3:=4, [5:8] := 7}; }
+
+endclass : packet_item
+
+module constraint_example9;
+  packet_item pkt;
+  
+  initial begin
+    pkt = new();
+    
+    repeat(5) begin
+      pkt.randomize();
+      $display("value1 (with :/) = %0d, value2 (with :=)= %0d", pkt.value1, pkt.value2);
+    end
+  end
+endmodule :constraint_example9
+                         
+//Logfile Output
+value1 (with :/) = 3, value2 (with :=)= 8
+value1 (with :/) = 5, value2 (with :=)= 5
+value1 (with :/) = 3, value2 (with :=)= 7
+value1 (with :/) = 3, value2 (with :=)= 6
+value1 (with :/) = 3, value2 (with :=)= 6
+           V C S   S i m u l a t i o n   R e p o r t                         
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example10: 
