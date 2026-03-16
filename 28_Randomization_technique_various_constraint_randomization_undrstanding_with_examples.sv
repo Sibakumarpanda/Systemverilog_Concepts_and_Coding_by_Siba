@@ -468,11 +468,100 @@ scale = LOW, value = 1
            V C S   S i m u l a t i o n   R e p o r t                                                                      
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example8: 
+   Example8: Constraints Randomization -foreach loop in constraint
 /////////////////////////////////////////////////////////////////////////////////////////////////////////   
 
+//Same as foreach loop, array constraints can also be implemented using foreach loop to iterate over array elements.
+//Syntax: constraint <constraint_name> { foreach(variable[i]) 
+//                                             variable[i] <condition>
+//                                        }
 
+typedef enum {LOW, MID1, MID2, HIGH} scale;
 
+class packet_item;
+  rand bit [7:0] value[scale];
+  rand bit [3:0] array[];
+  
+  constraint val_arr_size_c { value.size() == 4;} 
+    
+  constraint value_arr_c  { foreach(value[i]) {
+                             value[i] < 100;
+                             (i == LOW) -> value[i] < 30;
+                             (i == HIGH) -> value[i] > 70;
+                             (i == MID1) -> value[i] inside {[30:50]};
+                             (i == MID2) -> value[i] inside {[51:70]};
+                           }
+                         }
+    
+  constraint array_size_c {array.size() inside {[2:5]};}
+  
+  constraint array_c    { foreach(array[i]) 
+                              { array[i] > i*i; } 
+                        }
+    
+endclass : packet_item
+
+module constraint_example8;
+  packet_item pkt;
+  
+  initial begin
+    pkt = new();
+    
+    repeat(5) begin
+      pkt.randomize();
+      foreach(pkt.value[i]) begin
+        $display("value[%s] = %0d", i.name(), pkt.value[i]);
+      end
+      foreach(pkt.array[i]) begin
+        $display("array[%0d] = %0d", i, pkt.array[i]);
+      end
+      $display("***************************************");
+    end
+  end
+endmodule :constraint_example8
+
+//Logfile Output
+value[LOW] = 10
+value[MID1] = 30
+value[MID2] = 67
+value[HIGH] = 73
+array[0] = 8
+array[1] = 8
+***************************************
+value[LOW] = 8
+value[MID1] = 44
+value[MID2] = 67
+value[HIGH] = 85
+array[0] = 6
+array[1] = 10
+***************************************
+value[LOW] = 24
+value[MID1] = 30
+value[MID2] = 59
+value[HIGH] = 94
+array[0] = 4
+array[1] = 7
+array[2] = 12
+array[3] = 14
+***************************************
+value[LOW] = 16
+value[MID1] = 34
+value[MID2] = 60
+value[HIGH] = 81
+array[0] = 13
+array[1] = 12
+array[2] = 9
+array[3] = 13
+***************************************
+value[LOW] = 2
+value[MID1] = 34
+value[MID2] = 64
+value[HIGH] = 88
+array[0] = 6
+array[1] = 7
+array[2] = 13
+***************************************
+           V C S   S i m u l a t i o n   R e p o r t                          
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example9: 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////   
