@@ -360,10 +360,43 @@ scale = LOW, value = 34
            V C S   S i m u l a t i o n   R e p o r t       
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example5: 
+   Example5: Constraints Randomization -Using if-else if-else
 /////////////////////////////////////////////////////////////////////////////////////////////////////////   
+class packet_item;
+  rand bit [7:0] value;
+  rand enum {LOW, MID, HIGH} scale;
 
+  constraint scale_c { if(scale == LOW) value < 30;
+                       else if(scale == MID) { value >= 30; value <= 70; }
+                       else value > 70;
+                     }
+endclass :packet_item
 
+module constraint_example5;
+  packet_item pkt;
+  
+  initial begin
+    pkt = new();
+    
+    repeat(10) begin
+      pkt.randomize();
+      $display("scale = %s, value = %0d", pkt.scale.name(), pkt.value);
+    end
+  end
+endmodule :constraint_example5
+      
+//Logfile Output
+scale = HIGH, value = 150
+scale = HIGH, value = 124
+scale = HIGH, value = 192
+scale = MID, value = 69
+scale = MID, value = 36
+scale = HIGH, value = 118
+scale = LOW, value = 18
+scale = MID, value = 47
+scale = MID, value = 67
+scale = HIGH, value = 150
+           V C S   S i m u l a t i o n   R e p o r t       
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example6: 
