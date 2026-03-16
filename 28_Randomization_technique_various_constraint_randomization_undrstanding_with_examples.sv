@@ -585,7 +585,6 @@ array[2] = 13
 //:= operator
 //For a specific value or range of value, the mentioned weight is assigned.
 
-
 class packet_item;
   rand bit [7:0] value1;
   rand bit [7:0] value2;
@@ -616,13 +615,48 @@ value1 (with :/) = 3, value2 (with :=)= 6
 value1 (with :/) = 3, value2 (with :=)= 6
            V C S   S i m u l a t i o n   R e p o r t                         
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example10: 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////   
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   Example10: Constraints Randomization - Inheritance in constraint (with out any constraint in Derived class)
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+// So Here in Derived class , It will take the base class constraints . Its Obvious , Due to Simple inheritance 
 
+class base_class;
+  rand bit [5:0] value;
+  constraint value_c1 {value > 0; value < 10;}
+endclass :base_class
 
+class derived_class extends base_class;
+  //constraint value_c2 {value inside {[10:30]};}
+endclass :derived_class
 
-
+module constraint_example10;
+  base_class    b;
+  derived_class d;
+  
+  initial begin
+    b = new();
+    d = new();
+    repeat(3) begin
+      b.randomize();
+      $display("FROM_BASE_CLASS : value = %0d", b.value); // For Base class , it will take the values between 0 to 10
+    end
+    $display("*****************************************");
+    repeat(3) begin
+      d.randomize();
+      $display("FROM_DERIVED_CLASS: value = %0d", d.value); // For Derived class also , it will take the values between 0 to 10
+    end
+  end
+endmodule :constraint_example10
+                         
+//Logfile Output
+FROM_BASE_CLASS : value = 2
+FROM_BASE_CLASS : value = 3
+FROM_BASE_CLASS : value = 6
+*****************************************
+FROM_DERIVED_CLASS: value = 1
+FROM_DERIVED_CLASS: value = 9
+FROM_DERIVED_CLASS: value = 3
+           V C S   S i m u l a t i o n   R e p o r t                          
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example11: 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////   
