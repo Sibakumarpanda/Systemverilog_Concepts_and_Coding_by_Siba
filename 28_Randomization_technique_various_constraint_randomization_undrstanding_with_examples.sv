@@ -432,11 +432,40 @@ scale = LOW, value = 20
            V C S   S i m u l a t i o n   R e p o r t                                                                      
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example7: 
+   Example7: Constraints Randomization -Implication operator in constraint
 /////////////////////////////////////////////////////////////////////////////////////////////////////////   
+//Implication operator (->) declares the relation between two variables.
+//For an implication operator in constraint, it declares the relation between expression and constraint.
+//If the LHS expression of -> holds true, the RHS constraint is considered.
+//Syntax: <expression> -> <constraint>
 
+class packet_item;
+  rand bit [3:0] value;
+  rand enum {LOW, HIGH} scale;
 
+  constraint scale_c { (scale == LOW) -> value <10; }
+endclass :packet_item
 
+module constraint_example7;
+  packet_item pkt;
+  
+  initial begin
+    pkt = new();
+    
+    repeat(5) begin
+      pkt.randomize();
+      $display("scale = %s, value = %0d", pkt.scale.name(), pkt.value);
+    end
+  end
+endmodule :constraint_example7
+
+//Logfile Output
+scale = HIGH, value = 11
+scale = HIGH, value = 1
+scale = LOW, value = 8
+scale = HIGH, value = 0
+scale = LOW, value = 1
+           V C S   S i m u l a t i o n   R e p o r t                                                                      
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example8: 
