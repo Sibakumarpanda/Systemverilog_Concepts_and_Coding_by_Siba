@@ -173,12 +173,68 @@ value1 = 14, value2 = 70, value3 = 17, value4 = 240, value5 = 32, value6 = 40, v
            V C S   S i m u l a t i o n   R e p o r t 
    
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example2: 
+   Example2: Constraints Randomization -Implement 'randc' function in SystemVerilog
 /////////////////////////////////////////////////////////////////////////////////////////////////////////   
+//In the below example implementation, the my_randc function is used to mimic randc behavior for 3 bits ‘data‘  variable. 
+//The ‘mask‘ having a width of 8 bits (= 2^3) is used to check whether the data value has been covered already or not.
+module tb_top;
+  bit [2:0] data;  // variable which provide random value
+  bit [7:0] mask;
 
+  function bit [2:0] my_randc;
+    while(1) begin
+      data = $random;
+      if(!mask[data]) begin
+        mask[data] = 1;
+        return data;
+      end
+      else if(&mask) begin 
+        mask = 0;
+        mask[data] = 1;
+        break;
+      end
+    end
+    return data;
+  endfunction :my_randc
+  
+  initial begin
+    repeat(3) begin
+      repeat(8)
+        $display("data = %0d", my_randc());
+      $display("------------");
+    end
+  end
+endmodule : tb_top   
 
-
-
+//Logfile Output
+data = 4
+data = 1
+data = 3
+data = 5
+data = 2
+data = 6
+data = 7
+data = 0
+------------
+data = 5
+data = 4
+data = 3
+data = 2
+data = 0
+data = 6
+data = 7
+data = 1
+------------
+data = 0
+data = 1
+data = 3
+data = 6
+data = 4
+data = 2
+data = 5
+data = 7
+------------
+           V C S   S i m u l a t i o n   R e p o r t       
    
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example3: 
