@@ -854,11 +854,51 @@ After disabling randomization for value2 variables in a class: value1 = 22, valu
 rand_mode function returns for value1 = 1, value2 = 0
            V C S   S i m u l a t i o n   R e p o r t 
       
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example15: 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////     
-   
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   Example15: Constraints Randomization -Disable Randomization ( using constraint_mode() ,Means Disable/enable constraint in class) 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////     
+//Disable Constraint
+//Similar to disabling randomization, the constraint can also be disabled.
+//constraint_mode() is a function which returns 1 if constraint is enabled and else returns 0.
+//By default, constraint mode is enabled i.e. constraint_mode(1)
+//To disable constraint, constraint_mode(0) is used.
+//A constraint can be enabled once again for the previously disabled case.
+//A Constraint needs to be disabled or enabled (if disabled before) before calling the randomize() method.
 
+class packet_item;
+  rand bit [7:0] value1;
+  rand bit [7:0] value2;
+
+  constraint value1_c {value1 inside {[10:30]};}
+  constraint value2_c {value2 inside {40,70, 80};}
+
+endclass :packet_item
+
+module constraint_example15;
+  packet_item pkt;
+  
+  initial begin
+    pkt = new();
+    
+    pkt.randomize();
+    $display("Before disabling constraint");
+    $display("PKT: value1 = %0d, value2 = %0d", pkt.value1, pkt.value2);
+        
+    pkt.value2_c.constraint_mode(0);  // To disable constraint for value2 using handle item2
+    pkt.randomize();
+    $display("After disabling constraint for all value2 alone");
+    $display("PKT: value1 = %0d, value2 = %0d", pkt.value1, pkt.value2);
+    $display("constraint_mode function returns for value1 = %0d, value2 = %0d",pkt.value1_c.constraint_mode(), pkt.value2_c.constraint_mode());
+  end
+endmodule :constraint_example15   
+      
+//Logfile Output
+Before disabling constraint
+PKT: value1 = 14, value2 = 70
+After disabling constraint for all value2 alone
+PKT: value1 = 15, value2 = 63
+constraint_mode function returns for value1 = 1, value2 = 0
+           V C S   S i m u l a t i o n   R e p o r t       
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example16: 
