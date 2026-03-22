@@ -657,13 +657,49 @@ FROM_DERIVED_CLASS: value = 1
 FROM_DERIVED_CLASS: value = 9
 FROM_DERIVED_CLASS: value = 3
            V C S   S i m u l a t i o n   R e p o r t                          
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example11: 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////   
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Example11: Constraints Randomization - Inheritance in constraint ( By using both Base and Derived class constraint with Different Name)
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
+//If we clearly observe here , Here the Base class and Derived class Constraint name are different as well as constraint for both class also different
+// Hence , Constraint error is Expected . [Constraints are inconsistent and cannot be solved]
 
+class base_class;
+  rand bit [5:0] value;
+  constraint value_c1 {value > 0; value < 10;}
+endclass :base_class
 
+class derived_class extends base_class;
+  constraint value_c2 {value inside {[10:30]};}
+endclass :derived_class
 
+module constraint_example11;
+  base_class    b;
+  derived_class d;
+  
+  initial begin
+    b = new();
+    d = new();
+    repeat(3) begin
+      b.randomize();
+      $display("FROM_BASE_CLASS : value = %0d", b.value);
+    end
+    $display("*****************************************");
+    repeat(3) begin
+      d.randomize();
+      $display("FROM_DERIVED_CLASS: value = %0d", d.value);
+    end
+  end
+endmodule :constraint_example11
 
+//Logfile Output
+Error-[CNST-CIF] Constraints inconsistency failure
+testbench.sv, 27
+  Constraints are inconsistent and cannot be solved.
+  Please check the inconsistent constraints being printed above and rewrite 
+  them.
+
+FROM_DERIVED_CLASS: value = 0
+           V C S   S i m u l a t i o n   R e p o r t      
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example12: 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////   
