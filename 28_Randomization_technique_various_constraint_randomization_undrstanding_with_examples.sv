@@ -799,13 +799,61 @@ constraint: sel=1 value = 10
 On functiopn call: value = 10
            V C S   S i m u l a t i o n   R e p o r t       
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example14: 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////      
-   
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   Example14: Constraints Randomization -Disable Randomization (Complete class randomization on/off using rand_mode() ,Means Disable/enable class Randomization )
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////       
+//Randomization can be disabled using the rand_mode method.
+//rand_mode() is a function which returns 1 if randomization is enabled else returns 0.
+//By default, rand_mode is enabled. I.e. rand_mode(1)
+//To disable randomization, rand_mode(0) is used.
+//Randomization can be enabled once again for the previously disabled case.
+//Randomization needs to be disabled or enabled (if disabled before) before calling the randomize() method.
+//Methods of using rand_mode
+//Complete class randomization can be disabled           <object_handle>.rand_mode(0);
+//Particular variable randomization can be disabled      <object_handle>.<variable>.rand_mode(0);
 
-   
+class packet_item;
+  rand bit [7:0] value1;
+  rand bit [7:0] value2;
 
+  constraint value1_c {value1 inside {[10:30]};}
+  constraint value2_c {value2 inside {40,70, 80};}
+
+endclass :packet_item
+
+module constraint_example14;
+  packet_item pkt;
+  
+  initial begin
+    pkt = new();
+    
+    pkt.randomize();
+    $display("Before disabling randomization: value1 = %0d, value2 = %0d", pkt.value1, pkt.value2);
+    
+    pkt.rand_mode(0);  // To disable randomization for all class variables
+    pkt.randomize();
+    $display("After disabling randomization for all variables in a class (Retain old values): value1 = %0d, value2 = %0d", pkt.value1, pkt.value2);
+    
+    pkt.rand_mode(1);  // To enable randomization
+    pkt.randomize();
+    $display("After enabling randomization: value1 = %0d, value2 = %0d", pkt.value1, pkt.value2);
+    
+    pkt.value2.rand_mode(0);  // To disable randomization for value2 variable alone
+    pkt.randomize();
+    $display("After disabling randomization for value2 variables in a class: value1 = %0d, value2 = %0d", pkt.value1, pkt.value2);
+    
+    $display("rand_mode function returns for value1 = %0d, value2 = %0d", pkt.value1.rand_mode(), pkt.value2.rand_mode());
+  end
+endmodule :constraint_example14  
+
+ //Logfile Output 
+Before disabling randomization: value1 = 14, value2 = 70
+After disabling randomization for all variables in a class (Retain old values): value1 = 14, value2 = 70
+After enabling randomization: value1 = 15, value2 = 80
+After disabling randomization for value2 variables in a class: value1 = 22, value2 = 80
+rand_mode function returns for value1 = 1, value2 = 0
+           V C S   S i m u l a t i o n   R e p o r t 
+      
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example15: 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////     
