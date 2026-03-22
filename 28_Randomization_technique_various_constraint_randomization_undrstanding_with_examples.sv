@@ -700,12 +700,56 @@ testbench.sv, 27
 
 FROM_DERIVED_CLASS: value = 0
            V C S   S i m u l a t i o n   R e p o r t      
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example12: 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////   
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   Example12: Constraints Randomization - Inheritance in constraint ( By using both Base and Derived class constraint With Same Name)
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
+//Constraint blocks for a Base class can be overridden by its Derived class. -This is called as constraint Overriding
+//Thus, the Inherited class can modify constraints based on the requirement. 
+//NOTE- To do the same, constraint block nomenclature/Constraint Name must be the same
+class base_class;
+  rand bit [5:0] value;
+  constraint value_c1 {value > 0; value < 10;}
+endclass :base_class
 
+class derived_class extends base_class;
+  constraint value_c1 {value inside {[10:30]};}
+endclass :derived_class
 
+module constraint_example12;
+  base_class    b;
+  derived_class d;
+  
+  initial begin
+    b = new();
+    d = new();
+    repeat(3) begin
+      b.randomize();
+      $display("FROM_BASE_CLASS : value = %0d", b.value);
+    end
+    $display("*****************************************");
+    repeat(3) begin
+      d.randomize();
+      $display("FROM_DERIVED_CLASS: value = %0d", d.value);
+    end
+  end
+endmodule :constraint_example12
 
+//Log File Output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Mar 22 09:21 2026
+Warning : License for product VCS-BASE-RUNTIME will expire within 9 days, on: 30-mar-2026.
+
+If you would like to temporarily disable this message, set 
+ the VCS_LIC_EXPIRE_WARNING environment variable to the number of days
+before expiration that you want this message to start (the minimum is 0).
+FROM_BASE_CLASS : value = 2
+FROM_BASE_CLASS : value = 3
+FROM_BASE_CLASS : value = 6
+*****************************************
+FROM_DERIVED_CLASS: value = 11
+FROM_DERIVED_CLASS: value = 30
+FROM_DERIVED_CLASS: value = 14
+           V C S   S i m u l a t i o n   R e p o r t       
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example13: 
