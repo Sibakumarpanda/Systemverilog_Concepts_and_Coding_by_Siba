@@ -752,12 +752,52 @@ FROM_DERIVED_CLASS: value = 14
            V C S   S i m u l a t i o n   R e p o r t       
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example13: 
+   Example13: Constraints Randomization -Function in constraint
 /////////////////////////////////////////////////////////////////////////////////////////////////////////   
+//Sometimes constraint value has to be decided based on a mathematical model or some certain calculations. 
+//There is a possibility where calculation may differ based on input provided.
+//Writing a complete code inside a constraint block may create confusion. 
+//So, a separate function can be written which has these mathematical calculations. 
+//A function can be called in various constraints by passing input arguments. 
+//The same function can be used as a method call by a created object or by the inherited child class
 
+class packet_item;
+  rand bit [5:0] value;
+  rand bit sel;
+  constraint value_c {value == get_values(sel);}
+  
+  function bit [5:0] get_values(bit sel);
+    return (sel? 'h10: 'h20);
+  endfunction
+endclass :packet_item
 
+module constraint_example13;
+  packet_item pkt;
+  
+  initial begin
+    pkt = new();
+    
+    repeat(3) begin
+      pkt.randomize();
+      $display("constraint: sel=%0d value = %0h", pkt.sel,pkt.value);
+    end
+    $display("On functiopn call: value = %0h", pkt.get_values(1));
+  end
+endmodule :constraint_example13
 
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Mar 22 09:23 2026
+Warning : License for product VCS-BASE-RUNTIME will expire within 9 days, on: 30-mar-2026.
 
+If you would like to temporarily disable this message, set 
+ the VCS_LIC_EXPIRE_WARNING environment variable to the number of days
+before expiration that you want this message to start (the minimum is 0).
+constraint: sel=1 value = 10
+constraint: sel=0 value = 20
+constraint: sel=1 value = 10
+On functiopn call: value = 10
+           V C S   S i m u l a t i o n   R e p o r t       
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example14: 
