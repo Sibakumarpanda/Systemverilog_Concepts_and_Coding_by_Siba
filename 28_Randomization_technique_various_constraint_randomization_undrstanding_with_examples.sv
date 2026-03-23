@@ -1054,18 +1054,89 @@ array[4] = 2
            V C S   S i m u l a t i o n   R e p o r t       
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example18: 
+   Example18: Constraints Randomization - Bidirectional constraint
 /////////////////////////////////////////////////////////////////////////////////////////////////////////     
+//SystemVerilog solves constraints parallelly for all random variables and makes sure no constraint fails.
+//While solving the constraint, the value of a variable can be impacted because of another variable
 
+class packet_item;
+  rand bit [7:0] val1, val2, val3, val4;
+  rand bit t1, t2;
+  
+  constraint val_c {val2 > val1; 
+                    val3 == val2 - val1;
+                    val4 < val3;
+                    val4 == val1/val3; 
+                   }
+  
+  constraint t_c { (t1 == 1) -> t2 == 0;}
+endclass :packet_item
 
+module constraint_example18;
+  packet_item pkt;
+  
+  initial begin
+    pkt = new();
+    
+    repeat(5) begin
+      pkt.randomize();
+      $display("val1 = %0d, val2 = %0d, val3 = %0d, val4 = %0d", pkt.val1, pkt.val2, pkt.val3, pkt.val4);
+      $display("t1 = %0h, t2 = %0h", pkt.t1, pkt.t2);
+    end
+  end
+endmodule :constraint_example18
+      
+//Logfile Output
+val1 = 117, val2 = 208, val3 = 91, val4 = 1
+t1 = 0, t2 = 0
+val1 = 116, val2 = 254, val3 = 138, val4 = 0
+t1 = 1, t2 = 0
+val1 = 14, val2 = 21, val3 = 7, val4 = 2
+t1 = 0, t2 = 0
+val1 = 46, val2 = 187, val3 = 141, val4 = 0
+t1 = 0, t2 = 1
+val1 = 97, val2 = 128, val3 = 31, val4 = 3
+t1 = 0, t2 = 1
+           V C S   S i m u l a t i o n   R e p o r t       
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example19: 
+   Example19: Constraints Randomization - Solve Before in constraints (Example without solve before)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////     
+//As discussed in the bidirectional constraint, there is a possibility that the value of a variable can impact another variable value due to the bidirectional nature.
+//By default, a constraint solver has an equal probability solving algorithm.
+//In certain cases, there is a requirement to solve constraints in a certain order. This changes the probability of value occurrence.
+//Important things to note:
+//The dependency order of variables should not be bidirectional.
+//For example:  solve x before y; and solve y before x;  // This is not allowed
+//randc is not allowed.
+//Only integers are allowed.
+class packet_item;
+  rand bit [7:0] val;
+  rand bit en;
+  
+  constraint en_c { if(en == 1) { val inside {[0:100]}; } }
+endclass :packet_item
 
-
-
-      
+module constraint_example19;
+  packet_item pkt;
+  
+  initial begin
+    pkt = new();
+    
+    repeat(5) begin
+      pkt.randomize();
+      $display("en = %0d, val = %0d", pkt.en, pkt.val);
+    end
+  end
+endmodule :constraint_example19
+                   
+//Logfile Output
+en = 0, val = 150
+en = 0, val = 115
+en = 0, val = 64
+en = 0, val = 209
+en = 0, val = 18
+           V C S   S i m u l a t i o n   R e p o r t                          
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example20: 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////     
