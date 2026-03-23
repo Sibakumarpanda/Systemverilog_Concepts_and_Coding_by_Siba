@@ -1171,11 +1171,58 @@ en = 0, val = 209
 en = 0, val = 18
            V C S   S i m u l a t i o n   R e p o r t                    
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example21: 
+  Example21: Constraints Randomization - Inline constraints
 /////////////////////////////////////////////////////////////////////////////////////////////////////////     
+//Till now, what we have seen about writing a constraint in class. 
+//There is a possibility that constraints need to be modified during randomization.
+//An example could be scenario generation with a specific value as shown below example.
+//The important thing to note that inline constraints do not override constraints written inside the class. 
+//Constraint solver considers both constraints inside the class and inline constraints. 
+//Any conflict in these constraints leads to randomization failure. How to resolve randomization failure can be discussed in soft constraint. 
+//An inline constraint is written on calling a randomize() method using the “with” keyword.
+class packet_item;
+  rand bit [7:0] val1, val2;
+ 
+  constraint val1_c {val1 > 100; val1 < 200;}
+  constraint val2_c {val2 > 5; val2 < 80;}
+  
+endclass :packet_item
 
+module constraint_example21;
+  packet_item pkt;
+  
+  initial begin
+    pkt = new();
+    
+    repeat(5) begin
+      pkt.randomize();
+      $display("Before inline constraint: val1 = %0d, val2 = %0d", pkt.val1, pkt.val2);
+           
+      pkt.randomize with {val1 > 150; val1 < 160;};
+      pkt.randomize with {val2 inside {[10:15]};};
+      $display("After inline constraint: val1 = %0d, val2 = %0d", pkt.val1, pkt.val2);
+      $display("****************************************************************");
+    end
+  end
+endmodule :constraint_example21
 
-
+//Logfile Output
+Before inline constraint: val1 = 121, val2 = 75
+After inline constraint: val1 = 161, val2 = 12
+****************************************************************
+Before inline constraint: val1 = 176, val2 = 42
+After inline constraint: val1 = 113, val2 = 13
+****************************************************************
+Before inline constraint: val1 = 194, val2 = 76
+After inline constraint: val1 = 161, val2 = 13
+****************************************************************
+Before inline constraint: val1 = 128, val2 = 42
+After inline constraint: val1 = 104, val2 = 14
+****************************************************************
+Before inline constraint: val1 = 114, val2 = 79
+After inline constraint: val1 = 179, val2 = 15
+****************************************************************
+           V C S   S i m u l a t i o n   R e p o r t                    
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example22: 
