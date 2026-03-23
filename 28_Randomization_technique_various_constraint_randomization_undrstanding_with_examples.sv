@@ -1225,11 +1225,83 @@ After inline constraint: val1 = 179, val2 = 15
            V C S   S i m u l a t i o n   R e p o r t                    
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example22: 
+   Example22: Constraints Randomization - Without Soft Constraint
 /////////////////////////////////////////////////////////////////////////////////////////////////////////     
+//Soft constraint
+//As discussed in inline constraint, it is possible to change constraints during randomization and inline constraints should not conflict with constraints written in the class to avoid randomization failure. 
+//But sometimes there is a requirement to change constraints in such a way that it may conflict with constraints inside the class. 
+//For example, in the case of an error injection scenario, the variable value has to be randomized out of valid values to generate error scenarios.
+//This can be done by using soft constraints to avoid randomization failures.
+//By default, constraints are hard constraints in nature. 
+//To mention constraints as a soft, specifically “soft” keyword has to be used.
+class packet_item;
+  rand bit [7:0] val;
+ 
+  constraint val_c {val inside {5, [10:15]};}
+endclass :packet_item
+
+module constraint_example22;
+  packet_item pkt;
+  
+  initial begin
+    pkt = new();
+    
+    repeat(5) begin
+      pkt.randomize();
+      $display("Before inline constraint: val = %0d", pkt.val);
+           
+      pkt.randomize with {val inside {[20:30]};};
+      $display("After inline constraint: val = %0d", pkt.val);
+      $display("*********************************************");
+    end
+  end
+endmodule :constraint_example22
+                   
+//Logfile Output
+=======================================================
+
+Solver failed when solving following set of constraints 
 
 
+rand bit[7:0] val; // rand_mode = ON 
 
+constraint val_c    // (from this) (constraint_mode = ON) (testbench.sv:15)
+{
+   (val inside {5, [10:15]});
+}
+constraint WITH_CONSTRAINT    // (from this) (constraint_mode = ON) (testbench.sv:28)
+{
+   (val inside {[20:30]});
+}
+
+=======================================================
+Note-[CNST-SATE] Standalone test extracted
+  A standalone test-case for this failure has automatically been extracted 
+  from randomize serial 2 partition 1.
+  To reproduce the error using the extracted testcase, please use the 
+  following command:
+  cd /home/runner/./simv.cst/testcases;
+  vcs -sverilog extracted_r_2_p_1_inconsistent_constraints.sv -R
+  To reproduce the error using the original design and verbose logging, re-run
+  simulation using:
+  simv +ntb_solver_debug=trace +ntb_solver_debug_filter=2
+  To reproduce the error using the original design and debug the error with 
+  Verdi/DVE:
+  1. re-compile the original design with -debug_access+all, if not already 
+  done so
+  	% vcs -debug_access+all <other options>
+  2. re-run the simulation interactively with -gui/-verdi
+  	% simv -gui/-verdi <other options>
+  3. enter the following commands to begin interactive constraint 
+  inconsistency debug within Verdi/DVE
+  	I. set the breakpoint:	verdi/dve> stop -solver -serial 2
+  	II. run the simulation till it stops:	verdi/dve> run
+  	III. step in the constraint solver:	verdi/dve> step -solver
+Error-[CNST-CIF] Constraints inconsistency failure
+testbench.sv, 28
+  Constraints are inconsistent and cannot be solved.
+  Please check the inconsistent constraints being printed above and rewrite 
+  them.
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example23: 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////     
