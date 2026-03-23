@@ -1303,10 +1303,49 @@ testbench.sv, 28
   Please check the inconsistent constraints being printed above and rewrite 
   them.
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example23: 
+   Example23: Constraints Randomization - With Soft Constraint
 /////////////////////////////////////////////////////////////////////////////////////////////////////////     
+//To mention constraints as a soft, specifically “soft” keyword has to be used.
+class packet_item;
+  rand bit [7:0] val;
+ 
+  constraint val_c {soft val inside {5, [10:15]};}
+endclass :packet_item
 
-
+module constraint_example23;
+  packet_item pkt;
+  
+  initial begin
+    pkt = new();
+    
+    repeat(5) begin
+      pkt.randomize();
+      $display("Before inline constraint: val = %0d", pkt.val);
+           
+      pkt.randomize with {val inside {[20:30]};};
+      $display("After inline constraint: val = %0d", pkt.val);
+      $display("*********************************************");
+    end
+  end
+endmodule :constraint_example23
+     
+//Logfile Output
+Before inline constraint: val = 11
+After inline constraint: val = 23
+*********************************************
+Before inline constraint: val = 12
+After inline constraint: val = 21
+*********************************************
+Before inline constraint: val = 11
+After inline constraint: val = 23
+*********************************************
+Before inline constraint: val = 10
+After inline constraint: val = 22
+*********************************************
+Before inline constraint: val = 12
+After inline constraint: val = 27
+*********************************************
+           V C S   S i m u l a t i o n   R e p o r t      
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example24: 
