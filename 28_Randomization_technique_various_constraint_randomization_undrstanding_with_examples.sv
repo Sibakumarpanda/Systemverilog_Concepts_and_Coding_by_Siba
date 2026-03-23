@@ -953,11 +953,105 @@ item2: value1 = 30, value2 = 72
            V C S   S i m u l a t i o n   R e p o r t       
       
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example17: 
+   Example17: Constraints Randomization - unique constraint
 /////////////////////////////////////////////////////////////////////////////////////////////////////////     
+//As the name suggests, a unique constraint is useful to generate unique values for variables and elements in an array (Fixed array, associative array, dynamic array, and queue)
+//Syntax:   constraint <constraint name> {unique {array or variable};}
+typedef enum {M0, M1, M2, M3} scale_e;
 
+class packet_item;
+  rand bit [7:0] value[scale_e];
+  rand bit [3:0] array[5];
+  rand bit [2:0] val1, val2, val3, val4;
+  scale_e scale;
+  
+  constraint array_c   { unique {array}; }
+  constraint value_c { unique {value}; 
+                         value.size == scale.num;
+                         foreach (value[i]) 
+                           value[i] inside {[50:60]}; 
+                       }
+  constraint val_c {unique {val1, val2, val3, val4}; }
+  
+endclass :packet_item
+
+module constraint_example17;
+  packet_item pkt;
+  
+  initial begin
+    pkt = new();
+    
+    repeat(5) begin
+      pkt.randomize();
+      $display("val1 = %0d, val2 = %0d, val3 = %0d, val4 = %0d", pkt.val1, pkt.val2, pkt.val3, pkt.val4);
+      foreach(pkt.value[i]) begin
+        $display("value[%s] = %0d", i.name(), pkt.value[i]);
+      end
+      foreach(pkt.array[i]) begin
+        $display("array[%0d] = %0d", i, pkt.array[i]);
+      end
+      $display("************************************************************************************");
+    end
+  end
+endmodule :constraint_example17
    
-   
+//Logfile Output
+val1 = 7, val2 = 4, val3 = 5, val4 = 3
+value[M0] = 60
+value[M1] = 53
+value[M2] = 58
+value[M3] = 56
+array[0] = 14
+array[1] = 3
+array[2] = 15
+array[3] = 6
+array[4] = 9
+************************************************************************************
+val1 = 1, val2 = 2, val3 = 7, val4 = 3
+value[M0] = 51
+value[M1] = 58
+value[M2] = 53
+value[M3] = 52
+array[0] = 2
+array[1] = 3
+array[2] = 13
+array[3] = 9
+array[4] = 12
+************************************************************************************
+val1 = 4, val2 = 7, val3 = 2, val4 = 1
+value[M0] = 60
+value[M1] = 56
+value[M2] = 50
+value[M3] = 53
+array[0] = 2
+array[1] = 4
+array[2] = 10
+array[3] = 14
+array[4] = 7
+************************************************************************************
+val1 = 5, val2 = 2, val3 = 4, val4 = 3
+value[M0] = 57
+value[M1] = 55
+value[M2] = 53
+value[M3] = 58
+array[0] = 2
+array[1] = 15
+array[2] = 10
+array[3] = 13
+array[4] = 5
+************************************************************************************
+val1 = 3, val2 = 1, val3 = 4, val4 = 7
+value[M0] = 50
+value[M1] = 57
+value[M2] = 58
+value[M3] = 54
+array[0] = 13
+array[1] = 12
+array[2] = 9
+array[3] = 11
+array[4] = 2
+************************************************************************************
+           V C S   S i m u l a t i o n   R e p o r t       
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example18: 
