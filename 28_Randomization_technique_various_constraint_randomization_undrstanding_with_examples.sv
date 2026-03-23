@@ -1544,10 +1544,43 @@ val1 = 121, val2 = 7
            V C S   S i m u l a t i o n   R e p o r t      
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example27: 
+  Example27: Constraints Randomization -Example with rand_mode
 /////////////////////////////////////////////////////////////////////////////////////////////////////////     
+//In pre_randomize() method, rand_mode(0) is used to disable randomization. So, in post_randomization() initial values will be printed.
 
+class packet_item;
+  rand bit [7:0] val1 = 101; // Initialized to avoid constraint failure
+  rand bit [7:0] val2 = 6;
+ 
+  constraint val1_c {val1 > 100; val1 < 200;}
+  constraint val2_c {val2 > 5; val2 < 8;}
+  
+  function void pre_randomize();
+    $display("Inside pre_randomize");
+    this.rand_mode(0); 
+  endfunction
+  
+  function void post_randomize();
+    $display("Inside post_randomize");
+    $display("val1 = %0d, val2 = %0d", this.val1, this.val2);
+  endfunction
+  
+endclass :packet_item
 
+module constraint_example27;
+  packet_item pkt;
+  
+  initial begin
+    pkt = new();
+    pkt.randomize();
+  end
+endmodule :constraint_example27
+     
+//Logfile Output
+Inside pre_randomize
+Inside post_randomize
+val1 = 101, val2 = 6
+           V C S   S i m u l a t i o n   R e p o r t      
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example28: 
