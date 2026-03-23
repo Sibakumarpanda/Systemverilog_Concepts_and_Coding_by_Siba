@@ -1138,11 +1138,38 @@ en = 0, val = 209
 en = 0, val = 18
            V C S   S i m u l a t i o n   R e p o r t                          
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example20: 
+   Example20: Constraints Randomization - Solve Before in constraints (Example with solve before)
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////     
+class packet_item;
+  rand bit [7:0] val;
+  rand bit en;
+  
+  constraint en_c { solve en before val;
+                    if(en == 1) { val inside {[0:100]}; }
+                  }
+endclass :packet_item
 
+module constraint_example20;
+  packet_item pkt;
+  
+  initial begin
+    pkt = new();
+    
+    repeat(5) begin
+      pkt.randomize();
+      $display("en = %0d, val = %0d", pkt.en, pkt.val);
+    end
+  end
+endmodule :constraint_example20
 
-
+//Logfile Output
+en = 1, val = 11
+en = 0, val = 115
+en = 1, val = 32
+en = 0, val = 209
+en = 0, val = 18
+           V C S   S i m u l a t i o n   R e p o r t                    
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example21: 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////     
