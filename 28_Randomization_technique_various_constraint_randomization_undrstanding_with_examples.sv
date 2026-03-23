@@ -1487,11 +1487,61 @@ Inside post_randomize
 val1 = 121, val2 = 247
            V C S   S i m u l a t i o n   R e p o r t      
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example26: 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////     
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Example26: Constraints Randomization - pre_randomize and post_randomize methods basic Example with out constraint_mode(0)
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////     
+/*
+Randomization methods
+The randomize() method call is used to randomize class variables based on constraints if they are written. 
+Along with randomize() method, SystemVerilog provides two callbacks
 
+pre_randomize()
+post_randomize()
 
+A sequence of execution of methods:
+pre_randomize() -> randomize() -> post_randomize()
+
+pre_randomize method
+It is used to do an activity just before randomization. This may involve disabling constraint for a particular variable (constraint_mode(0))or disabling randomization itself (rand_mode(0)). Refer disable randomization for more details.
+
+post_randomize method
+It is used to do an activity after randomization. This may involve printing randomized values of a class variable. Override the randomized value of a class variable.
+
+*/
+
+class packet_item;
+  rand bit [7:0] val1;
+  rand bit [7:0] val2;
+ 
+  constraint val1_c {val1 > 100; val1 < 200;}
+  constraint val2_c {val2 > 5; val2 < 8;}
+  
+  function void pre_randomize();
+    $display("Inside pre_randomize");
+    //val2_c.constraint_mode(0);
+  endfunction
+  
+  function void post_randomize();
+    $display("Inside post_randomize");
+    $display("val1 = %0d, val2 = %0d", this.val1, this.val2);
+  endfunction
+  
+endclass :packet_item
+
+module constraint_example26;
+  packet_item pkt;
+  
+  initial begin
+    pkt = new();
+    pkt.randomize();
+  end
+endmodule :constraint_example26
+
+//Logfile Output
+Inside pre_randomize
+Inside post_randomize
+val1 = 121, val2 = 7
+           V C S   S i m u l a t i o n   R e p o r t      
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example27: 
