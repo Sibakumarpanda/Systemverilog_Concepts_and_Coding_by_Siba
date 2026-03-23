@@ -901,11 +901,56 @@ constraint_mode function returns for value1 = 1, value2 = 0
            V C S   S i m u l a t i o n   R e p o r t       
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example16: 
+   Example16: Constraints Randomization - Static constraints
 /////////////////////////////////////////////////////////////////////////////////////////////////////////     
+//A static constraint is shared across all class instances. It is similar to a static variable in a class.
+//Syntax:  static constraint <constraint name> {. . .;}
+//The below example has a class with two variables. 
+//Value2 has static constraint enabled.
+//Two separate objects are created to notice that constraint for value2 solves to give the same value for both class objects.
+//whereas non-static constraint for value1 solves to give different values. 
+//On disabling static constraint, randomizing value2 has given different values.
+//This clearly shows static constraint is shared across all class instances.
 
+class packet_item;
+  rand bit [7:0] value1;
+  rand bit [7:0] value2;
 
+  constraint value1_c {value1 inside {[10:30]};}
+  static constraint value2_c {value2 inside {40,70, 80};}
 
+endclass :packet_item
+
+module constraint_example16;
+  packet_item pkt1, pkt2;
+  
+  initial begin
+    pkt1 = new();
+    pkt2 = new();
+    
+    pkt1.randomize();
+    pkt2.randomize();
+    $display("Before disabling constraint");
+    $display("item1: value1 = %0d, value2 = %0d", pkt1.value1, pkt1.value2);
+    $display("item2: value1 = %0d, value2 = %0d", pkt2.value1, pkt2.value2);
+    
+    pkt2.value2_c.constraint_mode(0);  // To disable constraint for value2 using handle item2
+    pkt1.randomize();
+    pkt2.randomize();
+    $display("After disabling constraint for all value2 alone");
+    $display("item1: value1 = %0d, value2 = %0d", pkt1.value1, pkt1.value2);
+    $display("item2: value1 = %0d, value2 = %0d", pkt2.value1, pkt2.value2);
+  end
+endmodule :constraint_example16
+
+//Logfile Output
+Before disabling constraint
+item1: value1 = 14, value2 = 70
+item2: value1 = 11, value2 = 70
+After disabling constraint for all value2 alone
+item1: value1 = 15, value2 = 63
+item2: value1 = 30, value2 = 72
+           V C S   S i m u l a t i o n   R e p o r t       
       
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example17: 
