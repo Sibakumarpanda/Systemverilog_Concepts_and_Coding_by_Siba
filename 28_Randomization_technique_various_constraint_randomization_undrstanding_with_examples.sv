@@ -1348,11 +1348,89 @@ After inline constraint: val = 27
            V C S   S i m u l a t i o n   R e p o r t      
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example24: 
+   Example24: Constraints Randomization - randcase in SystemVerilog
 /////////////////////////////////////////////////////////////////////////////////////////////////////////     
+//Randcase is a case statement that randomly selects one of its branch statements based on the probability of each statement.
+/*Syntax:
 
+randcase
+  item 1: <statement 1>;
+  item 2: <statement 2>;
+  item 3: <statement 3>;
+  ...
+  …
+  item n: <statement n>;
+endcase
+*/
+//How to calculate the probability of each branch statement?
+//The probability of any item is calculated by the value of an item divided by the sum of all item values.
+//Ex: P(item1) = item1/sum(item 1..n)
+//randcase can also be written inside the module.
+  
+class packet_item;
+  int cnt_arr[int];
+  real i_sum;
+  
+  function void randcase_testing();
+    repeat(10) begin
+      randcase
+        2: begin $display("Selected 2"); cnt_arr[2]++; end
+        3: begin $display("Selected 3"); cnt_arr[3]++; end
+        5: begin $display("Selected 5"); cnt_arr[5]++; end
+        7: begin $display("Selected 7"); cnt_arr[7]++; end
+      endcase
+    end
+    foreach(cnt_arr[i]) begin
+      i_sum += i;
+    end
+    foreach(cnt_arr[i]) begin
+      $display("Probability for %0d = %0f in 1 iteration", i, i/i_sum);
+      $display("cnt_arr[%0d] = %0d", i, cnt_arr[i]);
+      $display("Probability for cnt_arr[%0d] = %0f", i, cnt_arr[i]/10.0);
+      $display("---------------------------------");
+    end
+  endfunction :randcase_testing
+  
+endclass :packet_item
+     
+module constraint_example24;
+  packet_item pkt;
+    
+  initial begin
+    pkt = new();
+    pkt.randcase_testing();
+  end
+endmodule  :constraint_example24
 
-
+//Logfile Output
+Selected 7
+Selected 5
+Selected 2
+Selected 2
+Selected 3
+Selected 7
+Selected 7
+Selected 7
+Selected 7
+Selected 5
+Probability for 2 = 0.117647 in 1 iteration
+cnt_arr[2] = 2
+Probability for cnt_arr[2] = 0.200000
+---------------------------------
+Probability for 3 = 0.176471 in 1 iteration
+cnt_arr[3] = 1
+Probability for cnt_arr[3] = 0.100000
+---------------------------------
+Probability for 5 = 0.294118 in 1 iteration
+cnt_arr[5] = 2
+Probability for cnt_arr[5] = 0.200000
+---------------------------------
+Probability for 7 = 0.411765 in 1 iteration
+cnt_arr[7] = 5
+Probability for cnt_arr[7] = 0.500000
+---------------------------------
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 0 ns     
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example25: 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////      
