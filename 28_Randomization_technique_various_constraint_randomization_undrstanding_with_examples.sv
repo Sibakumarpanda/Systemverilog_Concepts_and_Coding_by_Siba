@@ -1639,10 +1639,56 @@ FROM_DERIVED_CLASS_POST_RAND_VALS : val1 = 107, val2 = 7
            V C S   S i m u l a t i o n   R e p o r t      
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example29: 
+   Example29: Constraints Randomization - pre_randomization and post_randomization methods defined in a Base class only
 /////////////////////////////////////////////////////////////////////////////////////////////////////////     
+//The Derived class handle calls pre_randomization and post_randomization methods of the base class as mentioned in the below example.
+//Note:
+//If randomization is failed post_randomization will not be called and the variable will retain previous values.
+//Pre and post-randomization functions can not be virtual functions.
+class base_class_item;
+  rand bit [7:0] val1;
+  rand bit [7:0] val2;
+ 
+  constraint val1_c {val1 > 100; val1 < 200;}
+  constraint val2_c {val2 > 5; val2 < 8;}
+  
+  function void pre_randomize();
+    $display("FROM_BASE_CLASS: Inside pre_randomize");
+  endfunction
+  
+  function void post_randomize();
+    $display("FROM_BASE_CLASS : Inside post_randomize");
+    $display("FROM_BASE_CLASS_POST_RAND_VALS: val1 = %0d, val2 = %0d", this.val1, this.val2);
+  endfunction
+  
+endclass :base_class_item
 
+class derived_class_item extends base_class_item;
+  // No method implemented.
+endclass : derived_class_item
 
+module constraint_example29;
+  base_class_item     b_item;
+  derived_class_item  d_item;
+  
+  initial begin
+    b_item = new();
+    d_item = new();
+    
+    b_item.randomize();
+    d_item.randomize();
+  end
+endmodule :constraint_example29
+      
+//Logfile Output
+      
+FROM_BASE_CLASS: Inside pre_randomize
+FROM_BASE_CLASS : Inside post_randomize
+FROM_BASE_CLASS_POST_RAND_VALS: val1 = 121, val2 = 7
+FROM_BASE_CLASS: Inside pre_randomize
+FROM_BASE_CLASS : Inside post_randomize
+FROM_BASE_CLASS_POST_RAND_VALS: val1 = 107, val2 = 7
+           V C S   S i m u l a t i o n   R e p o r t 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example30: 
