@@ -4,10 +4,44 @@
 
 
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example1: 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   Example1: Example1: IPC Event - Event is triggered using -> and waiting for SystemVerilog event to be triggered via the @ operator 
+   (Here An event is triggered after waiting for the event trigger)
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Example1: IPC Event - Event is triggered using -> and waiting for SystemVerilog event to be triggered via the @ operator 
+// Here An event is triggered after waiting for the event trigger
+//In below example , The process_A task has a 10ns delay which makes sure event e1 triggers after waiting for the event trigger. 
+//The wait for the event to be triggered via @ operator will be unblocked once the e1 event is triggered.
+module event_example1();
+  event e1;
+  
+  task process_A();
+    #10;
+    $display("@%0t: Before triggering event e1", $time);
+    ->e1;
+    $display("@%0t: After triggering event e1", $time);
+  endtask
+  
+  task process_B();
+    $display("@%0t: waiting for the event e1", $time);
+    @e1;
+    $display("@%0t: event e1 is triggered", $time);
+  endtask
 
+  initial begin
+    fork
+      process_A();
+      process_B();
+    join
+  end
+endmodule :event_example1
+    
+//Logfile Output
+@0: waiting for the event e1
+@10: Before triggering event e1
+@10: After triggering event e1
+@10: event e1 is triggered
+           V C S   S i m u l a t i o n   R e p o r t     
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example2: 
