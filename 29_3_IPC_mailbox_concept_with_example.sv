@@ -1,6 +1,15 @@
 ///////////////////////////////////////////////////
    System Verilog Mailbox concept with example :
 //////////////////////////////////////////////////
+- A SystemVerilog mailbox is a way of communication between different processes to exchange data. 
+- One process can put data into a mailbox that stores data internally and can be retrieved by another process. 
+- Mailbox behaves as first-in, first-out (FIFO).
+- Different types of Mailbox Types are :
+  Generic mailbox
+  Parameterized mailbox
+- The mailboxes can be further categorized based on the size as :
+  Bounded mailbox
+  Unbounded mailbox
 
 
 
