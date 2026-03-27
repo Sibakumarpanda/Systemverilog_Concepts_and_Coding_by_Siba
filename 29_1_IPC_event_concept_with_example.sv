@@ -1,7 +1,27 @@
 /////////////////////////////////////////
   IPC event Various Examples :
 ////////////////////////////////////////
+Different types of event Summary :
+- Syntax:
+  // To trigger an event
+  -> <event_name>;   // Instantenous event 
+  ->> <event_name>;  // Non Blocking event 
 
+  //wait for an event
+  @(<event_name>); or @(<event_name>.triggered);
+  wait(<event_name>.triggered);
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    Event operator                                                      Description
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ->                                                                    Used to trigger an event that unblocks all waiting processes due to this event. It is an instantaneous event.
+
+  ->>                                                                   This operator is used to trigger non-blocking events.
+
+  @                                                                     The @ operator is used to block the process till an event is triggered. 
+                                                                        This is an edge-sensitive operator. Hence, waiting for an event should be executed before triggering an event to avoid blocking the waiting process.
+
+  wait                                                                  The wait() construct is similar to @ operator except it will unblock the process even if triggering an event and waiting for an event to happen at the same time.
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
