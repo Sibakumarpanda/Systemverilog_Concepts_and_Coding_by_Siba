@@ -281,11 +281,55 @@ At timestamp 0ns : process is started
 At timestamp 5ns : process is completed 
            V C S   S i m u l a t i o n   R e p o r t    
 ///////////////////////////////////////////////////////////////////////////
-  Example8: 
+  Example8: IPC Semaphore -  Putting more keys than initialized keys
 //////////////////////////////////////////////////////////////////////////   
+//Let’s try to access more keys than initialized keys when process_A puts back extra keys i.e. 5 keys and same numbers keys are accessed with get() call in process_B. 
+//Thus, process_B will get executed. But process_C requires 6 keys that are no longer available which will block process_C execution.
 
+module semaphore_example8();
+  semaphore sem = new(3);
+  
+  task process_A();
+    sem.get(3);
+    $display("At timestamp %0tns : process_A is started", $time);
+    #5ns;
+    $display("At timestamp %0tns : process_A is completed" ,$time);
+    sem.put(5);
+  endtask
 
- ///////////////////////////////////////////////////////////////////////////
+  task process_B();
+    sem.get(5);  // Accessing more keys than initialized
+    $display("At timestamp %0tns : process_B is started" ,$time);
+    #5ns;
+    $display("At timestamp %0tns : process_B is completed" ,$time);
+    sem.put(5);
+  endtask
+  
+  task process_C();
+    sem.get(6);  // Accessing more keys than available in the bucket
+    $display("At timestamp %0tns : process_C is started", $time);
+    #5ns;
+    $display("At timestamp %0tns : process_C is completed",$time);
+    sem.put(5);
+  endtask
+  
+  initial begin
+    fork
+      process_A();
+      process_B();
+      process_C();
+    join
+  end
+endmodule :semaphore_example8
+   
+//Logfile Output
+At timestamp 0ns : process_A is started
+At timestamp 5ns : process_A is completed
+At timestamp 5ns : process_B is started
+At timestamp 10ns : process_B is completed
+           V C S   S i m u l a t i o n   R e p o r t 
+   
+///////////////////////////////////////////////////////////////////////////
   Example9: 
 //////////////////////////////////////////////////////////////////////////  
 
