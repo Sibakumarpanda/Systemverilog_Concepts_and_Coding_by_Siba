@@ -158,9 +158,43 @@ endmodule :event_example4
            V C S   S i m u l a t i o n   R e p o r t     
   
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example5: 
+   Example5: IPC Event -  Event is triggered using -> and waiting for SystemVerilog event to be triggered via wait() construct
+   (An event is triggered before waiting for event trigger)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Example5: IPC Event -  Event is triggered using -> and waiting for SystemVerilog event to be triggered via wait() construct
+//(An event is triggered before waiting for event trigger)
+//The process_B task has a 10ns delay which makes sure event e1 triggers before waiting for an event trigger. The wait of the event to be triggered via wait() construct will not be unblocked since the e1 event is triggered before.
+//Hence, statements after waiting for the trigger (with wait() construct) will not be executed.
 
+module event_example5();
+  event e1;
+  
+  task process_A();
+    $display("@%0t: Before triggering event e1", $time);
+    ->e1;
+    $display("@%0t: After triggering event e1", $time);
+  endtask
+  
+  task process_B();
+    #10;
+    $display("@%0t: waiting for the event e1", $time);
+    wait(e1.triggered);
+    $display("@%0t: event e1 is triggered", $time);
+  endtask
+
+  initial begin
+    fork
+      process_A();
+      process_B();
+    join
+  end
+endmodule :event_example5
+
+//Logfile Output
+@0: Before triggering event e1
+@0: After triggering event e1
+@10: waiting for the event e1
+           V C S   S i m u l a t i o n   R e p o r t     
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example6: 
