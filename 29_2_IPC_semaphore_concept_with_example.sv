@@ -257,10 +257,29 @@ At timestamp 0ns : process is started
 At timestamp 5ns : process is completed 
            V C S   S i m u l a t i o n   R e p o r t    
 ///////////////////////////////////////////////////////////////////////////
-  Example7: 
+  Example7: IPC Semaphore -   Putting more keys back , with minor change in key
 ////////////////////////////////////////////////////////////////////////// 
+//In the below example, 3 keys are obtained using the get method whereas 5 keys are put back. 
+//It is one of the ways to manage resources. Note that no error is observed in the example since keys allocation is initialized, it is not like fixed keys are assigned.
+module semaphore_example7();
+  semaphore sem = new(4);   
+  task process();
+    sem.get(3);
+    $display("At timestamp %0tns : process is started",$time);
+    #5ns;
+    $display("At timestamp %0tns : process is completed ",$time);
+    sem.put(5);
+  endtask
 
+  initial begin
+    process();
+  end
+endmodule :semaphore_example7
 
+//Logfile Output
+At timestamp 0ns : process is started
+At timestamp 5ns : process is completed 
+           V C S   S i m u l a t i o n   R e p o r t    
 ///////////////////////////////////////////////////////////////////////////
   Example8: 
 //////////////////////////////////////////////////////////////////////////   
