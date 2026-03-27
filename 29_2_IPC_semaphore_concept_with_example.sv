@@ -145,10 +145,44 @@ At Time 5ns : Write completed into memory
            V C S   S i m u l a t i o n   R e p o r t 
 
 ///////////////////////////////////////////////////////////////////////////
-  Example4: 
+  Example4: IPC Semaphore -  Semaphore having multiple keys
 //////////////////////////////////////////////////////////////////////////   
+//The semaphore is created with 3 keys as shown in the below example.
+//process_A requires all 3 keys whereas process_B requires 2 keys to access the resource.
 
+module semaphore_example4();
+  semaphore sem = new(3);
+  
+  task process_A();
+    sem.get(3);
+    $display("At timestamp %0t : process_A started", $time);
+    #5ns;
+    $display("At timestamp %0t : process_A completed",$time);
+    sem.put(3);
+  endtask
+  
+  task process_B();
+    sem.get(2);
+    $display("At timestamp %0t : process_B started",$time);
+    #4ns;
+    $display("At timestamp %0t : process_B completed",$time);
+    sem.put(2);
+  endtask
 
+  initial begin
+    fork
+      process_A();
+      process_B();
+    join
+  end
+endmodule :semaphore_example4
+   
+//Logfile Output
+At timestamp 0 : process_A started
+At timestamp 5 : process_A completed
+At timestamp 5 : process_B started
+At timestamp 9 : process_B completed
+           V C S   S i m u l a t i o n   R e p o r t    
 ///////////////////////////////////////////////////////////////////////////
   Example5: 
 ////////////////////////////////////////////////////////////////////////// 
