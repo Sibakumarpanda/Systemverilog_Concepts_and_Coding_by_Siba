@@ -153,15 +153,104 @@ Retrieved data = 17
            V C S   S i m u l a t i o n   R e p o r t 
    
 ////////////////////////////////////////////////////////////////////////////////////
-   Example3: 
+   Example3: IPC Mailbox- Parameterized mailbox example
 ///////////////////////////////////////////////////////////////////////////////////
+module mailbox_example3();
+  mailbox #(string) mb = new(3);
+  
+  task process_A();
+    string name = "Alex";
+    mb.put(name);
+    $display("Put data = %s", name);
+    name = "Robin";
+    mb.put(name);
+    $display("Put data = %s", name);
+  endtask
 
-
+  task process_B();
+    string name;
+    mb.get(name);
+    $display("Retrieved data = %s", name);
+    mb.get(name);
+    $display("Retrieved data = %s", name);
+  endtask
+  
+  initial begin
+    fork
+      process_A();
+      process_B();
+    join
+  end
+endmodule :mailbox_example3
+   
+//Logfile Output
+Put data = Alex
+Put data = Robin
+Retrieved data = Alex
+Retrieved data = Robin
+           V C S   S i m u l a t i o n   R e p o r t 
+   
 ////////////////////////////////////////////////////////////////////////////////////
-   Example4: 
+   Example4: IPC Mailbox- try_get, try_put example
 ///////////////////////////////////////////////////////////////////////////////////
+module mailbox_example4();
+  mailbox mb = new(3);
+  
+  task process_A();
+    int value;
+    repeat(5) begin
+      value = $urandom_range(1, 50);
+      if(mb.try_put(value))
+        $display("successfully try_put data = %0d", value);
+      else begin
+        $display("failed while try_put data = %0d", value);
+        
+        $display("Number of messages in the mailbox = %0d", mb.num());
+      end
+    end
+    $display("---------------------------------------");
+  endtask
 
-
+  task process_B();
+    int value;
+    repeat(5) begin
+      if(mb.try_get(value))
+        $display("Successfully retrieved try_get data = %0d", value);
+      else begin
+        $display("Failed in try_get data");
+        
+        $display("Number of messages in the mailbox = %0d", mb.num());
+      end
+    end
+  endtask
+  
+  initial begin
+    fork
+      process_A();
+      process_B();
+    join
+  end
+  
+endmodule :mailbox_example4
+   
+//Logfile output
+   
+successfully try_put data = 40
+successfully try_put data = 49
+successfully try_put data = 20
+failed while try_put data = 48
+Number of messages in the mailbox = 3
+failed while try_put data = 7
+Number of messages in the mailbox = 3
+---------------------------------------
+Successfully retrieved try_get data = 40
+Successfully retrieved try_get data = 49
+Successfully retrieved try_get data = 20
+Failed in try_get data
+Number of messages in the mailbox = 0
+Failed in try_get data
+Number of messages in the mailbox = 0
+           V C S   S i m u l a t i o n   R e p o r t   
 
 ////////////////////////////////////////////////////////////////////////////////////
    Example5: 
