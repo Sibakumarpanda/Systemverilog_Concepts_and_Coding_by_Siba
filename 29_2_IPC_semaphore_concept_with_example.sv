@@ -374,7 +374,47 @@ At timestamp 5ns : process_A is completed
            V C S   S i m u l a t i o n   R e p o r t 
    
 ///////////////////////////////////////////////////////////////////////////
-  Example10: 
+  Example10: IPC Semaphore -  Putting more keys than initialized keys
 //////////////////////////////////////////////////////////////////////////  
+module semaphore_example10();
+  semaphore sem = new(3);
+  
+  task process_A();
+    sem.get(3);
+    $display("At timestamp %0tns : process_A is started", $time);
+    #5ns;
+    $display("At timestamp %0tns : process_A is completed" ,$time);
+    sem.put(5);
+  endtask
 
-   
+  task process_B();
+    sem.get(6);  // Accessing more keys than initialized
+    $display("At timestamp %0tns : process_B is started" ,$time);
+    #5ns;
+    $display("At timestamp %0tns : process_B is completed" ,$time);
+    sem.put(5);
+  endtask
+  
+  task process_C();
+    sem.get(5);  // Accessing more keys than available in the bucket
+    $display("At timestamp %0tns : process_C is started", $time);
+    #5ns;
+    $display("At timestamp %0tns : process_C is completed",$time);
+    sem.put(5);
+  endtask
+  
+  initial begin
+    fork
+      process_A();
+      process_B();
+      process_C();
+    join
+  end
+endmodule :semaphore_example10
+
+//Logfile Output
+At timestamp 0ns : process_A is started
+At timestamp 5ns : process_A is completed
+At timestamp 5ns : process_C is started
+At timestamp 10ns : process_C is completed
+           V C S   S i m u l a t i o n   R e p o r t    
