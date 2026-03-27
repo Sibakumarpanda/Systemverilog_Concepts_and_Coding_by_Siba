@@ -82,10 +82,42 @@ endmodule :event_example2
            V C S   S i m u l a t i o n   R e p o r t     
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example3: 
+   Example3: IPC Event - Event is triggered using -> and waiting for SystemVerilog event to be triggered via the @ operator
+   (An event is triggered at the same time as waiting for the event trigger)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Example3: IPC Event - Event is triggered using -> and waiting for SystemVerilog event to be triggered via the @ operator
+//(An event is triggered at the same time as waiting for the event trigger)
+  //The process_A and process_B have no delay involved to ensure triggering of an event and waiting for the event trigger to happen at the same time. 
+//Since both processes are triggered at the same time, the @ operator will not detect an event triggering. 
+//The SystemVerilog provides a wait() construct to solve this problem . Will see this example in Example6 
+module event_example3();
+  event e1;
+  
+  task process_A();
+    $display("@%0t: Before triggering event e1", $time);
+    ->e1;
+    $display("@%0t: After triggering event e1", $time);
+  endtask
+  
+  task process_B();
+    $display("@%0t: waiting for the event e1", $time);
+    @e1;
+    $display("@%0t: event e1 is triggered", $time);
+  endtask
 
+  initial begin
+    fork
+      process_A();
+      process_B();
+    join
+  end
+endmodule :event_example3
 
+//Logfile Output
+@0: Before triggering event e1
+@0: After triggering event e1
+@0: waiting for the event e1
+           V C S   S i m u l a t i o n   R e p o r t     
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example4: 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
