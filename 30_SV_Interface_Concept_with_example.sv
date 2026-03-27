@@ -39,3 +39,46 @@
     logic [WIDTH-1:0] data;
     logic en;
  endinterface :bus  
+
+/////////////////////////////////////////////////////////////////////////
+  Example1: An example without using an interface - Full adder example
+/////////////////////////////////////////////////////////////////////////
+- To understand how interfaces can be used in the environment, a full adder is constructed using two half adders. 
+- In case any new signal has to be added (like enable), it can be easily added to the interface without touching the port list in the module.
+
+//DUT Code
+module half_addr(input a, b, output so, co);
+  assign so = a^b;
+  assign co = a & b;
+endmodule :half_addr
+
+module full_adder(input a, b, c, output s_out, c_out);
+  wire s0, c0, c1;
+  half_addr HA1 (a, b, s0, c0);
+  half_addr HA2 (s0, c, s_out, c1);
+  
+  assign c_out = c0 | c1;
+endmodule :full_adder   
+
+//TB Code   
+module tb_top;
+  reg a, b, c;
+  wire s, c_out;
+  
+  full_adder fa(a, b, c, s, c_out);
+  
+  initial begin
+    $monitor("a=%b b=%b c=%b, sum=%b, carry=%b",a,b,c,s,c_out);
+    a = 1; b = 0; c = 0;
+    #1;
+    a = 1; b = 0; c = 1;
+    #1;
+    a = 0; b = 1; c = 1;
+  end
+endmodule  :tb_top
+
+//Logfile Output
+a=1 b=0 c=0, sum=1, carry=0
+a=1 b=0 c=1, sum=0, carry=1
+a=0 b=1 c=1, sum=0, carry=1   
+   
