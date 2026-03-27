@@ -452,14 +452,107 @@ endmodule :event_example10
 Events are triggered in order
            V C S   S i m u l a t i o n   R e p o r t     
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example11: 
+   Example11: IPC Event - wait_order in SV events: Out of order event example1
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+module event_example11();
+  event e1, e2, e3;
+  
+  task process_A();
+    #5;
+    ->e1;
+    $display("@%0t: process_A: event e1 is triggered", $time);
+  endtask
+  
+  task process_B();
+    #15;
+    ->e2;
+    $display("@%0t: process_B: event e2 is triggered", $time);
+  endtask
+  
+  task process_C();
+    #10;
+    ->e3;
+    $display("@%0t: process_C: event e3 is triggered", $time);
+  endtask
+  
+  // wait for event triggering in out of order (e2, e1, e3)
+  task wait_process();
+    $display("@%0t: waiting for the events e2, e1, e3", $time);
+    wait_order(e2, e1, e3)
+      $display("Events are triggered in order");
+    else
+      $display("Events are triggered out of order");
+  endtask
 
+  initial begin
+    fork
+      process_A();
+      process_B();
+      process_C();
+      wait_process();
+    join
+  end
+endmodule :event_example11
+    
+//Logfile Output
+@0: waiting for the events e2, e1, e3
+@5: process_A: event e1 is triggered
+Events are triggered out of order
+@10: process_C: event e3 is triggered
+@15: process_B: event e2 is triggered
+           V C S   S i m u l a t i o n   R e p o r t     
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example12: 
+   Example12: IPC Event - wait_order in SV events: Out of order event example2
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+module event_example12();
+  event e1, e2, e3;
+  
+  task process_A();
+    #5;
+    ->e1;
+    $display("@%0t: process_A: event e1 is triggered", $time);
+  endtask
+  
+  task process_B();
+    #15;
+    ->e2;
+    $display("@%0t: process_B: event e2 is triggered", $time);
+  endtask
+  
+  task process_C();
+    #10;
+    ->e3;
+    $display("@%0t: process_C: event e3 is triggered", $time);
+  endtask
+  
+  // wait for event triggering in out of order (e3, e2, e1)
+  task wait_process();
+    $display("@%0t: waiting for the events e3, e2, e1", $time);
+    wait_order(e3, e2, e1)
+      $display("Events are triggered in order");
+    else
+      $display("Events are triggered out of order");
+  endtask
 
+  initial begin
+    fork
+      process_A();
+      process_B();
+      process_C();
+      wait_process();
+    join
+  end
+endmodule :event_example12
+    
+//Logfile Output
+@0: waiting for the events e3, e2, e1
+@5: process_A: event e1 is triggered
+Events are triggered out of order
+@10: process_C: event e3 is triggered
+@15: process_B: event e2 is triggered
+           V C S   S i m u l a t i o n   R e p o r t 
+  
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example13: 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
