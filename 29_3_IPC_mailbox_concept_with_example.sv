@@ -253,6 +253,65 @@ Number of messages in the mailbox = 0
            V C S   S i m u l a t i o n   R e p o r t   
 
 ////////////////////////////////////////////////////////////////////////////////////
-   Example5: 
+  Example5: IPC Mailbox- peek and try_peek example
 ///////////////////////////////////////////////////////////////////////////////////
+module mailbox_example5();
+  mailbox mb = new(3);
+  
+  task process_A();
+    int value;
+    repeat(3) begin
+      value = $urandom_range(1, 50);
+      mb.put(value);
+      $display("put data = %0d", value);
+    end
+    $display("----------------------------------");
+  endtask
 
+  task process_B();
+    int value;
+    mb.peek(value); // message is not removed
+    $display("peek data = %0d", value);
+    mb.peek(value); // message is not removed
+    $display("peek data = %0d", value);
+    if(mb.try_peek(value))
+      $display("Successful try_peek data = %0d", value);
+    else begin
+      $display("Failed in try_peek");
+    end
+    $display("----------------------------------");
+    repeat(3) begin
+      mb.get(value);
+      $display("get data = %0d", value);
+    end
+   $display("----------------------------------");
+   if(mb.try_peek(value))
+      $display("Successful try_peek data = %0d", value);
+    else begin
+      $display("Failed in try_peek");
+    end
+  endtask
+  
+  initial begin
+    fork
+      process_A();
+      process_B();
+    join
+  end
+endmodule :mailbox_example5
+
+//Logfile Output
+put data = 40
+put data = 49
+put data = 20
+----------------------------------
+peek data = 40
+peek data = 40
+Successful try_peek data = 40
+----------------------------------
+get data = 40
+get data = 49
+get data = 20
+----------------------------------
+Failed in try_peek
+           V C S   S i m u l a t i o n   R e p o r t    
