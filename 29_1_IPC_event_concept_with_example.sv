@@ -119,10 +119,44 @@ endmodule :event_example3
 @0: waiting for the event e1
            V C S   S i m u l a t i o n   R e p o r t     
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example4: 
+   Example4: IPC Event - Event is triggered using -> and waiting for SystemVerilog event to be triggered via wait() construct
+   (An event is triggered after waiting for the event trigger) 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Example4: IPC Event - Event is triggered using -> and waiting for SystemVerilog event to be triggered via wait() construct
+//(An event is triggered after waiting for the event trigger)
+//For example, there are two processes A and B. The process_A task is used to trigger an event e1 and the process_B task is used to wait for the event using the wait() construct.
+//The process_A task has a 10ns delay which makes sure event e1 triggers after waiting for the event trigger. The wait of the event to be triggered via wait() construct will be unblocked once the e1 event is triggered.
+module event_example4();
+  event e1;
+  
+  task process_A();
+    #10;
+    $display("@%0t: Before triggering event e1", $time);
+    ->e1;
+    $display("@%0t: After triggering event e1", $time);
+  endtask
+  
+  task process_B();
+    $display("@%0t: waiting for the event e1", $time);
+    wait(e1.triggered);
+    $display("@%0t: event e1 is triggered", $time);
+  endtask
 
-
+  initial begin
+    fork
+      process_A();
+      process_B();
+    join
+  end
+endmodule :event_example4
+    
+//Logfile Output
+@0: waiting for the event e1
+@10: Before triggering event e1
+@10: After triggering event e1
+@10: event e1 is triggered
+           V C S   S i m u l a t i o n   R e p o r t     
+  
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example5: 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
