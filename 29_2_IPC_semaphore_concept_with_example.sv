@@ -40,9 +40,35 @@ try_get()
 
 
 ///////////////////////////////////////////////////////////////////////////
-  Example1: 
+  Example1: IPC Semaphore - An example Without using semaphore 
 ////////////////////////////////////////////////////////////////////////// 
+module without_semaphore_example1();
+  task write_mem();
+    $display("At Time %0tns : Before writing into memory", $time);
+    #5ns;  // Assume 5ns is required to write into mem
+    $display("At Time %0tns : Write completed into memory" , $time);
+  endtask
+  
+  task read_mem();
+    $display("At Time %0tns : Before reading from memory", $time);
+    #4ns;  // Assume 4ns is required to read from mem
+    $display("At Time %0tns : Read completed from memory", $time);
+  endtask
 
+  initial begin
+    fork
+      write_mem();
+      read_mem();
+    join
+  end
+endmodule :without_semaphore_example1
+
+//Logfile Output:   
+At Time 0ns : Before writing into memory
+At Time 0ns : Before reading from memory
+At Time 4ns : Read completed from memory
+At Time 5ns : Write completed into memory
+           V C S   S i m u l a t i o n   R e p o r t
 
 ///////////////////////////////////////////////////////////////////////////
   Example2: 
