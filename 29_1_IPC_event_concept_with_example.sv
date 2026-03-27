@@ -554,13 +554,76 @@ Events are triggered out of order
            V C S   S i m u l a t i o n   R e p o r t 
   
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example13: 
+  Example13: IPC Event - Merging events in SV Ex1
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//An event can be assigned to another event. Hence, waiting for either event will be unblocked by either event triggering.
+//There are two events e1 and e2.
+//In process_A, an event e2 variable is assigned with the e1 variable and an event e2 is triggered.
+//In process_B, the wait() construct is waiting for event e1 to be triggered. 
+//Due to event merging, even though process_B is unblocked due to e2 event triggering even though it is waiting for event e1.
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example14: 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+module event_example13();
+  event e1, e2;
+  
+  task process_A();
+    e2 = e1;
+    #10;
+    ->e2;
+    $display("@%0t: process_A: event e2 is triggered", $time);
+  endtask
+  
+  task process_B();
+    $display("@%0t: process_B: waiting for the event e1", $time);
+    wait(e1.triggered);
+    $display("@%0t: process_B: event e1 is received", $time);
+  endtask
 
+  initial begin
+    fork
+      process_A();
+      process_B();
+    join
+  end
+endmodule :event_example13
+
+//Logfile Output
+@0: process_B: waiting for the event e1
+@10: process_A: event e2 is triggered
+@10: process_B: event e1 is received
+           V C S   S i m u l a t i o n   R e p o r t     
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   Example14: IPC Event - Merging events in SV Ex2
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+module event_example14();
+  event e1, e2;
+  
+  task process_A();
+    e2 = e1;
+    #10;
+    ->e1;
+    $display("@%0t: process_A: event e1 is triggered", $time);
+  endtask
+  
+  task process_B();
+    $display("@%0t: process_B: waiting for the event e2", $time);
+    wait(e2.triggered);
+    $display("@%0t: process_B: event e2 is received", $time);
+  endtask
+
+  initial begin
+    fork
+      process_A();
+      process_B();
+    join
+  end
+endmodule :event_example14
+    
+//Logfile Output
+@0: process_B: waiting for the event e2
+@10: process_A: event e1 is triggered
+@10: process_B: event e2 is received
+           V C S   S i m u l a t i o n   R e p o r t
+  
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example15: 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
