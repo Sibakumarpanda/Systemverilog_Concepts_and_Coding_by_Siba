@@ -71,9 +71,41 @@ At Time 5ns : Write completed into memory
            V C S   S i m u l a t i o n   R e p o r t
 
 ///////////////////////////////////////////////////////////////////////////
-  Example2: 
-//////////////////////////////////////////////////////////////////////////   
+  Example2: IPC Semaphore - Same example1 With using semaphore
+////////////////////////////////////////////////////////////////////////// 
+module with_semaphore_example2();
+  semaphore sem = new(1);
+  
+  task write_mem();
+    sem.get();
+    $display("At Time %0tns : Before writing into memory", $time);
+    #5ns;  // Assume 5ns is required to write into mem
+    $display("At Time %0tns : Write completed into memory" , $time);
+    sem.put();
+  endtask
+  
+  task read_mem();
+    sem.get();
+    $display("At Time %0tns : Before reading from memory", $time);
+    #4ns;  // Assume 4ns is required to read from mem
+    $display("At Time %0tns : Read completed from memory", $time);
+    sem.put();
+  endtask
 
+  initial begin
+    fork
+      write_mem();
+      read_mem();
+    join
+  end
+endmodule :with_semaphore_example2
+   
+//Logfile Output
+At Time 0ns : Before writing into memory
+At Time 5ns : Write completed into memory
+At Time 5ns : Before reading from memory
+At Time 9ns : Read completed from memory
+           V C S   S i m u l a t i o n   R e p o r t    
 
 ///////////////////////////////////////////////////////////////////////////
   Example3: 
