@@ -58,9 +58,43 @@ function int try_peek(ref <data>)                                               
 function int num()                                                                        Returns number of entries in the mailbox
 
 ////////////////////////////////////////////////////////////////////////////////////
-   Example1: 
+   Example1: IPC Mailbox- Generic mailbox (Bounded mailbox )example
 ///////////////////////////////////////////////////////////////////////////////////
+module mailbox_example1();
+  mailbox mb = new(3);
+  
+  task process_A();
+    int value = 5;
+    string name = "STRING";
+    mb.put(value);
+    $display("Put data = %0d", value);
+    mb.put("STRING");
+    $display("Put data = %s", name);
+  endtask
 
+  task process_B();
+    int value;
+    string name;
+    mb.get(value);
+    $display("Retrieved data = %0d", value);
+    mb.get(name);
+    $display("Retrieved data = %s", name);
+  endtask
+  
+  initial begin
+    fork
+      process_A();
+      process_B();
+    join
+  end  
+endmodule :mailbox_example1
+   
+//Logfile Output
+Put data = 5
+Put data = STRING
+Retrieved data = 5
+Retrieved data = STRING
+           V C S   S i m u l a t i o n   R e p o r t    
 
 ////////////////////////////////////////////////////////////////////////////////////
    Example2: 
