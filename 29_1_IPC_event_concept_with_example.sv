@@ -319,20 +319,138 @@ endmodule :event_example7
            V C S   S i m u l a t i o n   R e p o r t     
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example8: 
+   Example8: IPC Event - Nonblocking Events +  @(e1.triggered) 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Example8: IPC Event - Nonblocking Events +  @(e1.triggered)
+//Non-blocking event is triggered using ->>
+//As discussed in an earlier example, 
+//In case of waiting for an event using @ operator, an event will be missed if the event is triggered (using ->) at the same time as waiting for the event trigger.
+//The non-blocking event (using –>>)  is triggered in the non-blocking region of the time slot. Ultimately, event triggering using ->> is a delayed version of the event triggering using ->. 
+// Hence, the process_B was waiting for the event using @ operator is completed as shown in the below example.
 
+module event_example8();
+  event e1;
 
+  task process_A();
+    $display("@%0t: process_A: Before triggering event e1 using ->>", $time);
+    ->>e1;
+    $display("@%0t: process_A: After triggering event e1 using ->>", $time);
+  endtask
+  
+  task process_B();
+    $display("@%0t: process_B: waiting for the event e1", $time);
+    @(e1.triggered); //This is equivalent to @ e1;
+    // @e1;
+    $display("@%0t: process_B: event e1 is triggered", $time);
+  endtask
+
+  initial begin
+    fork
+      process_A();
+      process_B();
+    join
+  end
+endmodule :event_example8
+    
+//Logfile Output    
+@0: process_A: Before triggering event e1 using ->>
+@0: process_A: After triggering event e1 using ->>
+@0: process_B: waiting for the event e1
+@0: process_B: event e1 is triggered
+           V C S   S i m u l a t i o n   R e p o r t 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example9: 
+   Example9: IPC Event - Nonblocking Events + wait(e1.triggered) 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Example9: IPC Event - Nonblocking Events + wait(e1.triggered)
+//Non-blocking event is triggered using ->>
+//As discussed in an earlier example, 
+//In case of waiting for an event using @ operator, an event will be missed if the event is triggered (using ->) at the same time as waiting for the event trigger.
+//The non-blocking event (using –>>)  is triggered in the non-blocking region of the time slot. Ultimately, event triggering using ->> is a delayed version of the event triggering using ->. 
+//Hence, the process_B was waiting for the event using @ operator is completed as shown in the below example.
+module event_example9();
+  event e1;
 
+  task process_A();
+    $display("@%0t: process_A: Before triggering event e1 using ->>", $time);
+    ->>e1;
+    $display("@%0t: process_A: After triggering event e1 using ->>", $time);
+  endtask
+  
+  task process_B();
+    $display("@%0t: process_B: waiting for the event e1", $time);
+    //@(e1.triggered); //This is equivalent to @ e1;
+    // @e1;
+    wait(e1.triggered);
+    $display("@%0t: process_B: event e1 is triggered", $time);
+  endtask
 
+  initial begin
+    fork
+      process_A();
+      process_B();
+    join
+  end
+endmodule :event_example9
+    
+//Logfile Output
+@0: process_A: Before triggering event e1 using ->>
+@0: process_A: After triggering event e1 using ->>
+@0: process_B: waiting for the event e1
+@0: process_B: event e1 is triggered
+           V C S   S i m u l a t i o n   R e p o r t 
+  
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example10: 
+   Example10: IPC Event - wait_order in SV events:In order event example 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Example10: IPC Event - wait_order in SV events:In order event example
+//The wait_order construct is useful when events are expected to be triggered in a particular order otherwise run time error or display message for out of order event can be written.
+module event_example10();
+  event e1, e2, e3;
+  
+  task process_A();
+    #5;
+    ->e1;
+    $display("@%0t: process_A: event e1 is triggered", $time);
+  endtask
+  
+  task process_B();
+    #15;
+    ->e2;
+    $display("@%0t: process_B: event e2 is triggered", $time);
+  endtask
+  
+  task process_C();
+    #10;
+    ->e3;
+    $display("@%0t: process_C: event e3 is triggered", $time);
+  endtask
+  
+  // wait for event triggering in order (e1, e3, e2)
+  task wait_process();
+    $display("@%0t: waiting for the events e1, e2, e3", $time);
+    wait_order(e1, e3, e2)
+      $display("Events are triggered in order");
+    else
+      $display("Events are triggered out of order");
+  endtask
 
+  initial begin
+    fork
+      process_A();
+      process_B();
+      process_C();
+      wait_process();
+    join
+  end
+endmodule :event_example10
 
+//Logfile Output
+@0: waiting for the events e1, e2, e3
+@5: process_A: event e1 is triggered
+@10: process_C: event e3 is triggered
+@15: process_B: event e2 is triggered
+Events are triggered in order
+           V C S   S i m u l a t i o n   R e p o r t     
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example11: 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
