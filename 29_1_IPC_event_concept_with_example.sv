@@ -625,8 +625,48 @@ endmodule :event_example14
            V C S   S i m u l a t i o n   R e p o r t
   
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example15: 
+   Example15: IPC Event - Passing an event in SV : Passing an event in the class constructor
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//When a class object is created, an event is passed to the constructor as shown in the below example.
+class packet_class;
+  event tr_e;
+  
+  function new(event e1);
+    tr_e = e1;
+  endfunction
+  
+  task process_A();
+    #10;
+    ->tr_e;
+    $display("@%0t: process_A: tr_e is triggered", $time);
+  endtask
+
+  task process_B();
+    $display("@%0t: process_B: waiting for the event tr_e", $time);
+    wait(tr_e.triggered);
+    $display("@%0t: process_B: event tr_e is received", $time);
+  endtask
+  
+endclass :packet_class
+
+module event_example15();
+  packet_class pkt;
+  event ev;
+  
+  initial begin
+    pkt = new(ev);
+    fork
+      pkt.process_A();
+      pkt.process_B();
+    join
+  end
+endmodule :event_example15  
+
+//Logfile Output
+@0: process_B: waiting for the event tr_e
+@10: process_A: tr_e is triggered
+@10: process_B: event tr_e is received
+           V C S   S i m u l a t i o n   R e p o r t      
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example16: 
