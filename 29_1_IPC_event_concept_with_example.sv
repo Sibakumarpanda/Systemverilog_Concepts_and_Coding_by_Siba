@@ -669,7 +669,31 @@ endmodule :event_example15
            V C S   S i m u l a t i o n   R e p o r t      
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example16: 
+  Example16: IPC Event - Passing an event as an argument in the task or function
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//An event can also be passed to a function or task as below.
+module event_example16();  
+  
+  function process_A(event e1);
+    ->e1;
+    $display("@%0t: process_A: e1 is triggered", $time);
+  endfunction
+  
+  initial begin
+    event e1;
+    fork
+      process_A(e1);
+      begin
+        $display("@%0t: process_B: waiting for the event e1", $time);
+        wait(e1.triggered);
+        $display("@%0t: process_B: event e1 is received", $time);
+      end
+    join
+  end
+endmodule :event_example16
 
-
+//Logfile Output
+@0: process_A: e1 is triggered
+@0: process_B: waiting for the event e1
+@0: process_B: event e1 is received
+           V C S   S i m u l a t i o n   R e p o r t      
