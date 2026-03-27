@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////
-   SystemVerilog Semaphores Concepts and example :
+   SystemVerilog Semaphores Concept and example :
 /////////////////////////////////////////////////////
 -SystemVerilog semaphores are used to control the access of shared resources. 
 -It is a built-in class in SystemVerilog used for synchronization which is a container that contains a fixed number of keys.
@@ -9,13 +9,83 @@
 //////////////////////////////////
    Methods in semaphore :
 //////////////////////////////////  
-  
-Method name                                                            Description
+   Method name                                                           Description
+   new()                                                                 To create a semaphore with a specified number of keys
+   get()                                                                 To obtain or get a specified number of keys
+   put()                                                                 To put or return the number of keys 
+   try_get()                                                             Try to obtain or get a specified number of keys without blocking the execution
 
-  new()                                                                To create a semaphore with a specified number of keys
 
-  get()                                                                To obtain or get a specified number of keys
+new()
+-The new() method is used to create the semaphore with a specified number of keys. 
+-By default, no keys are created. 
+-The new() method returns semaphore handle or null if it is not created.
+-Syntax: <semaphore> = new(<number_of_keys>);  // <number_of_keys> is integer value
 
-  put()                                                                To put or return the number of keys 
+get()
+-The get() method in semaphore is used to obtain a specified number of keys. 
+-By default, one key is returned if no value is specified. 
+-The get() method is a blocking method and execution continues after successful key or keys are obtained.
+-Syntax: <semaphore>.get(<number_of_keys>);
+   
+put()
+-The put() method in semaphore is used to return a specified number of keys to the semaphore container or bucket.
+-Syntax: <semaphore>.put(<number_of_keys>);
+   
+try_get()
+-The try_get() method in semaphore tries to obtain a specified number of keys. 
+-The get() method is blocking whereas try_get() is a non-blocking method. 
+-The execution is not blocked even if the number of keys is not available. The try_get() function returns 1 if keys are available otherwise, it returns 0 if no keys are available,
+-Syntax: <semaphore>.try_get(<number_of_keys>); 
 
-  try_get()                                                            Try to obtain or get a specified number of keys without blocking the execution
+
+///////////////////////////////////////////////////////////////////////////
+  Example1: 
+////////////////////////////////////////////////////////////////////////// 
+
+
+///////////////////////////////////////////////////////////////////////////
+  Example2: 
+//////////////////////////////////////////////////////////////////////////   
+
+
+///////////////////////////////////////////////////////////////////////////
+  Example3: 
+//////////////////////////////////////////////////////////////////////////   
+
+
+///////////////////////////////////////////////////////////////////////////
+  Example4: 
+//////////////////////////////////////////////////////////////////////////   
+
+
+///////////////////////////////////////////////////////////////////////////
+  Example5: 
+////////////////////////////////////////////////////////////////////////// 
+
+
+///////////////////////////////////////////////////////////////////////////
+  Example6: 
+//////////////////////////////////////////////////////////////////////////   
+
+
+///////////////////////////////////////////////////////////////////////////
+  Example7: 
+////////////////////////////////////////////////////////////////////////// 
+
+
+///////////////////////////////////////////////////////////////////////////
+  Example8: 
+//////////////////////////////////////////////////////////////////////////   
+
+
+ ///////////////////////////////////////////////////////////////////////////
+  Example9: 
+//////////////////////////////////////////////////////////////////////////  
+
+
+///////////////////////////////////////////////////////////////////////////
+  Example10: 
+//////////////////////////////////////////////////////////////////////////  
+
+   
