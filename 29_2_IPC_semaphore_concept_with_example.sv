@@ -184,9 +184,53 @@ At timestamp 5 : process_B started
 At timestamp 9 : process_B completed
            V C S   S i m u l a t i o n   R e p o r t    
 ///////////////////////////////////////////////////////////////////////////
-  Example5: 
+  //Example5: IPC Semaphore -  try_get() example 
 ////////////////////////////////////////////////////////////////////////// 
+//try_get() is a non-blocking semaphore method where execution is not blocked if keys are not available. 
+//In the below example, process_A obtained a key at first and even if a key is not available, process_B execution is not blocked
+module semaphore_example5_using_try_get();
+  semaphore sem = new(1);
+  
+  task process_A();
+    if(sem.try_get()) 
+      $display("At timestmap %0tns : process_A: Key received" ,$time);
+    else 
+      $display("At timestmap %0tns : process_A: Key is not available",$time);
+    
+    $display("At timestmap %0tns : process_A started",$time);
+    #5ns;
+    $display("At timestmap %0tns : process_A completed",$time);
+    sem.put();
+  endtask
+  
+  task process_B();
+    if(sem.try_get()) 
+      $display("At timestmap %0tns : process_B: Key received",$time);
+    else 
+      $display("At timestmap %0tns : process_B: Key is not available",$time);
+    
+    $display("At timestmap %0tns : process_B started",$time);
+    #4ns;
+    $display("At timestmap %0tns : process_B completed",$time);
+    sem.put();
+  endtask
 
+  initial begin
+    fork
+      process_A();
+      process_B();
+    join
+  end
+endmodule :semaphore_example5_using_try_get
+
+//Logfile Output
+At timestmap 0ns : process_A: Key received
+At timestmap 0ns : process_A started
+At timestmap 0ns : process_B: Key is not available
+At timestmap 0ns : process_B started
+At timestmap 4ns : process_B completed
+At timestmap 5ns : process_A completed
+           V C S   S i m u l a t i o n   R e p o r t    
 
 ///////////////////////////////////////////////////////////////////////////
   Example6: 
