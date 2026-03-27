@@ -254,9 +254,69 @@ endmodule :event_example6
            V C S   S i m u l a t i o n   R e p o r t 
   
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   Example7: 
+   Example7: IPC Event - An example Differenciating between @(event) and wait (event.triggered)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Example7: IPC Event - An example Differenciating between @(event) and wait (event.triggered)
+/*
+Difference between @(event) and wait (event.triggered)
 
+@(event): The waiting for an event using @ operator blocks the current process until an event is triggered. In a certain condition like waiting for an event and 
+triggering an event can occur at the same time, this will cause race conditions between them and triggering an event will be missed if trigger happens before the process begin waiting for it..
+
+wait(event.triggered): The waiting for an event using the wait() construct will unblock the waiting process even if an event is triggered at the time. 
+Thus, the wait() construct eliminates race around condition between waiting for an event and triggering an event.
+
+In short, wait() construct catches an event triggering at the same simulation whereas @ operator waiting for an event would lead to race conditions.
+
+To explain using an example, three processes execute in the same simulation time.
+
+process_A: Triggers at event e1;
+
+process_B: wait for event e1 using @ operator
+
+process_C: wait for event e1 using wait() construct
+
+The process_C will be unblocked due to event e1 triggering whereas process B is blocked due to race around condition.
+
+*/
+
+module event_example7();
+  event e1;
+  
+  task process_A();
+    $display("@%0t: Process A: Before triggering event e1", $time);
+    ->e1;
+    $display("@%0t: Process A: After triggering event e1", $time);
+  endtask
+  
+  task process_B();
+    $display("@%0t: Process B: waiting for the event e1 using @", $time);
+    @e1;
+    $display("@%0t: Process B: event e1 is triggered using @", $time);
+  endtask
+
+  task process_C();
+    $display("@%0t: Process C: waiting for the event e1 using wait(e1.triggered)", $time);
+    wait(e1.triggered);
+    $display("@%0t: Process C: event e1 is triggered using wait(e1.triggered)", $time);
+  endtask
+  
+  initial begin
+    fork
+      process_A();
+      process_B();
+      process_C();
+    join
+  end
+endmodule :event_example7
+  
+//Logfile Output
+@0: Process A: Before triggering event e1
+@0: Process A: After triggering event e1
+@0: Process B: waiting for the event e1 using @
+@0: Process C: waiting for the event e1 using wait(e1.triggered)
+@0: Process C: event e1 is triggered using wait(e1.triggered)
+           V C S   S i m u l a t i o n   R e p o r t     
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example8: 
