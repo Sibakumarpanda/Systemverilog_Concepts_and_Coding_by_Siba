@@ -97,10 +97,61 @@ Retrieved data = STRING
            V C S   S i m u l a t i o n   R e p o r t    
 
 ////////////////////////////////////////////////////////////////////////////////////
-   Example2: 
+   Example2: IPC Mailbox- Generic mailbox (Unbounded mailbox ) example 
 ///////////////////////////////////////////////////////////////////////////////////
+module mailbox_example2();
+  mailbox mb = new();
+  
+  task process_A();
+    int value;
+    repeat(10) begin
+      value = $urandom_range(1, 50);
+      mb.put(value);
+      $display("Put data = %0d", value);
+    end
+    $display("----------------------");
+  endtask
 
-
+  task process_B();
+    int value;
+    repeat(10) begin
+      mb.get(value);
+      $display("Retrieved data = %0d", value);
+    end
+  endtask
+  
+  initial begin
+    fork
+      process_A();
+      process_B();
+    join
+  end
+endmodule : mailbox_example2
+   
+//Logfile Output
+Put data = 40
+Put data = 49
+Put data = 20
+Put data = 48
+Put data = 7
+Put data = 3
+Put data = 20
+Put data = 26
+Put data = 19
+Put data = 17
+----------------------
+Retrieved data = 40
+Retrieved data = 49
+Retrieved data = 20
+Retrieved data = 48
+Retrieved data = 7
+Retrieved data = 3
+Retrieved data = 20
+Retrieved data = 26
+Retrieved data = 19
+Retrieved data = 17
+           V C S   S i m u l a t i o n   R e p o r t 
+   
 ////////////////////////////////////////////////////////////////////////////////////
    Example3: 
 ///////////////////////////////////////////////////////////////////////////////////
