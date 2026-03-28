@@ -27,3 +27,30 @@
 //////////////////////////////////////  
 - The division of time slots into ordered regions provides predictable interaction between testbench components and design.
 - The property expression can be safely evaluated and the testbench can react to assertion evaluation.
+
+////////////////////////////////////
+  SystemVerilog regions
+////////////////////////////////////  
+-Before going to SV regions . Lets recall once the verilog regions.
+-The Verilog regions are:  Active -> Inactive -> NBA ->Postponed   [4 Regions]
+-Coming to Systemverilog , 3 more regions have been added on top of the existing verilog regions . So SV has 7 regions 
+-They are :  Preponed -> Active -> Inactive ->NBA ->Observed -> Reactive -> Postponed   [It becomes 7 Regions]
+-On next , In SV , we can see that some some sub-regions are also added. They are as below.  
+    1. Preponed region
+    2. Pre-active region
+    3. Active region
+    4. Inactive region
+    5. Pre-NBA region
+    6. NBA region
+    7. Post-NBA region
+    8. Pre observed region
+    9. Observed region
+    10.Post observed region
+    11.Reactive region
+    12.Postponed region  
+
+
+  
+
+
+  
