@@ -18,3 +18,4 @@
 - They can be assigned to another virtual interface having the same type using ‘=’ operator.
 - Syntax  :  virtual <interface_name> <interface_instance>
 - Example :  virtual axi_interface  axi_intf 
+  
