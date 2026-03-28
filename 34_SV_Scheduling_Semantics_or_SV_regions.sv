@@ -74,10 +74,34 @@
 
 6. NBA region
    -The NBA region is mainly used to update LHS of all nonblocking assignments whose RHS were evaluated in the active region.
-   -Hence , we   
+   -Hence , we can say like , Write of all Nonblocking assignments happens in NBA Region    
 
-Post-NBA region
-The pre-active region is used especially for the PLI callback control point to allow user code to write and read values and create events after evaluation of events in the NBA region.  
+7. Post-NBA region
+   -The post-NBA region is used especially for the PLI callback control point to allow user code to write and read values and create events after evaluation of events in the NBA region.  
 
+8. Pre-Observed region 
+   -The pre observed is specially used for PLI callback control points  
+     
+9. Observed region
+   -The observed region is used to evaluate concurrent assertion which was sampled in the preponed region. 
+   -The property expression evaluation must occur only once in a time slot and its pass/fail code will be scheduled in the reactive region of the same time slot.
+   -For the clocking block construct in SystemVerilog, if input skew is an explicit #0, then the value sampled in the observed region corresponds to that signal value.
 
+10.Post observed region
+   -The post observed is specially used for PLI callback control points that allow user code to read values after evaluation of properties in the observed or earlier region.
+
+11.Reactive region
+   -The reactive region is used to schedule code specified in the program block and property expression pass/fail code. 
+   -Also , In Reactive region 
+    Executes continuous assignments in program block
+    Executes blocking assignments in program block
+    Execute $exit command
+    Execute property expression pass/fail code.
+    Thus, The reactive region is an important region to schedule events for the program block.
+
+12.Postponed region
+   -The $monitor and $strobe command execution happens in the postpone region. Similarly, it is also used to collect for functional coverage.   
+   -The postponed region is used for the PLI callback control point that allows user code to be suspended until all active, inactive, and NBA regions have completed. 
+   -It is illegal to write values to any variable or net. An event scheduling for the previous region in the current time slot is also illegal.
+   -For clocking block construct in SystemVerilog, if input skew is not an explicit #0, then the value sampled in the postponed region corresponds to that signal value.
   
