@@ -111,6 +111,21 @@
 -Concurrent assertion : The concurrent assertion is sampled at a preponed region. It is evaluated at the observed region and the pass/fail code is scheduled in the reactive region.
 -Non-blocking assignments :The RHS of all non-blocking assignments are evaluated at the active region and executed to update LHS in the NBA region.
 -$monitor and $strobe: $monitor and $strobe command execution happen in the postpone region.
--Clocking block constructs :If input skew is an explicit #0, then the value sampled in the observed region corresponds to that signal value else it is sampled in the postponed region.     
-     
+-Clocking block constructs :If input skew is an explicit #0, then the value sampled in the observed region corresponds to that signal value else it is sampled in the postponed region. 
+
+///////////////////  
+ PLI callback
+///////////////////  
+- In the pre-active region, the PLI callback control point allows user code to write or read values and create events before evaluation of events in the active region. 
+- Subsequently, the pre-NBA region does the same before evaluation of events in the NBA region. 
+- And the post-NBA region does the same after evaluation of events in the NBA region. 
+- In the post-observed region, PLI callback control points allow user code to read values after evaluation of properties in the observed or earlier region. 
+- Finally, the postponed region is used for the PLI callback control point that allows user code to be suspended until all active, inactive, and NBA regions have completed. 
+- It is illegal to write values to any variable or net. An event scheduling for the previous region in the current time slot is also illegal.
+  
+////////////////
+ Program block
+/////////////////  
+- The initial blocks within program blocks are scheduled in the reactive region whereas initial blocks within module blocks are scheduled in the active region. 
+- This avoids race around conditions between design and testbench code.
   
