@@ -48,9 +48,36 @@
     10.Post observed region
     11.Reactive region
     12.Postponed region  
+//////////////////////////////////////////////
+  Explanation and uses of all Regions  
+//////////////////////////////////////////////  
+1. Preponed region
+   -The preponed regions is executed once in each time slot that has used in sampling concurrent assertions
+   -So , in this region sampling of Concurrent assertion takes place 
 
+2. Pre-active region
+   -The pre-active region is used especially for the PLI callback control point to allow user code to write and read values and create events before evaluation of events in the active region.
 
-  
+3. Active region
+   -The active region is used to hold current events being evaluated and can be processed in any order.
+   -Execution of Continuous assignments of all modules  
+   -Execution of Blocking assignments of all modules
+   -Execution of $display and $finish commands. 
+   -Read of all Nonblocking assignments 
+     
+4. Inactive region
+   -The inactive region holds events to be evaluated after processing all the active events. 
+   -An explicit #0 delay is scheduled in the inactive region of the current time slot.
+
+5. Pre-NBA region
+   -The pre-NBA region is used especially for the PLI callback control points to allow user code to write and read values and create events before evaluation of events in the NBA region.
+
+6. NBA region
+   -The NBA region is mainly used to update LHS of all nonblocking assignments whose RHS were evaluated in the active region.
+   -Hence , we   
+
+Post-NBA region
+The pre-active region is used especially for the PLI callback control point to allow user code to write and read values and create events after evaluation of events in the NBA region.  
 
 
   
