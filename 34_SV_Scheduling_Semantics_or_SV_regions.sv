@@ -104,4 +104,13 @@
    -The postponed region is used for the PLI callback control point that allows user code to be suspended until all active, inactive, and NBA regions have completed. 
    -It is illegal to write values to any variable or net. An event scheduling for the previous region in the current time slot is also illegal.
    -For clocking block construct in SystemVerilog, if input skew is not an explicit #0, then the value sampled in the postponed region corresponds to that signal value.
+
+/////////////////////////////////////////////
+  Highight of Operations (Important Points):
+///////////////////////////////////////////// 
+-Concurrent assertion : The concurrent assertion is sampled at a preponed region. It is evaluated at the observed region and the pass/fail code is scheduled in the reactive region.
+-Non-blocking assignments :The RHS of all non-blocking assignments are evaluated at the active region and executed to update LHS in the NBA region.
+-$monitor and $strobe: $monitor and $strobe command execution happen in the postpone region.
+-Clocking block constructs :If input skew is an explicit #0, then the value sampled in the observed region corresponds to that signal value else it is sampled in the postponed region.     
+     
   
