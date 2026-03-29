@@ -8,4 +8,13 @@
 - There are two types of casting in SystemVerilog :
   Static Casting
   Dynamic Casting
-
+    
+//////////////////////////////////////////    
+ Static Casting in SV with Example
+///////////////////////////////////////////    
+- As the name suggests, static casting is only applicable to fixed data types. It does not apply to the Object-Oriented programming concept.
+- Syntax: <data_type>'(value or variable or expression)
+- It converts values or variables from one data type to another data type.
+- Static casting is checked during compile time. So, there will not be any run time error.
+    
+Static Casting Example
