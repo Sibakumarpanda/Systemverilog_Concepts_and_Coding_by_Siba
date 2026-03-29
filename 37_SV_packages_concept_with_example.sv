@@ -79,10 +79,37 @@ endmodule :package_example2
 //Logfile Output
 The value of data = 5
            V C S   S i m u l a t i o n   R e p o r t     
-//////////////////////////////////////////////////////////
-  Example3: 
-//////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////
+  Example3: Package in SV  -  Package items are accessed using scope resolution operator example
+////////////////////////////////////////////////////////////////////////////////////////////////
+//Package items are accessed using scope resolution operator
+package my_pkg_A;
+  int data = 5;
+  function pkg_funct();
+    $display("my_pkg_A: Inside pkg_funct, data = %0d", data);
+  endfunction
+endpackage :my_pkg_A
 
+package my_pkg_B;
+  int data = 10;
+  function pkg_funct();
+    $display("my_pkg_B: Inside pkg_funct, data = %0d", data);
+  endfunction
+endpackage : my_pkg_B
+
+//TB TOP
+import my_pkg_A::*;
+import my_pkg_B::*;
+module package_example3;
+  initial begin
+    my_pkg_A::pkg_funct();
+    my_pkg_B::pkg_funct();
+  end
+endmodule :package_example3
+//Logfile Output
+my_pkg_A: Inside pkg_funct, data = 5
+my_pkg_B: Inside pkg_funct, data = 10
+           V C S   S i m u l a t i o n   R e p o r t   
 //////////////////////////////////////////////////////////
   Example4: 
 //////////////////////////////////////////////////////////
