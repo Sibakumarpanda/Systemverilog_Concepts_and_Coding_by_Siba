@@ -69,17 +69,68 @@ casting an expression from real to int: num[2] = 28
   Example2: Casting in SV  - Dynamic casting Example1
             Here $cast is a task
 ///////////////////////////////////////////////////////////  
-
+//In the below example, dynamic casting is used where source variable is integer and desitination variable is enum variable.
+//When value assignment happens for other values than enumerated one, casting fails so that simulation terminated with run time error.
+module dynamic_casting_example2;
+  typedef enum {DIODE=10, BJT=100, MOSFET=250, FINFET=300} devices;
+  initial begin
+    devices dev;
+    
+    $cast(dev, 250 + 50);
+    $display("A: Device used = %s",dev.name());
+     
+    $cast(dev, 10);
+    $display("C: Device used = %s",dev.name());
+    
+    $cast(dev, 250 + 20);
+    $display("B: Device used = %s",dev.name());
+        
+  end
+endmodule :dynamic_casting_example2
   
+//Logfile Output
+A: Device used = FINFET
+C: Device used = DIODE
+Error-[STASKE_DCF] Dynamic cast failed
+testbench.sv, 17
+  Dynamic cast using '$cast' failed. The source expression is not yielding a 
+  valid value for the destination variable.
 
-
+           V C S   S i m u l a t i o n   R e p o r t   
 ////////////////////////////////////////////////////////////    
   Example3: Casting in SV  - Dynamic casting Example2
             Here $cast is a function
 ///////////////////////////////////////////////////////////  
+//In below example , The first $cast is a valid assignment and the second $cast has an invalid assignment.
+//Notice that, simulation is not terminated with run time error.
+//NOTE: Dynamic casting is also used to cast the Base class handle to its derived class as mentioned in Polymorphism section.
+module dynamic_casting_example3;
+  typedef enum {DIODE=10, BJT=100, MOSFET=250, FINFET=300} devices;
+  initial begin
+    devices dev;
+    
+    if($cast(dev, 250 + 50))
+      $display("A: Device used = %s",dev.name());
+    else 
+      $display("A: Dynamic casting failed");
+    
+    if($cast(dev, 250 + 20))
+      $display("B: Device used = %s",dev.name());
+     else 
+      $display("B: Dynamic casting failed");
+    
+    if($cast(dev, 10))
+      $display("C: Device used = %s",dev.name());
+     else 
+      $display("C: Dynamic casting failed");
+  end
+endmodule :dynamic_casting_example3
 
-
-
+//Logfile Output
+A: Device used = FINFET
+B: Dynamic casting failed
+C: Device used = DIODE
+           V C S   S i m u l a t i o n   R e p o r t   
 
 
 
