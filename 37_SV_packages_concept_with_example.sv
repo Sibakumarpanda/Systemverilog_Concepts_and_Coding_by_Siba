@@ -111,7 +111,51 @@ my_pkg_A: Inside pkg_funct, data = 5
 my_pkg_B: Inside pkg_funct, data = 10
            V C S   S i m u l a t i o n   R e p o r t   
 //////////////////////////////////////////////////////////
-  Example4: 
+  Example4: Package in SV  - Nested package example
 //////////////////////////////////////////////////////////
-  
-  
+//Here in below example , The pkg_A is imported in the pkg_B and pkg_B is imported in the pkg_C
+package my_pkg_A;
+  int data = 5;
+  int id_A = 1;
+
+  function pkg_funct();
+    $display("my_pkg_A: Inside pkg_funct, data = %0d, id_A = %0d", data, id_A);
+  endfunction :pkg_funct
+endpackage : my_pkg_A
+
+package my_pkg_B;
+  import my_pkg_A::*;
+  int data = 10;
+  int id_B = 2;
+
+  function pkg_funct();
+    $display("my_pkg_B: Inside pkg_funct, data = %0d, id_B = %0d", data, id_B);
+  endfunction :pkg_funct
+endpackage :my_pkg_B
+
+package my_pkg_C;
+  import my_pkg_B::*;
+  int data = 15;
+  int id_C = 3;
+
+  function pkg_funct();
+    $display("my_pkg_C: Inside pkg_funct, data = %0d, id_C = %0d", data, id_C);
+  endfunction :pkg_funct
+endpackage :my_pkg_C
+
+//TB TOP -Here Finally , my_pkg_C is imported 
+import my_pkg_C::*;
+
+module package_example4;
+  initial begin
+    my_pkg_A::pkg_funct();
+    my_pkg_B::pkg_funct();
+    my_pkg_C::pkg_funct();
+  end
+endmodule :package_example4
+    
+//Logfile Output
+my_pkg_A: Inside pkg_funct, data = 5, id_A = 1
+my_pkg_B: Inside pkg_funct, data = 10, id_B = 2
+my_pkg_C: Inside pkg_funct, data = 15, id_C = 3
+           V C S   S i m u l a t i o n   R e p o r t 
