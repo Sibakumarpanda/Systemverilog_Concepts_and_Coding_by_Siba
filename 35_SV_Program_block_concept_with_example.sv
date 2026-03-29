@@ -105,6 +105,39 @@ endmodule :tb_top
 /////////////////////////////////////////////////////////////////
   Example3: Race Around Condition Situation Example
 ////////////////////////////////////////////////////////////////
+//Let’s understand with the below example, the design module has assigned out <= 2 and the testbench module wants 
+//to do some action based on design update (here, value is printed for simplicity).
+//In the active region of a time slot, the RHS value of non-blocking assignment out (<= 2;) is evaluated, LHS value is not yet updated. 
+//At the same time, testbench tries to access the variable that has an older value (default value in this case). 
+//Thus, the testbench operation will be affected
+
+//Design Code:
+module dut_example (output bit [3:0] out);
+  initial begin
+    out <= 2;
+  end
+endmodule :dut_example
+//TB Code
+module tb_mod_top;
+  wire [3:0] out;
+  
+  dut_example DUT(out);
+  initial begin
+    if(out == 2)
+      $display("Design assigned out is 2");
+    else
+      $display("Design assigned out = %0d", out);
+  end
+endmodule :tb_mod_top
+                                                                                                                                           
+//Logfile Output
+Design assigned out = 0
+           V C S   S i m u l a t i o n   R e p o r t                                                                                                                                            
+                                                                                                                                           
+/////////////////////////////////////////////////////////////////
+  Example4: Race Around Condition Situation Example
+////////////////////////////////////////////////////////////////
+
 
     
     
