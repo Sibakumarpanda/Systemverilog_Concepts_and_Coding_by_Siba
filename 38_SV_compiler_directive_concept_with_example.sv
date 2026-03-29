@@ -107,5 +107,26 @@ MULTI_COLOR_CODE = 50
 MULTI_COLOR_CODE = 150
 MULTI_COLOR_CODE = 200
 MULTI_COLOR_CODE = 100
-           V C S   S i m u l a t i o n   R e p o r t    
+           V C S   S i m u l a t i o n   R e p o r t 
+
+///////////////////////////////////////////////////////////////////////////////
+   Example3: Compiler directive in SV - Example for printing a string
+///////////////////////////////////////////////////////////////////////////////  
+`define display_string(name, str) \
+  `"Hello `\t `\`"name`\`", This is System``str Tutorial.`"
+
+// `"    --> overrides the lexical meaning of ".
+// `\t   --> \t
+// `\`"  --> "
+// ``    --> delimits lexical tokens without adding any white space
+module define_example3;
+    initial begin
+      $display("%s",`display_string(Siba, Verilog));
+      $display("%s",`display_string(Subhra, C));
+    end
+endmodule :define_example3 
    
+//Logfile Output
+Hello 	 "Siba", This is SystemVerilog Tutorial.
+Hello 	 "Subhra", This is SystemC Tutorial.
+           V C S   S i m u l a t i o n   R e p o r t    
