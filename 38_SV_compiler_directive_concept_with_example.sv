@@ -73,5 +73,39 @@ MULTI_COLOR_CODE = 150
 MULTI_COLOR_CODE = 200
 MULTI_COLOR_CODE = 100
 --------------------------
+           V C S   S i m u l a t i o n   R e p o r t  
+   
+///////////////////////////////////////////////////////////////////////////////
+   Example2: Compiler directive in SV - Example for function inside a macro
+///////////////////////////////////////////////////////////////////////////////  
+`define DATA_WIDTH 32
+typedef enum {BLACK, WHITE, GREY, ORANGE} m_color_type;
+m_color_type mcolor;
+
+//Multiline macro
+`define MULTI_COLOR_CODE(type) \
+  function int decode(input type mcolor); \
+    if(mcolor == BLACK) return 50; \
+    else if(mcolor == WHITE) return 100; \
+    else if(mcolor == GREY) return 150; \
+    else return 200; \
+endfunction
+    
+module define_example2;
+  `MULTI_COLOR_CODE(m_color_type)
+
+  initial begin
+    $display("MULTI_COLOR_CODE = %0d", decode(BLACK));
+    $display("MULTI_COLOR_CODE = %0d", decode(GREY));
+    $display("MULTI_COLOR_CODE = %0d", decode(ORANGE));
+    $display("MULTI_COLOR_CODE = %0d", decode(WHITE));
+  end
+endmodule :define_example2
+   
+//Logfile Output
+MULTI_COLOR_CODE = 50
+MULTI_COLOR_CODE = 150
+MULTI_COLOR_CODE = 200
+MULTI_COLOR_CODE = 100
            V C S   S i m u l a t i o n   R e p o r t    
    
