@@ -17,7 +17,9 @@
 - It converts values or variables from one data type to another data type.
 - Static casting is checked during compile time. So, there will not be any run time error.
     
-//Example1: Casting in SV  - Static casting Example1
+////////////////////////////////////////////////////////////    
+  Example1: Casting in SV  - Static casting Example1
+///////////////////////////////////////////////////////////    
 //In the below example, real to int, int to real, a string to int, expression in casting, concatenation in casting is used.
 module static_casting_example1;
   string name;
@@ -47,3 +49,39 @@ casting from real to int: num[1] = 3
 casting from int to real: r_num = 28.125000
 casting an expression from real to int: num[2] = 28
            V C S   S i m u l a t i o n   R e p o r t 
+
+//////////////////////////////////////////    
+  Dynamic Casting in SV with Example
+///////////////////////////////////////////  
+- Dynamic casting is used to cast the assigned values to the variables that might not be ordinarily valid. 
+- The $cast is the system method. 
+- The $cast can be either function or task
+- Syntax:
+  function int $cast(destination, source);
+  task $cast(destination, source);
+- In both $cast as a function or task, $cast will try to assign source value or expression to the destination variable. 
+- If dynamic casting fails due to incompatible assignments, the destination variable will remain unchanged. 
+- The only difference between $cast as a function and as a task is mentioned below.
+- When $cast as a task: If $cast fails, it will cause a runtime error.
+- When $cast as a function: As $cast as a function returns 1 for legal casting, otherwise it returns 0. But run time error will not occur for failed casting and the destination variable will be unchanged.
+
+////////////////////////////////////////////////////////////    
+  Example2: Casting in SV  - Dynamic casting Example1
+            Here $cast is a task
+///////////////////////////////////////////////////////////  
+
+  
+
+
+////////////////////////////////////////////////////////////    
+  Example3: Casting in SV  - Dynamic casting Example2
+            Here $cast is a function
+///////////////////////////////////////////////////////////  
+
+
+
+
+
+
+
+  
