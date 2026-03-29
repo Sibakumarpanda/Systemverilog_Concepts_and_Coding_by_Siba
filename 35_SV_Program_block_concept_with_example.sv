@@ -135,11 +135,38 @@ Design assigned out = 0
            V C S   S i m u l a t i o n   R e p o r t                                                                                                                                            
                                                                                                                                            
 /////////////////////////////////////////////////////////////////
-  Example4: Race Around Condition Situation Example
+  Example4: Race around solution example using program block
 ////////////////////////////////////////////////////////////////
-
-
+//To resolve this race around the condition, a program block is used that executes in the reactive region.
+//By the time the reactive region is scheduled, the out variable value would have updated to 2 in the NBA region.    
+//DUT Code
+module dut_example (output bit [3:0] out);
+  initial begin
+    out <= 2;
+  end
+endmodule
     
+//TB Code:
+program tb_prog_block(input [3:0] out);
+  initial begin
+    if(out == 2)
+      $display("Design assigned out is 2");
+    else
+      $display("Design assigned out = %0d", out);
+  end
+endprogram :tb_prog_block
+
+module tb_mod_top;
+  wire [3:0] out;
+  
+  dut_example DUT(out);
+  tb_prog_block tb(out);
+endmodule :tb_mod_top
+
+//Logfile Output
+ Design assigned out is 2
+ $finish at simulation time 0
+           V C S   S i m u l a t i o n   R e p o r t   
     
     
   
