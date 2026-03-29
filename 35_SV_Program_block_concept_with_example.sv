@@ -37,4 +37,62 @@ Program Block :
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
   Important Question (Tricky)- Generate a clock with 100MHZ frequency using module block and Program block
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+//Example1: Using Module block
+// Simple clock module
+module clock_gen (
+    output reg clk
+);
+    initial begin
+        clk = 0;
+        forever #5 clk = ~clk;  // 5ns half period = 10ns full period = 100MHz
+    end
+endmodule :clock_gen
+
+// Testbench
+module tb_top;
+    wire clk;
+    
+    clock_gen u_clk (.clk(clk));
+    
+    initial begin
+        $monitor("Time=%0t, Clock=%b", $time, clk);
+        #1000 $finish;
+    end
+  
+    initial begin
+        $dumpfile("advanced_dump.vcd");
+        $dumpvars(0, tb_top);
+    end
+endmodule :tb_top   
+
+//Example2: Using program block 
+// Simple program block
+program clock_prog;
+    logic clk;
+    
+    initial begin
+        clk = 0;
+        forever #5 clk = ~clk;
+    end
+    
+   initial begin
+        $monitor("Time=%0t, Clock=%b", $time, clk);
+        #1000 $finish;
+   end
+  
+   initial begin
+        $dumpfile("dump.vcd");
+        $dumpvars(0, tb_top);
+    end 
+    
+endprogram :clock_prog
+
+// Top module
+module tb_top;  
+    clock_prog clk_prog();      
+endmodule :tb_top
+
+    
+    
+    
   
