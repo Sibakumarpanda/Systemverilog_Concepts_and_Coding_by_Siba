@@ -92,6 +92,16 @@ module tb_top;
     clock_prog clk_prog();      
 endmodule :tb_top
 
+//////////////////////////////////////////////////////////    
+   How program block avoid race around condition ???
+//////////////////////////////////////////////////////////     
+- To understand it clearly, below two points need to be cleared.
+- As per System Verilog scheduling semantic, System Verilog events are scheduled in the following order.
+  Active region → Non-blocking region → Reactive region. 
+- The non-blocking assignments (RHS) are evaluated in the active region and updates their LHS in the NBA region (Non-blocking region).
+- When the design module assigns some value to a variable in the initial block and the testbench module tries to access the same variable (in the initial block) and perform some action, 
+  Then race around condition is expected to occur.    
+
     
     
     
