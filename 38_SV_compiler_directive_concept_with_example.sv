@@ -130,3 +130,34 @@ endmodule :define_example3
 Hello 	 "Siba", This is SystemVerilog Tutorial.
 Hello 	 "Subhra", This is SystemC Tutorial.
            V C S   S i m u l a t i o n   R e p o r t    
+
+////////////////////////////////////
+   SystemVerilog `include
+///////////////////////////////////  
+- The SystemVerilog `include directive is used to include another filename. 
+- The double quote “<file_name>” is used in the `include directive.
+- Syntax: `include "<file_name>"
+
+///////////////////////////////////////////////////////////////////////////////
+   Example4: Compiler directive in SV - `include basic example
+///////////////////////////////////////////////////////////////////////////////  
+//file.sv
+class transaction;
+  function void display();
+    $display("This is transaction class");
+  endfunction
+endclass :transaction
+   
+//TB TOP Module   
+`include "file.sv"
+module tick_include_example;
+    initial begin
+      transaction tr = new();
+      tr.display();
+    end
+endmodule  :tick_include_example
+
+//Logfile output
+This is transaction class
+           V C S   S i m u l a t i o n   R e p o r t    
+   
