@@ -45,10 +45,40 @@ endmodule :package_example1
 The value of data = 5
 Printing Inside pkg_funct
            V C S   S i m u l a t i o n   R e p o r t   
+  
 //////////////////////////////////////////////////////////
-  Example2: 
+  Example2: Package in SV  - Explicit import example
 //////////////////////////////////////////////////////////
+//In the below example, a transaction class and pkg_funct() function is defined inside the package 
+//But ,Out of transaction class and pkg_funct(), only the transaction class is imported. Thus, pkg_funct() is not accessible.
+package my_pkg;
 
+  class transaction_class;
+    int data = 5;   
+    function void display();
+      $display("The value of data = %0d", data);
+    endfunction
+  endclass :transaction_class
+
+  function pkg_funct();
+    $display("Printing Inside pkg_funct");
+  endfunction :pkg_funct
+
+endpackage :my_pkg
+
+//TB TOP
+import my_pkg::transaction_class;
+module package_example2;
+  initial begin
+    transaction_class tr = new();
+    tr.display();
+    //pkg_funct(); /// Not accessible
+  end
+endmodule :package_example2
+  
+//Logfile Output
+The value of data = 5
+           V C S   S i m u l a t i o n   R e p o r t     
 //////////////////////////////////////////////////////////
   Example3: 
 //////////////////////////////////////////////////////////
