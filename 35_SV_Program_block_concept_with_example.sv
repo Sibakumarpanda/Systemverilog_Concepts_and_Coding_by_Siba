@@ -18,3 +18,23 @@ Program Block :
 - This helps to avoid race-around conditions between Design (DUT) and Testbench (TB).
 - It provides an execution entry point for the testbench.
 - It encapsulates testbench Data in a single container. 
+
+//////////////////////////////////////////////////////////  
+   Similarities between Program and module block
+//////////////////////////////////////////////////////////     
+- A program block can instantiate another program block in the way how the module is instantiated another module block.
+- Both can have no or more inputs, inout, and output ports.
+- Both can have tasks, functions, variable declaration.
+- Both can have continuous assignments, initial blocks, concurrent assertions, generate blocks, etc.
+
+////////////////////////////////////////////////////////  
+   Difference between program and module block
+///////////////////////////////////////////////////////     
+- A program block can not instantiate a module block. On the opposite side, a module block can instantiate another module or program block.
+- A program block can not have an interface, user-defined primitives (UDP), always block or nested program.
+- The initial block inside the program block is scheduled in the reactive region whereas the initial blocks inside the module lock are scheduled in the active region. 
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Important Question (Tricky)- Generate a clock with 100MHZ frequency using module block and Program block
+///////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+  
