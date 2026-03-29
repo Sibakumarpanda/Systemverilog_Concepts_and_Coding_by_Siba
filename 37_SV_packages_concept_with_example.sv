@@ -13,3 +13,48 @@
   // To import package
   import <package_name> :: *;  // All package items are imported
   import <package_name> :: <method_name>;  // Only <method_name> is imported
+
+//////////////////////////////////////////////////////////
+   Example1: Package in SV  - A Basic example
+//////////////////////////////////////////////////////////
+//In the below example, a transaction class and pkg_funct() function is defined inside the package and it is instantiated in the module.
+package my_pkg;
+  class transaction_class;
+    int data = 5;   
+    function void display();
+      $display("The value of data = %0d", data);
+    endfunction
+  endclass :transaction_class
+
+  function pkg_funct();
+    $display("Printing Inside pkg_funct");
+  endfunction :pkg_funct
+endpackage :my_pkg
+  
+//TB Module
+import my_pkg::*;
+module package_example1;
+  initial begin
+    transaction_class tr = new();
+    tr.display();
+    pkg_funct();
+  end
+endmodule :package_example1
+  
+//Logfile Output
+The value of data = 5
+Printing Inside pkg_funct
+           V C S   S i m u l a t i o n   R e p o r t   
+//////////////////////////////////////////////////////////
+  Example2: 
+//////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////
+  Example3: 
+//////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////
+  Example4: 
+//////////////////////////////////////////////////////////
+  
+  
