@@ -11,4 +11,24 @@
 ////////////////////////////////////////////////////////
   Example1: Basic example with final block
 ////////////////////////////////////////////////////////
+//Example1: SV final block - basic example
+module final_block_usage_example1;
+  initial begin
+    $display("Inside initial block Executed at %0dns", $time);
+    #10;
+    $display("Before calling $finish Executed at %0dns", $time);
+    $finish;
+  end
+  
+  final begin
+    $display("Inside final block Executed at %0dns", $time);
+  end
+endmodule :final_block_usage_example1
 
+//Logfile Output
+Inside initial block Executed at 0ns
+Before calling $finish Executed at 10ns
+$finish called from file "testbench.sv", line 8.
+Inside final block Executed at 10ns
+$finish at simulation time                   10
+           V C S   S i m u l a t i o n   R e p o r t 
