@@ -32,3 +32,7 @@ $finish called from file "testbench.sv", line 8.
 Inside final block Executed at 10ns
 $finish at simulation time                   10
            V C S   S i m u l a t i o n   R e p o r t 
+
+//////////////////////////////////////////////////////////////
+  Example2: Basic example with final block with some change
+//////////////////////////////////////////////////////////////  
