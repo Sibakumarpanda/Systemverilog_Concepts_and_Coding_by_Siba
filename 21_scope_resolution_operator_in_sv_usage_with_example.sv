@@ -102,3 +102,96 @@ testbench.sv, 22
 CPU time: .690 seconds to compile
 Exit code expected: 0, received: 255
 Done    
+    
+///////////////////////////////////////////////////////////////////////////////////////////////////
+  Example3: Scope Resolution operator uses- with extern function
+//////////////////////////////////////////////////////////////////////////////////////////////////
+class packet_class;
+  rand bit [3:0] data;  
+  extern function display ();   //Decleration of function inside the class , but Definition outside the class  
+endclass : packet_class
+        
+function packet_class::display();
+  $display ("The value of data is =%0d",data);      
+endfunction :display
+        
+module tb_top;  
+  initial begin
+    packet_class pkt;
+    pkt=new();
+    
+    for (int i=0;i<10;i++) begin
+      pkt.randomize();
+      pkt.display();
+    end
+  end         
+endmodule :tb_top
+    
+//Logfile Output
+    
+The value of data is =9
+The value of data is =11
+The value of data is =10
+The value of data is =7
+The value of data is =0
+The value of data is =3
+The value of data is =10
+The value of data is =3
+The value of data is =0
+The value of data is =9
+           V C S   S i m u l a t i o n   R e p o r t     
+    
+///////////////////////////////////////////////////////////////////////////////////////////////////
+  Example4: Scope Resolution operator uses- Accessing static methods and functions
+//////////////////////////////////////////////////////////////////////////////////////////////////  
+class packet_class;  
+  static rand bit [3:0] data;    
+  static function display();  
+    $display ("The value of data is =%0d",data);    
+  endfunction :display  
+endclass :packet_class 
+    
+module tb_top;  
+  initial begin
+    packet_class pkt;   
+    pkt=new();        
+    for(int i=0;i<10;i++) begin
+      packet_class::data= pkt.randomize();
+      packet_class::display();
+    end       
+  end          
+endmodule :tb_top
+    
+//Logfile Outut
+    
+The value of data is =1
+The value of data is =1
+The value of data is =1
+The value of data is =1
+The value of data is =1
+The value of data is =1
+The value of data is =1
+The value of data is =1
+The value of data is =1
+The value of data is =1
+           V C S   S i m u l a t i o n   R e p o r t     
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+  Example5: Scope Resolution operator uses- Using in package
+//////////////////////////////////////////////////////////////////////////////////////////////////    
+package my_pkg;
+  typedef enum bit {FALSE,TRUE} e_bool;
+endpackage :my_pkg
+
+module tb_top;
+  bit val;  
+  initial begin
+    val=my_pkg::TRUE;
+    $display("val=0x%0h",val);      
+  end   
+endmodule :tb_top
+
+//Logfile Output
+val=0x1
+           V C S   S i m u l a t i o n   R e p o r t     
+    
