@@ -269,8 +269,59 @@ Line: Iteration = 4
            V C S   S i m u l a t i o n   R e p o r t 
 
 //////////////////////////////////////////////////////////////////////////////
-     Example6: 
-////////////////////////////////////////////////////////////////////////////// 
+     Example6: SV File Operation-What are multichannel file descriptors ?
+//////////////////////////////////////////////////////////////////////////////
+//The mcd is a 32-bit packed array value in which a single bit is set indicating which file is opened. The LSB of an mcd always refers to the standard output. 
+//Output is directed to two or more files opened with multichannel descriptors by bitwise OR-ing together their mcds, and writing to the resultant value.  
+module simple_multichannel;
+  
+  int file_id;
+  int error_ch, info_ch;
+  string filename = "output.log";
+  string line;
+  
+  initial begin
+    // Open the file once
+    file_id = $fopen(filename, "w");
+    if (file_id == 0) begin
+      $display("Error opening file");
+      $finish;
+    end
+    
+    // For multichannel behavior, just use the same file descriptor
+    // but prefix messages to simulate channels
+    error_ch = file_id;
+    info_ch = file_id;
+    
+    // Write to different "channels" by prefixing messages
+    $fdisplay(info_ch,  "INFO: Test started");
+    $fdisplay(error_ch, "ERROR: Something went wrong");
+    $fdisplay(info_ch,  "INFO: Test completed");
+    
+    // Close the file
+    $fclose(file_id);
+    
+    // Display the file contents
+    $display("\n=== File Contents ===");
+    file_id = $fopen(filename, "r");
+    
+    while ($fgets(line, file_id)) begin
+      $write("%s", line);
+    end
+    $fclose(file_id);
+    
+    $finish;
+  end
+  
+endmodule :simple_multichannel
 
+//Logfile Output
+=== File Contents ===
+INFO: Test started
+ERROR: Something went wrong
+INFO: Test completed
+$finish called from file "testbench.sv", line 40.
+$finish at simulation time                    0
+           V C S   S i m u l a t i o n   R e p o r t   
 
      
