@@ -193,16 +193,80 @@ Line read : Iteration = 4
 Line read : 
            V C S   S i m u l a t i o n   R e p o r t   
 //////////////////////////////////////////////////////////////////////////////
-     Example4: 
+     Example4: SV File Operation- How to read until end of file ? 
 //////////////////////////////////////////////////////////////////////////////   
+//we used $fgets() system task twice to read two lines from the file. 
+//SystemVerilog has another task called $feof() that returns true when end of the file has reached. 
+//This can be used in a loop as follows to read the entire contents of a file.  
+module tb_top_example4;
+  int 	 fd; 			// Variable for file descriptor handle
+  string line; 			// String value read from the file
 
+  initial begin
+    // 1. Lets first open a new file and write some contents into it
+    fd = $fopen ("trial", "w");
+    
+    for (int i = 0; i < 5; i++) begin
+      $fdisplay (fd, "Iteration = %0d", i);
+    end
+    $fclose(fd);
 
+    // 2. Let us now read back the data we wrote in the previous step
+    fd = $fopen ("trial", "r");
 
+    while (!$feof(fd)) begin
+      $fgets(line, fd);
+      $display ("Line: %s", line);
+    end
+
+    // Close this file handle
+    $fclose(fd);
+  end
+endmodule  :tb_top_example4 
+
+//Logfile Output
+ Line: Iteration = 0
+ Line: Iteration = 1
+ Line: Iteration = 2
+ Line: Iteration = 3
+ Line: Iteration = 4
+ Line: 
+           V C S   S i m u l a t i o n   R e p o r t  
 //////////////////////////////////////////////////////////////////////////////
-     Example5: 
+     Example5: SV File Operation- How to parse a line for values ?
 //////////////////////////////////////////////////////////////////////////////      
+//SystemVerilog has another system task called $fscanf() that allows us to scan and get certain values. 
+module tb_top_example5;
+  int 	  fd; 			// Variable for file descriptor handle
+  int 	  idx;
+  string  str;
 
+  initial begin
+    // 1. Lets first open a new file and write some contents into it
+    fd = $fopen ("trial", "w");
+    for (int i = 0; i < 5; i++)
+      $fdisplay (fd, "Iteration = %0d", i);
+    $fclose(fd);
+    // 2. Let us now read back the data we wrote in the previous step
+    fd = $fopen ("trial", "r");
 
+    // fscanf returns the number of matches
+    while ($fscanf (fd, "%s = %0d", str, idx) == 2) begin
+      $display ("Line: %s = %0d", str, idx);
+    end
+
+    // Close this file handle
+    $fclose(fd);
+  end
+endmodule  :tb_top_example5
+  
+//Logfile Output  
+Line: Iteration = 0
+Line: Iteration = 1
+Line: Iteration = 2
+Line: Iteration = 3
+Line: Iteration = 4
+           V C S   S i m u l a t i o n   R e p o r t 
 
 //////////////////////////////////////////////////////////////////////////////
      Example6: 
