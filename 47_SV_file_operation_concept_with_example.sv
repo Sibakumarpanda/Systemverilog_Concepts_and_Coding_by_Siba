@@ -112,10 +112,86 @@ APPEND_MODE-File was opened successfully : -2147483643
            V C S   S i m u l a t i o n   R e p o r t 
   
 //////////////////////////////////////////////////////////////////////////////
-     Example3: 
+    Example3: SV File Operation- How to read and write to a file ? 
 //////////////////////////////////////////////////////////////////////////////      
+/*
+- Files should be opened in the write w mode or append a mode.
+- System tasks like $fdisplay() and $fwrite() can be used to write a formatted string into the file. 
+- The first argument of these tasks is the file descriptor handle and the second will be the data to be stored.
+- To read a file, it has to be opened in either read r mode or read-write r+ mode. 
+- $fgets() is a system task that will read a single line from the file. 
+- If this task is called 10 times, then it will read 10 lines.
+
+In the below code shown below demonstrates how to open a file and write contents into it using $fdisplay(). 
+The file is then opened in read mode and contents are read back using $fgets() into a local variable. 
+This is then printed out using the standard display task $display()
+
+ */
+  
+module tb_top_example3;
+  int 	 fd; 			// Variable for file descriptor handle
+  string line; 			// String value read from the file
+
+  initial begin
+
+    // 1. Lets first open a new file and write some contents into it
+    fd = $fopen ("trial", "w");
+
+    // Write each index in the for loop to the file using $fdisplay
+    // File handle should be the first argument
+    for (int i = 0; i < 5; i++) begin
+      $fdisplay (fd, "Iteration = %0d", i);
+    end
+
+    // Close this file handle
+    $fclose(fd);
 
 
+    // 2. Let us now read back the data we wrote in the previous step
+    fd = $fopen ("trial", "r");
+
+    // Use $fgets to read a single line into variable "line"
+    $fgets(line, fd);
+    $display ("Line read : %s", line);
+
+    // Get the next line and display
+    $fgets(line, fd);
+    $display ("Line read : %s", line);
+    
+    // Get the next line and display
+    $fgets(line, fd);
+    $display ("Line read : %s", line);
+    
+    // Get the next line and display
+    $fgets(line, fd);
+    $display ("Line read : %s", line);
+    
+    // Get the next line and display
+    $fgets(line, fd);
+    $display ("Line read : %s", line);
+    
+    // Get the next line and display - It will not print the Iteration , because Iteration is exceeded 
+    $fgets(line, fd);
+    $display ("Line read : %s", line);
+
+    // Close this file handle
+    $fclose(fd);
+  end
+endmodule  :tb_top_example3
+  
+//Logfile Output
+Line read : Iteration = 0
+
+Line read : Iteration = 1
+
+Line read : Iteration = 2
+
+Line read : Iteration = 3
+
+Line read : Iteration = 4
+
+Line read : 
+           V C S   S i m u l a t i o n   R e p o r t   
 //////////////////////////////////////////////////////////////////////////////
      Example4: 
 //////////////////////////////////////////////////////////////////////////////   
