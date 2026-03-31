@@ -83,5 +83,50 @@ Running the Scenario with Some string starting with MY_DATAWIDTH
 %g	Real decimal or exponential conversion
 %s	String (no conversion)
 */
+module valueplusargs_tb_example2;
+  initial begin
+    string var1 ,var2;
+    bit [63:0] data;
+    
+    if ($value$plusargs ("MY_DATAWIDTH_8=%0d",data))
+       $display ("Running the Scenario with Datawidth 8bit with value =%0d",data);
+    
+    if ($value$plusargs ("MY_DATAWIDTH_16=%0d",data))
+       $display ("Running the Scenario with Datawidth 16bit with value =%0d",data);
+    
+    if ($value$plusargs ("MY_DATAWIDTH_32=%0d",data))
+       $display ("Running the Scenario with Datawidth 32bit with value =%0d",data);
 
+    if ($value$plusargs ("my_datawidth_8=%0d",data))
+       $display ("Running the Scenario with Datawidth 8bit (Lowercase) with value =%0d",data);
+    
+    if ($value$plusargs ("my_datawidth_16=%0d",data))
+       $display ("Running the Scenario with Datawidth 16bit (Lowercase) with value =%0d",data);
+    
+    if ($value$plusargs ("my_datawidth_32=%0d",data))
+       $display ("Running the Scenario with Datawidth 32bit (Lowercase) with value =%0d",data);
+    
+    if ($value$plusargs ("MY_NAME=%s", var1))
+        $display ("MY_NAME is = %s", var1);
+    
+    if ($value$plusargs ("+STRING=%s", var1))
+        $display ("STRING with + char has a value %s", var1);  
+
+   `ifdef RUNTIME_ERR
+      if ($value$plusargs ("STRING=%0d", var2))
+         $display ("STRING with %%0d has a value %s", var2);
+   `endif
+
+  end
+endmodule :valueplusargs_tb_example2
+  
+//Logfile Output
+  
+When running with +MY_DATAWIDTH_8=56, below is the output
+Running the Scenario with Datawidth 8bit with value =56
+           V C S   S i m u l a t i o n   R e p o r t   
+
+When running with +MY_NAME=SIBA , below is the output
+MY_NAME is = SIBA
+           V C S   S i m u l a t i o n   R e p o r t 
   
