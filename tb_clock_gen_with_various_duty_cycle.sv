@@ -14,6 +14,7 @@ Hence from 10ns of total time period , 50% we have to take as Thigh and 50% as T
 50% 10ns = 5ns =Thigh
 50% 10ns = 5ns =Tlow
 */
+`timescale 1ns / 1ps   // unit = 1ns, precision = 1ps
 module tb_clock_gen_with_dc_ex1;
   bit clk;  
   always #5 clk= ~clk;  // clk frequency=100MHZ ,Time period =10ns , 5ns High and 5ns Low
@@ -41,6 +42,7 @@ Hence from 5ns of total time period , 50% we have to take as Thigh and 50% as Tl
 50 % 5ns = 2.5ns =Thigh
 50 % 5ns = 2.5ns =Tlow
 */
+`timescale 1ns / 1ps   // unit = 1ns, precision = 1ps
 module tb_clock_gen_with_dc_ex2;
   bit clk;
   always #2.5 clk= ~clk;  // clk frequency=200MHZ ,Time period =5ns , 2.5ns High and 2.5ns Low
@@ -68,6 +70,7 @@ Hence from 20ns of total time period , 50% we have to take as Thigh and 50% as T
 50 % 20ns = 10ns =Thigh
 50 % 20ns = 10ns =Tlow
 */
+`timescale 1ns / 1ps   // unit = 1ns, precision = 1ps
 module tb_clock_gen_with_dc_ex3;
   bit clk;
 
