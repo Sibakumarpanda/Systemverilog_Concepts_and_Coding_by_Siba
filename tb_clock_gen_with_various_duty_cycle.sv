@@ -178,9 +178,6 @@ module tb_clock_gen_with_dc_ex6;
   end    
 endmodule: tb_clock_gen_with_dc_ex6
 
-
-//Question6. Generate 100MHZ clock with 70% Duty Cycle using always block
-
 //Question7. Generate 200MHZ clock with 70% Duty Cycle using always block
 
 //Question8. Generate 50MHZ clock with 70% Duty Cycle using always block
