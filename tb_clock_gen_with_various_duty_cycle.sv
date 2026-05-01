@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 //(c) Copyright Siba Kumar Panda, All rights reserved
-// File    : 1_clock_gen_with_dc.sv 
+// File    : 1_tb_clock_gen_with_dc.sv 
 // Project : tb_clock_gen_with_various_duty_cycle.sv
 // Purpose : Generate 100MHZ clock with 50% Duty Cycle using always block
 // Author  : Siba Kumar Panda
@@ -15,7 +15,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 //(c) Copyright Siba Kumar Panda, All rights reserved
-// File    : 2_clock_gen_with_dc.sv 
+// File    : 2_tb_clock_gen_with_dc.sv 
 // Project : tb_clock_gen_with_various_duty_cycle.sv
 // Purpose : Generate 200MHZ clock with 50% Duty Cycle using always block
 // Author  : Siba Kumar Panda
@@ -26,7 +26,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 //(c) Copyright Siba Kumar Panda, All rights reserved
-// File    : 3_clock_gen_with_dc.sv 
+// File    : 3_tb_clock_gen_with_dc.sv 
 // Project : tb_clock_gen_with_various_duty_cycle.sv
 // Purpose : Generate 50MHZ clock with 50% Duty Cycle using always block
 // Author  : Siba Kumar Panda
@@ -38,7 +38,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 //(c) Copyright Siba Kumar Panda, All rights reserved
-// File    : 4_clock_gen_with_dc.sv 
+// File    : 4_tb_clock_gen_with_dc.sv 
 // Project : tb_clock_gen_with_various_duty_cycle.sv
 // Purpose : Generate 1GHZ clock with 50% Duty Cycle using always block
 // Author  : Siba Kumar Panda
