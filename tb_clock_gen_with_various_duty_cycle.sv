@@ -210,7 +210,39 @@ module tb_clock_gen_with_dc_ex7;
   end    
 endmodule: tb_clock_gen_with_dc_ex7
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+//(c) Copyright Siba Kumar Panda, All rights reserved
+// File    : 8_tb_clock_gen_with_dc.sv 
+// Project : tb_clock_gen_with_various_duty_cycle.sv
+// Purpose : Generate 50MHZ clock with 70% Duty Cycle using always block
+// Author  : Siba Kumar Panda
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Question8. Generate 50MHZ clock with 70% Duty Cycle using always block
+
+/*
+DUTY CYCLE = Thigh/ (Thigh+Tlow) = Thigh/ (Tperiod)
+Given Frequency =50MHz , So Time Period = 1/Tperiod = 1/50MHz = 20ns
+Hence from 20ns of total time period , 70% we have to take as Thigh and 30% as Tlow
+70 % 20ns = 14ns =Thigh
+30 % 20ns = 6ns =Tlow
+*/
+
+`timescale 1ns / 1ps   // unit = 1ns, precision = 1ps
+module tb_clock_gen_with_dc_ex8;
+  bit clk;  
+  always begin      // clk frequency=50MHz ,Time period =20ns , 14ns High and 6ns Low
+    clk = 1'b1;
+    #14;
+    clk = 1'b0;
+    #6;
+  end
+  initial begin
+    $dumpfile("clk.vcd");
+    $dumpvars();    
+    #1000;
+    $finish();
+  end    
+endmodule: tb_clock_gen_with_dc_ex8
 
 //Question9. Generate 1GHZ clock with 70% Duty Cycle using always block
 
