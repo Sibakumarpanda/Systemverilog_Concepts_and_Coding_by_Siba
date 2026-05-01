@@ -88,12 +88,59 @@ endmodule: tb_clock_gen_with_dc_ex3
 //(c) Copyright Siba Kumar Panda, All rights reserved
 // File    : 4_tb_clock_gen_with_dc.sv 
 // Project : tb_clock_gen_with_various_duty_cycle.sv
-// Purpose : Generate 1GHZ clock with 50% Duty Cycle using always block
+// Purpose : Generate 1GZ clock with 50% Duty Cycle using always block
 // Author  : Siba Kumar Panda
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Question4. Generate 1GHZ clock with 50% Duty Cycle using always block
 
+/*
+DUTY CYCLE = Thigh/ (Thigh+Tlow) = Thigh/ (Tperiod)
+Given Frequency =1GHz , So Time Period = 1/Tperiod = 1/1GHz = 1ns
+Hence from 1ns of total time period , 50% we have to take as Thigh and 50% as Tlow
+50 % 1ns = 0.5ns =Thigh
+50 % 1ns = 0.5ns =Tlow
+*/
+`timescale 1ns / 1ps   // unit = 1ns, precision = 1ps
+module tb_clock_gen_with_dc_ex4;
+  bit clk;  
+  always #0.5 clk= ~clk;  // clk frequency=1GHZ ,Time period =1ns , 0.5ns High and 0.5ns Low  
+  
+  initial begin
+    $dumpfile("clk.vcd");
+    $dumpvars();    
+    #1000;
+    $finish();
+  end    
+endmodule: tb_clock_gen_with_dc_ex4
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+//(c) Copyright Siba Kumar Panda, All rights reserved
+// File    : 5_tb_clock_gen_with_dc.sv 
+// Project : tb_clock_gen_with_various_duty_cycle.sv
+// Purpose : Generate 2GHZ clock with 50% Duty Cycle using always block
+// Author  : Siba Kumar Panda
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Question5. Generate 2GHZ clock with 50% Duty Cycle using always block
+
+/*
+DUTY CYCLE = Thigh/ (Thigh+Tlow) = Thigh/ (Tperiod)
+Given Frequency =2GHz , So Time Period = 1/Tperiod = 1/2GHz = 0.5ns
+Hence from 0.5ns of total time period , 50% we have to take as Thigh and 50% as Tlow
+50 % 0.5ns = 0.25ns =Thigh
+50 % 0.5ns = 0.25ns =Tlow
+*/
+`timescale 1ns / 1ps   // unit = 1ns, precision = 1ps
+module tb_clock_gen_with_dc_ex5;
+  bit clk;
+  
+  always #0.25 clk= ~clk;  // clk frequency=2GHZ ,Time period =0.5ns , 0.25ns High and 0.25ns Low 
+  initial begin
+    $dumpfile("clk.vcd");
+    $dumpvars();    
+    #1000;
+    $finish();
+  end    
+endmodule: tb_clock_gen_with_dc_ex5
 
 
 
