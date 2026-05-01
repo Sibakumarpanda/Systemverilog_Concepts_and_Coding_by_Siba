@@ -1,5 +1,4 @@
 //************************************ Clock generation with various Duty Cycle ***************************************************
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 //(c) Copyright Siba Kumar Panda, All rights reserved
 // File    : 1_tb_clock_gen_with_dc.sv 
@@ -8,10 +7,24 @@
 // Author  : Siba Kumar Panda
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Question1. Generate 100MHZ clock with 50% Duty Cycle using always block
-
-
-
-
+/*
+DUTY CYCLE = Thigh/ (Thigh+Tlow) = Thigh/ (Tperiod)
+Given Frequency =100MHz , So Time Period = 1/Tperiod = 1/100MHz = 10ns
+Hence from 10ns of total time period , 50% we have to take as Thigh and 50% as Tlow
+50% 10ns = 5ns =Thigh
+50% 10ns = 5ns =Tlow
+*/
+module tb_clock_gen_with_dc_ex1;
+  bit clk;  
+  always #5 clk= ~clk;  // clk frequency=100MHZ ,Time period =10ns , 5ns High and 5ns Low
+  
+  initial begin
+    $dumpfile("clk.vcd");
+    $dumpvars();    
+    #1000;
+    $finish();
+  end    
+endmodule: tb_clock_gen_with_dc_ex1
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 //(c) Copyright Siba Kumar Panda, All rights reserved
