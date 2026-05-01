@@ -55,15 +55,31 @@ endmodule: tb_clock_gen_with_dc_ex2
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 //(c) Copyright Siba Kumar Panda, All rights reserved
-// File    : 3_tb_clock_gen_with_dc.sv 
+// File    : 3_clock_gen_with_dc.sv 
 // Project : tb_clock_gen_with_various_duty_cycle.sv
 // Purpose : Generate 50MHZ clock with 50% Duty Cycle using always block
 // Author  : Siba Kumar Panda
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Question3. Generate 50MHZ clock with 50% Duty Cycle using always block
+/*
+DUTY CYCLE = Thigh/ (Thigh+Tlow) = Thigh/ (Tperiod)
+Given Frequency =50MHz , So Time Period = 1/Tperiod = 1/50MHz = 20ns
+Hence from 20ns of total time period , 50% we have to take as Thigh and 50% as Tlow
+50 % 20ns = 10ns =Thigh
+50 % 20ns = 10ns =Tlow
+*/
+module tb_clock_gen_with_dc_ex3;
+  bit clk;
 
-
-
+  always #10 clk= ~clk;  // clk frequency=50MHZ ,Time period =20ns , 10ns High and 10ns Low
+  
+  initial begin
+    $dumpfile("clk.vcd");
+    $dumpvars();    
+    #1000;
+    $finish();
+  end   
+endmodule: tb_clock_gen_with_dc_ex3
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 //(c) Copyright Siba Kumar Panda, All rights reserved
