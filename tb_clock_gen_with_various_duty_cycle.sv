@@ -509,7 +509,38 @@ module tb_clock_gen_with_dc_ex16;
   end    
 endmodule: tb_clock_gen_with_dc_ex16
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+//(c) Copyright Siba Kumar Panda, All rights reserved
+// File    : 17_tb_clock_gen_with_dc.sv 
+// Project : tb_clock_gen_with_various_duty_cycle.sv
+// Purpose : Generate 200MHZ clock with 80% Duty Cycle using always block
+// Author  : Siba Kumar Panda
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Question17. Generate 200MHZ clock with 80% Duty Cycle using always block
+/*
+DUTY CYCLE = Thigh/ (Thigh+Tlow) = Thigh/ (Tperiod)
+Given Frequency =200MHz , So Time Period = 1/Tperiod = 1/200MHz = 5ns
+Hence from 5ns of total time period , 80% we have to take as Thigh and 20% as Tlow
+80 % 5ns = 4ns =Thigh
+20 % 5ns = 1ns =Tlow
+*/
+
+`timescale 1ns / 1ps   // unit = 1ns, precision = 1ps
+module tb_clock_gen_with_dc_ex17;
+  bit clk; 
+  always begin      // clk frequency=200MHZ ,Time period =5ns , 4ns High and 1ns Low
+    clk = 1'b1;
+    #4;
+    clk = 1'b0;
+    #1;
+  end      
+  initial begin
+    $dumpfile("clk.vcd");
+    $dumpvars();    
+    #1000;
+    $finish();
+  end    
+endmodule: tb_clock_gen_with_dc_ex17
 
 //Question18. Generate 50MHZ clock with 80% Duty Cycle using always block
 
