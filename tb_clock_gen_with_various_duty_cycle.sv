@@ -738,6 +738,36 @@ module tb_clock_gen_with_dc_ex23;
   end    
 endmodule: tb_clock_gen_with_dc_ex23
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+//(c) Copyright Siba Kumar Panda, All rights reserved
+// File    : 24_tb_clock_gen_with_dc.sv 
+// Project : tb_clock_gen_with_various_duty_cycle.sv
+// Purpose : Generate 1GHZ clock with 85% Duty Cycle using always block
+// Author  : Siba Kumar Panda
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Question24. Generate 1GHZ clock with 85% Duty Cycle using always block
+/*
+DUTY CYCLE = Thigh/ (Thigh+Tlow) = Thigh/ (Tperiod)
+Given Frequency =1GHz , So Time Period = 1/Tperiod = 1/1GHz = 1ns
+Hence from 1ns of total time period , 85% we have to take as Thigh and 15% as Tlow
+85 % 1ns = 0.85ns =Thigh
+15 % 1ns = 0.15ns =Tlow
+*/
+`timescale 1ns / 1ps     // unit = 1ns, precision = 1ps
+module tb_clock_gen_with_dc_ex24;
+  bit clk; 
+  always begin          // clk frequency=1GHZ ,Time period =1ns ,0.85ns High and 0.15ns Low
+    clk = 1'b1;
+    #0.85;
+    clk = 1'b0;
+    #0.15;
+  end     
+  initial begin
+    $dumpfile("clk.vcd");
+    $dumpvars();    
+    #1000;
+    $finish();
+  end   
+endmodule: tb_clock_gen_with_dc_ex24
 
 //Question25. Generate 2GHZ clock with 85% Duty Cycle using always block
