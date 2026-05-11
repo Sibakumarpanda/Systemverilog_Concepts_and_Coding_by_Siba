@@ -89,3 +89,20 @@ module tb_clock_gen;
   end
   
 endmodule
+
+// Write a task to generate a free clock of 100MHZ 
+// NOTE: This can be done using only forever . Because in side task , we cannot write procedural block like initial , always etc
+module task_clock_gen();
+  reg clk ;
+  initial 
+    begin
+      my_clk();
+    end
+  task my_clk();   //Task
+    begin
+      clk=1'b0;
+      forever 
+      #5 clk= ~clk;
+    end
+  endtask : my_clk
+endmodule :task_clock_gen
