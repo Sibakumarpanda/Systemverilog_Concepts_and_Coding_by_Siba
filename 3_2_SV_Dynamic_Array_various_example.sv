@@ -326,3 +326,43 @@ d1 = '{1, 2, 3, 4, 5}
 New d1 = '{1, 2, 3, 4, 5, 0, 0, 0, 0, 0} 
 d1.size() = 10
            V C S   S i m u l a t i o n   R e p o r t  
+ 
+/************************************************************************************/
+ Dynamic Array Example-7
+ How to add new items to a same dynamic array , with specific content?
+  int d1 [];
+  d1 = new [5]; 
+  // This creates one more slot in the d1 dyn array, while keeping old contents
+  d1 = new [10] (d1);
+/***********************************************************************************/ 
+ module add_new_item_to_same_dyn_array_example;
+  int d1 [];
+  initial begin
+    // Allocate 5 memory locations to "d1" and initialize with values
+    d1 = new [5];
+    d1 = '{1, 2, 3, 4, 5};
+    
+    // Display contents of "d1"
+    $display ("d1 = %p", d1);
+ 
+    // Grow size by extra 5 with previous d1 content
+    d1 = new[10] (d1);
+    
+    // Assign specific values to the new slots
+    d1[5] = 100;
+    d1[6] = 200;
+    d1[7] = 300;
+    d1[8] = 400;
+    d1[9] = 500; 
+    // Display contents of new d1
+    $display ("New d1 = %p", d1); 
+    // Display size of array
+    $display ("d1.size() = %0d", d1.size());
+  end
+endmodule :add_new_item_to_same_dyn_array_example
+
+//Logfile Output
+d1 = '{1, 2, 3, 4, 5} 
+New d1 = '{1, 2, 3, 4, 5, 100, 200, 300, 400, 500} 
+d1.size() = 10
+           V C S   S i m u l a t i o n   R e p o r t
