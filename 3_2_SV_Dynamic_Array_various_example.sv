@@ -293,3 +293,36 @@ CPU Time:      0.370 seconds;       Data structure size:   0.0Mb
 Mon Nov  3 00:52:03 2025
 Done
  
+/************************************************************************/
+ Dynamic Array Example-6
+ How to add new items to a same dynamic array ?
+  int d1 [];
+  d1 = new [5]; 
+  // This creates one more slot in the d1 dyn array, while keeping old contents
+  d1 = new [10] (d1);
+/*************************************************************************/  
+module add_new_item_to_same_dyn_array_example;
+  int d1 [];
+  initial begin
+    // Allocate 5 memory locations to "d1" and initialize with values
+    d1 = new [5];
+    d1 = '{1, 2, 3, 4, 5};    
+    // Display contents of "d1"
+    $display ("d1 = %p", d1);
+ 
+    // Grow size by extra 5 with previous d1 content and form new dyn.Array "d1"
+    d1 = new[10] (d1); 
+    // Display contents of new "id"
+    $display ("New d1 = %p", d1); 
+    // Display size of both arrays
+    $display ("d1.size() = %0d", d1.size());
+  end
+endmodule :add_new_item_to_dyn_array_example
+
+//Logfile Output
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  May 12 00:21 2026
+d1 = '{1, 2, 3, 4, 5} 
+New d1 = '{1, 2, 3, 4, 5, 0, 0, 0, 0, 0} 
+d1.size() = 10
+           V C S   S i m u l a t i o n   R e p o r t  
