@@ -156,7 +156,7 @@ Mon Nov  3 00:39:11
   // This creates one more slot in the d1 dyn array, while keeping old contents
  d1 = new [d1.size() + 1] (d1);
 /*************************************************************************/  
-module add_new_item_to_syn_array_example;
+module add_new_item_to_dyn_array_example;
   // Create two dynamic arrays of type int
   int d1 [];
   int d2 [];
