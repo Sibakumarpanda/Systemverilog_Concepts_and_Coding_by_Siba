@@ -135,7 +135,7 @@ class derived_class extends base_class;
   bit [31:0] data = 200;
   int id = 2;  
   function void display();
-    $display("From Child Class: Value of data = %0d and id = %0d", data, id);
+    $display("From Derived Class: Value of data = %0d and id = %0d", data, id);
   endfunction
 endclass :derived_class
 
@@ -148,7 +148,7 @@ module class_example3;
 endmodule :class_example3
     
 //Logfile Output
-From Child Class: Value of data = 200 and id = 2
+From Derived Class: Value of data = 200 and id = 2
            V C S   S i m u l a t i o n   R e p o r t 
 /////////////////////////////////////////////////////////////////////// 
   Example-4 : Inheritance Example4
