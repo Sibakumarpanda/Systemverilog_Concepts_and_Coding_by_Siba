@@ -57,74 +57,66 @@ Value of id = 1
     
 /////////////////////////////////////////////////////////////////////// 
   Example-2 : Inheritance Example2
-  Multilevel Inheritance Example1
+  Multilevel Inheritance Example
 //////////////////////////////////////////////////////////////////////// 
-class parent_trans;
-  bit [31:0] data_p;
-  
-  function void disp_p();
-    $display("parent_trans: Value of data = %0h", data_p);
+class base_class;
+  bit [31:0] data_b;  
+  function void disp_b();
+    $display("base_class: Value of data = %0h", data_b);
   endfunction
-endclass :parent_trans
+endclass :base_class
 
-class child1_trans extends parent_trans;
-  bit [31:0] data_c1;
-  
-  function void disp_c1();
-    $display("child1_trans: Value of data = %0h", data_c1);
+class derived1_class extends base_class;
+  bit [31:0] data_d1;  
+  function void disp_d1();
+    $display("derived1_class: Value of data = %0h", data_d1);
   endfunction
-endclass :child1_trans
+endclass :derived1_class
 
-class child2_trans extends parent_trans;
-  bit [31:0] data_c2;
-  
-  function void disp_c2();
-    $display("child2_trans: Value of data = %0h", data_c2);
+class derived2_class extends base_class;
+  bit [31:0] data_d2;  
+  function void disp_d2();
+    $display("derived2_class: Value of data = %0h", data_d2);
   endfunction
-endclass :child2_trans
+endclass :derived2_class
 
-class child_A_trans extends child1_trans;
-  bit [31:0] data_cA;
-  
-  function void disp_cA();
-    $display("child_A_trans: Value of data = %0h", data_cA);
+class derived_a extends derived1_class;
+  bit [31:0] data_da;  
+  function void disp_da();
+    $display("derived_a: Value of data = %0h", data_da);
   endfunction
-endclass :child_A_trans
+endclass :derived_a
 
-class child_B_trans extends child_A_trans;
-  bit [31:0] data_cB;
-  
-  function void disp_cB();
-    $display("child1_2_trans: Value of data = %0h", data_cB);
+class derived_b extends derived_a;
+  bit [31:0] data_db;  
+  function void disp_db();
+    $display("derived_b: Value of data = %0h", data_db);
   endfunction
-endclass :child_B_trans
+endclass :derived_b
 
 module class_example2;
   initial begin
-    child_B_trans cB_tr;
-    cB_tr = new();
-    cB_tr.data_p = 2;
-    cB_tr.data_c1 = 4;
-    cB_tr.data_cA = 6;
-    cB_tr.data_cB = 8;
-    //cB_tr.data_c2 = 3;  // Not possible as child_B_trans is not child class of child2_trans.
+    derived_b db;
+    db = new();
+    db.data_b = 2;
+    db.data_d1 = 4;
+    db.data_da = 6;
+    db.data_db = 8;
+    //db.data_c2 = 3;  // Not possible as derived_b is not child class of derived2_class.
     
-    cB_tr.disp_p();
-    cB_tr.disp_c1();
-    cB_tr.disp_cA();
-    cB_tr.disp_cB();
+    db.disp_b();
+    db.disp_d1();
+    db.disp_da();
+    db.disp_db();
   end
-endmodule :class_example2  
+endmodule :class_example2
     
 //Logfile Output
-Chronologic VCS simulator copyright 1991-2025
-Contains Synopsys proprietary information.
-Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 16 10:32 2026
-parent_trans: Value of data = 2
-child1_trans: Value of data = 4
-child_A_trans: Value of data = 6
-child1_2_trans: Value of data = 8
-           V C S   S i m u l a t i o n   R e p o r t     
+base_class: Value of data = 2
+derived1_class: Value of data = 4
+derived_a: Value of data = 6
+derived_b: Value of data = 8
+           V C S   S i m u l a t i o n   R e p o r t      
     
 /////////////////////////////////////////////////////////////////////// 
   Example-3 : Inheritance Example3
