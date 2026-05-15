@@ -73,3 +73,71 @@ addr=0xfacecafe data=0x12345678
 ///////////////////////////////////////
    Basic example Deep copy :
 ///////////////////////////////////////  
+class packet;
+	int 	addr;
+	int 	data;		
+	function display();
+		$display ("addr=0x%0h data=0x%0h ", addr, data);
+	endfunction	
+	// Deep copy method - copies contents from source object to this object
+	function void deep_copy(packet src);
+		this.addr = src.addr;
+		this.data = src.data;
+	endfunction  
+endclass :packet
+
+module tb_top_deep_copy;
+	packet pkt1, pkt2;
+	
+	initial begin		
+		pkt1 = new();
+		pkt1.addr = 32'hface_cafe;
+		pkt1.data = 32'h1234_5678;
+		$display("pkt1 (original):");
+		pkt1.display();
+		
+		// Create pkt2 as a separate object
+		pkt2 = new();		
+		// Deep copy: copy contents from pkt1 to pkt2
+		pkt2.deep_copy(pkt1);
+      
+		$display("pkt2 (after deep copy):");
+		pkt2.display();
+		
+		// Now change pkt1's values
+		$display("\n--- Modifying pkt1 ---");
+		pkt1.addr = 32'habcd_ef12;
+		pkt1.data = 32'h5a5a_5a5a;
+		$display("pkt1 (modified):");
+		pkt1.display();
+		
+		// pkt2 remains unchanged - demonstrating deep copy
+		$display("pkt2 (unchanged after pkt1 modification):");
+		pkt2.display();
+		
+		// Verify both objects are independent
+		$display("\n--- Verification ---");
+		if (pkt1.addr != pkt2.addr)
+			$display("SUCCESS: pkt1 and pkt2 are independent objects");
+		else
+			$display("FAILED: Objects are still linked");
+	end
+endmodule :tb_top_deep_copy
+	
+//Logfile output	
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  May 15 00:48 2026
+pkt1 (original):
+addr=0xfacecafe data=0x12345678 
+pkt2 (after deep copy):
+addr=0xfacecafe data=0x12345678 
+
+--- Modifying pkt1 ---
+pkt1 (modified):
+addr=0xabcdef12 data=0x5a5a5a5a 
+pkt2 (unchanged after pkt1 modification):
+addr=0xfacecafe data=0x12345678 
+
+--- Verification ---
+SUCCESS: pkt1 and pkt2 are independent objects
+           V C S   S i m u l a t i o n   R e p o r t 	
