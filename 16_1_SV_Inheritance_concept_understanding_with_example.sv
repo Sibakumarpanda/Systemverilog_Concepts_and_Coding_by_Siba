@@ -118,48 +118,38 @@ derived_a: Value of data = 6
 derived_b: Value of data = 8
            V C S   S i m u l a t i o n   R e p o r t      
     
-/////////////////////////////////////////////////////////////////////// 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
   Example-3 : Inheritance Example3
-  //Overriding base class members (when both the child and base class 
-    have the same naming convention for class properties and method)
- //The child class properties and methods override base class properties 
-  and methods when both the child and base class have the same naming convention 
-  for class properties and method.
-//////////////////////////////////////////////////////////////////////// 
-class parent_trans;
+  //Overriding Base class members (when both the base class and Derived class have same naming convention for class properties and method)
+  //The Derived class properties and methods override base class properties and methods. (when both base class and Derived class have the same naming convention for class properties and method)
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+class base_class;
   bit [31:0] data = 100;
-  int id = 1;
-  
+  int id = 1;  
   function void display();
     $display("From Base Class: Value of data = %0d and id = %0d", data, id);
   endfunction
-endclass :parent_trans
+endclass :base_class
 
-class child_trans extends parent_trans;
+class derived_class extends base_class;
   bit [31:0] data = 200;
-  int id = 2;
-  
+  int id = 2;  
   function void display();
     $display("From Child Class: Value of data = %0d and id = %0d", data, id);
   endfunction
-endclass :child_trans
+endclass :derived_class
 
-module class_example;
+module class_example3;
   initial begin
-    child_trans c_tr;
-    c_tr = new();
-
-    c_tr.display();
+    derived_class d;
+    d = new();
+    d.display();
   end
-endmodule :class_example
+endmodule :class_example3
     
 //Logfile Output
-Chronologic VCS simulator copyright 1991-2025
-Contains Synopsys proprietary information.
-Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 16 21:45 2026
 From Child Class: Value of data = 200 and id = 2
-           V C S   S i m u l a t i o n   R e p o r t    
-    
+           V C S   S i m u l a t i o n   R e p o r t 
 /////////////////////////////////////////////////////////////////////// 
   Example-4 : Inheritance Example4
   //when both the child and base class have the Different naming 
