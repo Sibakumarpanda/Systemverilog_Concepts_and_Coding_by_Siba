@@ -31,9 +31,45 @@
 //////////////////////////////////////////////////
 -In Shallow copy , Instance handles are copied but Nested objects are not copied . Where as , In Deep copy , nested Objects are also copied.
 
-
 ///////////////////////////////////////
    Basic example Shallow copy :
 ///////////////////////////////////////  
+class packet;
+	int 	addr;
+	int 	data;		
+	function display ();
+		$display ("addr=0x%0h data=0x%0h ", addr, data);
+	endfunction  
+endclass :packet
 
-  
+module tb_top_shallow_copy; 
+	packet pkt1, pkt2;  
+	initial begin		
+       pkt1= new();
+       pkt1.addr= 32'hface_cafe;
+       pkt1.data= 32'h1234_5678;
+       pkt1.display ();
+				
+	    pkt2 = new pkt1;   // Shallow copy pkt1 into pkt2, pkt2 is a new object with contents in pkt1
+	    pkt2.display ();
+		
+	    // Now Let's change the addr and data in pkt1 and observe
+	    pkt1.addr = 32'habcd_ef12;
+	    pkt1.data = 32'h5a5a_5a5a;
+       pkt1.display ();
+		
+		 // Print pkt2 and see that addr and data are not changed even if pkt1 changed.
+       pkt2.display ( );
+	end
+endmodule :tb_top_shallow_copy
+
+//Logfile output
+addr=0xfacecafe data=0x12345678 
+addr=0xfacecafe data=0x12345678 
+addr=0xabcdef12 data=0x5a5a5a5a 
+addr=0xfacecafe data=0x12345678 
+           V C S   S i m u l a t i o n   R e p o r t 
+   
+///////////////////////////////////////
+   Basic example Deep copy :
+///////////////////////////////////////  
