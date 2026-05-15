@@ -185,55 +185,48 @@ From Derived Class: Value of data = 100 and id = 1
 From Derived Class: Value of data1 = 200 and id1 = 2
 From Base Class: Value of data = 100 and id = 1
            V C S   S i m u l a t i o n   R e p o r t     
-/////////////////////////////////////////////////////////////////////// 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
   Example-5 : Inheritance Example5
-  //Accessing class members in Inheritance
- //Based on the handle of a class, the corresponding method will be 
-  called.
-////////////////////////////////////////////////////////////////////////       
-
-class parent_trans;
+  //Accessing class members in Inheritance :Based on the handle of a class, the corresponding method will be called.
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////       
+class base_class;
   bit [31:0] data;
-  int id;
-  
+  int id; 
   function void display();
-    $display("Base: Value of data = %0d and id = %0d", data, id);
+    $display("From Base Class: Value of data = %0d and id = %0d", data, id);
   endfunction
-endclass :parent_trans
+endclass :base_class
 
-class child_trans extends parent_trans;
+class derived_class extends base_class;
   bit [31:0] data;
-  int id;
-  
+  int id; 
   function void display();
-    $display("Child: Value of data = %0d and id = %0d", data, id);
+    $display("From Derived Class: Value of data = %0d and id = %0d", data, id);
   endfunction
-endclass :child_trans
+endclass :derived_class
 
 module class_example;
   initial begin
-    parent_trans p_tr;
-    child_trans c_tr;
+    base_class b;
+    derived_class d;
     
-    p_tr = new();
-    c_tr = new();
+    b = new();
+    d = new();
     
-    p_tr.data = 100;
-    p_tr.id = 1;
+    b.data = 100;
+    b.id = 1;
 
-    c_tr.data = 200;
-    c_tr.id = 2;
+    d.data = 200;
+    d.id = 2;
     
-    p_tr.display();
-    c_tr.display();
+    b.display();
+    d.display();
   end
 endmodule :class_example
     
 //Logfile Output
-Contains Synopsys proprietary information.
-Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 17 21:28 2026
-Base: Value of data = 100 and id = 1
-Child: Value of data = 200 and id = 2
+From Base Class: Value of data = 100 and id = 1
+From Derived Class: Value of data = 200 and id = 2
            V C S   S i m u l a t i o n   R e p o r t 
    
 /////////////////////////////////////////////////////////////////////// 
