@@ -150,49 +150,41 @@ endmodule :class_example3
 //Logfile Output
 From Derived Class: Value of data = 200 and id = 2
            V C S   S i m u l a t i o n   R e p o r t 
-/////////////////////////////////////////////////////////////////////// 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
   Example-4 : Inheritance Example4
-  //when both the child and base class have the Different naming 
-  convention for class properties and method,then what will happen???
-
-////////////////////////////////////////////////////////////////////////   
-class parent_trans;
+  //when both the child and base class have the Different naming convention for class properties and method,then what will happen???
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
+class base_class;
   bit [31:0] data = 100;
-  int id = 1;
-  
+  int id = 1; 
   function void display();
     $display("From Base Class: Value of data = %0d and id = %0d", data, id);
   endfunction
-endclass :parent_trans
+endclass :base_class
 
-class child_trans extends parent_trans;
+class derived_class extends base_class;
   bit [31:0] data1 = 200;
-  int id1 = 2;
-  
+  int id1 = 2; 
   function void display1();
-    $display("From Child Class: Value of data = %0d and id = %0d", data, id);
-    $display("From Child Class: Value of data1 = %0d and id1 = %0d", data1, id1);
+    $display("From Derived Class: Value of data = %0d and id = %0d", data, id);
+    $display("From Derived Class: Value of data1 = %0d and id1 = %0d", data1, id1);
   endfunction
-endclass :child_trans
+endclass :derived_class
 
-module class_example;
+module class_example4;
   initial begin
-    child_trans c_tr;
-    c_tr = new();    
-    c_tr.display1();   
-    c_tr.display();    
+    derived_class d;
+    d = new();    
+    d.display1();   
+    d.display();   
   end
-endmodule :class_example
+endmodule :class_example4
     
 //Logfile Output
-    
-Contains Synopsys proprietary information.
-Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Feb 16 21:46 2026
-From Child Class: Value of data = 100 and id = 1
-From Child Class: Value of data1 = 200 and id1 = 2
+From Derived Class: Value of data = 100 and id = 1
+From Derived Class: Value of data1 = 200 and id1 = 2
 From Base Class: Value of data = 100 and id = 1
-           V C S   S i m u l a t i o n   R e p o r t 
-
+           V C S   S i m u l a t i o n   R e p o r t     
 /////////////////////////////////////////////////////////////////////// 
   Example-5 : Inheritance Example5
   //Accessing class members in Inheritance
