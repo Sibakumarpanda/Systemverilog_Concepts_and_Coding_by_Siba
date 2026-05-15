@@ -15,37 +15,34 @@ Class Nomenclature :
 -Parent Class : Base class, Superclass
 -Child  Class : Derived class, Subclass, Extended class  
 
-/////////////////////////////////////////////////////////////////////// 
+/////////////////////////////////////////////////////////////////////////////////////////////////////// 
   Example-1 : Inheritance Example1
-  A child_trans is an extended class from its parent_trans (base class)
-  A child_class can access its base class properties (data variable) 
-  and methods (disp_p function)
-////////////////////////////////////////////////////////////////////////  
-class parent_trans;
-  bit [31:0] data;
-  
-  function void disp_p();
+  A derived_class is an extended class from its base_class (Parent class)
+  A derived_class can access its base_class properties (data variable) and methods (disp_b function)
+///////////////////////////////////////////////////////////////////////////////////////////////////////  
+class base_class;
+  bit [31:0] data;  
+  function void disp_b();
     $display("Value of data = %0h", data);
   endfunction
-endclass :parent_trans
+endclass :base_class
 
-class child_trans extends parent_trans;
-  int id;
-  
-  function void disp_c();
+class derived_class extends base_class;
+  int id;  
+  function void disp_d();
     $display("Value of id = %0h", id);
   endfunction
-endclass :child_trans
+endclass :derived_class
 
 module class_example1;
   initial begin
-    child_trans c_tr;
-    c_tr = new();
-    c_tr.data = 5; // child class is updating property of its base class
-    c_tr.id = 1;
+    derived_class d;
+    d = new();
+    d.data = 5; // derived_class is updating property of its base_class
+    d.id = 1;
     
-    c_tr.disp_p(); // child class is accessing method of its base class
-    c_tr.disp_c();
+    d.disp_b(); // derived_class is accessing method of its base_class
+    d.disp_d();
   end
 endmodule :class_example1
     
