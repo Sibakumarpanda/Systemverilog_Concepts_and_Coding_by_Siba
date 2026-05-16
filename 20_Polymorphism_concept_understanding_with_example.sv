@@ -301,26 +301,21 @@ FROM_DERIVED_CLASS: Value of data = 5, id = 2
 FROM_DERIVED_CLASS: Value of data = 5, id = 2
            V C S   S i m u l a t i o n   R e p o r t                    
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  Example4 : Polymorphism - A base class handle is assigned to the Derived class (Derived_class_handle = base_class_handle that is d=b)
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
-//Example-4: A base class handle is assigned to the Derived class (Derived_class_handle = base_class_handle that is d=b)
-// Now, let’s try to assign a base class handle to the Derived class. This will lead to a compilation error. 
-//As we observe compilation error when a base class handle is assigned to the child class. 
-//Let’s see how to resolve this problem using “Dynamic Casting” in coming Example5
-//Now, replace assignment = with $cast(, ). The run time error is still expected because the base handle is not pointing to an object that is compatible with Derived handle
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   Example4 : Polymorphism - A base class handle is assigned to the Derived class (derived_class_handle = base_class_handle that is d=b)
+   // Now, Let’s try to assign a base class handle to the Derived class. This will lead to a compilation error. 
+   // As we observe compilation error when a base_class_handle is assigned to the derived_class_handle. 
+   // Let’s see how to resolve this problem using “Dynamic Casting” in coming Example5
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
 class base_trans;
   bit [31:0] data;
-  int id;
-  
+  int id;  
   function void display();
     $display("FROM_BASE_CLASS: Value of data = %0d, id = %0d", data, id);
   endfunction
 endclass :base_trans
 
-class derived_trans extends base_trans;
-   
+class derived_trans extends base_trans;  
   function void display();
     $display("FROM_DERIVED_CLASS: Value of data = %0d, id = %0d", data, id);
   endfunction
@@ -332,7 +327,7 @@ module class_example4;
     derived_trans d;
     d = new();
 
-    d = b; //base class handle is assigned to the Derived class
+    d = b;     //base class handle is assigned to the derived class
 
     b.data = 10;
     b.id   = 1;
@@ -356,23 +351,20 @@ testbench.sv, 29
 1 error
 CPU time: .410 seconds to compile      
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  Example5 : Polymorphism -A base class handle is assigned to the Derived class (Derived_class_handle = base_class_handle) with dynamic casting
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Example-5 : A base class handle is assigned to the Derived class (Derived_class_handle = base_class_handle) with dynamic casting
-//Now, replace assignment = with $cast(, ). The run time error is still expected because the base handle is not pointing to an object that is compatible with child handle
-
+ //Now, replace assignment = with $cast(, ) and carefully observe/analyse the result 
+ //The run time error is still expected because the base class handle is not pointing to an object that is compatible with derived class handle
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class base_trans;
   bit [31:0] data;
   int id;
-  
   function void display();
     $display("FROM_BASE_CLASS: Value of data = %0d, id = %0d", data, id);
   endfunction
 endclass : base_trans
 
-class derived_trans extends base_trans;
-   
+class derived_trans extends base_trans; 
   function void display();
     $display("FROM_DERIVED_CLASS: Value of data = %0d, id = %0d", data, id);
   endfunction
@@ -404,24 +396,22 @@ testbench.sv, 26
   Please ensure matching types for dynamic cast
            V C S   S i m u l a t i o n   R e p o r t 
       
-///////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  Example6 :  Polymorphism : Solution to Example 4 and 5
-///////////////////////////////////////////////////////////////
-//Example-6: Solution to Example4 and Example5
-//To resolve this, we need to assign a Derived class handle to the base class handle so that the base class handle should be compatible with the child class. 
-//Notice that an object is created for the Derived class here whereas, in example5, an object was created for the base class. //This was required otherwise null pointer dereference is expected.
-
+ //To resolve this, we need to assign a derived class handle to the base class handle.
+ //so that ,the base class handle should be compatible with the derived class. 
+ //Notice that an object is created for the derived class here whereas, in example5, an object was created for the base class. 
+ //This was required otherwise null pointer dereference is expected.
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class base_trans;
   bit [31:0] data;
   int id;
-  
   function void display();
     $display("FROM_BASE_CLASS: Value of data = %0d, id = %0d", data, id);
   endfunction
 endclass :base_trans
 
-class derived_trans extends base_trans;
-   
+class derived_trans extends base_trans; 
   function void display();
     $display("FROM_DERIVED_CLASS: Value of data = %0d, id = %0d", data, id);
   endfunction
