@@ -2,8 +2,8 @@
   Scope Resolution Operator in SV with Example:
 ////////////////////////////////////////////////////////////////
 - The scope resolution operator is used to refer a static class member without its handle.
-- Symbol of scope resolution operator –  ::
-- Syntax     <class_name>::<class member>
+- Symbol of scope resolution operator is  ::
+- Syntax:     <class_name>::<class member>
 - Left hand side of the scope resolution operator :: should be a class type name, package name, covergroup type name, coverpoint or cross name, typedef name. 
 - The right hand side of the operator should be an identifier like a variable or method name.  
 
@@ -11,17 +11,17 @@
    Scope Resolution operator wide uses :
 ////////////////////////////////////////////////////////////////    
    1. Defining extern function
-   2. Accessing static methods and functions
+   2. Accessing static members (Class properties and class methods )
    3. Using package
    4. Avoid namespace collision    
-     
-- The scope resolution operator provides:
+The scope resolution operator provides:
 - Access to static members (methods and class properties), enumerations, type declaration from outside the class hierarchy.
 - The derived classes can access public or protected class members of their base class.
 - Access to type declarations and enumeration named constants declared inside the class from outside the class hierarchy or from within derived classes.
-- Accessing automatic class members (class properties and methods) has an illegal scope of access.
+- Accessing automatic class members/means Non-static members (class properties and methods) has an illegal scope of access.
 - Also, scope resolution operator can be used to access package members.  
-- Classes and other scopes can have same identifier names and may create a namespace collision if referred to without specifying the scope. The scope resolution operator :: uniquely identifies a member or parameter of a given class.
+- Classes and other scopes can have same identifier names and may create a namespace collision if referred to without specifying the scope.
+- The scope resolution operator :: uniquely identifies a member or parameter of a given class.
 - They are also used to access static variables and methods, parameters and local parameters of a class from outside the class. 
 - It also allows access to public and protected members of a base class from within the derived class.
 
