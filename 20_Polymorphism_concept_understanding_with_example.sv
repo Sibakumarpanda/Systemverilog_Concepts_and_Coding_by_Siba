@@ -87,23 +87,21 @@ FROM_DERIVED_B_CLASS: Value of data = 300, id = 3
 FROM_DERIVED_C_CLASS: Value of data = 400, id = 4
            V C S   S i m u l a t i o n   R e p o r t     
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
- Example2_1 : Polymorphism -Derived class handle is assigned to the base class (base_class_handle = derived_class_handle , ie b=d)
-              Both base and Derived classes have the same name of class properties
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
- //Example-2_1 : Polymorphism -Derived class handle is assigned to the base class (base_class_handle = derived_class_handle , ie b=d)
-//PartA: Both base and Derived classes have the same name of class properties (data and id variables).
-//In this example a derived_trans class is extended from the base_trans class.
-//An object is created from the derived class. 
-//Later a derived class handle is assigned to the base class handle. 
-//Depending on properties declaration (class variables) in base and derived class, memory allocation differs.
-//Notice that here, value assignment (data and id variables) using the base class handle is written first and then a derived class handle is used to assign the values to variables.
-//Since here ,variables are declared in both classes, separate memory is allocated. Hence, base class values are not overridden by its child class.
-                  
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ Example2_1 : Polymorphism - Derived class handle is assigned to the base class (base_class_handle = derived_class_handle , ie b=d)
+ //Here , Both base and Derived classes have the same name of class properties (data and id variable)
+ //In this example a derived_trans class is extended from the base_trans class.
+ //An object is created from the derived class. 
+ //Later a derived class handle is assigned to the base class handle. 
+ //Depending on properties declaration (class variables) in base and derived class, memory allocation differs.
+ //Notice that here, value assignment (data and id variables) using the base class handle is written first and then 
+ //a derived class handle is used to assign the values to variables.
+ //Since here ,variables are declared in both classes, separate memory is allocated. 
+ //Hence, base class values are not overridden by its derived class.  
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////                   
 class base_trans;
   bit [31:0] data;
-  int id;
-  
+  int id;  
   function void display();
     $display("FROM_BASE_CLASS: Value of data = %0d, id = %0d", data, id);
   endfunction
@@ -111,14 +109,13 @@ endclass :base_trans
 
 class derived_trans extends base_trans;
   bit [31:0] data;
-  int id;
-  
+  int id;  
   function void display();
     $display("FROM_DERIVED_CLASS: Value of data = %0d, id = %0d", data, id);
   endfunction
 endclass :derived_trans
 
-module class_example2;
+module class_example2_1;
   initial begin
     base_trans b;
     derived_trans d;
@@ -135,7 +132,7 @@ module class_example2;
     b.display();
     d.display();
   end
-endmodule :class_example2
+endmodule :class_example2_1
                   
 //Log File Output
 Contains Synopsys proprietary information.
@@ -144,38 +141,35 @@ FROM_BASE_CLASS: Value of data = 10, id = 1
 FROM_DERIVED_CLASS: Value of data = 5, id = 2
            V C S   S i m u l a t i o n   R e p o r t                   
                  
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  Example2_2 : Polymorphism -Derived class handle is assigned to the base class (base_class_handle = derived_class_handle , ie b=d)
-              Both base and Derived classes have the same name of class properties , by using virtual method in base class
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Example-2_2 : Polymorphism -Derived class handle is assigned to the base class (base_class_handle = derived_class_handle , ie b=d)
-//PartA: Both base and Derived classes have the same name of class properties (data and id variables).
-//In this example a derived_trans class is extended from the base_trans class.
-//An object is created from the derived class. 
-//Later a derived class handle is assigned to the base class handle. 
-//Depending on properties declaration (class variables) in base and derived class, memory allocation differs.
-//Notice that here, value assignment (data and id variables) using the base class handle is written first and then a derived class handle is used to assign the values to variables.
-//Since here ,variables are declared in both classes, separate memory is allocated. Hence, base class values are not overridden by its child class.
-                  
+ //Here, Both base and Derived classes have the same name of class properties (data and id variables) and virtual method is used in base class
+ //In this example a derived_trans class is extended from the base_trans class.
+ //An object is created from the derived class. 
+ //Later a derived class handle is assigned to the base class handle. 
+ //Depending on properties declaration (class variables) in base and derived class, memory allocation differs.
+ //Notice that here, value assignment (data and id variables) using the base class handle is written first and then a derived class handle 
+ //is used to assign the values to variables.
+ //Since here ,variables are declared in both classes, separate memory is allocated. 
+ //But due to use of virtual methosd in base class , base class values are overridden by derived class.  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////                 
 class base_trans;
   bit [31:0] data;
-  int id;
-  
-  virtual function void display();
+  int id;  
+  virtual function void display(); //virtual method is used here , see carefully
     $display("FROM_BASE_CLASS: Value of data = %0d, id = %0d", data, id);
   endfunction
 endclass :base_trans
 
 class derived_trans extends base_trans;
   bit [31:0] data;
-  int id;
-  
+  int id;  
   function void display();
     $display("FROM_DERIVED_CLASS: Value of data = %0d, id = %0d", data, id);
   endfunction
 endclass :derived_trans
 
-module class_example2;
+module class_example2_2;
   initial begin
     base_trans b;
     derived_trans d;
@@ -192,7 +186,7 @@ module class_example2;
     b.display();
     d.display();
   end
-endmodule :class_example2
+endmodule :class_example2_2
 
 //Logfile Output
 Contains Synopsys proprietary information.
