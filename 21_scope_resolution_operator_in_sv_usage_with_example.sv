@@ -110,8 +110,7 @@ endfunction :display
 module tb_top;  
   initial begin
     packet_class pkt;
-    pkt=new();
-    
+    pkt=new();    
     for (int i=0;i<10;i++) begin
       pkt.randomize();
       pkt.display();
@@ -119,8 +118,7 @@ module tb_top;
   end         
 endmodule :tb_top
     
-//Logfile Output
-    
+//Logfile Output    
 The value of data is =9
 The value of data is =11
 The value of data is =10
@@ -134,7 +132,7 @@ The value of data is =9
            V C S   S i m u l a t i o n   R e p o r t     
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-  Example4: Scope Resolution operator uses- Accessing static methods and functions
+    Example4: Scope Resolution operator uses- Accessing static properties and methods 
 //////////////////////////////////////////////////////////////////////////////////////////////////  
 class packet_class;  
   static rand bit [3:0] data;    
@@ -154,8 +152,7 @@ module tb_top;
   end          
 endmodule :tb_top
     
-//Logfile Outut
-    
+//Logfile Outut    
 The value of data is =1
 The value of data is =1
 The value of data is =1
@@ -169,7 +166,7 @@ The value of data is =1
            V C S   S i m u l a t i o n   R e p o r t     
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-  Example5: Scope Resolution operator uses- Using in package
+   Example5: Scope Resolution operator uses- Using in package
 //////////////////////////////////////////////////////////////////////////////////////////////////    
 package my_pkg;
   typedef enum bit {FALSE,TRUE} e_bool;
