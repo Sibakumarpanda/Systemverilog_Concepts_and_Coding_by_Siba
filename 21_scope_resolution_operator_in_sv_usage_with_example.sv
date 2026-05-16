@@ -26,17 +26,14 @@ The scope resolution operator provides:
 - It also allows access to public and protected members of a base class from within the derived class.
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-  Example1: Acessing static properties and statice methods using Scope Resolution Operator
+  Example1: Acessing static properties and static methods using Scope Resolution Operator
 /////////////////////////////////////////////////////////////////////////////////////////////  
-//Example1: Acessing static properties and static methods using Scope Resolution Operator 
 class packet_trans;
   bit [31:0] data;
-  static int id;
-  
+  static int id; 
   static function disp(int id);
     $display("PRINTING_FROM_STATIC_FUNC: Value of id = %0h", id);
   endfunction
-  
   function auto_disp(int id);
     $display("PRINTING_FROM_NONSTATIC_FUNC:Value of id = %0h", id);
   endfunction
@@ -45,9 +42,8 @@ endclass : packet_trans
 module class_example1;
   initial begin
     packet_trans::id = 5;
-    packet_trans::disp(packet_trans::id);
-    
-    //packet_trans::data = 2; // illegal
+    packet_trans::disp(packet_trans::id);    
+    //packet_trans::data = 2;                    // illegal
     //packet_trans::auto_disp(packet_trans::id); // illegal
   end
 endmodule :class_example1  
@@ -61,15 +57,12 @@ PRINTING_FROM_STATIC_FUNC: Value of id = 5
 ///////////////////////////////////////////////////////////////////////////////////////////////////
   Example2: Acessing NON static properties and NON static methods using Scope Resolution Operator
 //////////////////////////////////////////////////////////////////////////////////////////////////
-//Example2: Acessing NON static properties and NON static methods using Scope Resolution Operator 
 class packet_trans;
-  bit [31:0] data; //Non Static Properties
-  int id;          //Non Static Properties
-  
-  function auto_disp1(int id);   //Non Static Method
+  bit [31:0] data;                 //Non Static Properties
+  int id;                          //Non Static Properties  
+  function auto_disp1(int id);    //Non Static Method
     $display("PRINTING_FROM_NONSTATIC_FUNC: Value of id = %0h", id);
-  endfunction
-  
+  endfunction  
   function auto_disp2(int id);  //Non Static Method
     $display("PRINTING_FROM_NONSTATIC_FUNC:Value of id = %0h", id);
   endfunction
@@ -77,10 +70,10 @@ endclass : packet_trans
 
 module class_example2;
   initial begin
-    packet_trans::id = 5; //illegal
+    packet_trans::id = 5;                       //illegal
     packet_trans::auto_disp1(packet_trans::id); //illegal
     
-    packet_trans::data = 2; // illegal
+    packet_trans::data = 2;                     // illegal
     packet_trans::auto_disp2(packet_trans::id); // illegal
   end
 endmodule :class_example2
@@ -101,10 +94,9 @@ testbench.sv, 22
 2 errors
 CPU time: .690 seconds to compile
 Exit code expected: 0, received: 255
-Done    
-    
+Done        
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-  Example3: Scope Resolution operator uses- with extern function
+    Example3: Scope Resolution operator uses- with extern function
 //////////////////////////////////////////////////////////////////////////////////////////////////
 class packet_class;
   rand bit [3:0] data;  
