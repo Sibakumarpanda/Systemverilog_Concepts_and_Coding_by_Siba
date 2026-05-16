@@ -1,25 +1,23 @@
-/////////////////////////////////////
-    SystemVerilog Polymorphism:
-//////////////////////////////////////
--Polymorphism means having many forms. A base class handle can invoke methods of its Derived class which has the same name. Hence, an object can take many forms. 
+//////////////////////////////////
+  SystemVerilog Polymorphism:
+//////////////////////////////////
+-Poly means "Many" and Morph means "Forms" .
+-Hence , Polymorphism means having many forms. 
+-A base class handle can invoke methods of its Derived class which has the same name. Hence, an object can take many forms. 
 -As we know, the derived class object can override methods of its base class. 
 -Similarly, the base class object can also override the method of one of the Derived classes. 
 -It means a base class method has different forms based on derived class implementation.
 -To use many forms of the method, the virtual keyword must be used in the method definition.
-
-    
-/////////////////////////////////////////
+   
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   Example1 : Polymorphism Basic Example
-/////////////////////////////////////////  
-//Example-1 : Polymorphism Basic Example
-//In this example, derived_a, derived_b and derived_c are derived from the base class. 
-//All Derived class handles are assigned to the base class handle. 
-//Using Polymorphism concept, the base class handle can invoke Derived class methods as shown here .
-
+  //In this example, derived_trans_a, derived_trans_b and derived_trans_c are derived from the base_trans (base class) 
+  //All Derived class handles are assigned to the base class handle. 
+  //Using Polymorphism concept, the base class handle can invoke Derived class methods as shown here 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
 class base_trans;
   bit [31:0] data;
-  int id;
-  
+  int id;  
   virtual function void display();
     $display("FROM_BASE_CLASS: Value of data = %0d, id = %0d", data, id);
   endfunction
