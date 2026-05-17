@@ -56,10 +56,10 @@ The values are : data = 3, id = 7
 The values are : data = 7, id = 15
            V C S   S i m u l a t i o n   R e p o r t 
    
-///////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////
    Example-2: parameterized class with class data type as a parameter
-/////////////////////////////////////////////////////////////////////////////////// 
-//The class err_trans is used as one of the parameters for the class transaction.
+   //The class err_trans is used as one of the parameters for the class transaction
+/////////////////////////////////////////////////////////////////////////////////////// 
 class err_trans;
   bit [31:0] err_data;
   bit error;
@@ -67,8 +67,7 @@ endclass :err_trans
   
 class pkt_trans #(parameter WIDTH = 32, type D_TYPE = err_trans);
   bit [WIDTH-1:0] data;
-  D_TYPE err_tr;
-  
+  D_TYPE err_tr;  
   function void display();
     $display("FROM_PKT_TRANS: data = %0d", data);
     $display("FROM_ERR_TRANS: err_data = %0h and error = %0d", err_tr.err_data, err_tr.error);
@@ -76,16 +75,13 @@ class pkt_trans #(parameter WIDTH = 32, type D_TYPE = err_trans);
 endclass :pkt_trans
 
 module class_example2;
-  pkt_trans tr;
-  
+  pkt_trans tr;  
   initial begin
     tr = new();
-    tr.err_tr = new();
-    
+    tr.err_tr = new();    
     tr.data = 100;
     tr.err_tr.err_data = 32'hFFFF_FFFF;
-    tr.err_tr.error = 1;
-    
+    tr.err_tr.error = 1;    
     tr.display();
   end
 endmodule :class_example2
