@@ -1,29 +1,32 @@
 //////////////////////////////////////
-   Constant class properties in SV:
+ Constant class properties in SV
 /////////////////////////////////////  
--To make class properties read-only, a const specifier is used. Since class objects are dynamic in nature, SystemVerilog provides two types of constants
--Global constants ,Instance constants
+-To make class properties read-only, a const specifier is used. 
+-Since class objects are dynamic in nature, SystemVerilog provides two types of constants. They are :
+   Global constants 
+   Instance constants
 -In both types, class properties have to specify with the const keyword.
--The class methods can not use a const specifier.
--Global constants: During variable declaration, an initial value is assigned, such class properties known as global constants. The value of a variable can not be changed after the declaration of the variable.
--Instance constants:During variable declaration, an initial value is not assigned, such class properties are known as instance constants. An instance constant allows a user to assign value in run time only once in the class constructor.
+-NOTE : class methods can not use a const specifier, only the class properties can use .
+-Global constants:   During variable declaration, an initial value is assigned, such class properties known as global constants. 
+                     The value of a variable can not be changed after the declaration of the variable.
+-Instance constants: During variable declaration, an initial value is not assigned, such class properties are known as instance constants. 
+                     An instance constant allows a user to assign value in run time only once in the class constructor.
 
-////////////////////////////////////////////////////////////////
- Example1 : Constant class properties in SV -Global constants
-////////////////////////////////////////////////////////////////
-//During variable declaration, an initial value is assigned, such class properties known as global constants. The value of a variable can not be changed after the declaration of the variable.
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Example1 : Constant class properties in SV - Global constants
+  //During variable declaration, an initial value is assigned, such class properties known as global constants. 
+  //The value of a variable can not be changed after the declaration of the variable.   
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class pkt_trans;
   bit [31:0] data;
-  const int id = 1;
-  
+  const int id = 1;  //Its treated as, Global constant properties - Since initially the value is assigned
   function void display();
     $display("data = %0d and id = %0d", data, id);
   endfunction
 endclass :pkt_trans
 
 module class_example1;
-  pkt_trans tr;
-  
+  pkt_trans tr;  
   initial begin
     tr = new();
     tr.data = 100;
@@ -39,32 +42,29 @@ Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Ma
 data = 100 and id = 1
            V C S   S i m u l a t i o n   R e p o r t     
    
-////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  Example2 : Constant class properties in SV -Instant constants
-////////////////////////////////////////////////////////////////
-//During variable declaration, an initial value is not assigned, such class properties are known as instance constants. 
-//An instance constant allows a user to assign value in run time only once in the class constructor.
+ //During variable declaration, an initial value is not assigned, such class properties are known as instance constants. 
+ //An instance constant allows a user to assign value in run time only once in the class constructor.   
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class pkt_trans;
   bit [31:0] data;
-  const int id;
-  
+  const int id; 
   function new();
     data = 100;
-    id = 1;             // run time assignment only once
-  endfunction
-  
+    id = 1;             //Its treated as, Instant constant properties - Since initially the value is not assigned. Assigned at run time only once
+  endfunction 
   function void display();
     $display("data = %0d and id = %0d", data, id);
   endfunction
 endclass :pkt_trans
 
 module class_example2;
-  pkt_trans tr;
-  
+  pkt_trans tr;  
   initial begin
     tr = new();
     tr.data = 200;
-    //tr.id = 2; // Invalid const usage
+    //tr.id = 2;    // Invalid const usage , Since already the value is assigned one time at run time
     tr.display();
   end
 endmodule :class_example2
