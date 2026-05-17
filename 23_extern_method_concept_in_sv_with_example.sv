@@ -1,20 +1,20 @@
 /////////////////////////////////////////////
-   Extern method in Classes with example
+   Extern method concept in Class
 /////////////////////////////////////////////
-- An extern method provides a facility for class methods to define them outside of the class body.
+- An extern method provides a facility to declare the method inside class and define them outside of the class body.
+- Means , Method decleration : Inside the class
+          Method definition  : Outside the class with scope Resolution operator  
 - If the method definition is lengthy (many lines of code inside a method), the extern method provides better readability and cleaner implementation of the class.
 - An extern keyword is used for method declaration and a class name with a scope resolution operator is used for method definition.
 - Method definition and declaration should have the same number of argument lists, data types, and argument names.
 - For the extern function return type should be the same if used.
-
+   
 ///////////////////////////////////////////////////////
-   Example1:  Extern method in Classes, basic example
+   Example1:  Extern method in Classe basic example
 //////////////////////////////////////////////////////
-//The following example has both extern function and extern task implemented.
 class pkt_trans;
   bit [31:0] data;
   int id;
-
   extern function void display();
   extern task delay();
 endclass :pkt_trans
@@ -29,14 +29,11 @@ task pkt_trans::delay();
 endtask :delay
 
 module class_example1;
-  pkt_trans tr;
-  
+  pkt_trans tr;  
   initial begin
-    tr = new();
-   
+    tr = new();   
     tr.data = 100;
-    tr.id = 1;
-    
+    tr.id = 1;   
     tr.display();
     tr.delay();
   end
@@ -47,4 +44,14 @@ Contains Synopsys proprietary information.
 Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Mar  7 21:49 2026
 data = 100 and id = 1
 Time = 50, delayed data = 100
-           V C S   S i m u l a t i o n   R e p o r t      
+           V C S   S i m u l a t i o n   R e p o r t 
+     
+///////////////////////////////////////////////////////
+   Example2:  
+//////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////////////
+   Example3:  
+//////////////////////////////////////////////////////     
