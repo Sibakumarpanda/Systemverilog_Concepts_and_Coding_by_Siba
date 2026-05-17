@@ -1,26 +1,26 @@
 ///////////////////////////////////////////////
-   Parameterized classes in SV with Example:
+   Parameterized classes in SV with Examples:
 //////////////////////////////////////////////
 - Parameterized classes are useful when the same class needs to be instantiated differently. 
 - The default parameter can be set in the class definition. These parameters can be overridden when it is instantiated.
 - The parameter can be constant values and data types.
 
-///////////////////////////////////////////////////////////////
-   Example-1: Parameterized classes in SV -Basic example
-/////////////////////////////////////////////////////////////// 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   Example1: Parameterized classes in SV -Basic example
 - In the below example, WIDTH = 2 and data_type = bit [2:0] are default parameters for packet_trans class.
 - There are two objects created. Object tr1 uses default parameters while tr2 uses WIDTH = 3 and data type = int as parameters.
-- An example shows that parameter values can be replaced during instantiation.
-  packet_trans tr1;            // Default parameters are used i.e. WIDTH = 2 and D_TYPE = bit [2:0]
-  packet_trans #(3, int) tr2;  // Default parameters are overridden with mentioned value. WIDTH = 3 and D_TYPE = int
-- For tr1 object, default parameters WIDTH = 2 and type D_TYPE = bit [2:0] are not enough to store data = 7 and id = 15, so it is expected to get incorrect values on the calling display() function.
-- For tr2, default parameters are overridden with WIDTH = 3 and D_TYPE = int to accommodate data = 7 and id = 15. So, it is expected to get assigned values on calling display() function 
-- Data-type can be passed as a parameter.
-
+- Below example shows that parameter values can be replaced during instantiation.
+      packet_trans tr1;            // Default parameters are used i.e. WIDTH = 2 and D_TYPE = bit [2:0]
+      packet_trans #(3, int) tr2;  // Default parameters are overridden with mentioned value. WIDTH = 3 and D_TYPE = int
+- For tr1 object, default parameters WIDTH = 2 and type D_TYPE = bit [2:0] are not enough to store data = 7 and id = 15, 
+  so it is expected to get incorrect values on the calling display() function.
+- For tr2, default parameters are overridden with WIDTH = 3 and D_TYPE = int to accommodate data = 7 and id = 15. 
+  So, it is expected to get assigned values on calling display() function 
+- Data-type can be passed as a parameter.  
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
 class packet_trans #(parameter WIDTH = 2, type D_TYPE = bit [2:0]);
   bit [WIDTH-1:0] data;
   D_TYPE id;
-  
   function void display();
     $display("The values are : data = %0d, id = %0d", data, id);
   endfunction
@@ -28,8 +28,7 @@ endclass :packet_trans
 
 module class_example1;
   packet_trans tr1;
-  packet_trans #(3,int) tr2;
-  
+  packet_trans #(3,int) tr2;  
   initial begin
     tr1 = new();
     tr2 = new();
@@ -58,7 +57,7 @@ The values are : data = 7, id = 15
            V C S   S i m u l a t i o n   R e p o r t 
    
 ///////////////////////////////////////////////////////////////////////////////////
-   Example-2: Example for parameterized class with class data type as a parameter
+   Example-2: parameterized class with class data type as a parameter
 /////////////////////////////////////////////////////////////////////////////////// 
 //The class err_trans is used as one of the parameters for the class transaction.
 class err_trans;
