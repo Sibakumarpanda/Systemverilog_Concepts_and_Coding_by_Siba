@@ -580,11 +580,11 @@ array[2] = 13
 //Where ,Value - Random value of the variable
 //Where, Weightage - weight for random variable i.e. occurrence of value can be specified.
 
-//:/ operator
+//:/ operator (Divided Weight)
 //For specific value: Assign mentioned weight to that value
 //For range of values ([<range1>: <range2>]):  Assigns weight/(number of value) to each value in that range
 
-//:= operator
+//:= operator (Equal weight)
 //For a specific value or range of value, the mentioned weight is assigned.
 
 class packet_item;
