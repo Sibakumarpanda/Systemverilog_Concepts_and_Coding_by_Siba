@@ -57,7 +57,7 @@
 - If else in constraints
 - Implication operator in constraint
 - foreach loop in constraint
-- Dist keyword in constraints
+- Distribution constraint (Uses dist keyword)
 - Inheritance in constraint
 - Function in constraint
 - Disable randomization
