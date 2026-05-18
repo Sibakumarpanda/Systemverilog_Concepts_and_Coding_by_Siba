@@ -32,11 +32,11 @@
 - It is declared as: default input #2 output #3;
 - Here Input clocking skew: #2
 - Output clocking skew: #3
--This means input signals is sampled #2 time unit before the clocking event and output signals are driven after #3 time units after the clocking event.
--The input and output skews must be either parameter or constant.
--By default, input and output skews are 0 time units if not specified. 
--It is possible to specify particular time units otherwise by default skews are considered based on the timescale in the current scope.
--Note: In the clocking block, the direction of signals is mentioned w.r.t. testbench (not w.r.t. DUT).  
+- This means input signals is sampled #2 time unit before the clocking event and output signals are driven after #3 time units after the clocking event.
+- The input and output skews must be either parameter or constant.
+- By default, input and output skews are 0 time units if not specified. 
+- It is possible to specify particular time units otherwise by default skews are considered based on the timescale in the current scope.
+- Note: In the clocking block, the direction of signals is mentioned w.r.t. testbench (not w.r.t. DUT).  
 
 /////////////////////////////////////////////////////////  
   Various Legal ways of clocking block declaration
