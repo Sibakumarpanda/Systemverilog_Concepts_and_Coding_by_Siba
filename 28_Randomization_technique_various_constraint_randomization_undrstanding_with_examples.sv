@@ -917,19 +917,15 @@ constraint_mode function returns for value1 = 1, value2 = 0
 class packet_item;
   rand bit [7:0] value1;
   rand bit [7:0] value2;
-
   constraint value1_c {value1 inside {[10:30]};}
   static constraint value2_c {value2 inside {40,70, 80};}
-
 endclass :packet_item
 
 module constraint_example16;
-  packet_item pkt1, pkt2;
-  
+  packet_item pkt1, pkt2; 
   initial begin
     pkt1 = new();
-    pkt2 = new();
-    
+    pkt2 = new();  
     pkt1.randomize();
     pkt2.randomize();
     $display("Before disabling constraint");
@@ -957,16 +953,15 @@ item2: value1 = 30, value2 = 72
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
    Example17: Constraints Randomization - unique constraint
 /////////////////////////////////////////////////////////////////////////////////////////////////////////     
-//As the name suggests, a unique constraint is useful to generate unique values for variables and elements in an array (Fixed array, associative array, dynamic array, and queue)
+//As the name suggests, a unique constraint is useful to generate unique values for variables and elements in an array 
+//(Fixed array, associative array, dynamic array, and queue)
 //Syntax:   constraint <constraint name> {unique {array or variable};}
 typedef enum {M0, M1, M2, M3} scale_e;
-
 class packet_item;
   rand bit [7:0] value[scale_e];
   rand bit [3:0] array[5];
   rand bit [2:0] val1, val2, val3, val4;
-  scale_e scale;
-  
+  scale_e scale;  
   constraint array_c   { unique {array}; }
   constraint value_c { unique {value}; 
                          value.size == scale.num;
@@ -1063,23 +1058,19 @@ array[4] = 2
 
 class packet_item;
   rand bit [7:0] val1, val2, val3, val4;
-  rand bit t1, t2;
-  
+  rand bit t1, t2; 
   constraint val_c {val2 > val1; 
                     val3 == val2 - val1;
                     val4 < val3;
                     val4 == val1/val3; 
-                   }
-  
+                   } 
   constraint t_c { (t1 == 1) -> t2 == 0;}
 endclass :packet_item
 
 module constraint_example18;
-  packet_item pkt;
-  
+  packet_item pkt; 
   initial begin
-    pkt = new();
-    
+    pkt = new();  
     repeat(5) begin
       pkt.randomize();
       $display("val1 = %0d, val2 = %0d, val3 = %0d, val4 = %0d", pkt.val1, pkt.val2, pkt.val3, pkt.val4);
@@ -1114,17 +1105,14 @@ t1 = 0, t2 = 1
 //Only integers are allowed.
 class packet_item;
   rand bit [7:0] val;
-  rand bit en;
-  
+  rand bit en;  
   constraint en_c { if(en == 1) { val inside {[0:100]}; } }
 endclass :packet_item
 
 module constraint_example19;
   packet_item pkt;
-  
   initial begin
-    pkt = new();
-    
+    pkt = new();   
     repeat(5) begin
       pkt.randomize();
       $display("en = %0d, val = %0d", pkt.en, pkt.val);
@@ -1145,19 +1133,16 @@ en = 0, val = 18
 /////////////////////////////////////////////////////////////////////////////////////////////////////////     
 class packet_item;
   rand bit [7:0] val;
-  rand bit en;
-  
+  rand bit en; 
   constraint en_c { solve en before val;
                     if(en == 1) { val inside {[0:100]}; }
                   }
 endclass :packet_item
 
 module constraint_example20;
-  packet_item pkt;
-  
+  packet_item pkt;  
   initial begin
-    pkt = new();
-    
+    pkt = new();   
     repeat(5) begin
       pkt.randomize();
       $display("en = %0d, val = %0d", pkt.en, pkt.val);
@@ -1184,22 +1169,17 @@ en = 0, val = 18
 //An inline constraint is written on calling a randomize() method using the “with” keyword.
 class packet_item;
   rand bit [7:0] val1, val2;
- 
   constraint val1_c {val1 > 100; val1 < 200;}
-  constraint val2_c {val2 > 5; val2 < 80;}
-  
+  constraint val2_c {val2 > 5; val2 < 80;}  
 endclass :packet_item
 
 module constraint_example21;
-  packet_item pkt;
-  
+  packet_item pkt;  
   initial begin
-    pkt = new();
-    
+    pkt = new();  
     repeat(5) begin
       pkt.randomize();
-      $display("Before inline constraint: val1 = %0d, val2 = %0d", pkt.val1, pkt.val2);
-           
+      $display("Before inline constraint: val1 = %0d, val2 = %0d", pkt.val1, pkt.val2);      
       pkt.randomize with {val1 > 150; val1 < 160;};
       pkt.randomize with {val2 inside {[10:15]};};
       $display("After inline constraint: val1 = %0d, val2 = %0d", pkt.val1, pkt.val2);
@@ -1230,28 +1210,25 @@ After inline constraint: val1 = 179, val2 = 15
    Example22: Constraints Randomization - Without Soft Constraint
 /////////////////////////////////////////////////////////////////////////////////////////////////////////     
 //Soft constraint
-//As discussed in inline constraint, it is possible to change constraints during randomization and inline constraints should not conflict with constraints written in the class to avoid randomization failure. 
+//As discussed in inline constraint, it is possible to change constraints during randomization and 
+//inline constraints should not conflict with constraints written in the class to avoid randomization failure. 
 //But sometimes there is a requirement to change constraints in such a way that it may conflict with constraints inside the class. 
 //For example, in the case of an error injection scenario, the variable value has to be randomized out of valid values to generate error scenarios.
 //This can be done by using soft constraints to avoid randomization failures.
 //By default, constraints are hard constraints in nature. 
 //To mention constraints as a soft, specifically “soft” keyword has to be used.
 class packet_item;
-  rand bit [7:0] val;
- 
+  rand bit [7:0] val; 
   constraint val_c {val inside {5, [10:15]};}
 endclass :packet_item
 
 module constraint_example22;
   packet_item pkt;
-  
   initial begin
-    pkt = new();
-    
+    pkt = new(); 
     repeat(5) begin
       pkt.randomize();
-      $display("Before inline constraint: val = %0d", pkt.val);
-           
+      $display("Before inline constraint: val = %0d", pkt.val);       
       pkt.randomize with {val inside {[20:30]};};
       $display("After inline constraint: val = %0d", pkt.val);
       $display("*********************************************");
@@ -1310,20 +1287,16 @@ testbench.sv, 28
 //To mention constraints as a soft, specifically “soft” keyword has to be used.
 class packet_item;
   rand bit [7:0] val;
- 
   constraint val_c {soft val inside {5, [10:15]};}
 endclass :packet_item
 
 module constraint_example23;
-  packet_item pkt;
-  
+  packet_item pkt; 
   initial begin
-    pkt = new();
-    
+    pkt = new(); 
     repeat(5) begin
       pkt.randomize();
-      $display("Before inline constraint: val = %0d", pkt.val);
-           
+      $display("Before inline constraint: val = %0d", pkt.val);      
       pkt.randomize with {val inside {[20:30]};};
       $display("After inline constraint: val = %0d", pkt.val);
       $display("*********************************************");
@@ -1353,26 +1326,23 @@ After inline constraint: val = 27
    Example24: Constraints Randomization - randcase in SystemVerilog
 /////////////////////////////////////////////////////////////////////////////////////////////////////////     
 //Randcase is a case statement that randomly selects one of its branch statements based on the probability of each statement.
+//randcase can also be written inside the module.     
 /*Syntax:
-
-randcase
-  item 1: <statement 1>;
-  item 2: <statement 2>;
-  item 3: <statement 3>;
-  ...
-  …
-  item n: <statement n>;
-endcase
+           randcase
+               item 1: <statement 1>;
+               item 2: <statement 2>;
+               item 3: <statement 3>;
+               ...
+               …
+               item n: <statement n>;
+           endcase
 */
 //How to calculate the probability of each branch statement?
 //The probability of any item is calculated by the value of an item divided by the sum of all item values.
-//Ex: P(item1) = item1/sum(item 1..n)
-//randcase can also be written inside the module.
-  
+//Ex: P(item1) = item1/sum(item 1..n)  
 class packet_item;
   int cnt_arr[int];
   real i_sum;
-  
   function void randcase_testing();
     repeat(10) begin
       randcase
@@ -1391,8 +1361,7 @@ class packet_item;
       $display("Probability for cnt_arr[%0d] = %0f", i, cnt_arr[i]/10.0);
       $display("---------------------------------");
     end
-  endfunction :randcase_testing
-  
+  endfunction :randcase_testing 
 endclass :packet_item
      
 module constraint_example24;
@@ -1447,18 +1416,20 @@ post_randomize()
 A sequence of execution of methods:
 pre_randomize() -> randomize() -> post_randomize()
 
-pre_randomize method
-It is used to do an activity just before randomization. This may involve disabling constraint for a particular variable (constraint_mode(0))or disabling randomization itself (rand_mode(0)). Refer disable randomization for more details.
+pre_randomize method :
+-It is used to do an activity just before randomization. 
+-This may involve disabling constraint for a particular variable (constraint_mode(0))or disabling randomization itself (rand_mode(0)).
+-Refer disable randomization for more details.
 
 post_randomize method
-It is used to do an activity after randomization. This may involve printing randomized values of a class variable. Override the randomized value of a class variable.
+-It is used to do an activity after randomization. 
+-This may involve printing randomized values of a class variable. Override the randomized value of a class variable.
 
 */
 
 class packet_item;
   rand bit [7:0] val1;
-  rand bit [7:0] val2;
- 
+  rand bit [7:0] val2; 
   constraint val1_c {val1 > 100; val1 < 200;}
   constraint val2_c {val2 > 5; val2 < 8;}
   
@@ -1503,18 +1474,20 @@ post_randomize()
 A sequence of execution of methods:
 pre_randomize() -> randomize() -> post_randomize()
 
-pre_randomize method
-It is used to do an activity just before randomization. This may involve disabling constraint for a particular variable (constraint_mode(0))or disabling randomization itself (rand_mode(0)). Refer disable randomization for more details.
+pre_randomize method :
+-It is used to do an activity just before randomization. 
+-This may involve disabling constraint for a particular variable (constraint_mode(0))or disabling randomization itself (rand_mode(0)). 
+-Refer disable randomization for more details.
 
-post_randomize method
-It is used to do an activity after randomization. This may involve printing randomized values of a class variable. Override the randomized value of a class variable.
+post_randomize method:
+-It is used to do an activity after randomization. 
+-This may involve printing randomized values of a class variable. Override the randomized value of a class variable.
 
 */
 
 class packet_item;
   rand bit [7:0] val1;
   rand bit [7:0] val2;
- 
   constraint val1_c {val1 > 100; val1 < 200;}
   constraint val2_c {val2 > 5; val2 < 8;}
   
@@ -1531,8 +1504,7 @@ class packet_item;
 endclass :packet_item
 
 module constraint_example26;
-  packet_item pkt;
-  
+  packet_item pkt; 
   initial begin
     pkt = new();
     pkt.randomize();
@@ -1570,8 +1542,7 @@ class packet_item;
 endclass :packet_item
 
 module constraint_example27;
-  packet_item pkt;
-  
+  packet_item pkt; 
   initial begin
     pkt = new();
     pkt.randomize();
@@ -1584,9 +1555,9 @@ Inside post_randomize
 val1 = 101, val2 = 6
            V C S   S i m u l a t i o n   R e p o r t      
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   Example28: Constraints Randomization - pre_randomization and post_randomization methods defined in a base and derived class
-/////////////////////////////////////////////////////////////////////////////////////////////////////////     
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////     
 //The base class and Derived class handle call respective pre_randomization and post_randomization methods as mentioned in the below example.
 class base_class_item;
   rand bit [7:0] val1;
@@ -1624,8 +1595,7 @@ module constraint_example28;
   
   initial begin
     b_item = new();
-    d_item = new();
-    
+    d_item = new();  
     b_item.randomize();
     d_item.randomize();
   end
