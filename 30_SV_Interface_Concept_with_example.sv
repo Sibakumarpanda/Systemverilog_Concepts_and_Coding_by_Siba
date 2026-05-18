@@ -3,7 +3,8 @@
 /////////////////////////////////     
 - Unlike Verilog that has module ports for communication, System Verilog provides an interface construct that simply contains a bundle of sets of signals.
 - This encapsulates signals and communicates with design, testbench components.
-- Hence , we can say interface is nothing but the bundle of wires with directionless signals in general . But we can include directional informations to it also as per need.
+- Hence , we can say interface is nothing but the bundle of wires with directionless signals in general . 
+- But we can include directional informations to it also as per need.
 - The directional info can be included with modport and the timing info can be included with clocking blocks .
 - The modport and clocking block concept we will study in coming sections.   
 
