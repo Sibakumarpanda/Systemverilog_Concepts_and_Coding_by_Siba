@@ -2,7 +2,9 @@
   System Verilog Command Line Args Concept with example :
 /////////////////////////////////////////////////////////////
 NOTE: Command Lines are used :
-- In order to avoid the testbench recompilation 
+- In SV basically ,command-line arguments (specifically plusargs) are runtime arguments. (compile once, run multiple times with different args)
+- They are evaluated during simulation, allowing to control simulation behavior—like changing seeds, verbosity or test cases—without need of recompile your code.
+- Hence it avoids the testbench recompilation .
 - In order to support different scenarios by passing the string in run command ($test$plusargs)
 - In order to support different values with string ($value$plusargs) the command line args in system verilog are vey helpful 
 - So , In SV , this kind of  information is provided to the simulation as an optional argument always starting with the + character.
@@ -120,8 +122,7 @@ module valueplusargs_tb_example2;
   end
 endmodule :valueplusargs_tb_example2
   
-//Logfile Output
-  
+//Logfile Output  
 When running with +MY_DATAWIDTH_8=56, below is the output
 Running the Scenario with Datawidth 8bit with value =56
            V C S   S i m u l a t i o n   R e p o r t   
@@ -129,4 +130,20 @@ Running the Scenario with Datawidth 8bit with value =56
 When running with +MY_NAME=SIBA , below is the output
 MY_NAME is = SIBA
            V C S   S i m u l a t i o n   R e p o r t 
+  
+/////////////////////////////////////////////////////////////////////////////////////////
+  A Very Important Understanding between Preprocessor Defines & Command line args 
+////////////////////////////////////////////////////////////////////////////////////////
+- Preprocessor Defines  :     +define  
+- Command Line args are :     $test$plusargs and $valueplusargs
+- Both are passed via the command line (in run command while running test usually), they serve different stages of the design flow.
+- Key Differences Between both are as follows .
+  ---------------------------------------------------------------------------------------------------------------------------------------------
+   Feature        Preprocessor Defines (+define+)                                      Plusargs (+arg)	
+  ---------------------------------------------------------------------------------------------------------------------------------------------
+  Timing		     Compile-time (Elaboration)                                            Runtime (Simulation)
+  Purpose	       Controls static code structure (e.g., `ifdef)                         Controls dynamic simulation behavior	
+  Function	     Modifies which code is included in the executable                     Read using $test$plusargs or $value$plusargs	
+  Workflow	     Requires recompilation to change the value                            Compile once, run multiple times with different args	
+
   
