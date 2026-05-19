@@ -18,14 +18,13 @@
 - The file descriptor can be closed with the $fclose() system task. 
 - No further reads or writes to the file descriptor is allowed once it is closed.
   In below example , we will declare a int variable called fd to hold the file descriptor. 
-  fd is initially zero, and gets a valid value from $fopen() and can be checked to see if the file opened successfully. The file is finally closed when $fclose() is executed  
+  fd is initially zero, and gets a valid value from $fopen() and can be checked to see if the file opened successfully. 
+  The file is finally closed when $fclose() is executed  
 */ 
 
 module tb_top_example1;
   initial begin
-  	//Declare an integer variable to hold the file descriptor
-  	int fd;
-
+   	int fd; //Declare an integer variable to hold the file descriptor
   	// Open a file called "note.txt" in the current folder with a "read" permission
   	// If the file does not exist, then fd will be zero
     fd = $fopen ("./note.txt", "r");
@@ -68,9 +67,9 @@ Argument	Description
 "r"	        Open for reading
 "w"	        Create for writing, overwrite if it exists
 "a"	        Create if file does not exist, else append; open for writing at end of file
-"r+"	    Open for update (reading and writing)
-"w+"	    Truncate or create for update
-"a+"	    Append, open or create for update at EOF
+"r+"	      Open for update (reading and writing)
+"w+"	      Truncate or create for update
+"a+"	      Append, open or create for update at EOF
 - In the following example code, we will see how to use the different file access modes as described in the table above.
 - We can see from the log output shown below, all three variables have a different value and each one points to the same file, but with different access permissions.  
   
@@ -81,8 +80,6 @@ module tb_top_example2;
     fd_w = $fopen ("./todo.txt", "w"); 	// Open a new file in write mode and store file descriptor in fd_w
     fd_r = $fopen ("./todo.txt", "r"); 	// Open in read mode
     fd_a = $fopen ("./todo.txt", "a"); 	// Open in append mode
-
-
     if (fd_w)     
       $display("WRITE_MODE-File was opened successfully : %0d", fd_w);
     else      	  
@@ -121,11 +118,9 @@ APPEND_MODE-File was opened successfully : -2147483643
 - To read a file, it has to be opened in either read r mode or read-write r+ mode. 
 - $fgets() is a system task that will read a single line from the file. 
 - If this task is called 10 times, then it will read 10 lines.
-
-In the below code shown below demonstrates how to open a file and write contents into it using $fdisplay(). 
-The file is then opened in read mode and contents are read back using $fgets() into a local variable. 
-This is then printed out using the standard display task $display()
-
+  In the below code shown below demonstrates how to open a file and write contents into it using $fdisplay(). 
+  The file is then opened in read mode and contents are read back using $fgets() into a local variable. 
+  This is then printed out using the standard display task $display()
  */
   
 module tb_top_example3;
@@ -133,7 +128,6 @@ module tb_top_example3;
   string line; 			// String value read from the file
 
   initial begin
-
     // 1. Lets first open a new file and write some contents into it
     fd = $fopen ("trial", "w");
 
@@ -142,10 +136,8 @@ module tb_top_example3;
     for (int i = 0; i < 5; i++) begin
       $fdisplay (fd, "Iteration = %0d", i);
     end
-
     // Close this file handle
     $fclose(fd);
-
 
     // 2. Let us now read back the data we wrote in the previous step
     fd = $fopen ("trial", "r");
@@ -232,10 +224,10 @@ endmodule  :tb_top_example4
  Line: Iteration = 4
  Line: 
            V C S   S i m u l a t i o n   R e p o r t  
-//////////////////////////////////////////////////////////////////////////////
-     Example5: SV File Operation- How to parse a line for values ?
-//////////////////////////////////////////////////////////////////////////////      
-//SystemVerilog has another system task called $fscanf() that allows us to scan and get certain values. 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Example5: SV File Operation- How to parse a line for values ?
+  //SystemVerilog has another system task called $fscanf() that allows us to scan and get certain values.   
+////////////////////////////////////////////////////////////////////////////// ///////////////////////////////     
 module tb_top_example5;
   int 	  fd; 			// Variable for file descriptor handle
   int 	  idx;
@@ -323,5 +315,4 @@ INFO: Test completed
 $finish called from file "testbench.sv", line 40.
 $finish at simulation time                    0
            V C S   S i m u l a t i o n   R e p o r t   
-
      
