@@ -118,3 +118,30 @@ module tb_top;
   end
 endmodule : tb_top
      
+5. Write a constraint to generate and print 1221 1221 1221 1
+class pattern_gen;
+  rand int d[13];
+  
+  constraint c1 {
+    foreach (d[i]) {
+      if (i inside {0, 3, 4, 7, 8, 11, 12}) {
+        d[i] == 1;
+      } else {
+        d[i] == 2;
+      }
+    }
+  }
+endclass :pattern_gen
+                
+module tb_top;
+   pattern_gen patrn;
+   initial begin
+     patrn =new();
+     repeat(5) begin
+       assert(patrn.randomize());
+       $display("Array: %p\nPattern: 1221 1221 1221 1\n", patrn.d);
+     end
+   end
+   
+endmodule :tb_top
+             
