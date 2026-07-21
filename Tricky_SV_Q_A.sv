@@ -159,4 +159,42 @@ Array: '{1, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 1, 1}
 Pattern: 1221 1221 1221 1
 
 Array: '{1, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 1, 1} 
-Pattern: 1221 1221 1221 1       
+Pattern: 1221 1221 1221 1  
+       
+6. Reverse the given string 
+//input string = siba
+//output string = abis
+
+module reverse_string (
+    input  logic [31:0] in,  // "siba"
+    output logic [31:0] out  // "abis"
+);
+    
+    assign out = {in[7:0], in[15:8], in[23:16], in[31:24]};
+    
+endmodule :reverse_string
+
+module tb_top;
+    logic [31:0] in, out;    
+    reverse_string dut (in, out);
+    
+    initial begin
+        in = "siba";
+        #10;
+        $display("Original: %s", in);
+        $display("Reversed: %s", out);
+      
+        in = "pink";
+        #10;
+        $display("Original: %s", in);
+        $display("Reversed: %s", out);
+        $finish;
+    end
+endmodule :tb_top
+       
+//Logfile Output
+Original: siba
+Reversed: abis
+Original: pink
+Reversed: knip       
+       
