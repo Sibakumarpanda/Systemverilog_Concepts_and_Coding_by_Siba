@@ -45,4 +45,39 @@ The Pattern is = '{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 The Pattern is = '{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0} 
            V C S   S i m u l a t i o n   R e p o r t    
       
+3. WAC to Generate non-repeating values of 0 to 9 without using randc keyword.
+class packet;
+  rand int d[10];
 
+  constraint c1 { 
+    foreach (d[i]) {           
+      d[i] inside {[0:9]};
+    }
+  }
+  
+  constraint c2 { 
+    unique {d};                 
+  }
+endclass : packet
+
+module tb_top;
+  packet pkt;
+  
+  initial begin
+    pkt = new();    
+    repeat (5) begin
+      assert(pkt.randomize());
+      $display("The values are = %0p", pkt.d);
+    end 
+    $finish;
+  end
+endmodule : tb_top
+     
+//Logfile Output
+The values are = '{0, 5, 2, 8, 6, 3, 7, 9, 1, 4} 
+The values are = '{3, 5, 6, 0, 8, 2, 9, 4, 1, 7} 
+The values are = '{5, 9, 6, 8, 4, 7, 3, 1, 0, 2} 
+The values are = '{5, 8, 0, 6, 9, 2, 7, 4, 1, 3} 
+The values are = '{0, 2, 5, 1, 8, 3, 4, 7, 6, 9} 
+
+     
