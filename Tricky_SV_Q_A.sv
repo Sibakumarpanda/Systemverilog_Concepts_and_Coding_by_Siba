@@ -84,4 +84,37 @@ The values are = '{0, 5, 2, 8, 6, 3, 7, 9, 1, 4}
 The values are = '{3, 5, 6, 0, 8, 2, 9, 4, 1, 7} 
 The values are = '{5, 9, 6, 8, 4, 7, 3, 1, 0, 2} 
 The values are = '{5, 8, 0, 6, 9, 2, 7, 4, 1, 3} 
-The values are = '{0, 2, 5, 1, 8, 3, 4, 7, 6, 9}      
+The values are = '{0, 2, 5, 1, 8, 3, 4, 7, 6, 9}  
+     
+4. Solve the below Question:
+//Given Initial array =     int arr[] = '{1, 9, 8, 4, 0, 0, 2, 7, 0, 6, 0};
+//Final array, should be =  int arr[] = '{1, 9, 8, 4, 2, 7, 6, 0, 0, 0, 0};
+module tb_top;
+  int arr[] = '{1, 9, 8, 4, 0, 0, 2, 7, 0, 6, 0};
+  
+  initial begin
+    int non_zero[];
+    int zeros[];
+    int q_non_zero[$];
+    int q_zeros[$];
+    
+    $display("Initial array: %p", arr);
+    
+    // Find all non-zero elements (returns queue)
+    q_non_zero = arr.find with (item != 0);
+    
+    // Find all zero elements (returns queue)
+    q_zeros = arr.find with (item == 0);
+    
+    // Convert queue to array
+    non_zero = q_non_zero;
+    zeros = q_zeros;
+    
+    // Concatenate
+    arr = {non_zero, zeros};
+    
+    $display("Final array:   %p", arr);
+    $finish;
+  end
+endmodule : tb_top
+     
