@@ -120,8 +120,7 @@ endmodule : tb_top
      
 5. Write a constraint to generate and print 1221 1221 1221 1
 class pattern_gen;
-  rand int d[13];
-  
+  rand int d[13]; 
   constraint c1 {
     foreach (d[i]) {
       if (i inside {0, 3, 4, 7, 8, 11, 12}) {
@@ -145,3 +144,19 @@ module tb_top;
    
 endmodule :tb_top
              
+//Logfile Output
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Jul 20 22:17 2026
+Array: '{1, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 1, 1} 
+Pattern: 1221 1221 1221 1
+
+Array: '{1, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 1, 1} 
+Pattern: 1221 1221 1221 1
+
+Array: '{1, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 1, 1} 
+Pattern: 1221 1221 1221 1
+
+Array: '{1, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 1, 1} 
+Pattern: 1221 1221 1221 1
+
+Array: '{1, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 1, 1} 
+Pattern: 1221 1221 1221 1       
