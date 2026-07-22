@@ -198,3 +198,46 @@ Reversed: abis
 Original: pink
 Reversed: knip       
        
+7. Write an assertion such that when signal ‘a’ becomes high, then after 1 clock cycle, signal ‘b’ must be high. 
+   Do this without using the implication operator. (Hint: use ##.)
+   property  p1;
+       @(posedge clk)
+        disable iff (reset)
+        (a == 1'b1) ##1 (b == 1'b1)
+   endproperty 
+
+   assert property p1;
+
+8. Write an assertion such that when signal ‘a’ becomes high, then after 5 to 10 clock cycles, signal ‘b’ must be high. Implement both:
+       • Without using the implication operator.
+           $rose(a) ##[5:10] (b == 1'b1)
+       • With using the implication operator.
+          $rose(a) |=> ##[5:10] (b == 1'b1)
+
+9. Write an assertion such that when signal ‘a’ becomes high, then after 3 clock cycles until end of simulation (eventually), 
+   signal ‘b’ must be high. Implement both:
+       • Without using any implication operator.   
+              $rose(a) ##3 (b == 1'b1) [*1:$]
+      • With using the implication operator.
+            $rose(a) |=> ##3 s_eventually (b == 1'b1)
+
+10. Write an assertion to ensure that whenever signal ‘a’ has a rising edge (0→1, X→1, or Z→1), 
+     signal ‘b’ must be high in the same clock cycle.
+      $rose(a) |-> (b == 1'b1)
+
+11. Write an assertion such that when signal ‘a’ is high, then in the same clock cycle the current value of signal ‘b’ retains 
+    its value from the previous clock cycle
+    
+     (a == 1'b1) |-> (b == $past(b))
+
+12. Write an assertion to ensure that whenever signal ‘valid’ is high, the signal ‘data’ must not contain any unknown value (x or z). 
+
+      valid |-> !$isunknown(data)
+        
+13. Write an assertion that, when signal ‘a’ is high, then from the next clock cycle, signal ‘b’ should be checked for its 
+    value for the previous two clock cycles.
+   If b was high in that cycle, then the assertion passes; otherwise, it fails.
+    
+      a |=> ($past(b, 1) || $past(b, 2))
+
+13. Write an assertion to demonstrate the difference between non-consecutive repetition and go-to repetition with any suitable example.
