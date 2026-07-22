@@ -243,5 +243,17 @@ Reversed: knip
 13. Write an assertion to demonstrate the difference between non-consecutive repetition and go-to repetition with any suitable example.
 
 14. write a simple sv constraint to generate below pattern 1,2,2,3,3,3,4,4,4,4,5,5,5,5,5  
+    class pattern_gen;
+       rand int d[15];
+       constraint c {
+         foreach (d[i]) {                  
+             if (i < 1)                     d[i] == 1; // Determine which number n appears at position i
+             else if (i < 3)                d[i] == 2;
+             else if (i < 6)                d[i] == 3;
+             else if (i < 10)               d[i] == 4;
+             else                           d[i] == 5;
+          }
+        }
+     endclass :pattern_gen
 
      
