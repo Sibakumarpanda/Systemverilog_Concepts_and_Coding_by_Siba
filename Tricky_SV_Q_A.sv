@@ -241,3 +241,7 @@ Reversed: knip
       a |=> ($past(b, 1) || $past(b, 2))
 
 13. Write an assertion to demonstrate the difference between non-consecutive repetition and go-to repetition with any suitable example.
+
+14. write a simple sv constraint to generate below pattern 1,2,2,3,3,3,4,4,4,4,5,5,5,5,5  
+
+     
