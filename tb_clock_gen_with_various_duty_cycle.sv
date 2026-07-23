@@ -627,7 +627,7 @@ Hence from 0.5ns of total time period , 80% we have to take as Thigh and 20% as 
 `timescale 1ns / 1ps   // unit = 1ns, precision = 1ps
 module tb_clock_gen_with_dc_ex20;
   bit clk;
-  always begin         // clk frequency=2GHZ ,Time period =1ns , 0.4ns High and 0.1ns Low
+  always begin         // clk frequency=2GHZ ,Time period =0.5ns , 0.4ns High and 0.1ns Low
     clk = 1'b1;
     #0.4;
     clk = 1'b0;
