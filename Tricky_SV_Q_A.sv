@@ -256,4 +256,66 @@ Reversed: knip
         }
      endclass :pattern_gen
 
-     
+15. How to generate a clock period of 2GHZ with 80% duty cycle and verify it using assertion.
+// Frequency = 2GHZ , Clock Period =0.5ns
+// 80% Duty cycle .Means Trise =0.4ns and Tfall =0.1ns 
+
+`timescale 1ns / 1ps
+module tb_clock_gen_with_2ghz_freq_dc_80percent;
+  bit clk;
+  
+  // Clock generation
+  always begin
+    clk = 1'b1;
+    #0.4;
+    clk = 1'b0;
+    #0.1;
+  end
+  
+  // Assertion to check clock period
+  property clk_period_check;
+    realtime current_time;
+    @(posedge clk)
+    (('1, current_time = $realtime) |=> ($realtime - current_time == 0.5ns));
+  endproperty
+  
+  clk_period_assert: assert property(clk_period_check)
+    else $display("ERROR: Clock Period violation at %t", $realtime);
+  
+  // Assertion to check Rise time  
+  property rise_time_check;
+    realtime rise_time;
+    @(posedge clk)
+    (('1, rise_time = $realtime) |=> 
+     @(negedge clk) 
+     ($realtime - rise_time == 0.4ns));
+  endproperty 
+  
+  rise_time_assert: assert property(rise_time_check)
+    else $display("ERROR: Rise time violation at %t", $realtime);
+    
+  // Assertion to check Fall time  
+  property fall_time_check;
+    realtime fall_time;
+    @(negedge clk)
+    (('1, fall_time = $realtime) |=> 
+     @(posedge clk) 
+     ($realtime - fall_time == 0.1ns));
+  endproperty 
+  
+    fall_time_assert: assert property(fall_time_check)
+      else $display("ERROR: Fall time violation at %t", $realtime);   
+  
+  initial begin
+    $display("Starting simulation To check Clock Period and Duty cycle");
+    $dumpfile("clk.vcd");
+    $dumpvars();
+    #300;
+    $display("=========================================");
+    $display("Simulation completed successfully!");
+    $display("=========================================");
+    $finish();
+  end
+endmodule :tb_clock_gen_with_2ghz_freq_dc_80percent
+
+   
