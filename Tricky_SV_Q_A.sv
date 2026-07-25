@@ -318,4 +318,94 @@ module tb_clock_gen_with_2ghz_freq_dc_80percent;
   end
 endmodule :tb_clock_gen_with_2ghz_freq_dc_80percent
 
-   
+16. WAC to randomize 10 times a single variable such that every time we get a large number as compared to previous value . So that all 10 numbers are in ascending order 
+class packet;
+  rand int y;
+  int z;
+  constraint c1 { y > z; }
+  // Correct: Use built-in post_randomize() function
+  function void post_randomize();
+    z = y;
+  endfunction
+  
+  // Display function
+  function void disp();
+    $display("y = %0d, z = %0d", y, z);
+  endfunction
+endclass :packet
+
+module tb_top;
+  packet pkt;  
+  initial begin
+    pkt = new();    
+    $display("\n=== Printing y values in ascending order ===\n");    
+    repeat (10) begin
+      if (pkt.randomize()) begin
+        pkt.disp();
+      end else begin
+        $display("Randomization failed!");
+      end
+    end    
+    $finish;
+  end
+endmodule :tb_top  
+       
+//Logfile Output
+=== Printing y values in ascending order ===
+y = 722902786, z = 722902786
+y = 1975962593, z = 1975962593
+y = 2040517699, z = 2040517699
+y = 2125937386, z = 2125937386
+y = 2142932310, z = 2142932310
+y = 2147367428, z = 2147367428
+y = 2147432548, z = 2147432548
+y = 2147483473, z = 2147483473
+y = 2147483591, z = 2147483591
+y = 2147483599, z = 2147483599  
+       
+17. Write a constraint to randomize 10 times a single variable such that every time we get a large number as compared to previous value . So that all 10 numbers are in ascending order 
+     Now this question you can solve using an array 
+class packet;
+  rand int d[];  
+  constraint c1 {
+    d.size() == 10;            // 10 elements for 10 numbers
+    foreach (d[i]) {
+      d[i] inside {[0:100]};
+    }
+    unique {d};
+  }
+
+  constraint c2 {
+    foreach (d[i]) {
+      if (i < d.size() - 1) {
+        d[i] < d[i+1];         // Ascending order
+      }
+    }
+  }
+  
+  function void display();
+    $display("Ascending numbers: %p", d);
+  endfunction
+endclass : packet
+
+module tb_top;
+  packet pkt; 
+  initial begin
+    pkt = new(); 
+    $display("\n=== Ascending Numbers (10 elements) ===\n");   
+    repeat (5) begin
+      assert(pkt.randomize());
+      pkt.display();
+    end   
+    $finish;
+  end
+endmodule : tb_top  
+       
+//Logfile Output
+=== Ascending Numbers (10 elements) ===
+Ascending numbers: '{25, 26, 33, 41, 44, 60, 70, 92, 94, 98} 
+Ascending numbers: '{2, 3, 8, 13, 20, 43, 50, 74, 80, 85} 
+Ascending numbers: '{31, 34, 40, 49, 69, 72, 96, 98, 99, 100} 
+Ascending numbers: '{10, 16, 49, 50, 52, 66, 67, 70, 94, 98} 
+Ascending numbers: '{15, 18, 32, 39, 42, 45, 66, 69, 78, 98}        
+       
