@@ -409,3 +409,102 @@ Ascending numbers: '{31, 34, 40, 49, 69, 72, 96, 98, 99, 100}
 Ascending numbers: '{10, 16, 49, 50, 52, 66, 67, 70, 94, 98} 
 Ascending numbers: '{15, 18, 32, 39, 42, 45, 66, 69, 78, 98}        
        
+18. write an assertion to check when signal a is asserted it should stay asserted for at least 2 clk and not more than 8 clk cycles
+
+          property p1;
+	        @(posedge clk) 
+	        disable iff(!rst) 
+	        $rose(a)|-> a[*2:8] ##1 !a;
+          endproperty
+
+          stable_assert : assert property p1
+	       else $error("error message");
+
+19. For a synchronous FIFO of depth = 16, write an assertion for the following scenarios. Assume a clock signal(clk), write and read enable signals, full flag and a word counter signal.  
+           a. If the word count is >15, FIFO full flag set.  // FIFO Full condition is  wp = rp+1;
+
+                     property fifo_full;
+	                   @(posedge clk) 
+	                   disable iff(rst)
+		                    (wc>15) |-> fifo_full;
+                     endproperty 
+
+         b. If the word count is 15 and a new write operation happens without a simultaneous read, then the FIFO full flag is set.
+
+                 property read_full;
+	               @(posedge clk) 
+	                 disbale iif(rst)
+		              ((wc==15)&& (wr_en && !rd_en)) |-> fifo_full;
+                 endproperty
+
+20. Write an assertion checker to make sure that an output signal y never goes X when valid is asserted? 
+
+                 property p1;
+	               @(posedge clk) 
+	                 disbale iif(rst)
+	                  valid |-> !($isunknown(y));
+                 endproperty
+
+21. Write an assertion to make sure that a 5-bit grant signal only has one bit set at any time?  
+
+             @(posedge clk) 
+                 grant |-> (($countones(grant)) == 1'b1;);          or
+
+             @(posedge clk)
+                  grant |-> $onehot(grant);                         or
+
+             @(posedge clk) 
+                   disable iff(rst) 
+                  $onehot0(grant);
+
+22. When signal_a is asserted, signal_b must be asserted, and must remain up until one of the signals signal_c or signal_d is asserted.
+	
+	property p1;
+	     @(posedge clk) 
+	      disable iff (rst)
+	     signal_a |-> signal_b throughout (!(signal_c || signal_d))[*0:$] ;
+	endproperty
+          assert property p1;
+   
+23. If signal “a” is high on a given positive clock edge, then within 1 to 4 clock cycles, the signal “b” should be high.
+	 
+	    property p1;
+	       @(posedge clk) 
+	       disable iff (rst)
+	       a|-> ##[1:4] b;
+	    endproperty
+       assert property p1;
+
+24. If the signal “a” is high on given posedge of clock, then signal “b” should be high for 3 clock cycles followed by “c” should be high after ”b” is high for third time.
+  
+           property p1;
+                @(posedge clk) 
+                disable iff (rst)
+               a |-> b[*3] ##1 c;
+           endproperty
+          assert property p1;
+
+25. write a assertion to verify dut clock frequency of 10ns. (100MHZ)
+	
+	property p1;
+	    realtime current_time; 
+	    @(posedge clk)
+	   (1, current_time = $realtime) |=> ($realtime-current_time =10)
+	endproperty
+	assert property p1; 
+
+26. When req is high , grant should be asserted within 2 to 20 clk cycles until request should be high. In the next clk cycle, req should be low.
+      property p_req_grant;
+         @(posedge clk) 
+         disable iff (rst)
+         $rose(req) |-> (req throughout ##[2:20] grant) ##1 (!req) ;
+      endproperty
+      assert property p1; 
+
+27. Write a SV assertion that monitors for an ack. If the ack is not received within 500clks, it issue an error.
+      property ack_500clk;
+	         @(posedge clk) 
+	         disable iif(rst)
+		       !ack |-> ##[1:500] ack;
+      endproperty
+      assert property ack_500clk; 
