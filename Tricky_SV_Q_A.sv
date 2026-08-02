@@ -508,3 +508,72 @@ Ascending numbers: '{15, 18, 32, 39, 42, 45, 66, 69, 78, 98}
 		       !ack |-> ##[1:500] ack;
       endproperty
       assert property ack_500clk; 
+		  
+28. Write a system Verilog assertion for the below requirements 
+  - There are around four request coming from master 
+  - for all these four requests , ack needs to come . If ack is not coming for any request ,It need to through error.
+  - Note that we donot know for each request , when the ack needs to come . there is no timeline actually .
+  - And also , these request and ack mechanism , may be follow out of order also.
+
+   logic [1:0] req_cnt, ack_cnt;
+
+   always @(posedge clk or negedge rst_n)
+      if (!rst_n) 
+	     {req_cnt, ack_cnt} <= 0;
+      else begin
+         req_cnt <= req_cnt + req;
+         ack_cnt <= ack_cnt + ack;
+      end
+
+   property p1;
+     @(posedge clk) disable iff (!rst_n)
+     (req_cnt == 4) |-> (ack_cnt == 4);
+   endproperty
+		  
+  assert property (p1) 
+	else $error("Ack missing!");
+
+29. Write a SystemVerilog class representing an execution sequence.
+    It contains a dynamic array of 8-bit variables called commands.
+    The array size must be randomized between 10 and 20 elements.
+    Core Rule: No two identical commands can be next to each other in the array
+
+  class packet;
+      rand bit [7:0] d[];  // 8-bit commands
+      // Constraint 1: Size between 10 and 20
+	  constraint c1 { d.size() inside {[10:20]};}
+      // Constraint 2: No adjacent identical commands
+	  constraint c2 { foreach (d[i]) {
+                        if (i > 0) {
+                           d[i] != d[i-1];
+                         }
+                       }
+                     }
+  endclass : packet
+
+module tb_top;
+  packet pkt; 
+  initial begin
+    pkt = new();
+    
+    $display("\n========================================");
+    $display("   EXECUTION SEQUENCE");
+    $display("========================================\n");
+    
+    repeat (5) begin
+      assert(pkt.randomize());
+      $display ("The values in the array are = %0p",pkt.d);
+    end    
+    $finish;
+  end
+endmodule : tb_top
+
+//Logfile Output
+========================================
+   EXECUTION SEQUENCE
+========================================
+The values in the array are = '{'hb3, 'hf7, 'hf0, 'h41, 'h71, 'hfa, 'h53, 'h42, 'hea, 'h69, 'h99, 'h87} 
+The values in the array are = '{'hd8, 'h3f, 'h7, 'h80, 'hcd, 'hbd, 'h4, 'h6, 'h32, 'h6e, 'h22, 'h14} 
+The values in the array are = '{'hfa, 'h81, 'hb9, 'h4f, 'hb1, 'h58, 'hf6, 'hff, 'h66, 'hfc, 'hb9, 'h7c, 'h6c, 'h24, 'hd4, 'h24} 
+The values in the array are = '{'h19, 'ha9, 'h7e, 'ha7, 'hfb, 'h80, 'h86, 'h29, 'hf1, 'hb2, 'haa, 'h89, 'h54, 'hd8, 'h87, 'h6d, 'hb8, 'hf0} 
+The values in the array are = '{'h26, 'h67, 'h6c, 'ha7, 'h2e, 'h74, 'hc8, 'hfb, 'ha9, 'h64, 'h52, 'haf} 		  
