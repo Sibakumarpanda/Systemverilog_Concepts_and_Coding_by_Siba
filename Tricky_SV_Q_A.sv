@@ -471,7 +471,7 @@ Ascending numbers: '{15, 18, 32, 39, 42, 45, 66, 69, 78, 98}
 	    property p1;
 	       @(posedge clk) 
 	       disable iff (rst)
-	       a|-> ##[1:4] b;
+	       a |-> ##[1:4] b;
 	    endproperty
        assert property p1;
 
