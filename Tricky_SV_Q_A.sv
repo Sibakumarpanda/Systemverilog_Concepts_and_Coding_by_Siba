@@ -667,3 +667,44 @@ Matrix:
 0 0 0 0 
 0 1 3 0 
 $finish called from file "testbench.sv", line 36.		  
+
+33. WAC to generate 122333444455555 pattern , Create with a generalized logic
+class pattern_gen;
+  rand int d[];
+  rand int num;
+  constraint c1 { num inside {[2:10]}; }
+  constraint c2 { d.size() == (num * (num + 1)) / 2; }
+  
+  function void post_randomize();
+    int idx = 0;
+    for (int n = 1; n <= num; n++)
+      for (int j = 0; j < n; j++)
+        d[idx++] = n;
+  endfunction
+  
+  function void display();
+    $write("Pattern (num=%0d, size=%0d): ", num, d.size());
+    foreach (d[i]) $write("%0d", d[i]);
+    $display("");
+  endfunction
+endclass :pattern_gen
+
+module tb_top;
+  pattern_gen pg = new();
+  initial begin
+    repeat (5) begin
+      assert(pg.randomize());
+      pg.display();
+    end
+    $finish;
+  end
+endmodule :tb_top	
+
+//Logfile Output
+Pattern (num=5, size=15): 122333444455555
+Pattern (num=7, size=28): 1223334444555556666667777777
+Pattern (num=8, size=36): 122333444455555666666777777788888888
+Pattern (num=6, size=21): 122333444455555666666
+Pattern (num=4, size=10): 1223334444
+$finish called from file "testbench.sv", line 34.
+	
