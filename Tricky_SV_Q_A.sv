@@ -622,3 +622,48 @@ The values in the array are = '{'h26, 'h67, 'h6c, 'ha7, 'h2e, 'h74, 'hc8, 'hfb, 
     cg cg_inst = new();
 	cg_inst.sample();   
 		  
+32. //WAC to genearte a NxN matrix where all diagonal elelments are having value 0
+class packet #(int N = 3);
+  rand bit [1:0] mat[N][N];
+  
+  constraint c1 {
+    foreach (mat[i]) {
+      foreach (mat[j]) {
+        // Diagonal: i == j
+        // Anti-diagonal: i + j == N-1
+        if (i == j || i + j == N-1) {
+          mat[i][j] == 0;
+        }
+      }
+    }
+  }
+  
+  function void display();
+    $display("Matrix:");
+    foreach (mat[i]) begin
+      foreach (mat[j]) begin
+        $write("%0d ", mat[i][j]);
+      end
+      $display("");
+    end
+  endfunction
+endclass : packet
+
+module tb_top;
+  packet #(4) pkt;  // 4x4 matrix
+  
+  initial begin
+    pkt = new();
+    assert(pkt.randomize());
+    pkt.display();
+    $finish;
+  end
+endmodule : tb_top
+		  
+//Log file output
+Matrix:
+0 1 0 0 
+3 0 0 3 
+0 0 0 0 
+0 1 3 0 
+$finish called from file "testbench.sv", line 36.		  
