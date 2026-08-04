@@ -576,4 +576,29 @@ The values in the array are = '{'hb3, 'hf7, 'hf0, 'h41, 'h71, 'hfa, 'h53, 'h42, 
 The values in the array are = '{'hd8, 'h3f, 'h7, 'h80, 'hcd, 'hbd, 'h4, 'h6, 'h32, 'h6e, 'h22, 'h14} 
 The values in the array are = '{'hfa, 'h81, 'hb9, 'h4f, 'hb1, 'h58, 'hf6, 'hff, 'h66, 'hfc, 'hb9, 'h7c, 'h6c, 'h24, 'hd4, 'h24} 
 The values in the array are = '{'h19, 'ha9, 'h7e, 'ha7, 'hfb, 'h80, 'h86, 'h29, 'hf1, 'hb2, 'haa, 'h89, 'h54, 'hd8, 'h87, 'h6d, 'hb8, 'hf0} 
-The values in the array are = '{'h26, 'h67, 'h6c, 'ha7, 'h2e, 'h74, 'hc8, 'hfb, 'ha9, 'h64, 'h52, 'haf} 		  
+The values in the array are = '{'h26, 'h67, 'h6c, 'ha7, 'h2e, 'h74, 'hc8, 'hfb, 'ha9, 'h64, 'h52, 'haf} 
+		  
+30. Write a SVA for the below requirement.
+    Req is asserted at time t0, 
+    once request is asserted 2 to 5 clks acknowledgement should come.
+    But, in between request to acknowledgement there should not be any 2nd request.
+
+    // Assertion 1: Ack within 2-5 cycles
+    property p_ack;
+        @(posedge clk) 
+		disable iff (!rst_n)
+        $rose(req) |-> ##[2:5] ack;
+    endproperty
+    assert property (p_ack) 
+     else $error("Ack missing!");
+
+    // Assertion 2: No second request before ack
+   property p_no_req;
+      @(posedge clk) 
+	    disable iff (!rst_n)
+      $rose(req) |-> (!req) throughout ##[0:4];
+   endproperty
+   assert property (p_no_req) 
+      else $error("Second request before ack!");
+		  
+		  
