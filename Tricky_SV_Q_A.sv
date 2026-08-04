@@ -601,4 +601,24 @@ The values in the array are = '{'h26, 'h67, 'h6c, 'ha7, 'h2e, 'h74, 'hc8, 'hfb, 
    assert property (p_no_req) 
       else $error("Second request before ack!");
 		  
+31. Lets consider a Memory has 4 locations. 
+    You have to write the FC groups and FC point that should represent that, all memory locations have been exercised by write.
+	   
+    covergroup cg @(posedge clk);
+        // Address coverage - all 4 locations
+       cp_addr: coverpoint addr {
+            bins valid_addr[] = {[0:3]};  // Covers 00, 01, 10, 11
+        }
+  
+      // Write/Read coverage - only write
+      cp_wr_rd: coverpoint wr_rd {
+          bins write = {1};  // Only cover when wr_rd = 1 (write)
+        }
+		
+       // Cross coverage: All 4 addresses must be written
+      cp_all_written: cross cp_addr, cp_wr_rd;
+    endgroup
+    // Instantiate and sample method
+    cg cg_inst = new();
+	cg_inst.sample();   
 		  
