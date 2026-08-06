@@ -708,3 +708,50 @@ Pattern (num=6, size=21): 122333444455555666666
 Pattern (num=4, size=10): 1223334444
 $finish called from file "testbench.sv", line 34.
 	
+34. WAC to generate unique values in an array of random size
+       1. without using the unique method
+       2. with using the unique method
+  class packet;
+     rand int d[];
+     rand int size;
+     constraint c_size { size inside {[5:10]};
+                         d.size() == size;
+                       }
+	 constraint c_range { foreach (d[i]) {
+                          d[i] inside {[0:20]};
+                         }
+                        }
+ 
+	 constraint c_unique { foreach (d[i]) {
+		                      foreach (d[j]) {
+                                  if (i != j) {
+                                       d[i] != d[j];
+                                    }
+                                 }
+                              }
+                         }
+         
+// constraint unique_c {unique{d};} 
+endclass : packet
+
+module tb_top;
+  packet pkt;
+  initial begin
+    pkt = new();   
+    $display("\n=== Unique Values Without unique Method ===\n");    
+    repeat (5) begin
+      assert(pkt. randomize());
+      $display("Array size=%0d: Array values= %p", pkt.d.size(), pkt.d);
+    end   
+    $finish;
+  end
+endmodule : tb_top
+
+//LogFile Output
+=== Unique Values Without unique Method ===
+Array size=9: Array values= '{15, 3, 18, 20, 12, 11, 4, 5, 14} 
+Array size=7: Array values= '{10, 17, 1, 9, 2, 15, 19} 
+Array size=8: Array values= '{13, 3, 12, 7, 20, 6, 14, 8} 
+Array size=6: Array values= '{1, 5, 16, 0, 7, 15} 
+Array size=5: Array values= '{9, 13, 3, 8, 20} 
+$finish called from file "testbench.sv", line 48.								  
