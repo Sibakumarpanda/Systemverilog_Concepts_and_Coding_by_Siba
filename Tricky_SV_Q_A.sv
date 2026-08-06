@@ -755,3 +755,52 @@ Array size=8: Array values= '{13, 3, 12, 7, 20, 6, 14, 8}
 Array size=6: Array values= '{1, 5, 16, 0, 7, 15} 
 Array size=5: Array values= '{9, 13, 3, 8, 20} 
 $finish called from file "testbench.sv", line 48.								  
+
+35. WAC for 1bit array such that , the values of the array can have 2 consucative 1's , but more than 
+    2 consucative 1's should not . Also The size of the array can be random
+    Means the pattern could be 0,1,0,1,1,0,1,0,1,1,0
+    but it should not be  0,1,0,1,1,1,0,1,0,1,1,1,0,1,0
+	
+class packet;
+  rand bit d[];
+  rand bit [3:0] d_size; 
+  constraint c1 { d.size() == d_size ;}
+  
+ /* constraint c_size { d_size inside {[5:10]};
+                     d.size() == d_size;
+                     }                   
+ */ 
+  constraint c_no_3_ones { foreach (d[i]) 
+                            {
+                            if (i >= 2)                             
+                               !(d[i-2] == 1 && d[i-1] == 1 && d[i] == 1);
+      
+                            }
+                          }
+endclass : packet
+    
+module tb_top;
+  packet pkt; 
+  initial begin
+    pkt = new();   
+    $display("\n=== The Generated Pattern is ===\n");   
+    repeat (5) begin
+      assert(pkt. randomize());
+      $display("Array size=%0d: Array values= %p", pkt.d.size(), pkt.d);
+    end   
+    $finish;
+  end
+endmodule : tb_top    
+    
+//LogFile Output
+=== The Generated Pattern is ===
+Array size=13: Array values= '{'h0, 'h0, 'h0, 'h1, 'h0, 'h0, 'h1, 'h1, 'h0, 'h0, 'h1, 'h0, 'h0} 
+Array size=6: Array values= '{'h1, 'h0, 'h1, 'h0, 'h0, 'h0} 
+Array size=1: Array values= '{'h0} 
+Array size=2: Array values= '{'h1, 'h0} 
+Array size=4: Array values= '{'h1, 'h1, 'h0, 'h1} 
+$finish called from file "testbench.sv", line 47.
+$finish at simulation time                    0
+           V C S   S i m u l a t i o n   R e p o r t 	
+
+36. 						  
