@@ -803,4 +803,69 @@ $finish called from file "testbench.sv", line 47.
 $finish at simulation time                    0
            V C S   S i m u l a t i o n   R e p o r t 	
 
-36. 						  
+36. WAC to ensure that two circles in a xy plane should not touch with each other
+   //Logic: Distance between centers > Sum of radii
+   //(x2 - x1)² + (y2 - y1)² > (r1 + r2)²
+
+class circle;
+  rand int x1, y1, x2, y2;
+  rand int r1, r2;
+  
+  constraint c_range {
+    x1 inside {[0:50]};
+    y1 inside {[0:50]};
+    x2 inside {[0:50]};
+    y2 inside {[0:50]};
+    r1 inside {[1:10]};
+    r2 inside {[1:10]};
+  }
+  
+  constraint c_no_touch {
+    (x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1) > (r1 + r2)*(r1 + r2);
+   } 
+    
+endclass : circle
+
+module tb_top;
+  circle pkt;  
+  initial begin
+    pkt = new();   
+    $display("\n========================================");
+    $display("   CIRCLES SHOULD NOT TOUCH");
+    $display("========================================\n");
+    
+    repeat (5) begin
+      assert(pkt.randomize());
+      $display("C1: Center(%0d,%0d) R=%0d", pkt.x1, pkt.y1, pkt.r1);
+      $display("C2: Center(%0d,%0d) R=%0d", pkt.x2, pkt.y2, pkt.r2);
+      $display("*********************************************\n");
+    end  
+    $finish;
+  end
+endmodule : tb_top
+    
+//LogFile Output
+========================================
+   CIRCLES SHOULD NOT TOUCH
+========================================
+
+C1: Center(9,13) R=4
+C2: Center(10,27) R=9
+*********************************************
+
+C1: Center(33,24) R=9
+C2: Center(12,41) R=1
+*********************************************
+
+C1: Center(34,47) R=4
+C2: Center(31,25) R=6
+*********************************************
+
+C1: Center(47,25) R=8
+C2: Center(38,46) R=2
+*********************************************
+
+C1: Center(30,22) R=8
+C2: Center(11,37) R=8
+*********************************************
+						  
