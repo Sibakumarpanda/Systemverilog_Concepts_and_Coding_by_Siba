@@ -869,3 +869,63 @@ C1: Center(30,22) R=8
 C2: Center(11,37) R=8
 *********************************************
 						  
+37. Write a SV code/Constraint for finding 2nd largest no in an Array
+  class packet;
+     rand int d[];
+     int second_largest;
+     constraint c_size {
+        d.size() inside {[5:10]};
+      }
+	  
+     constraint c_range {
+         foreach (d[i]) {
+         d[i] inside {[0:30]};
+        }
+     }
+  
+    function void post_randomize();
+      int temp[];
+      temp = d;
+      temp.sort();
+    
+      // Find 2nd largest from the end
+      for (int i = temp.size()-2; i >= 0; i--) begin
+        if (temp[i] != temp[temp.size()-1]) begin
+          second_largest = temp[i];
+          break;
+        end
+      end
+    endfunction
+  
+    function void display();
+      $display("Array (size=%0d): %p", d.size(), d);
+      $display("2nd Largest: %0d", second_largest);
+    endfunction    
+  endclass :packet
+    
+module tb_top;
+  packet pkt;
+  initial begin
+    pkt=new();
+    repeat (5) begin
+      pkt.randomize();
+      pkt.display();
+    end
+  end 
+endmodule :tb_top
+		 
+//Log File Output		 
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP1_Full64; Runtime version X-2025.06-SP1_Full64;  Aug  6 23:13 2026
+Array (size=6): '{29, 6, 22, 1, 3, 30} 
+2nd Largest: 29
+Array (size=6): '{0, 29, 23, 4, 15, 19} 
+2nd Largest: 23
+Array (size=8): '{22, 23, 14, 14, 25, 9, 9, 9} 
+2nd Largest: 23
+Array (size=9): '{15, 18, 24, 26, 11, 6, 26, 30, 5} 
+2nd Largest: 26
+Array (size=6): '{13, 8, 20, 16, 18, 6} 
+2nd Largest: 18
+           V C S   S i m u l a t i o n   R e p o r t 
+		 
