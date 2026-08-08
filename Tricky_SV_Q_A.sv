@@ -989,3 +989,4 @@ Array (size=6): '{13, 8, 20, 16, 18, 6}
     The generated Pattern is ='{0, 4, 8, 12, 16, 20} 
            V C S   S i m u l a t i o n   R e p o r t 
     
+40 . Write an assertion to detect glitch in a signal
