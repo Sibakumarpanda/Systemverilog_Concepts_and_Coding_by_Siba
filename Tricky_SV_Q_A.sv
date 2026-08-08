@@ -958,3 +958,34 @@ Array (size=6): '{13, 8, 20, 16, 18, 6}
   The generated Pattern is ='{9, 99, 999, 9999, 99999} 
            V C S   S i m u l a t i o n   R e p o r t 
 	
+39. WAC to generate pattern of 0,4,8,12,16,20
+   class packet;
+      rand int d[];
+      constraint c1 { d.size ==6;}
+      constraint c2 { foreach (d[i])
+                      if (i==0)
+                        d[i] == 0;
+                      else
+                        d[i] ==  d[i-1]+4;    
+                }
+  
+    endclass :packet
+	module tb_top;
+      packet pkt; 
+       initial begin
+        pkt =new();
+       repeat (5) begin
+         pkt.randomize();
+         $display ("The generated Pattern is =%0p",pkt.d) ;    
+       end   
+       end 
+   endmodule :tb_top
+
+	//Logfile Output
+	The generated Pattern is ='{0, 4, 8, 12, 16, 20} 
+    The generated Pattern is ='{0, 4, 8, 12, 16, 20} 
+    The generated Pattern is ='{0, 4, 8, 12, 16, 20} 
+    The generated Pattern is ='{0, 4, 8, 12, 16, 20} 
+    The generated Pattern is ='{0, 4, 8, 12, 16, 20} 
+           V C S   S i m u l a t i o n   R e p o r t 
+    
