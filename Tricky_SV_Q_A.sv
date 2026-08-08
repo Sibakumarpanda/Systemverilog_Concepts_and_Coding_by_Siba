@@ -929,3 +929,32 @@ Array (size=6): '{13, 8, 20, 16, 18, 6}
 2nd Largest: 18
            V C S   S i m u l a t i o n   R e p o r t 
 		 
+38. WAC to generate 9, 99, 999 ,9999,99999 Pattern
+   class packet;
+     rand int d[];
+     constraint c1 { d.size ==5;}
+     constraint c2 { foreach (d[i])
+                       d[i] ==  10**(i+1) -1;  
+                }
+  
+   endclass :packet
+
+   module tb_top;
+      packet pkt; 
+       initial begin
+        pkt =new();
+       repeat (5) begin
+         pkt.randomize();
+         $display ("The generated Pattern is =%0p",pkt.d) ;    
+       end   
+       end 
+   endmodule :tb_top
+
+ //Logfile out
+  The generated Pattern is ='{9, 99, 999, 9999, 99999} 
+  The generated Pattern is ='{9, 99, 999, 9999, 99999} 
+  The generated Pattern is ='{9, 99, 999, 9999, 99999} 
+  The generated Pattern is ='{9, 99, 999, 9999, 99999} 
+  The generated Pattern is ='{9, 99, 999, 9999, 99999} 
+           V C S   S i m u l a t i o n   R e p o r t 
+	
