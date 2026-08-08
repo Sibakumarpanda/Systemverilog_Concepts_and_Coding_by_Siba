@@ -990,3 +990,32 @@ Array (size=6): '{13, 8, 20, 16, 18, 6}
            V C S   S i m u l a t i o n   R e p o r t 
     
 40 . Write an assertion to detect glitch in a signal
+	
+module glitch_detector_stable (
+  input logic clk,
+  input logic rst_n,
+  input logic signal
+);
+
+  // 1st method : Signal must be stable between clock edges
+  property p_stable_signal;
+    @(posedge clk)
+    disable iff (!rst_n)
+    $stable(signal);
+  endproperty
+
+  assert_stable: assert property (p_stable_signal)
+    else $error("[%t] Glitch detected! Signal changed within clock cycle", $time);
+
+  // Alternative way : To Detect signal goes low then high within same clock cycle
+  property p_no_negative_glitch;
+    @(posedge clk)
+    disable iff (!rst_n)
+    ($rose(signal)) |-> ##1 (signal == 1);
+  endproperty
+
+  assert_no_neg_glitch: assert property (p_no_negative_glitch)
+    else $error("[%t] Negative glitch detected (1→0→1)", $time);
+
+endmodule
+
