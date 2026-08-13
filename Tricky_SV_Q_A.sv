@@ -1019,3 +1019,709 @@ module glitch_detector_stable (
 
 endmodule
 
+-----------------------------------
+1. WAC to generate an array of size 10 where every odd index has a random value and every even index value is the sum of its two neighbours.
+   class packet;
+	  rand int d [];
+	  constraint c1 {d.size()== 10;}
+	  constraint c2 { foreach (d[i])
+			                if (i % 2 == 0)
+							  if (i>0 && i < d.size()-1)
+							    d[i] = d[i-1] + d[i+1];
+							else if (i ==0)
+                                d[0] == d[1];							
+			}
+			
+	endclass
+		  
+		   
+	2. WAC for AXI 4KB boundary scenario
+	
+	      class packet;
+		   rand bit [15:0] awaddr;
+		   rand bit [1:0]  awburst ;
+           rand bit [2:0]  awlen;  // Burst len = awlen+1;
+           rand bit [3:0]  awsize; // Burst size = 2** (awsize)
+
+           constraint c1_4kb { awaddr % 4096 == 0 &&
+		                       2** (awsize) * (awlen+1) <= 4096
+		                       
+		                      }		   
+		  
+		  
+		  endclass
+	
+	
+	
+	
+	3. WAC to generate Fibonacci series of numbers as [0,1,1,2,3,5,8,13,21,34]
+	
+	     class packet;
+		   rand int d [];
+		   constraint c1 {d.size () == 10;}
+		   constraint c2 { foreach (d[i])
+		                    if (i==0)
+							 d[i] ==0;
+							else if (i==1)
+                             d[i] ==1;
+                            else 
+                             d[i] == d[i-1] + d[i-2];							
+		                 }
+		 
+		 
+		 endclass
+	
+	
+	4. WAC to generate pattern as 0000, 0001, 0011, 0111, 1111
+	   
+	     class packet;
+            //rand bit [3:0] d [5];
+            rand bit [3:0] d [];
+  
+            constraint c1 {d.size()== 5;}
+  
+            constraint c2 { foreach(d[i]) {
+                                d[i] == (1 << i) - 1;  // 0, 1, 3, 7, 15
+                                }
+                            }
+         endclass : packet
+
+         module tb_top;
+           packet pkt;
+  
+           initial begin
+             pkt = new();
+              repeat(5) begin
+              assert(pkt.randomize());
+              $display("data = %p", pkt.d);
+              foreach(pkt.d[i]) 
+               $write("%04b ", pkt.d[i]);
+               $display();
+             end
+            end
+        endmodule :tb_top
+	
+	
+	5. WAC for to generate total no of 1's are 10 and none of the 1's are beside each other in a 32 bit random variable.
+	   Means , No two 1's can be adjacent with each other.
+	
+	    class packet;
+          rand bit [31:0] data;
+  
+          //Constraint1: Exactly 10 ones
+          constraint c1 { $countones(data) == 10;}
+  
+          //Constraint2: No adjacent ones
+          constraint c2 { foreach(data[i]) {
+                             if (i < 31)
+                               !(data[i] == 1 && data[i+1] == 1);  // No "11" pattern
+                            }
+                        }
+        endclass :packet
+
+        module tb_top;
+           packet pkt;
+  
+          initial begin
+            pkt = new();
+    
+           repeat(10) begin
+             assert(pkt.randomize());
+             $display("data = %032b", pkt.data);
+             $display("Number of ones = %0d", $countones(pkt.data));
+            
+           end
+         end
+        endmodule
+		
+	6. WAC to generate pattern as 123454321
+	
+	   class packet;
+	   
+	     rand int d [];
+		 
+		 constraint c1 {d.size()== 9;}
+		 
+		 constraint c2 {foreach (d[i])
+		                 if (i < 5)
+						   d[i] == i+1;
+						 else 
+                           d[i] == d[i-1] -1; 
+                           //d[i] == 9 - i;		// This logic will also work				   
+		 
+		 }
+	   
+	   
+	   endclass :packet
+	
+	    
+	7. WAC to generate random unique numbers without using unique keyword
+	
+	   class packet;
+	   
+	     rand int d[];
+		 constraint c1 {d.size() == 10;}
+		 //constraint c2 { foreach (d[i]) // Using unique kyword
+		                   unique {d};
+		                 }
+					   
+		 constraint c3 {foreach (d[i])
+		                  foreach (d[j]) 
+						      if(i != j)
+							    d[i] != d[j]
+						  }
+	   
+	   endclass
+	   
+	8. WAC for below scenario .
+	      1. a , b random variables . Generate random numbers for a & b . 
+	      2. It should satisfy below conditions
+	          if a is even , b is odd 
+	          if a is odd ,  b is even
+			  
+		class packet ;
+		  rand bit [3:0] a;
+		  rand bit [3:0] b;
+		  
+		  constraint c1 { (a%2 == 0) -> (b %2 !=0);}
+		  
+		  constraint c1 { (a % 2 == 0) -> (b % 2 != 0);
+                          (a % 2 != 0) -> (b % 2 == 0);
+                        }
+		  
+		  //constraint c1 { a[0] != b[0];  } // LSB must be different, This logic will also work
+
+        endclass
+		
+			  
+	9. WAC to generate random numbers between 3.4 to 5.6
+	   
+	   class packet;
+  
+         rand int d [];
+         real d_float[5];
+  
+         constraint c1 {d.size()==5;}
+         constraint c2 { foreach (d[i])
+                            d[i] inside {[34:56]};
+                       }
+  
+    
+         function void post_randomize();
+            foreach(d[i]) begin
+              d_float[i] = d[i] / 10.0;
+            end
+         endfunction
+  
+       endclass :packet
+
+       module tb_top;
+          packet pkt;
+  
+          initial begin
+             pkt = new();
+    
+            repeat(5) begin
+              pkt.randomize();
+              $display("Original Values: %p", pkt.d);
+              $display("Required Float Values : %p", pkt.d_float);
+              $display("------------------------");
+            end
+         end
+       endmodule :tb_top
+	
+	   
+	10. Write a system Verilog code to arrange numbers in Descending order :  7 , 3, 9 , 2 , 5 , 1 , 4
+	    Make sure Do not use constraints and inbuild functions
+		
+		//constraint
+		class packet
+		  rand int d[] ;
+		  constraint c1 {d.size ()== 10;}
+		  constraint c2 { foreach (d[i])           // constraint for Descending order
+		                    if (i < d.size()-1)
+						      d[i] > d [i+1];
+		                  }
+						  
+		  constraint c3 { foreach (d[i])           // constraint for Ascending order
+		                    if (i < d.size()-1)
+						      d[i] < d [i+1];
+		                  }				  
+		
+		endclass
+		
+		//System verilog code to perform same thing , Make sure Do not use constraints and inbuild functions
+		
+		module tb_packet
+		  int d[] = `{7 , 3, 9 , 2 , 5 , 1 , 4};
+		  int temp;
+		  
+		  initial begin
+		   foreach d[i] begin
+		     if (i < 7) begin
+			   d[i] > d[i+1];
+			   temp = d[i];       // Save original d[i]
+               d[i] = d[i+1];     // Put d[i+1] in d[i]
+               d[i+1] = temp;     // Put saved original d[i] in d[i+1]
+			 end			 
+		   end
+		   $display ("The original values are =%0p",d);
+		   $display ("The values in Descending order are =%0p",temp);
+		 end
+			   
+		endmodule
+	
+	11. WAC to generate even numbers in odd locations and odd numbers in even location in an array .
+	    
+		class packet;
+		  rand int d[];
+		  constraint c1 {d.size()== 10;}
+		  constraint c2 {foreach d[i]
+		                    if (i %2==0)
+							  d[i] %2 == 1;
+							else 
+							  d[i] %2 == 0 ;
+		                }
+						
+		  //constraint c3 {foreach (d[i]) {
+                             d[i] % 2 == (i % 2 == 0) ? 1 : 0;
+                             d[i] inside {[0:50]};
+                             }
+                        }
+		
+		endclass
+		
+	12. WAC to generate 10 random numbers and then arrange them 
+	                     in ascending order 
+	                     in descending order
+						 
+		//constraint
+		class packet
+		  rand int d[] ;
+		  constraint c1 {d.size ()== 10;}
+		  constraint c2 { foreach (d[i])           // constraint for Descending order
+		                    if (i < d.size()-1)
+						      d[i] > d [i+1];
+		                  }
+						  
+		  constraint c3 { foreach (d[i])           // constraint for Ascending order
+		                    if (i < d.size()-1)
+						      d[i] < d [i+1];
+		                  }				  
+		
+		endclass				 
+						 
+	
+	13. WAC to generate multiples of  without using any operator
+	
+	14. WAC to generate powers of 2 without any operator
+	
+	
+	15. calculate values for c and d :
+	         a   = 1001 , b  = 0110
+	         c = a & b  //This is bit wise AND operator , so c = 0000 
+	         d = a && b //This is Logical AND operator , so d = 1 && 1 = 1
+	
+	16. find values of time, a
+	  int a =5;
+	fork
+	begin
+	    #2 a<=10;
+	     $display("time = %t , a = %d",$time, a);      
+	end
+	begin
+	    #3 a=12;
+	     $display("time = %t , a = %d",$time, a);    
+	end
+	begin
+	    #6 a<=14;
+	     $display("time = %t , a = %d",$time, a);    
+	end
+	     #4 a=10;
+	     $display("time = %t , a = %d",$time, a);      
+	join_any
+	     $display("time = %t , a = %d",$time, a);
+		 
+	//Answer
+     time = 2 , a = 5
+     time = 3 , a = 12
+     time = 4 , a = 10
+     time = 4 , a = 10
+     time = 6 , a = 10	
+	
+	16. WAC to generate this pattern :  11 222 3333 44444 
+	
+	class packet;
+       rand int count;
+       int d[];  // Not rand - we build it
+  
+       constraint c1 { count inside {[1:10]};}
+  
+      function void post_randomize();
+        d.delete();  // Delete all elements
+        for (int val = 1; val <= count; val++) begin
+          repeat (val + 1) begin
+            d = {d, val};  // Build the pattern
+          end
+        end
+      endfunction
+    endclass :packet
+
+    module tb_top;
+      packet pkt;
+       initial begin
+        pkt =new();
+         repeat(5) begin
+           pkt.randomize();
+           $display ("Count = %0d ,The Generated Pattern is = %0p",pkt.count,pkt.d);
+       end
+     end
+    endmodule :tb_top
+
+	
+	 
+    17. WAC to generate this pattern :  00110011
+	
+	 class packet;
+        rand int d[];
+        constraint c1 { d.size() == 8;}
+        // Constrain values to 0 and 1 only
+        constraint c2 { foreach(d[i]) 
+                      d[i] == (i/2) %2 ;
+                    }
+      
+     endclass :packet
+      
+     module tb_top;
+       packet pkt;
+        initial begin
+         pkt =new();
+         repeat(5) begin
+          pkt.randomize();
+          $display ("The Generated Pattern is = %0p",pkt.d);
+         end
+       end
+    endmodule :tb_top
+
+	
+	Assertions :
+	
+	1. Write a SVA to check that if req is asserted, ack must follow within 2 to 5 clock cycles, and 
+	   grant must not be asserted until ack arrives.
+	   
+	    property p1;
+		  @(posedge clk)
+		  disable iff (!rst_n)
+		  
+		  $rose(req) |-> (!grant) throughout ##[2:5] ack;
+		
+		endproperty
+		
+		assert property p1; 
+		
+		
+	2. Difference between a[*3] and a[->3]?
+	
+       a[*3] -  Its Consecutive repetition operator.             Meaning , a must be true for 3 consecutive cycles	   
+	   a[->3] - Its Non-consecutive repetition (GoTo) operator . Meaning, a must be true 3 times (not necessarily consecutive)
+	   
+	    
+	3. WAA for a raises [ 5:8 ] , b also raise
+	
+	    property p1;
+		  @(posedge clk)
+		  disable iff (!rst_n)
+		  
+		  $rose(a)[->5:8] ##1 $rose(b);
+		
+	    endproperty
+		
+		assert property p1;
+	
+	4. WAA such that : ready should be asserted at least 2 clock cycles before valid is asserted
+	
+	    property p1;
+		  @(posedge clk)
+		  disable iff (!rst_n)
+		  
+		  
+		  $rose(valid) |-> ($past(ready, 1) && $past(ready, 2));
+		  
+		  // (ready == 1) throughout ##2 $rose(valid); // This is also correct
+		
+	    endproperty
+		
+		assert property p1;
+		
+	5. WAA such that if assertion is enable there is up counter , else down counter
+	
+	     property p1;
+             @(posedge clk)
+             disable iff (!rst_n)
+             (enable == 1) |-> (count == $past(count) + 1);
+             (enable == 0) |-> (count == $past(count) - 1);
+         endproperty
+		 
+		 assert property p1;
+		 
+	6. WAA for 200 MHz clock with 50 % duty cycle
+	    
+		100MHZ - 10ns
+		200MHZ - 5ns
+		300MHZ - 2.5ns
+		400MHZ - 1.25ns
+	
+	    f= 200MHZ , T = 5ns , Ton =2.5ns , Toff =2.5ns
+		
+		module tb_top;
+		 bit clk;
+		 always begin
+		  #2.5 clk= ~clk;
+		 end
+		endmodule :tb_top
+		
+		property p1;
+		  realtime current_time;
+		  time     time_period = 5;
+		  
+		  @ (posedge clk)
+		  
+		  (1 , current_time = $realtime) |=> ($realtime - current_time == time_period);
+		
+		endproperty
+		
+		assert property p1;
+		
+		
+	7. WAA for 400 MHZ clock with 60 % duty cycle
+	
+	   f= 400MHZ , T = 1.25ns , 
+	   Given DC =60 % 
+	   Ton  = 60% 1.25 = 0.75ns
+	   Toff = 40% 1.25 = 0.5ns
+	   
+	   module tb_top;
+	     bit clk;
+		 always begin
+		   clk = 1;
+		   #0.75;
+		   clk = 0;
+		   #0.5;
+		end  
+	   endmodule :tb_top
+	   
+	   property p1;
+	      realtime current_time;
+		  time trise= 0.75 ;
+		  
+		  @ (posedge clk)
+		  
+		  (1 , current_time = $realtime) |=>
+		  
+		  @ (negedge clk)
+		  
+		  ($realtime - current_time == trise) ;
+		  
+	   endproperty 
+	   
+	   assert property p1;
+	   
+	   property p2;
+	      realtime current_time;
+		  time tfall= 0.25 ;
+		  
+		  @ (negedge clk)
+		  
+		  (1 , current_time = $realtime) |=>
+		  
+		  @ (posedge clk)
+		  
+		  ($realtime - current_time == tfall) ;
+		  
+	   endproperty 
+	   
+	   assert property p2;
+	 
+	8. WAA such that : a should become one , once b and  c is 1
+	
+	   property p1;
+           @(posedge clk)
+           disable iff (!rst_n)
+           (b && c) |-> (a ==1);
+           
+       endproperty
+		 
+	   assert property p1;
+	     
+	9. WAA such that a is active , b is active , c is inactive and o/p :x within 50ms
+	
+	   property p1;
+          realtime t;
+          @(posedge clk)
+          disable iff (!rst_n)
+          (a && b && !c, t = $realtime) |=> (x == 1) and ($realtime - t <= 50ms);
+       endproperty
+
+       assert property (p1)
+	   
+	10. WAA such that : input signal data_in must be stable for at least 10ns before the rising edge of the clock clk
+	
+	    property p1;
+          @(posedge clk)
+          disable iff (!rst_n)
+          $stable(data_in, 10ns);
+        endproperty
+
+        assert property (p1)
+		
+	11. WAA to check the frequency for a clock of 100MHZ
+	    f =100 MHZ , T =10ns
+		
+		property p1;
+		  realtime current_time;
+		  time     time_period = 10; 
+		  @ (posedge clk)
+		  (1 , current_time = $realtime) |=> ($realtime - current_time == time_period);
+		endproperty
+		
+		assert property p1;
+	 
+	12. WAA to detect clock pulse
+	    
+		property p_clock_pulse_any;
+           @(posedge clk)
+           disable iff (!rst_n)
+           $rose(clk) |=> $fell(clk);
+        endproperty
+		
+		assert property p1;
+		
+	13. WAA to detect clock pulse with specific width
+
+        property p_clock_pulse_width;
+             realtime current_time;
+             @(posedge clk)
+             disable iff (!rst_n)
+             (1'b1, current_time = $realtime) |=> $fell(clk) and ($realtime - current_time > 0);
+        endproperty	
+	
+	    assert property p1;
+	
+	Functional coverage :
+	
+	1. Lets say ,You are verifying a packet scheduler. 
+	    You have a coverpoint for packet_size (small, medium, large) and a coverpoint for error_type (none, crc_err, length_err). 
+	    You need to cross them, but length_err is physically impossible with a small packet. 
+	    How do you implement this to ensure 100% coverage is achievable?
+		
+		//covergroup packet_scheduler_cg with function sample(bit [7:0] packet_size, bit [2:0] error_type);
+		
+		covergroup packet_scheduler_cg ;
+              packet_size_cp: coverpoint packet_size {
+                                         bins small  = {[0:63]};
+                                         bins medium = {[64:127]};
+                                         bins large  = {[128:255]};
+                                       }
+    
+             error_type_cp:   coverpoint error_type {
+                                         bins none       = {0};
+                                         bins crc_err    = {1};
+                                         bins length_err = {2};
+                                         }
+            // Do the Cross coverage between above two cp and Ignore the impossible combination
+             cross_cp: cross packet_size_cp, error_type_cp {
+        
+                                         ignore_bins small_pkt_length_err = binsof(packet_size_cp.small) && 
+										                                    binsof(error_type_cp.length_err);
+                                                           }
+        endgroup
+	
+	2. How RAL will help in functional coverage
+	
+	3. Difference between illegal ins and ignore bins.
+	
+	   illegal_bins	-Marks combinations that should never occur
+	                 Causes a simulation error if hit
+	              
+	   
+	   ignore_bins -Marks combinations that are not interesting or impossible
+	                Silently excludes from coverage calculation
+
+	   
+	4. Write a Functional coverage group for burst length = 2 and 4 , burst type = wrap
+	    
+		
+		covergroup axi_cg;
+           bit [1:0] axburst;  // Burst type (0=FIXED, 1=INCR, 2=WRAP, 3=RESERVED)
+           bit [2:0] axsize;   // Burst Size (bytes per beat)
+           bit [3:0] axlen;    // Burst Length 
+    
+           // Coverpoint for Burst Type - only WRAP
+             cp_burst_type: coverpoint axburst {
+                             bins wrap = {2};  // WRAP burst type
+                             // Optionally ignore other burst types
+                             // ignore_bins others = default;
+                             }
+    
+            // Coverpoint for Burst Length (only 2 and 4) , Burst length = axlen+1;
+             cp_burst_len: coverpoint axlen {
+                            bins len_2 = {1};  // Burst length = 2 (AXI len = 1 means 2 beats)
+                            bins len_4 = {3};  // Burst length = 4 (AXI len = 3 means 4 beats)
+                            ignore_bins others = default;  // Ignore other lengths
+                            }
+    
+            // Coverpoint for Burst Size (optional - but good to include)
+            cp_burst_size: coverpoint axsize {
+                            bins size_1byte  = {0};   // 1 byte per beat
+                            bins size_2bytes = {1};   // 2 bytes per beat
+                            bins size_4bytes = {2};   // 4 bytes per beat
+                            bins size_8bytes = {3};   // 8 bytes per beat
+                            bins size_16bytes = {4};  // 16 bytes per beat
+                            bins size_32bytes = {5};  // 32 bytes per beat
+                            bins size_64bytes = {6};  // 64 bytes per beat
+                            bins size_128bytes = {7}; // 128 bytes per beat
+                             }
+    
+            // Cross between Burst Type (WRAP) and Burst Length (2 & 4)
+			// All combinations are valid for WRAP (length 2 and 4 are valid)
+			// No ignore_bins needed as both combinations are legal
+            cp_cross_wrap_len: cross cp_burst_type, cp_burst_len { };
+    
+           // Optional: Cross all three - WRAP type, Length 2/4, and Size
+           cp_cross_wrap_len_size: cross cp_burst_type, cp_burst_len, cp_burst_size {
+                  // WRAP bursts have address alignment constraints
+                 // For WRAP, address must be aligned to (size * (len+1))
+                 // But coverage tool doesn't know this, so we can optionally ignore
+                // invalid combinations if needed       
+               // Example: For WRAP length 2 (2 beats), size must be such that
+               // address is aligned properly. We can leave this to the testbench
+               // to ensure only valid combinations are sampled
+               }
+    
+            // Cover bins for specific WRAP combinations
+			// Weight these combinations to ensure they get hit
+            cp_wrap_len2_size: cross cp_burst_type, cp_burst_len, cp_burst_size {
+             
+               bins wrap_len2 = binsof(cp_burst_type.wrap) && binsof(cp_burst_len.len_2);
+               bins wrap_len4 = binsof(cp_burst_type.wrap) && binsof(cp_burst_len.len_4);
+               }
+    
+            // Coverage option to track progress
+            option.per_instance = 1;
+            option.goal = 100;
+            option.comment = "AXI WRAP burst coverage for length 2 and 4";
+    
+        endgroup : axi_cg
+		
+	5. calculate start and end address for below AXI Parameters:
+	    start addr = 32`1010
+	    axi len = 3
+	    axi size = 2
+	    axi burst type = wrap
+		
+	
+
+
+	  
+	  
+
