@@ -1104,44 +1104,32 @@ endmodule
          end
      endmodule
 		
-	6. WAC to generate pattern as 123454321
-	
-	   class packet;
-	   
-	     rand int d [];
-		 
-		 constraint c1 {d.size()== 9;}
-		 
-		 constraint c2 {foreach (d[i])
+46. WAC to generate pattern as 123454321
+	class packet;
+	   rand int d [];
+	   constraint c1 {d.size()== 9;}
+	   constraint c2 {foreach (d[i])
 		                 if (i < 5)
 						   d[i] == i+1;
 						 else 
                            d[i] == d[i-1] -1; 
                            //d[i] == 9 - i;		// This logic will also work				   
-		 
-		 }
-	   
-	   
-	   endclass :packet
+		              }
+	endclass :packet
 	
-	    
-	7. WAC to generate random unique numbers without using unique keyword
-	
-	   class packet;
-	   
-	     rand int d[];
-		 constraint c1 {d.size() == 10;}
-		 //constraint c2 { foreach (d[i]) // Using unique kyword
+47. WAC to generate random unique numbers without using unique keyword
+	class packet;
+	   rand int d[];
+	   constraint c1 {d.size() == 10;}
+	   //constraint c2 { foreach (d[i]) // Using unique kyword
 		                   unique {d};
-		                 }
-					   
-		 constraint c3 {foreach (d[i])
+		                }
+		constraint c3 { foreach (d[i])
 		                  foreach (d[j]) 
 						      if(i != j)
 							    d[i] != d[j]
 						  }
-	   
-	   endclass
+	 endclass
 	   
 	8. WAC for below scenario .
 	      1. a , b random variables . Generate random numbers for a & b . 
