@@ -1131,25 +1131,21 @@ endmodule
 						  }
 	 endclass
 	   
-	8. WAC for below scenario .
-	      1. a , b random variables . Generate random numbers for a & b . 
-	      2. It should satisfy below conditions
+48. WAC for below scenario 
+	1. a , b random variables . Generate random numbers for a & b . 
+	2. It should satisfy below conditions:
 	          if a is even , b is odd 
 	          if a is odd ,  b is even
-			  
-		class packet ;
-		  rand bit [3:0] a;
-		  rand bit [3:0] b;
-		  
-		  constraint c1 { (a%2 == 0) -> (b %2 !=0);}
-		  
-		  constraint c1 { (a % 2 == 0) -> (b % 2 != 0);
-                          (a % 2 != 0) -> (b % 2 == 0);
+				  
+	class packet ;
+	  rand bit [3:0] a;
+	  rand bit [3:0] b;
+	  constraint c1 { (a % 2 == 0) -> (b % 2 != 0);
+                      (a % 2 != 0) -> (b % 2 == 0);
                         }
-		  
-		  //constraint c1 { a[0] != b[0];  } // LSB must be different, This logic will also work
+	  //constraint c1 { a[0] != b[0];  } // LSB must be different, This logic will also work
 
-        endclass
+    endclass
 		
 			  
 	9. WAC to generate random numbers between 3.4 to 5.6
