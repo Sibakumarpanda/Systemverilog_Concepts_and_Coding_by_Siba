@@ -622,7 +622,7 @@ The values in the array are = '{'h26, 'h67, 'h6c, 'ha7, 'h2e, 'h74, 'hc8, 'hfb, 
     cg cg_inst = new();
 	cg_inst.sample();   
 		  
-32. //WAC to genearte a NxN matrix where all diagonal elelments are having value 0
+32. WAC to genearte a NxN matrix where all diagonal elelments are having value 0
 class packet #(int N = 3);
   rand bit [1:0] mat[N][N];
   
@@ -1147,34 +1147,26 @@ endmodule
 
     endclass
 		
-			  
-	9. WAC to generate random numbers between 3.4 to 5.6
-	   
-	   class packet;
-  
-         rand int d [];
-         real d_float[5];
-  
-         constraint c1 {d.size()==5;}
-         constraint c2 { foreach (d[i])
+49. WAC to generate random numbers between 3.4 to 5.6
+	class packet;
+        rand int d [];
+        real d_float[5];
+        constraint c1 {d.size()==5;}
+        constraint c2 { foreach (d[i])
                             d[i] inside {[34:56]};
                        }
   
-    
          function void post_randomize();
             foreach(d[i]) begin
               d_float[i] = d[i] / 10.0;
             end
          endfunction
-  
-       endclass :packet
-
-       module tb_top;
+    endclass :packet
+	
+     module tb_top;
           packet pkt;
-  
           initial begin
              pkt = new();
-    
             repeat(5) begin
               pkt.randomize();
               $display("Original Values: %p", pkt.d);
@@ -1182,35 +1174,28 @@ endmodule
               $display("------------------------");
             end
          end
-       endmodule :tb_top
+      endmodule :tb_top
 	
-	   
-	10. Write a system Verilog code to arrange numbers in Descending order :  7 , 3, 9 , 2 , 5 , 1 , 4
-	    Make sure Do not use constraints and inbuild functions
-		
-		//constraint
-		class packet
-		  rand int d[] ;
-		  constraint c1 {d.size ()== 10;}
-		  constraint c2 { foreach (d[i])           // constraint for Descending order
+50. Write a system Verilog code to arrange numbers in Descending order :  7 , 3, 9 , 2 , 5 , 1 , 4
+	Make sure Do not use constraints and inbuild functions
+	class packet
+	   rand int d[] ;
+	   constraint c1 {d.size ()== 10;}
+	   constraint c2 { foreach (d[i])           // constraint for Descending order- Decreasing order
 		                    if (i < d.size()-1)
 						      d[i] > d [i+1];
-		                  }
-						  
-		  constraint c3 { foreach (d[i])           // constraint for Ascending order
-		                    if (i < d.size()-1)
+		             }
+	   constraint c3 { foreach (d[i])           // constraint for Ascending order
+		                  if (i < d.size()-1)
 						      d[i] < d [i+1];
-		                  }				  
+		             }				  
+	endclass :packet
 		
-		endclass
-		
-		//System verilog code to perform same thing , Make sure Do not use constraints and inbuild functions
-		
-		module tb_packet
-		  int d[] = `{7 , 3, 9 , 2 , 5 , 1 , 4};
-		  int temp;
-		  
-		  initial begin
+	//System verilog code to perform same thing , Make sure Do not use constraints and inbuild functions
+	module tb_packet
+	   int d[] = `{7 , 3, 9 , 2 , 5 , 1 , 4};
+	   int temp;  
+	   initial begin
 		   foreach d[i] begin
 		     if (i < 7) begin
 			   d[i] > d[i+1];
@@ -1222,8 +1207,7 @@ endmodule
 		   $display ("The original values are =%0p",d);
 		   $display ("The values in Descending order are =%0p",temp);
 		 end
-			   
-		endmodule
+	 endmodule : tb_packet
 	
 	11. WAC to generate even numbers in odd locations and odd numbers in even location in an array .
 	    
