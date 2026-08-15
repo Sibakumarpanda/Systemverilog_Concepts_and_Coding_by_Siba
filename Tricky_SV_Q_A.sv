@@ -1055,68 +1055,54 @@ endmodule
 		                 }
 	 endclass
 	
-	
-	4. WAC to generate pattern as 0000, 0001, 0011, 0111, 1111
-	   
-	     class packet;
-            //rand bit [3:0] d [5];
-            rand bit [3:0] d [];
-  
-            constraint c1 {d.size()== 5;}
-  
-            constraint c2 { foreach(d[i]) {
-                                d[i] == (1 << i) - 1;  // 0, 1, 3, 7, 15
+44. WAC to generate pattern as 0000, 0001, 0011, 0111, 1111
+	class packet;
+        //rand bit [3:0] d [5];
+        rand bit [3:0] d [];
+        constraint c1 {d.size()== 5;}
+		constraint c2 { foreach (d[i]) {
+                            d[i] == (1 << i) - 1;  // 0, 1, 3, 7, 15
                                 }
-                            }
-         endclass : packet
-
-         module tb_top;
-           packet pkt;
-  
-           initial begin
-             pkt = new();
-              repeat(5) begin
-              assert(pkt.randomize());
-              $display("data = %p", pkt.d);
-              foreach(pkt.d[i]) 
+                      }
+	endclass : packet
+    module tb_top;
+       packet pkt;
+       initial begin
+          pkt = new();
+        repeat(5) begin
+          assert(pkt.randomize());
+            $display("data = %p", pkt.d);
+            foreach(pkt.d[i]) 
                $write("%04b ", pkt.d[i]);
                $display();
-             end
-            end
-        endmodule :tb_top
+        end
+      end
+    endmodule :tb_top
+					   
+45. WAC to generate total no of 1's are of 10 and none of the 1's are beside each other in a 32 bit random variable.
+	Means , No two 1's can be adjacent with each other.
 	
-	
-	5. WAC for to generate total no of 1's are 10 and none of the 1's are beside each other in a 32 bit random variable.
-	   Means , No two 1's can be adjacent with each other.
-	
-	    class packet;
-          rand bit [31:0] data;
-  
-          //Constraint1: Exactly 10 ones
-          constraint c1 { $countones(data) == 10;}
-  
-          //Constraint2: No adjacent ones
-          constraint c2 { foreach(data[i]) {
-                             if (i < 31)
-                               !(data[i] == 1 && data[i+1] == 1);  // No "11" pattern
+	class packet;
+       rand bit [31:0] data;
+       constraint c1 { $countones(data) == 10;}  //Constraint1: Exactly 10 ones
+       constraint c2 { foreach(data[i]) {
+                          if (i < 31)
+							  !(data[i] == 1 && data[i+1] == 1);  //Constraint2: No adjacent ones, No "11" pattern
                             }
                         }
-        endclass :packet
-
-        module tb_top;
-           packet pkt;
-  
+     endclass :packet
+		   
+     module tb_top;
+        packet pkt;
           initial begin
             pkt = new();
-    
            repeat(10) begin
              assert(pkt.randomize());
              $display("data = %032b", pkt.data);
              $display("Number of ones = %0d", $countones(pkt.data));
-            
            end
          end
-        endmodule
+     endmodule
 		
 	6. WAC to generate pattern as 123454321
 	
