@@ -1019,8 +1019,7 @@ module glitch_detector_stable (
 
 endmodule
 
------------------------------------
-1. WAC to generate an array of size 10 where every odd index has a random value and every even index value is the sum of its two neighbours.
+41. WAC to generate an array of size 10 where every odd index has a random value and every even index value is the sum of its two neighbours.
    class packet;
 	  rand int d [];
 	  constraint c1 {d.size()== 10;}
@@ -1030,36 +1029,23 @@ endmodule
 							    d[i] = d[i-1] + d[i+1];
 							else if (i ==0)
                                 d[0] == d[1];							
-			}
-			
+			         }
 	endclass
-		  
-		   
-	2. WAC for AXI 4KB boundary scenario
 	
-	      class packet;
-		   rand bit [15:0] awaddr;
-		   rand bit [1:0]  awburst ;
-           rand bit [2:0]  awlen;  // Burst len = awlen+1;
-           rand bit [3:0]  awsize; // Burst size = 2** (awsize)
-
-           constraint c1_4kb { awaddr % 4096 == 0 &&
-		                       2** (awsize) * (awlen+1) <= 4096
-		                       
-		                      }		   
-		  
-		  
-		  endclass
+42. WAC for AXI 4KB boundary scenario
+	class packet;
+	   rand bit [15:0] awaddr;
+	   rand bit [1:0]  awburst ;
+       rand bit [2:0]  awlen;  // Burst len = awlen+1;
+       rand bit [3:0]  awsize; // Burst size = 2** (awsize)
+	   constraint c1_4kb { awaddr % 4096 == 0 && 2** (awsize) * (awlen+1) <= 4096 ;}		   
+	endclass
 	
-	
-	
-	
-	3. WAC to generate Fibonacci series of numbers as [0,1,1,2,3,5,8,13,21,34]
-	
-	     class packet;
-		   rand int d [];
-		   constraint c1 {d.size () == 10;}
-		   constraint c2 { foreach (d[i])
+43. WAC to generate Fibonacci series of numbers as [0,1,1,2,3,5,8,13,21,34]
+	class packet;
+		rand int d [];
+		constraint c1 {d.size () == 10;}
+		constraint c2 { foreach (d[i])
 		                    if (i==0)
 							 d[i] ==0;
 							else if (i==1)
@@ -1067,9 +1053,7 @@ endmodule
                             else 
                              d[i] == d[i-1] + d[i-2];							
 		                 }
-		 
-		 
-		 endclass
+	 endclass
 	
 	
 	4. WAC to generate pattern as 0000, 0001, 0011, 0111, 1111
