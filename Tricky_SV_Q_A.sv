@@ -1220,33 +1220,30 @@ endmodule
 							d[i] %2 == 0 ;
 		                }
 						
-	  //constraint c3 {foreach (d[i]) {
+	  //constraint c3 {foreach (d[i]) {   // This constraint logic will also work
                           d[i] % 2 == (i % 2 == 0) ? 1 : 0;
                              d[i] inside {[0:50]};
                            }
                         }
-		
 	endclass
 		
-	12. WAC to generate 10 random numbers and then arrange them 
-	                     in ascending order 
-	                     in descending order
-						 
-		//constraint
-		class packet
-		  rand int d[] ;
-		  constraint c1 {d.size ()== 10;}
-		  constraint c2 { foreach (d[i])           // constraint for Descending order
-		                    if (i < d.size()-1)
-						      d[i] > d [i+1];
-		                  }
-						  
-		  constraint c3 { foreach (d[i])           // constraint for Ascending order
+52. WAC to generate 10 random numbers and then arrange them 
+	In ascending order 
+	In descending order
+	
+	class packet
+	   rand int d[] ;
+	   constraint c1 {d.size ()== 10;}
+	   constraint c2 { foreach (d[i])           // constraint for Descending order
+		                 if (i < d.size()-1)
+						     d[i] > d [i+1];
+		             }
+	   constraint c3 { foreach (d[i])           // constraint for Ascending order
 		                    if (i < d.size()-1)
 						      d[i] < d [i+1];
 		                  }				  
 		
-		endclass				 
+	endclass				 
 						 
 	
 	13. WAC to generate multiples of  without using any operator
