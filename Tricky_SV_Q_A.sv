@@ -1584,6 +1584,18 @@ endmodule
 	    axi len = 3
 	    axi size = 2
 	    axi burst type = wrap
+
+77. WAC for the below condition.
+	For the address, data :
+    address needs to 500 to 1000  
+    size of the data array between 100 to 200 , sum of all array can not exceed 1000
+    class packet;   
+        rand bit [31:0] addr;
+		rand int data[];
+        constraint c1 { addr inside {[500:1000]};}
+        constraint c2 { data.size () inside {[100:200]} ;}
+        constraint c3 { data.sum () < 1000;}
+    endclass :packet
 		
 	
 
