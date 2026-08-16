@@ -1478,52 +1478,46 @@ endmodule
         (1'b1, current_time = $realtime) |=> $fell(clk) and ($realtime - current_time > 0);
     endproperty	
 	assert property p1;
-	
-	Functional coverage :
-	
-	1. Lets say ,You are verifying a packet scheduler. 
-	    You have a coverpoint for packet_size (small, medium, large) and a coverpoint for error_type (none, crc_err, length_err). 
-	    You need to cross them, but length_err is physically impossible with a small packet. 
-	    How do you implement this to ensure 100% coverage is achievable?
+72. Lets say ,You are verifying a packet scheduler. 
+	You have a coverpoint for packet_size (small, medium, large) and a coverpoint for error_type (none, crc_err, length_err). 
+	You need to cross them, but length_err is physically impossible with a small packet. 
+	How do you implement this to ensure 100% coverage is achievable?
 		
-		//covergroup packet_scheduler_cg with function sample(bit [7:0] packet_size, bit [2:0] error_type);
+	//covergroup packet_scheduler_cg with function sample(bit [7:0] packet_size, bit [2:0] error_type);
 		
-		covergroup packet_scheduler_cg ;
-              packet_size_cp: coverpoint packet_size {
+	covergroup packet_scheduler_cg ;
+         packet_size_cp: coverpoint packet_size {
                                          bins small  = {[0:63]};
                                          bins medium = {[64:127]};
                                          bins large  = {[128:255]};
                                        }
     
-             error_type_cp:   coverpoint error_type {
+         error_type_cp:   coverpoint error_type {
                                          bins none       = {0};
                                          bins crc_err    = {1};
                                          bins length_err = {2};
                                          }
-            // Do the Cross coverage between above two cp and Ignore the impossible combination
-             cross_cp: cross packet_size_cp, error_type_cp {
-        
-                                         ignore_bins small_pkt_length_err = binsof(packet_size_cp.small) && 
-										                                    binsof(error_type_cp.length_err);
-                                                           }
+         // Do the Cross coverage between above two cp and Ignore the impossible combination
+		cross_cp: cross packet_size_cp, error_type_cp { ignore_bins small_pkt_length_err = binsof(packet_size_cp.small) && 
+										                                                   binsof(error_type_cp.length_err);
+													  }
         endgroup
 	
-	2. How RAL will help in functional coverage
+73. How RAL will help in functional coverage
 	
-	3. Difference between illegal ins and ignore bins.
+74. Difference between illegal ins and ignore bins.
 	
-	   illegal_bins	-Marks combinations that should never occur
+	 illegal_bins	-Marks combinations that should never occur
 	                 Causes a simulation error if hit
 	              
 	   
-	   ignore_bins -Marks combinations that are not interesting or impossible
+	 ignore_bins -Marks combinations that are not interesting or impossible
 	                Silently excludes from coverage calculation
 
 	   
-	4. Write a Functional coverage group for burst length = 2 and 4 , burst type = wrap
+75. Write a Functional coverage group for burst length = 2 and 4 , burst type = wrap
 	    
-		
-		covergroup axi_cg;
+	covergroup axi_cg;
            bit [1:0] axburst;  // Burst type (0=FIXED, 1=INCR, 2=WRAP, 3=RESERVED)
            bit [2:0] axsize;   // Burst Size (bytes per beat)
            bit [3:0] axlen;    // Burst Length 
@@ -1583,9 +1577,9 @@ endmodule
             option.goal = 100;
             option.comment = "AXI WRAP burst coverage for length 2 and 4";
     
-        endgroup : axi_cg
+    endgroup : axi_cg
 		
-	5. calculate start and end address for below AXI Parameters:
+76. calculate start and end address for below AXI Parameters:
 	    start addr = 32`1010
 	    axi len = 3
 	    axi size = 2
