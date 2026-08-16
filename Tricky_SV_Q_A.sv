@@ -1391,54 +1391,40 @@ endmodule
 	 endproperty
 	 assert property p1;
 		
-		
-	7. WAA for 400 MHZ clock with 60 % duty cycle
-	
-	   f= 400MHZ , T = 1.25ns , 
-	   Given DC =60 % 
-	   Ton  = 60% 1.25 = 0.75ns
-	   Toff = 40% 1.25 = 0.5ns
+65. WAA for generating 400 MHZ clock with 60 % duty cycle
+	f= 400MHZ , T = 1.25ns , 
+	Given DC =60 % 
+	Ton  = 60% 1.25 = 0.75ns
+	Toff = 40% 1.25 = 0.5ns
 	   
-	   module tb_top;
-	     bit clk;
-		 always begin
-		   clk = 1;
-		   #0.75;
-		   clk = 0;
-		   #0.5;
+	module tb_top;
+	   bit clk;
+	   always begin
+		 clk = 1;
+		  #0.75;
+		 clk = 0;
+		  #0.5;
 		end  
-	   endmodule :tb_top
+	 endmodule :tb_top
 	   
-	   property p1;
-	      realtime current_time;
-		  time trise= 0.75 ;
-		  
+	 property p1;
+	    realtime current_time;
+		time trise= 0.75 ;
 		  @ (posedge clk)
-		  
 		  (1 , current_time = $realtime) |=>
-		  
 		  @ (negedge clk)
-		  
-		  ($realtime - current_time == trise) ;
-		  
-	   endproperty 
-	   
-	   assert property p1;
+		  ($realtime - current_time == trise) ;  
+	  endproperty 
+	  assert property p1;
 	   
 	   property p2;
 	      realtime current_time;
 		  time tfall= 0.25 ;
-		  
 		  @ (negedge clk)
-		  
 		  (1 , current_time = $realtime) |=>
-		  
 		  @ (posedge clk)
-		  
 		  ($realtime - current_time == tfall) ;
-		  
 	   endproperty 
-	   
 	   assert property p2;
 	 
 	8. WAA such that : a should become one , once b and  c is 1
