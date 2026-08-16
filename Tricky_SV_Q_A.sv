@@ -1427,70 +1427,57 @@ endmodule
 	   endproperty 
 	   assert property p2;
 	 
-	8. WAA such that : a should become one , once b and  c is 1
-	
-	   property p1;
-           @(posedge clk)
-           disable iff (!rst_n)
-           (b && c) |-> (a ==1);
-           
-       endproperty
-		 
-	   assert property p1;
+66. WAA such that : a should become one , once b and  c is 1
+	property p1;
+        @(posedge clk)
+        disable iff (!rst_n)
+        (b && c) |-> (a ==1);
+    endproperty
+	assert property p1;
 	     
-	9. WAA such that a is active , b is active , c is inactive and o/p :x within 50ms
-	
-	   property p1;
-          realtime t;
-          @(posedge clk)
-          disable iff (!rst_n)
-          (a && b && !c, t = $realtime) |=> (x == 1) and ($realtime - t <= 50ms);
-       endproperty
-
-       assert property (p1)
+67. WAA such that a is active , b is active , c is inactive and o/p :x within 50ms
+	property p1;
+       realtime t;
+       @(posedge clk)
+       disable iff (!rst_n)
+       (a && b && !c, t = $realtime) |=> (x == 1) and ($realtime - t <= 50ms);
+     endproperty
+     assert property (p1)
 	   
-	10. WAA such that : input signal data_in must be stable for at least 10ns before the rising edge of the clock clk
-	
-	    property p1;
-          @(posedge clk)
-          disable iff (!rst_n)
-          $stable(data_in, 10ns);
-        endproperty
-
-        assert property (p1)
+68. WAA such that : input signal data_in must be stable for at least 10ns before the rising edge of the clock clk
+	property p1;
+        @(posedge clk)
+        disable iff (!rst_n)
+        $stable(data_in, 10ns);
+    endproperty
+    assert property (p1)
 		
-	11. WAA to check the frequency for a clock of 100MHZ
-	    f =100 MHZ , T =10ns
-		
-		property p1;
-		  realtime current_time;
-		  time     time_period = 10; 
-		  @ (posedge clk)
-		  (1 , current_time = $realtime) |=> ($realtime - current_time == time_period);
-		endproperty
-		
-		assert property p1;
+69. WAA to check the frequency for a clock of 100MHZ
+	f =100 MHZ , T =10ns
+	property p1;
+	   realtime current_time;
+	   time  time_period = 10; 
+	    @ (posedge clk)
+		(1 , current_time = $realtime) |=> ($realtime - current_time == time_period);
+	endproperty
+	assert property p1;
 	 
-	12. WAA to detect clock pulse
-	    
-		property p_clock_pulse_any;
-           @(posedge clk)
-           disable iff (!rst_n)
-           $rose(clk) |=> $fell(clk);
-        endproperty
+70. WAA to detect clock pulse
+	property p_clock_pulse_any;
+        @(posedge clk)
+        disable iff (!rst_n)
+        $rose(clk) |=> $fell(clk);
+    endproperty
+	assert property p1;
 		
-		assert property p1;
-		
-	13. WAA to detect clock pulse with specific width
-
-        property p_clock_pulse_width;
-             realtime current_time;
-             @(posedge clk)
-             disable iff (!rst_n)
-             (1'b1, current_time = $realtime) |=> $fell(clk) and ($realtime - current_time > 0);
-        endproperty	
-	
-	    assert property p1;
+71. WAA to detect clock pulse with specific width
+    property p_clock_pulse_width;
+        realtime current_time;
+        @(posedge clk)
+        disable iff (!rst_n)
+        (1'b1, current_time = $realtime) |=> $fell(clk) and ($realtime - current_time > 0);
+    endproperty	
+	assert property p1;
 	
 	Functional coverage :
 	
