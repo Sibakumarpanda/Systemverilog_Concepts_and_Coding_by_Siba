@@ -1242,64 +1242,58 @@ endmodule
 		                    if (i < d.size()-1)
 						      d[i] < d [i+1];
 		                  }				  
-		
-	endclass				 
+	 endclass				 
 						 
+53. WAC to generate multiples of  without using any operator
 	
-	13. WAC to generate multiples of  without using any operator
+54. WAC to generate powers of 2 without any operator
 	
-	14. WAC to generate powers of 2 without any operator
+55. calculate values for c and d :
+	a   = 1001 , b  = 0110
+	c = a & b  //This is bit wise AND operator , so c = 0000 
+	d = a && b //This is Logical AND operator , so d = 1 && 1 = 1
 	
-	
-	15. calculate values for c and d :
-	         a   = 1001 , b  = 0110
-	         c = a & b  //This is bit wise AND operator , so c = 0000 
-	         d = a && b //This is Logical AND operator , so d = 1 && 1 = 1
-	
-	16. find values of time, a
-	  int a =5;
+56. find values of time, a ?
+	int a =5;
 	fork
-	begin
-	    #2 a<=10;
+	  begin
+	     #2 a<=10;
 	     $display("time = %t , a = %d",$time, a);      
-	end
-	begin
-	    #3 a=12;
+	  end
+	  begin
+	     #3 a=12;
 	     $display("time = %t , a = %d",$time, a);    
-	end
-	begin
-	    #6 a<=14;
+	   end
+	   begin
+	     #6 a<=14;
 	     $display("time = %t , a = %d",$time, a);    
-	end
+	   end
 	     #4 a=10;
 	     $display("time = %t , a = %d",$time, a);      
-	join_any
+	  join_any
 	     $display("time = %t , a = %d",$time, a);
 		 
-	//Answer
-     time = 2 , a = 5
-     time = 3 , a = 12
-     time = 4 , a = 10
-     time = 4 , a = 10
-     time = 6 , a = 10	
+	  //Answer
+       time = 2 , a = 5
+       time = 3 , a = 12
+       time = 4 , a = 10
+       time = 4 , a = 10
+       time = 6 , a = 10	
 	
-	16. WAC to generate this pattern :  11 222 3333 44444 
-	
+57. WAC to generate this pattern :  11222333344444 
 	class packet;
        rand int count;
-       int d[];  // Not rand - we build it
-  
+	   int d[];     // Not rand - we build it
        constraint c1 { count inside {[1:10]};}
-  
-      function void post_randomize();
-        d.delete();  // Delete all elements
-        for (int val = 1; val <= count; val++) begin
-          repeat (val + 1) begin
-            d = {d, val};  // Build the pattern
-          end
-        end
-      endfunction
-    endclass :packet
+       function void post_randomize();
+         d.delete();  // Delete all elements
+         for (int val = 1; val <= count; val++) begin
+           repeat (val + 1) begin
+             d = {d, val};  // Build the pattern
+           end
+         end
+       endfunction
+     endclass :packet
 
     module tb_top;
       packet pkt;
@@ -1312,21 +1306,16 @@ endmodule
      end
     endmodule :tb_top
 
-	
-	 
-    17. WAC to generate this pattern :  00110011
-	
-	 class packet;
+58. WAC to generate this pattern :  00110011
+	class packet;
         rand int d[];
         constraint c1 { d.size() == 8;}
         // Constrain values to 0 and 1 only
         constraint c2 { foreach(d[i]) 
                       d[i] == (i/2) %2 ;
-                    }
-      
-     endclass :packet
-      
-     module tb_top;
+                      }
+    endclass :packet
+    module tb_top;
        packet pkt;
         initial begin
          pkt =new();
@@ -1337,27 +1326,24 @@ endmodule
        end
     endmodule :tb_top
 
-	
-	Assertions :
-	
-	1. Write a SVA to check that if req is asserted, ack must follow within 2 to 5 clock cycles, and 
-	   grant must not be asserted until ack arrives.
+59. Write a SVA to check that if req is asserted, ack must follow within 2 to 5 clock cycles, and 
+	grant must not be asserted until ack arrives.
 	   
-	    property p1;
-		  @(posedge clk)
-		  disable iff (!rst_n)
-		  
-		  $rose(req) |-> (!grant) throughout ##[2:5] ack;
+	property p1;
+		@(posedge clk)
+		disable iff (!rst_n)
+		$rose(req) |-> (!grant) throughout ##[2:5] ack;	
+	endproperty
+	assert property p1; 
 		
-		endproperty
+60. Difference between  a[*3] and a[=3] and a[->3]?
 		
-		assert property p1; 
-		
-		
-	2. Difference between a[*3] and a[->3]?
-	
-       a[*3] -  Its Consecutive repetition operator.             Meaning , a must be true for 3 consecutive cycles	   
-	   a[->3] - Its Non-consecutive repetition (GoTo) operator . Meaning, a must be true 3 times (not necessarily consecutive)
+	a[*3] -  Its Consecutive repetition operator.             
+		     Meaning , a must be true for 3 consecutive cycles	  
+	a[=3] - Its Non-consecutive repetition operator        
+		    Meaning ,a must be true 3 times (not necessarily consecutive)
+	a[->3] - Its also Non-consecutive repetition (GoTo) operator . 
+		     Meaning, a must be true 3 times (not necessarily consecutive) ,but here before arrival of next variable , a variable should be present
 	   
 	    
 	3. WAA for a raises [ 5:8 ] , b also raise
