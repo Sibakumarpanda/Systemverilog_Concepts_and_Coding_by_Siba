@@ -1209,25 +1209,24 @@ endmodule
 		 end
 	 endmodule : tb_packet
 	
-	11. WAC to generate even numbers in odd locations and odd numbers in even location in an array .
-	    
-		class packet;
-		  rand int d[];
-		  constraint c1 {d.size()== 10;}
-		  constraint c2 {foreach d[i]
-		                    if (i %2==0)
-							  d[i] %2 == 1;
-							else 
-							  d[i] %2 == 0 ;
+51. WAC to generate even numbers in odd locations and odd numbers in even location in an array .
+	class packet;
+	  rand int d[];
+	  constraint c1 {d.size()== 10;}
+	  constraint c2 {foreach d[i]
+		                if (i %2==0)
+							d[i] %2 == 1;
+						else 
+							d[i] %2 == 0 ;
 		                }
 						
-		  //constraint c3 {foreach (d[i]) {
-                             d[i] % 2 == (i % 2 == 0) ? 1 : 0;
+	  //constraint c3 {foreach (d[i]) {
+                          d[i] % 2 == (i % 2 == 0) ? 1 : 0;
                              d[i] inside {[0:50]};
-                             }
+                           }
                         }
 		
-		endclass
+	endclass
 		
 	12. WAC to generate 10 random numbers and then arrange them 
 	                     in ascending order 
