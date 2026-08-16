@@ -1345,72 +1345,51 @@ endmodule
 	a[->3] - Its also Non-consecutive repetition (GoTo) operator . 
 		     Meaning, a must be true 3 times (not necessarily consecutive) ,but here before arrival of next variable , a variable should be present
 	   
-	    
-	3. WAA for a raises [ 5:8 ] , b also raise
+61. WAA for a raises [ 5:8 ] , b also raise
+	property p1;
+	   @(posedge clk)
+	   disable iff (!rst_n)
+	   $rose(a)[->5:8] ##1 $rose(b);
+	endproperty
+	assert property p1;
 	
-	    property p1;
-		  @(posedge clk)
-		  disable iff (!rst_n)
-		  
-		  $rose(a)[->5:8] ##1 $rose(b);
+62. WAA such that : ready should be asserted at least 2 clock cycles before valid is asserted
+	property p1;
+	  @(posedge clk)
+	  disable iff (!rst_n)
+	  $rose(valid) |-> ($past(ready, 1) && $past(ready, 2));
+	  // (ready == 1) throughout ##2 $rose(valid); // This is also correct
+	endproperty
+	assert property p1;
 		
-	    endproperty
-		
-		assert property p1;
-	
-	4. WAA such that : ready should be asserted at least 2 clock cycles before valid is asserted
-	
-	    property p1;
-		  @(posedge clk)
-		  disable iff (!rst_n)
-		  
-		  
-		  $rose(valid) |-> ($past(ready, 1) && $past(ready, 2));
-		  
-		  // (ready == 1) throughout ##2 $rose(valid); // This is also correct
-		
-	    endproperty
-		
-		assert property p1;
-		
-	5. WAA such that if assertion is enable there is up counter , else down counter
-	
-	     property p1;
-             @(posedge clk)
-             disable iff (!rst_n)
-             (enable == 1) |-> (count == $past(count) + 1);
-             (enable == 0) |-> (count == $past(count) - 1);
-         endproperty
+63. WAA such that if assertion is enable there is up counter , else down counter
+	property p1;
+       @(posedge clk)
+       disable iff (!rst_n)
+       (enable == 1) |-> (count == $past(count) + 1);
+       (enable == 0) |-> (count == $past(count) - 1);
+    endproperty
+	assert property p1;
 		 
-		 assert property p1;
-		 
-	6. WAA for 200 MHz clock with 50 % duty cycle
-	    
-		100MHZ - 10ns
-		200MHZ - 5ns
-		300MHZ - 2.5ns
-		400MHZ - 1.25ns
-	
-	    f= 200MHZ , T = 5ns , Ton =2.5ns , Toff =2.5ns
-		
-		module tb_top;
-		 bit clk;
-		 always begin
-		  #2.5 clk= ~clk;
-		 end
-		endmodule :tb_top
-		
-		property p1;
-		  realtime current_time;
-		  time     time_period = 5;
-		  
-		  @ (posedge clk)
-		  
-		  (1 , current_time = $realtime) |=> ($realtime - current_time == time_period);
-		
-		endproperty
-		
-		assert property p1;
+64. WAA for generating 200 MHz clock with 50 % duty cycle
+	100MHZ - 10ns
+	200MHZ - 5ns
+	300MHZ - 2.5ns
+	400MHZ - 1.25ns
+	Given f= 200MHZ , T = 5ns , Ton =2.5ns , Toff =2.5ns
+	module tb_top;
+	   bit clk;
+	   always begin
+		 #2.5 clk= ~clk;
+	   end
+	 endmodule :tb_top
+	 property p1;
+		realtime current_time;
+		time     time_period = 5;
+		 @ (posedge clk)
+		 (1 , current_time = $realtime) |=> ($realtime - current_time == time_period);
+	 endproperty
+	 assert property p1;
 		
 		
 	7. WAA for 400 MHZ clock with 60 % duty cycle
