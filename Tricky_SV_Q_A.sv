@@ -1597,7 +1597,332 @@ endmodule
         constraint c3 { data.sum () < 1000;}
     endclass :packet
 		
-	
+78. Reverse a string without using built-in reverse methods. Example: "VLSI" -> "ISLV"
+   module reverse_string (
+     input  logic [31:0] in,  // "VLSI"
+     output logic [31:0] out  // "ISLV"
+      );
+    
+    assign out = {in[7:0], in[15:8], in[23:16], in[31:24]};
+    
+   endmodule :reverse_string
+
+
+2. Find duplicate elements in an array. Example: {1,2,3,2,4,3,5} -> 2,3
+
+module tb_top;
+  int d [7] = '{1,2,3,2,4,3,5};
+  int d_duplicate [$];
+  initial begin
+    $display ("The original Array is = %0p",d);
+    d.rsort ();
+    $display ("The Array in Descending order is = %0p",d); // { 5,4,3,3,2,2,1}
+    
+    foreach (d[i]) begin
+      if (i< $size(d)-1) begin
+        if (d[i]== d[i+1])
+          d_duplicate .push_back(d[i]);
+    end
+    end
+    $display ("The Duplicate elements in Array is = %0p",d_duplicate);
+  end
+  
+endmodule
+    
+    
+3. Find the second-largest number in an integer array.
+
+module tb_top;
+
+  int d[7] = '{1,2,3,2,4,3,5};
+
+  int d_large;
+  int d_second_large;
+
+  initial begin
+
+    $display("Original Array = %0p", d);
+
+    // Sort in descending order
+    d.rsort();
+
+    $display("Sorted Array   = %0p", d);
+
+    // Largest element
+    d_large = d[0];
+
+    // Find second largest distinct element
+    foreach(d[i]) begin
+      if(d[i] < d_large) begin
+        d_second_large = d[i];
+        break;
+      end
+    end
+
+    $display("Largest Number        = %0d", d_large);
+    $display("Second Largest Number = %0d", d_second_large);
+
+  end
+
+endmodule
+
+//Constraint to find the largest number and second large number in an array
+
+class packet;
+  rand int d[];
+  int d_large;
+  int d_second_large;
+  
+  constraint c1 {d.size () == 10;}
+
+  constraint c2 { foreach d([i])
+                    if ( i < d.size () -1 )
+                       d[i] > d [i+1];
+                }
+  
+  constraint c3 {d_large == d[0];}
+  
+  constraint second_c { d_second_large < d_large;}
+  
+  constraint c4 { foreach(d[i])
+                      if(d[i] < d_large)
+                       d_second_largest >= d[i];
+                 }
+  
+endclass
+
+    
+4. Sort an array without using the built-in sort() method.
+5. Write a constraint to generate 10 unique random values from 1 to 100. 
+  
+  class packet
+    rand int d[];
+    constraint c1 {d.size () == 10 ;}
+    constraint c1 {foreach (d[i])
+                       d[i] inside [1:100];
+                  }
+    
+    constraint c3 {foreach (d[i])
+                      foreach (d[j])
+                        if ( i != j )
+                        d[i] != d[j]
+      }
+    
+  endclass
+                          
+6. Write a constraint to generate an even number between 10 and 50.
+   class packet
+     rand int d[];
+     constraint c1 {d.size () == 40;}
+     constraint c2 {foreach (d[i])
+                        d[i] inside [10 : 50];
+                   }
+     
+     constraint c3 {foreach (d[i])
+                        d[i] %2 == 0;
+                   }
+     
+   endclass
+  
+7. Write a constraint to generate an array containing exactly 5 even and 5 odd numbers.
+  
+  class packet;
+
+    rand int d[];
+    constraint size_c { d.size() == 10; }
+    constraint count_c { d.sum() with (int'(item % 2 == 0)) == 5;}
+
+  endclass
+  
+8. Write a constraint for a 4-bit number where the number of 1s must be exactly 2.
+  
+   class packet
+     rand bit [3:0] a;
+     constraint c1 { $countones (a) == 2;}
+     
+   endclass
+  
+9. Write a constraint to generate the pattern: 1, 2, 4, 8, 16, 32..
+  
+   class packet;
+     rand int a;
+     constraint c1 { a inside [1:100];}
+     constraint c2 {(a & (a-1)) == 0; }
+     
+   endclass
+    //////////////////////// using array
+   class packet;
+
+    rand int d[];
+    constraint size_c { d.size() == 10; }
+    constraint c2 {foreach (d[i])
+                     d[i] inside [1 : 100];
+                   } 
+     
+     constraint c3 {foreach (d[i])
+                       d[i] == 2 ** i;
+                   } 
+
+  endclass
+   
+  
+10. Write a constraint to generate consecutive values without using foreach unnecessarily.
+    Example: {10,11,12,13,14}
+  
+    class packet;
+      rand int d[];
+      rand int start;
+
+      constraint size_c { d.size() == 5; }
+
+      constraint start_c { start inside {[1:100]};}
+
+      constraint pattern_c { d[0] == start;
+                             foreach (d[i])
+                                 if (i > 0)
+                                   d[i] == d[i-1] + 1;
+                            }
+
+    endclass
+  
+ 
+  
+11. Write a SystemVerilog function to count the number of 1s in a 32-bit variable. Example: 8'b10110100 -> 4
+  
+    function int count_ones(bit [31:0] data);
+     return $countones(data);
+    endfunction
+  
+  
+    //Alternative
+    function int count_ones(bit [31:0] data);
+      int count = 0;
+
+      for (int i = 0; i < 32; i++) begin
+        if (data[i])
+         count++;
+      end
+
+      return count;
+    endfunction
+  
+12. Write a program/constraint to find the first non-repeated element in an array.
+  
+    class packet
+      rand int d[];
+      constraint c1 {d.size() == 10;}
+      constraint c2 {foreach (d[i])
+                       d[i] inside [10:15];                  
+                    }
+      // Constraint: Element at index 0 is non-repeated
+      // Ensure d[0] doesn't appear anywhere else
+      constraint c3 { foreach(d[i]) 
+                        if (i > 0) 
+                          d[i] != d[0];
+                     }
+      
+      
+    endclass
+  
+  
+13. Write a queue-based code to remove duplicate elements from a queue.
+  
+module tb_top;
+  int q[$] = '{1, 2, 3, 2, 4, 3, 5};
+  int q_unique[$];
+  
+  initial begin
+    $display("Original Queue: %p", q);
+    
+    // Use unique() method
+    q_unique = q.unique();
+    
+    $display("Queue without duplicates: %p", q_unique); // Here the duplicated elements will be removed
+  end
+endmodule
+  
+14. Given a queue of transactions, WAC to find the transaction with the maximum value of data.
+  
+    class packet;
+      rand int q[$];
+      int q_max;
+      constraint c1 {q.size() == 10;}
+      constraint c2 {foreach (q[i])
+                        q[i] inside [1:10];
+                    }
+     
+      // Find maximum value after randomization
+       function void post_randomize();
+         q_max = q[0];  // Initialize with first element
+         foreach(q[i]) begin
+             if (q[i] > q_max) 
+               q_max = q[i];
+         end
+       endfunction
+    endclass
+  
+15. Write a SystemVerilog constraint for an address aligned to 4 bytes.
+    Example valid addresses: 0, 4, 8, 12, 16... 
+  
+    class packet;
+       rand bit [31:0] address;
+       // Address must be 4-byte aligned (divisible by 4)
+      constraint c1 { address % 4 == 0; }
+      // Lower 2 bits must be 0 for 4-byte alignment- This logic will also work.
+      //constraint c1 { address[1:0] == 2'b00;}
+    endclass
+  
+16. Write a SystemVerilog assertion to check that a request is followed by an acknowledge within 3 clock cycles.
+    
+    property p1;
+      @(posedge clk)
+      disable iff (!rst_n)
+      $rose(req) |-> ##[0:3] ack;
+    endproperty
+    assert property (p1);
+     
+17. Write an assertion to check that req and ack should never be HIGH at the same time.
+    
+     property p1;
+      @(posedge clk)
+      disable iff (!rst_n)
+       !(req && ack);  // req and ack should never be HIGH together
+     endproperty
+    assert property (p1);
+      
+18. Write an assertion to check that when valid is HIGH, ready must become HIGH within 5 cycles.
+      
+    property p1;
+      @(posedge clk)
+      disable iff (!rst_n)
+      $rose(valid) |-> ##[0:5] ready;
+    endproperty
+    assert property (p1);  
+      
+19. Write a functional coverage model for an 8-bit data signal covering:
+    0-63
+    64-127
+    128-191
+    192-255
+  
+    covergroup cg @(posedge clk);
+        bit [7:0] data;  // Coverpoint variable
+  
+        // Single coverpoint with 4 bins for different ranges
+       cp_data: coverpoint data {
+          bins low    = {[0:63]};     // 0-63
+          bins mid1   = {[64:127]};   // 64-127
+          bins mid2   = {[128:191]};  // 128-191
+          bins high   = {[192:255]};  // 192-255
+          }
+    endgroup
+
+    // Instantiate and sample
+    cg cg_inst = new();
+    cg_inst.sample();
+
+  
+  	
 
 
 	  
