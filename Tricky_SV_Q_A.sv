@@ -1921,7 +1921,883 @@ endmodule
     cg cg_inst = new();
     cg_inst.sample();
 
+Section 1 — Practical Constraints
+
+1. Generate a bit[7:0] value that is divisible by 3 but not divisible by 6
+
+   class packet
+     rand bit [7:0] a;
+     constraint c1 { a % 3 == 0 ;
+                     a % 6 != 0 ;
+                   }
+     
+   endclass :packet
+   
+   
+2. Generate 10 unique values in the range 1–50, where exactly 3 values are even.
+   class packet
+     rand int d[];
+     constraint c1 { d.size () == 10;}
+     constraint c2 { foreach (d[i])
+                       d[i] inside [1:50];
+                   }
+     constraint c3 { foreach (d[i])
+                       foreach (d[j])
+                         if (i != j)
+                           d[i] != d[j];
+                       }
+     
+     //constraint c3 {unique {d};} // Directly we can use unique also
+     
+     
+     constraint c4 { d.sum () with (int'(item %2 ==0))== 3; }
+   endclass
+
+3. Generate an array of 10 elements where the first 5 elements are even, the last 5 elements are odd, and all elements are unique.
+
+   class packet;
+     rand int d[];
+     constraint c1 {d.size () == 10;}
+     constraint c2 { foreach (d[i])
+                       d[i] inside [1:50];
+                   }
+     constraint c3 { unique {d};}
+     constraint c4 { foreach (d[i])
+                         if (i < 5)
+                            d[i] % 2 == 0;
+                         else 
+                           d[i] % 2 == 1 ;
+                    }
+     
+   endclass
+
+4. Generate a 10-element array whose sum is exactly 100, with every element between 1 and 20.
+                    
+   class packet;
+     rand int d[];
+     constraint c1 {d.size () == 10;}
+     constraint c2 { foreach (d[i])
+                        d[i] inside [1:20];
+                   }
+     constraint c3 { d.sum () == 100;}
+     
+     
+   endclass                 
+                    
+5. Generate an array where no two adjacent elements are equal.
+   
+   class packet;
+     rand int d[];
+     constraint c1 {d.size () == 10;}
+     constraint c2 { foreach (d[i])
+                        d[i] inside [1:20];
+                   }
+     constraint c3 { foreach (d[i])
+                       if (i < d.size ()-1)
+                         d[i] != d[i+1];
+                   }
+     
+     
+   endclass 
+
+6. Generate an array containing exactly four 0s, three 1s, and three 2s
+
+   class packet;
+     rand int d[];
+     constraint c1 {d.size () == 10;}
+     constraint c2 { foreach (d[i])
+                        d[i] inside [0:2];
+                   }
+     
+     constraint c3 { d.sum() with (int'(item == 0)) == 4;
+                     d.sum() with (int'(item == 1)) == 3;
+                     d.sum() with (int'(item == 2)) == 3;
+                    }
+     
+   endclass 
+
+7. Generate a 16-bit number having exactly 5 bits set to 1.
+
+   class packet;
+     rand bit [15:0] a ;
+     constraint c1 {$countones(a)== 5;}
+     
+   endclass 
+
+8. Generate a 32-bit number where no two consecutive bits are 1.
+   
+
+   class packet
+     rand bit [31:0] a;
+     
+     constraint c1 { foreach(a[i])
+                          if(i < 31)
+                            !(a[i] && a[i+1]);
+                   }
+     
+     
+   endclass
+
+9. Generate a 16-bit value where the number of 1s is greater than the number of 0s.
+   class packet
+     rand bit [15:0] a;
+     constraint c1 {$countones(a) > $countzeros(a);}
+     //constraint c1 { $countones(a) > 8;} // This logic will also work
+     
+   endclass
+
+10. Generate an 8-bit value that is a power of 2.
+     1, 2,4,8,16,32 -These power of 2 value has one bit =1
+
+    class packet
+      rand bit [7:0] a;
+      
+      constraint c1 {$countones(a)==1;}
+       
+    endclass
+    
+    // If the values are in terms of an array and we need to get in a series then:
+    class packet;
+      rand int d[];
+      constraint c1 {d.size ()== 10;}
+      
+      constraint c2 { d[0] == 1;
+                       foreach(d[i])
+                          if(i > 0)
+                            d[i] == d[i-1] * 2;
+                     }
+    endclass
+
+
+Section 2 — Product-Company Style
+11. Generate 10 unique addresses where every address is 4-byte aligned and lies between 0x1000 and 0x2000
+
+     class packet;
+       rand bit [31:0] addr[];
+       constraint c1 {addr.size () ==10;}
+       constraint c2 { foreach(addr[i])
+                        addr[i] inside {[32'h1000 : 32'h2000]};
+                     }
+       constraint c3 {foreach (addr[i])
+                          addr[i] % 4 ==0;
+                     }
+       //constraint c3 {foreach(addr[i])
+       //                   addr[i][1:0] == 2'b00;  // 4-byte aligned- This logic will also work
+                      }
+       constraint c4 {unique{addr};}
+       
+     endclass
+
+
+
+
+12. Generate an array of 10 addresses such that no two addresses fall in the same 16-byte memory block.
+
+
+    class packet;
+       rand int addr[];
+       constraint c1 { addr.size() == 10; }
+       constraint c2 { foreach(addr[i])
+                         addr[i] inside {[0:255]};
+                      }
+       constraint c3 { foreach(addr[i])
+                         foreach(addr[j])
+                           if(i != j)
+                            (addr[i] / 16) != (addr[j] / 16);
+                      }
+
+    endclass
+
+13. Generate packet lengths between 64 and 1500 bytes,
+                  with 70% in 64–512, 
+                  with 20% in 513–1024, 
+                  and  10% in 1025–1500.
+
+    
+    class packet;
+        rand int d[];
+        constraint c1 { d.size() == 20;}
+        constraint c2 { foreach (d[i])
+                         d[i] dist {
+                          [64:512]    := 70,
+                          [513:1024]  := 20,
+                          [1025:1500] := 10
+                         };
+                        }
+    endclass
+
+14. Generate transaction IDs from 0–15, but no ID should repeat until all 16 IDs have been used
   
+    class packet;
+      randc bit [3:0] tr_id;
+      constraint c1 {tr_id inside {[0:15]};}      
+      
+    endclass
+
+15. Generate a burst length where legal values are 1, 2, 4, 8, 16, with 8 and 16 occurring more frequently.
+    class packet;
+      rand bit [3 :0] axlen ;
+      //bit [3:0] burstlen;
+      //constraint c1 {burstlen == axlen+1;}
+      constraint c2 { axlen dist {0:=10, 1:=10, 3:=10, 7:=35, 15:=35}; }
+      
+    endclass
+
+16. Generate an AXI address such that a burst of LEN beats and SIZE bytes does not cross a 4-KB boundary.
+
+    class packet;
+      rand bit [15:0] awaddr;
+      rand bit [2:0]  awsize;
+      rand bit [3:0]  awlen;
+      constraint c1_4kb { (awaddr % 4096 == 0 ) && 
+                          (2**awsize) * (awlen+1) < = 4096;
+                        }
+      
+      
+    endclass
+
+17. Generate an address aligned according to a randomly generated transfer size: 1, 2, 4, 8, or 16 bytes.
+
+    class packet;
+     rand bit [31:0] addr;
+     rand int unsigned size;
+     constraint c1 { size inside {1,2,4,8,16}; }
+     constraint c2 { addr % size == 0; }
+
+   endclass
+      
+18. Generate a 32-bit data value where exactly one byte is 8'hFF and all other bytes are different.
+    class packet;
+      rand bit [31:0] data[4];
+      constraint c1 { data.sum () with (int'(item== 8'hFF)) == 1;
+                     }
+      constraint c2 {unique {data};}
+      
+    endclass
+
+19. Generate a 32-bit value where every byte is unique.
+    class packet;
+      rand bit [31:0] data[4];
+      
+      //constraint c1 {unique {data};}
+      constraint c1 { unique {
+                      data[31:24],
+                      data[23:16],
+                      data[15:8],
+                      data[7:0]
+                      };
+                     }
+      
+    endclass
+
+20. Generate a sequence of values where the difference between consecutive values is always 4
+  
+    class packet;
+       rand int d[];
+       constraint c1 { d.size() == 10;}
+       constraint c2 { d[0] inside {[0:100]};}
+       constraint c3 { foreach(d[i])
+                          if(i > 0)
+                           d[i] == d[i-1] + 4;
+                      }
+
+    endclass
+  
+  
+Section 6 — Basic Numeric Patterns
+  
+60. Generate the pattern 1 2 3 4 5 6 7 8 9 10
+    class packet ;
+      rand int d[];
+      constraint c1 {d.size () ==10 ;}
+      constraint c2 {foreach (d[i])
+                       d[i] inside {[1:10]};
+                    }
+      constraint c3 {d[0]==1;}
+      constraint c4 {foreach (d[i])
+                       if (i>0)
+                         d[i] == d[i-1]+1;
+                    }
+      
+      //constraint c5 {foreach (d[i])  // Simple and straightforward logic 
+      //                    d[i] == i+1;
+      //              }
+      
+    endclass 
+  
+61. Generate the pattern 10 9 8 7 6 5 4 3 2 1
+  
+    class packet ;
+      rand int d[];
+      constraint c1 {d.size () ==10 ;}
+      constraint c2 {foreach (d[i])
+                       d[i] inside {[1:10]};
+                    }
+      constraint c3 {d[0]==10;}
+      constraint c4 {foreach (d[i])
+                       if (i>0)
+                         d[i] == d[i-1]-1;
+                    }
+      
+      //constraint c5 {foreach (d[i])  // Simple and straightforward logic 
+      //                    d[i] == 10-i;
+      //              }
+      
+    endclass 
+  
+62. Generate 0 2 4 6 8 10 12 14
+  
+    class packet ;
+      rand int d[];
+      constraint c1 {d.size () ==10 ;}
+
+      
+      constraint c2 {d[0]==0;}
+      constraint c3 {foreach (d[i])
+                       if (i>0)
+                         d[i] == d[i-1]+2;
+                    }
+      
+      //constraint c4 {foreach (d[i])  // Simple and straightforward logic 
+      //                    d[i] == i*2;
+      //              }
+      
+    endclass 
+  
+63. Generate 1 3 5 7 9 11 13 15
+  
+    class packet ;
+      rand int d[];
+      constraint c1 {d.size () ==10 ;}
+
+      
+      constraint c2 {d[0]==1;}
+      constraint c3 {foreach (d[i])
+                       if (i>0)
+                         d[i] == d[i-1]+2;
+                    }
+      
+      //constraint c4 {foreach (d[i])  // Simple and straightforward logic 
+      //                    d[i] == 1+(2*i);
+      //              }
+      
+    endclass 
+  
+64. Generate powers of 2: 1 2 4 8 16 32 64 128
+  
+    class packet ;
+      rand int d[];
+      constraint c1 {d.size () ==8 ;}
+
+      constraint c2 {foreach (d[i])                      
+                        d[i] == 2 ** i;
+                    }
+      
+    endclass 
+  
+65. Generate square numbers: 1 4 9 16 25 36 49 64
+  
+    class packet ;
+      rand int d[];
+      constraint c1 {d.size () ==8 ;}
+
+      constraint c2 {foreach (d[i])     // Logic to generate 0 1 4 9 16 25 36 49 64
+                        d[i] == i*i;
+                    }
+      
+      //constraint c3 {foreach (d[i])                      
+      //                  d[i] == (i+1)*(i+1);   //Logic to generate 1 4 9 16 25 36 49 64 
+                    }
+      
+    endclass 
+  
+66. Generate triangular numbers: 1 3 6 10 15 21 28 36
+      //Difference as we see      2 3 4  5
+  
+    class packet ;
+      rand int d[];
+      constraint c1 {d.size () ==8 ;}
+      constraint c2 {d[0]==1;}
+
+      constraint c3 {foreach (d[i])     
+                         if (i>0)
+                           d[i] -d[i-1]== i+1; // Difference between consucative terms = incrementing
+                    }
+
+      
+    endclass
+  
+67. Generate the pattern as : 1 2 4 7 11 16 22 29
+     //Difference as we see    1 2 3 4  5  6  7
+  
+    class packet ;
+      rand int d[];
+      constraint c1 {d.size () ==8 ;}
+      constraint c2 {d[0]==1;}
+      constraint c3 {foreach (d[i])     
+                         if (i>0)
+                           d[i] -d[i-1]== i; // Difference between consucative terms = incrementing
+                    }      
+    endclass
+     
+68. Generate the pattern as : 2 4 8 16 32 64 128 256
+  
+     class packet ;
+      rand int d[];
+      constraint c1 {d.size () ==8 ;}
+      constraint c2 {d[0]==2;}
+      constraint c3 {foreach (d[i])     
+                         if (i>0)
+                           d[i] == d[i-1]* 2; // Multiplication of 2
+                    }
+
+      
+    endclass
+  
+69. Generate the pattern as 100 90 80 70 60 50 ... with a defined decrement.
+
+    class packet ;
+      rand int d[];
+      constraint c1 {d.size () ==6 ;}
+      constraint c2 {d[0]==100;}
+      constraint c3 {foreach (d[i])     
+                         if (i>0)
+                           d[i] == d[i-1]-10; 
+                    }
+
+      
+    endclass
+  
+Section 7 — Repetition / Alternating Patterns
+70. Generate 1 1 2 2 3 3 4 4 5 5
+  
+    class packet;
+       rand int count;
+	   int d[];     // Not rand - we build it
+       constraint c1 { count == 5;}
+      
+       function void post_randomize();
+         d.delete();  // Delete all elements
+         for (int val = 1; val <= count; val++) begin
+           repeat (2) begin
+             d = {d, val};  // Build the pattern
+           end
+         end
+       endfunction
+     endclass :packet
+  
+  
+71. Generate 1 2 2 3 3 3 4 4 4 4
+    
+    class packet;
+      rand int count ;
+      int d[];
+      constraint c1 {count inside {[1:4]};}
+      
+      function void post_randomize();
+        d.delete();
+        for(int val= 1; val <= count;val++) begin
+          repeat(val)begin
+            d= {d,val};
+          end
+        end  
+      endfunction
+      
+    endclass
+  
+72. Generate 0 1 0 1 0 1 0 1.
+    class packet 
+      rand int d[];
+      constraint c1 {d.size () == 8;}
+      constraint c2 {foreach d[i]
+                        if (i %2 == 0)
+                           d[i] == 0;
+                        else 
+                            d[i] == 1;
+                    }   
+    endclass
+  //Alternative 
+    class packet
+      rand int count ;
+      int d[];
+      constraint c1 {count inside {[1:4]};} // 1 to 4 pairs → 2 to 8 elements
+      
+      function void post_randmize();
+        d.delete();
+        for(int val =0 ; val< count;val++) begin
+          repeat(1) begin
+             d = {d, 0};  // Append 0 (using {d, val})
+             d = {d, 1};  // Append 1
+          end
+        end
+      endfunction
+    endclass
+    
+  
+    
+
+73. Generate 1 2 1 2 1 2 1 2.
+     class packet 
+      rand int d[];
+      constraint c1 {d.size () == 8;}
+      constraint c2 {foreach d[i]
+                        if (i %2 == 0)
+                          d[i] == 1;
+                        else 
+                          d[i] == 2;
+                    }   
+    endclass
+  //Alternative 
+    class packet
+      rand int count ;
+      int d[];
+      constraint c1 {count inside {[1:4]};} // 1 to 4 pairs → 2 to 8 elements
+      
+      function void post_randmize();
+        d.delete();
+        for(int val =0 ; val< count;val++) begin
+          repeat(1) begin
+             d = {d, 1};  
+             d = {d, 2};  
+          end
+        end
+      endfunction
+    endclass
+    
+74. Generate 1 2 3 1 2 3 1 2 3
+  
+    class packet
+      rand int count ;
+      int d[];
+      constraint c1 {count == 3;} 
+      
+      function void post_randmize();
+        d.delete();
+        for(int val =1 ; val<= count;val++) begin
+          repeat(1) begin
+             d = {d, 1};  
+             d = {d, 2}; 
+             d = {d, 3};  
+          end
+        end
+      endfunction
+    endclass
+  
+75. Generate 0 0 1 1 2 2 3 3 4 4.
+    class packet
+      rand int count;
+      int d[];
+      constraint c1 {count inside {[0:4]};}
+      
+      function void post_randomize ();
+        d.delete();
+        for(int val=0; val <= count; val++) begin
+          repeat(2) begin
+            d= {d,val};
+          end
+        end
+        
+      endfunction
+      
+    endclass
+76. Generate 5 5 5 4 4 4 3 3 3 2 2 2
+  
+    class packet
+      rand int count;
+      int d[];
+      constraint c1 {count inside {[2:5]};}
+      
+      function void post_randomize ();
+        d.delete();
+        for(int val=5; val >= count; val--) begin
+          repeat(3) begin
+            d= {d,val};
+          end
+        end
+        
+      endfunction   
+    endclass
+  
+77. Generate an array where odd indices contain odd numbers and even indices contain even numbers.
+    class packet
+      rand int d[];
+      constraint c1 {d.size ()== 10;}
+      constraint c2 {foreach (d[i])
+                       d[i] inside {[1:50]};
+                    }
+      constraint c3 {foreach (d[i])
+                        if (i %2 ==0)
+                          d[i] %2 ==0;
+                        else
+                          d[i] %2 ==1; 
+                    }
+      
+    endclass
+78. Generate 1 3 2 4 3 5 4 6 ...
+  
+    // Even Position pattern values : 1, 2 3 4
+    // Odd Position pattern :  3, 4 5 etc
+  
+    class packet
+      rand int d[];
+      constraint c1 {d.size () == 10;}
+      constraint c2 { foreach (d[i])
+                         if (i %2 ==0)
+                           d[i] == (i/2)+1;
+                         else
+                           d[i] == (i/2)+3;
+                    }
+      
+    endclass
+  
+79. Generate 0 2 1 3 2 4 3 5 ...
+  
+     class packet
+      rand int d[];
+      constraint c1 {d.size () == 10;}
+      constraint c2 { foreach (d[i])
+                         if (i %2 ==0)
+                           d[i] == (i/2);
+                         else
+                           d[i] == (i/2)+2;
+                    }
+      
+    endclass
+  
+
+Section 10 — Bit Patterns
+ 
+98. Generate an 8-bit value with the pattern 10101010
+  
+    class packet;
+       rand bit [7:0] a;
+       constraint c1 { foreach(a[i]) {
+                          if (i % 2 == 0)   // Even bit positions (0,2,4,6)
+                               a[i] == 0;      // LSB should be 0
+                          else              // Odd bit positions (1,3,5,7)
+                               a[i] == 1;      // MSB should be 1
+                           }
+                      }
+    endclass
+  
+  
+99. Generate 01010101
+         
+    class packet;
+       rand bit [7:0] a;
+       constraint c1 { foreach(a[i]) {
+                          if (i % 2 == 0)   
+                              a[i] == 1;      
+                          else              
+                              a[i] == 0;      
+                           }
+                      }
+    endclass  
+         
+100. Generate a 16-bit value with alternating 1 and 0.
+     class packet
+       rand bit [15:0] a;
+       constraint c1 { foreach (a[i])
+                         if (i <15)
+                           a[i] != a[i+1];
+                         }
+       
+     endclass
+                      
+101. Generate a value containing four consecutive 1s, with all other bits zero.
+                     
+      class packet;
+        rand bit [7:0] a;
+        rand int start_pos;
+        constraint c1 {$countones(a)==4;}
+        
+        constraint c2 { start_pos inside {[0:4]}; }  // 4 ones can start at positions 0-4
+  
+        
+        constraint c3 {foreach (a[i])
+                         if (i >=start_pos && i < start_pos+4)
+                           a[i] ==1;
+                         else
+                           a[i] == 0;
+                      
+                      }
+        
+      endclass
+                      
+102. Generate a value containing four consecutive 0s, with all other bits one.
+                      
+     class packet;
+        rand bit [7:0] a;
+        rand int start_pos;
+        constraint c1 {$countzeros(a)==4;}
+        
+        constraint c2 { start_pos inside {[0:4]}; }  // 4 ones can start at positions 0-4
+  
+        
+        constraint c3 {foreach (a[i])
+                         if (i >=start_pos && i < start_pos+4)
+                           a[i] ==0;
+                         else
+                           a[i] == 1;
+                      
+                      }
+        
+      endclass
+                      
+103. Generate 00001111
+     class packet
+       rand bit [7:0] a;
+       rand int start_pos;
+       constraint c1 {$countones(a) == 4;}
+       constraint c2 {start_pos ==0 ;}
+       constraint c3 {foreach (a[i])
+                         if (i>=start_pos && i < start_pos+4)
+                           a[i] ==1;
+                          else
+                            a[i] == 0;              
+                     }
+       
+     endclass
+     //Alternative way
+      class packet
+       rand bit [7:0] a;
+       
+       constraint c3 {foreach (a[i])
+                          if (i< 4)
+                           a[i] ==1;
+                          else
+                            a[i] == 0;              
+                     }
+       
+     endclass                
+104. Generate 11110000
+     class packet
+       rand bit [7:0] a;
+       rand int start_pos;
+       constraint c1 {$countones(a) == 4;}
+       constraint c2 {start_pos ==7 ;}
+       constraint c3 {foreach (a[i])
+                         if (i<=start_pos && i > start_pos-4)
+                           a[i] ==1;
+                          else
+                            a[i] == 0;              
+                     }
+       
+     endclass
+     //Alternative way
+      class packet
+       rand bit [7:0] a;
+       
+       constraint c3 {foreach (a[i])
+                         if (i> 3)
+                           a[i] ==1;
+                          else
+                            a[i] == 0;              
+                     }
+       
+     endclass                    
+105. Generate a pattern where the number of consecutive 1s increases: 1, 11, 111, 1111
+                                                                       10   100  1000
+     class packet
+       rand int d[];
+       constraint c1 {d.size () == 4;}
+       constraint c2 {d[0] ==1;}
+       constraint c3 {foreach (d[i])
+                         if (i>0)
+                           d[i] -d[i-1] == 10 ** i ; 
+                     }
+       
+     endclass
+     
+     //Alternative way -1
+      class packet;
+         rand bit d[][];  // 2D dynamic array
+         constraint c1 { d.size() == 4; } // 4 patterns 
+         constraint c2 { foreach(d[i]) {
+                           d[i].size() == i + 1;  // Size: 1, 2, 3, 4
+                           }
+                        }
+         constraint c3 { foreach(d[i]) {
+                            foreach(d[i][j]) {
+                              d[i][j] == 1;  // All bits are 1
+                             }
+                           }
+                          }
+      endclass                 
+                      
+     //Alternative way-2
+     class packet;
+       rand int count;
+       int d[];
+       constraint c1 { count == 4;}
+       function void post_randomize();
+          d.delete();
+          int num = 0;
+          for (int val = 0; val < count; val++) begin
+             num = num * 10 + 1;  // 0→1, 1→11, 2→111, 3→1111
+             d = {d, num};
+          end
+       endfunction
+     endclass                 
+                      
+                      
+106. Generate a pattern where the number of consecutive 0s increases.
+     //Pattern : 0, 00, 000, 0000 which represent numbers with increasing zeros.
+      class packet;
+         rand bit d[][];  // 2D dynamic array
+         constraint c1 { d.size() == 4; } // 4 patterns 
+         constraint c2 { foreach(d[i]) {
+                           d[i].size() == i + 1;  // Size: 1, 2, 3, 4
+                           }
+                        }
+         constraint c3 { foreach(d[i]) {
+                            foreach(d[i][j]) {
+                                d[i][j] == 0;  // All bits are 0
+                             }
+                           }
+                          }
+      endclass
+                              
+     //Pattern : 0, 10, 100, 1000 
+     class packet
+       rand int d[];
+       constraint c1 {d.size () == 4;}
+       constraint c2 {d[0] ==0;}
+       constraint c3 {foreach (d[i])
+                         if (i>0)
+                           d[i] == 10 ** i ; 
+                     }
+       
+     endclass                 
+                      
+     //Pattern : 1, 10, 100, 1000
+     class packet
+       rand int d[];
+       constraint c1 {d.size () == 4;}
+       constraint c2 {d[0] ==1;}
+       constraint c3 {foreach (d[i])
+                         if (i>0)
+                           d[i] == 10 ** i ; 
+                     }
+       
+     endclass                         
+                      
+107. Generate a walking-1 pattern: 0001, 0010, 0100, 1000.
+     class packet;
+        rand bit [3:0] a;
+        rand int pos;
+        constraint c1 { pos inside {[0:3]}; }
+        constraint c2 { a == (1 << pos); } // Walking-1 pattern
+      endclass      
+           
+108. Generate a walking-0 pattern: 1110, 1101, 1011, 0111
+           
+     class packet;
+       rand bit [3:0] a;
+       rand int pos;
+       constraint c1 { pos inside {[0:3]}; }
+       constraint c2 { a == ~(1 << pos); }  // Walking-0 pattern
+     endclass        
   	
 
 
