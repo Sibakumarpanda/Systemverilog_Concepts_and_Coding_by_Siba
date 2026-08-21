@@ -2799,7 +2799,114 @@ Section 10 — Bit Patterns
        constraint c2 { a == ~(1 << pos); }  // Walking-0 pattern
      endclass        
   	
+Section 9 — Fibonacci / Mathematical Patterns
 
+90. Generate the Fibonacci sequence: 1 1 2 3 5 8 13 21 ...
+    class packet
+      rand int d[];
+      constraint c1 {d.size () == 10;}
+      constraint c2 {foreach d([i])
+                       if (i < 2)
+                         d[i] == 1;
+                       else 
+                         d[i] == d[i-1] + d[i-2];
+                    }
+      
+    endclass
+  
+91. Generate 2 3 5 8 13 21 
+    
+    class packet
+      rand int d[];
+      constraint c1 {d.size () == 6;}
+      constraint c2 {d[0] == 2; d[1] == 3;}
+      constraint c3 {foreach d([i])
+                       if (i >1) 
+                         d[i] == d[i-1] + d[i-2];
+                    }
+      
+    endclass
+    
+    
+92. Generate square numbers
+    class packet;
+      rand int d[];
+      constraint c1 {d.size () ==10;}
+      constraint c2 {foreach (d[i])
+                        //d[i] == i*i;
+                          d[i] == i**2;
+                    }
+    endclass
+  
+93. Generate cube numbers: 0,1 8 27 64 125 
+     class packet;
+      rand int d[];
+      constraint c1 {d.size () ==10;}
+      constraint c2 {foreach (d[i])
+                        //d[i] == i*i*i;
+                          d[i] == i**3;
+                    }
+    endclass
+  
+ 94. Generate triangular numbers. {1, 3, 6, 10, 15, 21, 28, 36, 45, 55}
+                       Differences   2  3  4  5   6    7  8   9   10
+  
+  Hint :
+    n=1: 1
+    n=2: 1+2 = 3
+    n=3: 1+2+3 = 6
+    n=4: 1+2+3+4 = 10
+    n=5: 1+2+3+4+5 = 15
+    Formula: T(n) = n * (n + 1) / 2
+  
+    class packet;
+       rand int d[];
+       constraint c1 { d.size() == 10; } // Generate 10 triangular numbers
+       constraint c2 { foreach(d[i]) {
+                         d[i] == (i+1) * (i+2) / 2;  // T(n) = n*(n+1)/2 where n = i+1
+                         }
+                     }
+    endclass
+         
+95. Generate a sequence where array[i] = array[i-1] + array[i-2].
+  
+    class packet;
+       rand int d[];
+       constraint c1 { d.size() == 10;}
+       constraint c2 { d[0] == 1; d[1] == 1;}
+       constraint c3 { foreach(d[i]) {
+                         if (i > 1) {
+                           d[i] == d[i-1] + d[i-2];
+                        }
+                      }
+                     }
+    endclass
+                           
+96. Generate a sequence where every element is twice the previous element
+    class packet;
+      rand int d[];
+      constraint c1 { d.size() == 10;}  // Generate 10 elements
+      constraint c2 {d[0] == 1;}  // First term
+      constraint c3 {foreach(d[i]) 
+                        if (i > 0) 
+                          d[i] == d[i-1] * 2;  // Each term = previous × 2
+                           
+                      }
+    endclass
+  
+97. Generate a sequence where every element is half the previous element 
+    class packet;
+      rand real d[]; //Use real for floating-point values
+      constraint c1 { d.size() == 10;}  // Generate 10 elements
+      constraint c2 {d[0] == 1.0;}  // First term
+      constraint c3 {foreach(d[i]) 
+                        if (i > 0) 
+                          d[i] == d[i-1] / 2.0;  // Each term = previous / 2, Floating-point division
+                           
+                      }
+    endclass
+    
+  
 
 	  
 	  
