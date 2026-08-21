@@ -255,6 +255,22 @@ Reversed: knip
           }
         }
      endclass :pattern_gen
+			 
+   //Alternative way - More effective way			 
+	class packet
+       rand int count;
+       int d[];
+       constraint c1 {count inside {[1:5]};}
+   
+       function void post_randomize ()
+          d.delete();
+	      for (int val=1 ; val<=count , val++) begin
+	        repeat(val) begin
+	          d= {d,val};
+	       end  
+	     end
+       endfunction
+     endclass		 
 
 15. How to generate a clock period of 2GHZ with 80% duty cycle and verify it using assertion.
 // Frequency = 2GHZ , Clock Period =0.5ns
