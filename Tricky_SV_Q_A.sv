@@ -3077,7 +3077,7 @@ Section 9 — Fibonacci / Mathematical Patterns
 		rand int d[];
 		constraint c1 {d.size () == 4;}
 		constraint c2 {d[0] == 3;}
-		constraint c2 {foreach (d[i]) 
+		constraint c3 {foreach (d[i]) 
 			             if (i>0)
 							 d[i] -d[i-1] == 3*(10**i);					  
 					  }
