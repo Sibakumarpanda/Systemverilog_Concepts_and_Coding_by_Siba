@@ -3071,7 +3071,30 @@ Section 9 — Fibonacci / Mathematical Patterns
                      }
 	  constraint c2 { value == ((BL * BW / 8 >= 64) ? (BL * BW / 8) : 64); }
     endclass
-32. WAC to generate pattern as : 1,11,111,1111 ...
+32. WAC to generate pattern as : 3,33,333,3333 ...
+	          //difference as :   30 300 3000 
+	class packet;
+		rand int d[];
+		constraint c1 {d.size () == 4;}
+		constraint c2 {d[0] == 3;}
+		constraint c2 {foreach (d[i]) 
+			             if (i>0)
+							 d[i] -d[i-1] == 3*(10**i);					  
+					  }
+	endclass
+	
+	//Alternative way
+	class packet;
+		rand int d[][];
+		constraint c1 {d.size () == 4;}
+		constraint c2 {foreach d[i]
+			             d[i].size == i+1;
+					  }
+		constraint c3 { foreach (d[i])
+			               foreach (d[i][j])
+							   d[i][j] ==3 ;
+					  }
+	endclass
 	
 
 	  
