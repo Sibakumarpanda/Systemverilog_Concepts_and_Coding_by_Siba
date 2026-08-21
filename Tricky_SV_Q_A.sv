@@ -2906,7 +2906,158 @@ Section 9 — Fibonacci / Mathematical Patterns
                       }
     endclass
     
+ Section 3 — Dynamic / Dependency Constraints
   
+21. Generate axi burst_len based on burst_type: FIXED ® 1–16, INCR ® 1–256, WRAP ® only 2, 4, 8, 16.
+  
+    class packet;
+       rand bit [1:0] burst_type;  // 0=FIXED, 1=INCR, 2=WRAP
+       rand bit [7:0] axi_len;     // AXI length (0-255) → burst_len = axi_len + 1
+       int burst_len;              // Actual burst length
+  
+       constraint c1 { burst_type inside {[0:2]};}
+       constraint c2 { burst_len == axi_len + 1;}
+       constraint c3 { if (burst_type == 0)          // FIXED: 1-16
+                           axi_len inside {[0:15]};
+                       else if (burst_type == 1)      // INCR: 1-256
+                           axi_len inside {[0:255]};
+                       else if (burst_type == 2)       // WRAP: only 2,4,8,16
+                           axi_len inside {1, 3, 7, 15};  // burst_len-1: 1,3,7,15
+                     }
+  
+     endclass
+    
+22. Generate start_addr and end_addr such that end_addr > start_addr and the range is exactly 4 KB.
+    class packet;
+       rand bit [31:0] start_addr;
+       rand bit [31:0] end_addr;
+       constraint c1 { end_addr > start_addr;}
+       constraint c2 { end_addr - start_addr == 4096; } // Exactly 4 KB
+       // Optional: Keep addresses within a reasonable range
+       constraint c3 { start_addr inside {[0:32'hFFFF_FFFF - 4096]}};
+    endclass
+23. Generate addr, size, and len such that the total transfer size is exactly 1 KB.
+  
+    class packet;
+      rand bit [31:0] addr;
+      //rand bit [2:0]  burst_size;   // Data width in bytes
+      int burst_size;
+      //rand bit [3:0]  burst_len;    // Number of beats
+      int burst_len;
+  
+      constraint c1 {burst_size inside {1, 2, 4, 8, 16, 32, 64, 128};}
+      constraint c2 {burst_len inside {[1:1024]};}
+      constraint c3 {burst_size * burst_len == 1024; } // Exactly 1 KB
+      // Address should be aligned to size
+      constraint c4 {addr % burst_size == 0;}
+   endclass
+  
+  
+24. Generate addr and len such that the transfer is naturally aligned.
+    class packet;
+      rand bit [31:0] addr;
+      rand int size;  // Transfer size in bytes (power of 2)
+      rand int len;   // Number of beats
+      constraint c1 { size inside {1, 2, 4, 8, 16, 32, 64, 128};
+                      len inside {[1:256]};
+                     }
+      constraint c2 { addr % size == 0;  } // Natural alignment
+      // Total transfer size
+      constraint c3 { size * len <= 4096; } // Max 4 KB
+      // Keep address within range
+      constraint c4 { addr <= 32'hFFFF_FFFF - (size * len);}
+    endclass
+  
+25. Generate two arrays where both have the same size, corresponding elements are different, and total sum of both arrays is equal.
+    class packet
+      rand int d1[];
+      rand int d2[];
+      
+      constraint c1 {d1.size () inside {[1:10]};}
+      constraint c2 {d2.size () inside {[1:10]};}
+      constraint c3 {d1.size () == d2.size();}
+      constraint c4 {d1.sum() == d2.sum();}
+      constraint c5 { foreach(d1[i]) 
+                        d1[i] != d2[i];
+                    }
+      
+    endclass
+
+26. Generate read_latency based on transaction type: READ ® 1–20, WRITE ® 5–50, BURST ® 20–100.
+    class packet;
+       typedef enum bit [1:0] {READ=0, WRITE=1, BURST=2} trans_type_e;
+       rand trans_type_e trans_type;
+       rand int read_latency;
+       constraint c1 { (trans_type == READ)  -> (read_latency inside {[1:20]});
+                       (trans_type == WRITE) -> (read_latency inside {[5:50]});
+                       (trans_type == BURST) -> (read_latency inside {[20:100]});
+                      }
+    endclass
+
+27. Generate a packet where payload size depends on packet type: CONTROL ® 8–32, DATA ® 64–1024, ERROR ® exactly 16
+
+    class packet;
+      typedef enum bit [1:0] {CONTROL=0, DATA=1, ERROR=2} packet_type_e;
+      rand packet_type_e packet_type;
+      rand int payload_size;
+      constraint c1 { if (packet_type == CONTROL) 
+                          payload_size inside {[8:32]};
+                      else if (packet_type == DATA) 
+                          payload_size inside {[64:1024]};
+                      else if (packet_type == ERROR) 
+                          payload_size == 16;
+                    }
+     endclass
+
+28. Generate start_addr and burst_len such that the burst does not cross a 2-KB boundary.
+    class packet;
+      rand bit [31:0] start_addr;
+      rand int burst_len;  // In bytes
+      constraint c1 { burst_len inside {[1:256]};}
+      // Ensure burst does not cross 2-KB boundary
+      // start_addr & 0x7FF = offset within 2-KB boundary
+      // offset + burst_len must be <= 2048
+      constraint c2 {(start_addr & 32'h7FF) + burst_len <= 2048;}
+      
+    endclass
+
+    //Alternative way
+    class packet;
+      rand bit [31:0] start_addr;
+      rand int burst_size;
+      rand int burst_len;
+      constraint c1 { burst_size inside {1, 2, 4, 8, 16, 32, 64, 128};
+                      burst_len inside {[1:256]};
+                     }
+      constraint c2 { start_addr % 2048 == 0 &&   // 2-KB aligned
+                       burst_size * burst_len <= 2048;  // Transfer fits within 2-KB region
+                     }
+    endclass
+
+29. Generate two 8-bit values where their XOR contains exactly 4 set bits. means the XOR result should have four 1's.
+    class packet;
+      rand bit [7:0] a;
+      rand bit [7:0] b;
+      rand bit [7:0] xor_result;
+      constraint c1 {xor_result == a ^ b;
+                      $countones(xor_result) == 4;
+                     }
+    endclass
+    //Alternative way
+    class packet;
+      rand bit [7:0] a;
+      rand bit [7:0] b;
+      constraint c1 { $countones(a ^ b) == 4; } // XOR contains exactly 4 set bits
+    endclass
+
+30. Generate two 8-bit values where their sum is exactly 8'hFF
+    class packet;
+      rand bit [7:0] a;
+      rand bit [7:0] b;
+      bit [9:0] sum;
+      constraint c1 {sum == a +b ;}
+      constraint c2  {sum == 8'hFF;} //sum must be exactly 255
+    endclass 
 
 	  
 	  
