@@ -3095,6 +3095,33 @@ Section 9 — Fibonacci / Mathematical Patterns
 							   d[i][j] ==3 ;
 					  }
 	endclass
+33.  a -> aout - > syncronizer_value(1,2,3,4) -> bout
+     we need to write a verilog/SV code to perform above . Either a task or function anything is fine 
+     where a is the input 
+     aout is the output , which is input to the synchronizer and bout is the output.
+		 
+	 module synchronizer #(parameter int STAGES = 2)(
+        input  logic clk, rst_n,
+        input  logic a,
+        output logic aout,  // aout follows a
+        output logic bout   // Synchronized output
+        );
+        logic [STAGES-1:0] sync_reg;
+       always @(posedge clk or negedge rst_n) begin
+          if (!rst_n) begin
+              sync_reg <= '0;
+              aout <= 1'b0;
+              bout <= 1'b0;
+          end else begin
+             aout <= a;
+             sync_reg[0] <= aout;
+             for (int i = 1; i < STAGES; i++) begin
+                sync_reg[i] <= sync_reg[i-1];
+             end
+             bout <= sync_reg[STAGES-1];
+         end
+       end
+      endmodule :synchronizer
 	
 
 	  
