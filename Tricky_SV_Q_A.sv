@@ -3059,6 +3059,21 @@ Section 9 — Fibonacci / Mathematical Patterns
       constraint c2  {sum == 8'hFF;} //sum must be exactly 255
     endclass 
 
+31. write a constraint for below 
+    BL*BW/8 >=64 ) = BL*BW/8, 64 
+    where BL =axi burst length and BW = axi data bus width
+    class packet;
+      rand int BL;
+      rand int BW;
+      rand int value;
+	  constraint c1 { BL inside {[1:256]};
+                      BW inside {32, 64, 128, 256};
+                     }
+	  constraint c2 { value == ((BL * BW / 8 >= 64) ? (BL * BW / 8) : 64); }
+    endclass
+32. WAC to generate pattern as : 1,11,111,1111 ...
+	
+
 	  
 	  
 
