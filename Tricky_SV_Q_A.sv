@@ -3139,6 +3139,29 @@ Section 9 — Fibonacci / Mathematical Patterns
        end
       endmodule :synchronizer
 	
+33. Write an assertion to Detect pattern: 10110
+   sequence s_10110;
+     @(posedge clk)
+     a ##1 !a ##1 a ##1 a ##1 !a;  // 1, 0, 1, 1, 0
+   endsequence
+  property p1;
+    @(posedge clk)
+    disable iff (!rst_n)
+    $rose(a) |-> s_10110;
+  endproperty
+  assert property (p1);
+
+34.	write an assertion to check the ltssm state transtion in PCIE
+    Detect - polling -config -L0
+    typedef enum {detect, polling, config, L0} ltssm_e;
+    property p1;
+      @(posedge clk)
+      disable iff (!rst_n)
+      detect |=> polling |=> config |=> L0;
+    endproperty
+    assert property (p1) else
+      $error("LTSSM state transition failed: detect → polling → config → L0");
+
 
 	  
 	  
