@@ -1935,68 +1935,54 @@ endmodule
                       }
      endclass 
 
-6. Generate an array containing exactly four 0s, three 1s, and three 2s
-
-   class packet;
-     rand int d[];
-     constraint c1 {d.size () == 10;}
-     constraint c2 { foreach (d[i])
-                        d[i] inside [0:2];
-                   }
-     
-     constraint c3 { d.sum() with (int'(item == 0)) == 4;
-                     d.sum() with (int'(item == 1)) == 3;
-                     d.sum() with (int'(item == 2)) == 3;
+102. Generate an array containing exactly four 0s, three 1s, and three 2s
+     class packet;
+        rand int d[];
+        constraint c1 {d.size () == 10;}
+        constraint c2 { foreach (d[i])
+                          d[i] inside [0:2];
+                      }
+        constraint c3 { d.sum() with (int'(item == 0)) == 4;
+                        d.sum() with (int'(item == 1)) == 3;
+                        d.sum() with (int'(item == 2)) == 3;
                     }
-     
-   endclass 
+     endclass 
 
-7. Generate a 16-bit number having exactly 5 bits set to 1.
+103. Generate a 16-bit number having exactly 5 bits set to 1.
+     class packet;
+        rand bit [15:0] a ;
+        constraint c1 {$countones(a)== 5;}
+     endclass 
 
-   class packet;
-     rand bit [15:0] a ;
-     constraint c1 {$countones(a)== 5;}
-     
-   endclass 
-
-8. Generate a 32-bit number where no two consecutive bits are 1.
-   
-
-   class packet
-     rand bit [31:0] a;
-     
-     constraint c1 { foreach(a[i])
+104. Generate a 32-bit number where no two consecutive bits are 1.
+     class packet
+        rand bit [31:0] a;
+        constraint c1 { foreach(a[i])
                           if(i < 31)
                             !(a[i] && a[i+1]);
-                   }
-     
-     
-   endclass
+                       }
+      endclass
 
-9. Generate a 16-bit value where the number of 1s is greater than the number of 0s.
-   class packet
-     rand bit [15:0] a;
-     constraint c1 {$countones(a) > $countzeros(a);}
-     //constraint c1 { $countones(a) > 8;} // This logic will also work
-     
-   endclass
+105. Generate a 16-bit value where the number of 1s is greater than the number of 0s.
+     class packet
+        rand bit [15:0] a;
+        constraint c1 {$countones(a) > $countzeros(a);}
+        //constraint c1 { $countones(a) > 8;} // This logic will also work
+     endclass
 
-10. Generate an 8-bit value that is a power of 2.
+106. Generate an 8-bit value that is a power of 2.
      1, 2,4,8,16,32 -These power of 2 value has one bit =1
 
     class packet
       rand bit [7:0] a;
-      
-      constraint c1 {$countones(a)==1;}
-       
+      constraint c1 {$countones(a)==1;}  
     endclass
     
-    // If the values are in terms of an array and we need to get in a series then:
+    //Alternative way- If the values are in terms of an array and we need to get in a series then:
     class packet;
-      rand int d[];
-      constraint c1 {d.size ()== 10;}
-      
-      constraint c2 { d[0] == 1;
+       rand int d[];
+       constraint c1 {d.size ()== 10;}
+       constraint c2 { d[0] == 1;
                        foreach(d[i])
                           if(i > 0)
                             d[i] == d[i-1] * 2;
