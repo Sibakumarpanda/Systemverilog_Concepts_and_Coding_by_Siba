@@ -1822,10 +1822,7 @@ endmodule
           end
         endfunction
      endclass
-  
-15. Write a SystemVerilog constraint for an address aligned to 4 bytes.
-    Example valid addresses: 0, 4, 8, 12, 16... 
-  
+92. Write a SystemVerilog constraint for an address aligned to 4 bytes. Example valid addresses: 0, 4, 8, 12, 16... 
     class packet;
        rand bit [31:0] address;
        // Address must be 4-byte aligned (divisible by 4)
@@ -1834,26 +1831,23 @@ endmodule
       //constraint c1 { address[1:0] == 2'b00;}
     endclass
   
-16. Write a SystemVerilog assertion to check that a request is followed by an acknowledge within 3 clock cycles.
-    
+93. Write a SystemVerilog assertion to check that a request is followed by an acknowledge within 3 clock cycles.
     property p1;
-      @(posedge clk)
-      disable iff (!rst_n)
-      $rose(req) |-> ##[0:3] ack;
+       @(posedge clk)
+       disable iff (!rst_n)
+       $rose(req) |-> ##[0:3] ack;
     endproperty
     assert property (p1);
      
-17. Write an assertion to check that req and ack should never be HIGH at the same time.
-    
+94. Write an assertion to check that req and ack should never be HIGH at the same time.
      property p1;
       @(posedge clk)
       disable iff (!rst_n)
        !(req && ack);  // req and ack should never be HIGH together
      endproperty
-    assert property (p1);
-      
-18. Write an assertion to check that when valid is HIGH, ready must become HIGH within 5 cycles.
-      
+     assert property (p1);  
+		 
+95. Write an assertion to check that when valid is HIGH, ready must become HIGH within 5 cycles.   
     property p1;
       @(posedge clk)
       disable iff (!rst_n)
@@ -1861,15 +1855,11 @@ endmodule
     endproperty
     assert property (p1);  
       
-19. Write a functional coverage model for an 8-bit data signal covering:
-    0-63
-    64-127
-    128-191
-    192-255
+96. Write a functional coverage model for an 8-bit data signal covering:
+          0-63 ,64-127 ,128-191 , 192-255
   
     covergroup cg @(posedge clk);
         bit [7:0] data;  // Coverpoint variable
-  
         // Single coverpoint with 4 bins for different ranges
        cp_data: coverpoint data {
           bins low    = {[0:63]};     // 0-63
@@ -1878,89 +1868,72 @@ endmodule
           bins high   = {[192:255]};  // 192-255
           }
     endgroup
-
     // Instantiate and sample
     cg cg_inst = new();
     cg_inst.sample();
 
-Section 1 — Practical Constraints
-
-1. Generate a bit[7:0] value that is divisible by 3 but not divisible by 6
-
-   class packet
-     rand bit [7:0] a;
-     constraint c1 { a % 3 == 0 ;
+   //Practical Constraints
+97. Generate a bit[7:0] value that is divisible by 3 but not divisible by 6
+    class packet
+      rand bit [7:0] a;
+      constraint c1 { a % 3 == 0 ;
                      a % 6 != 0 ;
                    }
-     
-   endclass :packet
-   
-   
-2. Generate 10 unique values in the range 1–50, where exactly 3 values are even.
-   class packet
-     rand int d[];
-     constraint c1 { d.size () == 10;}
-     constraint c2 { foreach (d[i])
-                       d[i] inside [1:50];
-                   }
-     constraint c3 { foreach (d[i])
-                       foreach (d[j])
-                         if (i != j)
-                           d[i] != d[j];
+    endclass :packet
+		
+98. Generate 10 unique values in the range 1–50, where exactly 3 values are even.
+    class packet
+       rand int d[];
+       constraint c1 { d.size () == 10;}
+       constraint c2 { foreach (d[i])
+                         d[i] inside [1:50];
+                     }
+       constraint c3 { foreach (d[i])
+                         foreach (d[j])
+                           if (i != j)
+                             d[i] != d[j];
                        }
-     
-     //constraint c3 {unique {d};} // Directly we can use unique also
-     
-     
-     constraint c4 { d.sum () with (int'(item %2 ==0))== 3; }
+        //constraint c3 {unique {d};} // Directly we can use unique also
+       constraint c4 { d.sum () with (int'(item %2 ==0))== 3; }
    endclass
-
-3. Generate an array of 10 elements where the first 5 elements are even, the last 5 elements are odd, and all elements are unique.
-
-   class packet;
-     rand int d[];
-     constraint c1 {d.size () == 10;}
-     constraint c2 { foreach (d[i])
-                       d[i] inside [1:50];
-                   }
-     constraint c3 { unique {d};}
-     constraint c4 { foreach (d[i])
-                         if (i < 5)
+99. Generate an array of 10 elements where the first 5 elements are even, the last 5 elements are odd, and all elements are unique.
+    class packet;
+       rand int d[];
+       constraint c1 {d.size () == 10;}
+       constraint c2 { foreach (d[i])
+                         d[i] inside [1:50];
+                     }
+       constraint c3 { unique {d};}
+       constraint c4 { foreach (d[i])
+                          if (i < 5)
                             d[i] % 2 == 0;
-                         else 
+                          else 
                            d[i] % 2 == 1 ;
-                    }
-     
-   endclass
+                     }
+     endclass
 
-4. Generate a 10-element array whose sum is exactly 100, with every element between 1 and 20.
-                    
-   class packet;
-     rand int d[];
-     constraint c1 {d.size () == 10;}
-     constraint c2 { foreach (d[i])
+100. Generate a 10-element array whose sum is exactly 100, with every element between 1 and 20.
+     class packet;
+        rand int d[];
+        constraint c1 {d.size () == 10;}
+        constraint c2 { foreach (d[i])
                         d[i] inside [1:20];
-                   }
-     constraint c3 { d.sum () == 100;}
-     
-     
+                      }
+		constraint c3 { d.sum () == 100;} 
    endclass                 
                     
-5. Generate an array where no two adjacent elements are equal.
-   
-   class packet;
-     rand int d[];
-     constraint c1 {d.size () == 10;}
-     constraint c2 { foreach (d[i])
+101. Generate an array where no two adjacent elements are equal.
+     class packet;
+        rand int d[];
+        constraint c1 {d.size () == 10;}
+        constraint c2 { foreach (d[i])
                         d[i] inside [1:20];
-                   }
-     constraint c3 { foreach (d[i])
-                       if (i < d.size ()-1)
-                         d[i] != d[i+1];
-                   }
-     
-     
-   endclass 
+                      }
+        constraint c3 { foreach (d[i])
+                           if (i < d.size ()-1)
+                               d[i] != d[i+1];
+                      }
+     endclass 
 
 6. Generate an array containing exactly four 0s, three 1s, and three 2s
 
