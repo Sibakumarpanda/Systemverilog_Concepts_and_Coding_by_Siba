@@ -1727,72 +1727,57 @@ endmodule
       constraint c1 { $countones (a) == 2;}
     endclass
   
-9. Write a constraint to generate the pattern: 1, 2, 4, 8, 16, 32..
-  
-   class packet;
+86. Write a constraint to generate the pattern: 1, 2, 4, 8, 16, 32..
+	//Using variable
+    class packet;
      rand int a;
      constraint c1 { a inside [1:100];}
      constraint c2 {(a & (a-1)) == 0; }
      
-   endclass
-    //////////////////////// using array
-   class packet;
-
-    rand int d[];
-    constraint size_c { d.size() == 10; }
-    constraint c2 {foreach (d[i])
-                     d[i] inside [1 : 100];
-                   } 
-     
-     constraint c3 {foreach (d[i])
-                       d[i] == 2 ** i;
-                   } 
-
-  endclass
-   
-  
-10. Write a constraint to generate consecutive values without using foreach unnecessarily.
-    Example: {10,11,12,13,14}
-  
+    endclass
+	
+    //Using array
     class packet;
       rand int d[];
-      rand int start;
-
-      constraint size_c { d.size() == 5; }
-
-      constraint start_c { start inside {[1:100]};}
-
-      constraint pattern_c { d[0] == start;
-                             foreach (d[i])
+      constraint size_c { d.size() == 10; }
+      constraint c2 {foreach (d[i])
+                        d[i] inside [1 : 100];
+                    } 
+      constraint c3 {foreach (d[i])
+                       d[i] == 2 ** i;
+                   } 
+    endclass
+	
+87. Write a constraint to generate consecutive values without using foreach unnecessarily.
+    Example: {10,11,12,13,14}
+    class packet;
+       rand int d[];
+       rand int start;
+       constraint size_c { d.size() == 5; }
+       constraint start_c { start inside {[1:100]};}
+       constraint pattern_c { d[0] == start;
+                               foreach (d[i])
                                  if (i > 0)
                                    d[i] == d[i-1] + 1;
-                            }
-
-    endclass
-  
- 
-  
-11. Write a SystemVerilog function to count the number of 1s in a 32-bit variable. Example: 8'b10110100 -> 4
+                             }
+     endclass
+88. Write a SystemVerilog function to count the number of 1s in a 32-bit variable. Example: 8'b10110100 -> 4
   
     function int count_ones(bit [31:0] data);
-     return $countones(data);
+        return $countones(data);
     endfunction
-  
   
     //Alternative
     function int count_ones(bit [31:0] data);
       int count = 0;
-
       for (int i = 0; i < 32; i++) begin
         if (data[i])
          count++;
       end
-
       return count;
     endfunction
   
-12. Write a program/constraint to find the first non-repeated element in an array.
-  
+89. Write a program/constraint to find the first non-repeated element in an array.
     class packet
       rand int d[];
       constraint c1 {d.size() == 10;}
@@ -1805,46 +1790,38 @@ endmodule
                         if (i > 0) 
                           d[i] != d[0];
                      }
-      
-      
     endclass
+	
+90. Write a queue-based code to remove duplicate elements from a queue.
+    module tb_top;
+      int q[$] = '{1, 2, 3, 2, 4, 3, 5};
+      int q_unique[$];
+		
+      initial begin
+         $display("Original Queue: %p", q);
+         // Use unique() method
+         q_unique = q.unique();
+         $display("Queue without duplicates: %p", q_unique); // Here the duplicated elements will be removed
+      end
+     endmodule
   
-  
-13. Write a queue-based code to remove duplicate elements from a queue.
-  
-module tb_top;
-  int q[$] = '{1, 2, 3, 2, 4, 3, 5};
-  int q_unique[$];
-  
-  initial begin
-    $display("Original Queue: %p", q);
-    
-    // Use unique() method
-    q_unique = q.unique();
-    
-    $display("Queue without duplicates: %p", q_unique); // Here the duplicated elements will be removed
-  end
-endmodule
-  
-14. Given a queue of transactions, WAC to find the transaction with the maximum value of data.
-  
+91. Given a queue of transactions, WAC to find the transaction with the maximum value of data.
     class packet;
-      rand int q[$];
-      int q_max;
-      constraint c1 {q.size() == 10;}
-      constraint c2 {foreach (q[i])
+       rand int q[$];
+       int q_max;
+       constraint c1 {q.size() == 10;}
+       constraint c2 {foreach (q[i])
                         q[i] inside [1:10];
                     }
-     
-      // Find maximum value after randomization
-       function void post_randomize();
-         q_max = q[0];  // Initialize with first element
-         foreach(q[i]) begin
-             if (q[i] > q_max) 
-               q_max = q[i];
-         end
-       endfunction
-    endclass
+       // Find maximum value after randomization
+        function void post_randomize();
+          q_max = q[0];  // Initialize with first element
+          foreach(q[i]) begin
+              if (q[i] > q_max) 
+                q_max = q[i];
+          end
+        endfunction
+     endclass
   
 15. Write a SystemVerilog constraint for an address aligned to 4 bytes.
     Example valid addresses: 0, 4, 8, 12, 16... 
