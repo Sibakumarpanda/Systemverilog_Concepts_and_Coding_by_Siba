@@ -1623,140 +1623,109 @@ endmodule
     
    endmodule :reverse_string
 
+79. Find duplicate elements in an array. Example: {1,2,3,2,4,3,5} -> 2,3
+    module tb_top;
+      int d [7] = '{1,2,3,2,4,3,5};
+      int d_duplicate [$];
+      initial begin
+        $display ("The original Array is = %0p",d);
+        d.rsort ();
+        $display ("The Array in Descending order is = %0p",d); // { 5,4,3,3,2,2,1}
+        foreach (d[i]) begin
+           if (i< $size(d)-1) begin
+             if (d[i]== d[i+1])
+               d_duplicate .push_back(d[i]);
+             end
+          end
+          $display ("The Duplicate elements in Array is = %0p",d_duplicate);
+        end
+     endmodule
+		
+80. Find the second-largest number in an integer array.
+    module tb_top;
+       int d[7] = '{1,2,3,2,4,3,5};
+       int d_large;
+       int d_second_large;
+		
+       initial begin
+         $display("Original Array = %0p", d);
+         // Sort in descending order
+         d.rsort();
+         $display("Sorted Array   = %0p", d);
+         // Largest element
+         d_large = d[0];
+        // Find second largest distinct element
+         foreach(d[i]) begin
+            if(d[i] < d_large) begin
+               d_second_large = d[i];
+               break;
+             end
+          end
 
-2. Find duplicate elements in an array. Example: {1,2,3,2,4,3,5} -> 2,3
-
-module tb_top;
-  int d [7] = '{1,2,3,2,4,3,5};
-  int d_duplicate [$];
-  initial begin
-    $display ("The original Array is = %0p",d);
-    d.rsort ();
-    $display ("The Array in Descending order is = %0p",d); // { 5,4,3,3,2,2,1}
-    
-    foreach (d[i]) begin
-      if (i< $size(d)-1) begin
-        if (d[i]== d[i+1])
-          d_duplicate .push_back(d[i]);
-    end
-    end
-    $display ("The Duplicate elements in Array is = %0p",d_duplicate);
-  end
-  
-endmodule
-    
-    
-3. Find the second-largest number in an integer array.
-
-module tb_top;
-
-  int d[7] = '{1,2,3,2,4,3,5};
-
-  int d_large;
-  int d_second_large;
-
-  initial begin
-
-    $display("Original Array = %0p", d);
-
-    // Sort in descending order
-    d.rsort();
-
-    $display("Sorted Array   = %0p", d);
-
-    // Largest element
-    d_large = d[0];
-
-    // Find second largest distinct element
-    foreach(d[i]) begin
-      if(d[i] < d_large) begin
-        d_second_large = d[i];
-        break;
-      end
-    end
-
-    $display("Largest Number        = %0d", d_large);
-    $display("Second Largest Number = %0d", d_second_large);
-
-  end
-
-endmodule
+          $display("Largest Number        = %0d", d_large);
+          $display("Second Largest Number = %0d", d_second_large);
+	   end
+    endmodule
 
 //Constraint to find the largest number and second large number in an array
-
-class packet;
-  rand int d[];
-  int d_large;
-  int d_second_large;
-  
-  constraint c1 {d.size () == 10;}
-
-  constraint c2 { foreach d([i])
-                    if ( i < d.size () -1 )
-                       d[i] > d [i+1];
-                }
-  
-  constraint c3 {d_large == d[0];}
-  
-  constraint second_c { d_second_large < d_large;}
-  
-  constraint c4 { foreach(d[i])
+   class packet;
+      rand int d[];
+      int d_large;
+      int d_second_large;
+      constraint c1 {d.size () == 10;}
+      constraint c2 { foreach d([i])
+                         if ( i < d.size () -1 )
+                            d[i] > d [i+1];
+					}
+      constraint c3 {d_large == d[0];}
+      constraint second_c { d_second_large < d_large;}
+      constraint c4 { foreach(d[i])
                       if(d[i] < d_large)
                        d_second_largest >= d[i];
-                 }
-  
-endclass
-
-    
-4. Sort an array without using the built-in sort() method.
-5. Write a constraint to generate 10 unique random values from 1 to 100. 
-  
-  class packet
-    rand int d[];
-    constraint c1 {d.size () == 10 ;}
-    constraint c1 {foreach (d[i])
+                    }
+   endclass
+		
+81. Sort an array without using the built-in sort() method.
+		
+82. Write a constraint to generate 10 unique random values from 1 to 100. 
+    class packet
+       rand int d[];
+       constraint c1 {d.size () == 10 ;}
+       constraint c1 {foreach (d[i])
                        d[i] inside [1:100];
                   }
-    
-    constraint c3 {foreach (d[i])
-                      foreach (d[j])
-                        if ( i != j )
-                        d[i] != d[j]
-      }
-    
-  endclass
+       constraint c3 {foreach (d[i])
+                         foreach (d[j])
+                            if ( i != j )
+								d[i] != d[j] ;
+                      }
+    endclass
                           
-6. Write a constraint to generate an even number between 10 and 50.
-   class packet
-     rand int d[];
-     constraint c1 {d.size () == 40;}
-     constraint c2 {foreach (d[i])
+83. Write a constraint to generate an even number between 10 and 50.
+    class packet
+      rand int d[];
+      constraint c1 {d.size () == 40;}
+      constraint c2 {foreach (d[i])
                         d[i] inside [10 : 50];
                    }
      
-     constraint c3 {foreach (d[i])
+      constraint c3 {foreach (d[i])
                         d[i] %2 == 0;
-                   }
-     
-   endclass
+                   } 
+    endclass
   
-7. Write a constraint to generate an array containing exactly 5 even and 5 odd numbers.
+84. Write a constraint to generate an array containing exactly 5 even and 5 odd numbers.
+    class packet;
+       rand int d[];
+       constraint size_c { d.size() == 10; }
+       constraint count_c { d.sum() with (int'(item % 2 == 0)) == 5;}
+     endclass
   
-  class packet;
-
-    rand int d[];
-    constraint size_c { d.size() == 10; }
-    constraint count_c { d.sum() with (int'(item % 2 == 0)) == 5;}
-
-  endclass
-  
-8. Write a constraint for a 4-bit number where the number of 1s must be exactly 2.
-  
-   class packet
-     rand bit [3:0] a;
-     constraint c1 { $countones (a) == 2;}
-     
-   endclass
+85. Write a constraint for a 4-bit number where the number of 1s must be exactly 2.
+    class packet
+      rand bit [3:0] a;
+      constraint c1 { $countones (a) == 2;}
+    endclass
   
 9. Write a constraint to generate the pattern: 1, 2, 4, 8, 16, 32..
   
