@@ -1989,53 +1989,43 @@ endmodule
                      }
     endclass
 
-
-Section 2 — Product-Company Style
-11. Generate 10 unique addresses where every address is 4-byte aligned and lies between 0x1000 and 0x2000
-
+     //Product-Company Style questions
+107. Generate 10 unique addresses where every address is 4-byte aligned and lies between 0x1000 and 0x2000
      class packet;
-       rand bit [31:0] addr[];
-       constraint c1 {addr.size () ==10;}
-       constraint c2 { foreach(addr[i])
-                        addr[i] inside {[32'h1000 : 32'h2000]};
-                     }
-       constraint c3 {foreach (addr[i])
+        rand bit [31:0] addr[];
+        constraint c1 {addr.size () ==10;}
+        constraint c2 { foreach(addr[i])
+                          addr[i] inside {[32'h1000 : 32'h2000]};
+                      }
+		constraint c3 { foreach (addr[i])
                           addr[i] % 4 ==0;
-                     }
+                      }
        //constraint c3 {foreach(addr[i])
        //                   addr[i][1:0] == 2'b00;  // 4-byte aligned- This logic will also work
                       }
        constraint c4 {unique{addr};}
-       
      endclass
 
-
-
-
-12. Generate an array of 10 addresses such that no two addresses fall in the same 16-byte memory block.
-
-
-    class packet;
-       rand int addr[];
-       constraint c1 { addr.size() == 10; }
-       constraint c2 { foreach(addr[i])
+108. Generate an array of 10 addresses such that no two addresses fall in the same 16-byte memory block.
+     class packet;
+        rand int addr[];
+        constraint c1 { addr.size() == 10; }
+        constraint c2 { foreach(addr[i])
                          addr[i] inside {[0:255]};
                       }
-       constraint c3 { foreach(addr[i])
+        constraint c3 { foreach(addr[i])
                          foreach(addr[j])
                            if(i != j)
                             (addr[i] / 16) != (addr[j] / 16);
                       }
+     endclass
 
-    endclass
-
-13. Generate packet lengths between 64 and 1500 bytes,
+109. Generate packet lengths between 64 and 1500 bytes,
                   with 70% in 64–512, 
                   with 20% in 513–1024, 
                   and  10% in 1025–1500.
 
-    
-    class packet;
+      class packet;
         rand int d[];
         constraint c1 { d.size() == 20;}
         constraint c2 { foreach (d[i])
@@ -2045,15 +2035,13 @@ Section 2 — Product-Company Style
                           [1025:1500] := 10
                          };
                         }
-    endclass
+     endclass
 
-14. Generate transaction IDs from 0–15, but no ID should repeat until all 16 IDs have been used
-  
-    class packet;
-      randc bit [3:0] tr_id;
-      constraint c1 {tr_id inside {[0:15]};}      
-      
-    endclass
+110. Generate transaction IDs from 0–15, but no ID should repeat until all 16 IDs have been used
+     class packet;
+       randc bit [3:0] tr_id;
+       constraint c1 {tr_id inside {[0:15]};}       
+     endclass
 
 15. Generate a burst length where legal values are 1, 2, 4, 8, 16, with 8 and 16 occurring more frequently.
     class packet;
