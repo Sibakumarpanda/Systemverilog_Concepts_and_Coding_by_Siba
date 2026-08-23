@@ -2260,57 +2260,50 @@ endmodule
          endfunction
      endclass :packet
   
+  128. Generate 1 2 2 3 3 3 4 4 4 4
+       class packet;
+          rand int count ;
+          int d[];
+          constraint c1 {count inside {[1:4]};}
+          function void post_randomize();
+            d.delete();
+            for(int val= 1; val <= count;val++) begin
+               repeat(val)begin
+                 d= {d,val};
+               end
+            end  
+           endfunction
+        endclass
   
-71. Generate 1 2 2 3 3 3 4 4 4 4
-    
-    class packet;
-      rand int count ;
-      int d[];
-      constraint c1 {count inside {[1:4]};}
-      
-      function void post_randomize();
-        d.delete();
-        for(int val= 1; val <= count;val++) begin
-          repeat(val)begin
-            d= {d,val};
-          end
-        end  
-      endfunction
-      
-    endclass
-  
-72. Generate 0 1 0 1 0 1 0 1.
-    class packet 
-      rand int d[];
-      constraint c1 {d.size () == 8;}
-      constraint c2 {foreach d[i]
-                        if (i %2 == 0)
-                           d[i] == 0;
-                        else 
+129. Generate 0 1 0 1 0 1 0 1
+     class packet 
+        rand int d[];
+        constraint c1 {d.size () == 8;}
+        constraint c2 {foreach d[i]
+                          if (i %2 == 0)
+                             d[i] == 0;
+                          else 
                             d[i] == 1;
                     }   
-    endclass
-  //Alternative 
-    class packet
-      rand int count ;
-      int d[];
-      constraint c1 {count inside {[1:4]};} // 1 to 4 pairs → 2 to 8 elements
-      
-      function void post_randmize();
-        d.delete();
-        for(int val =0 ; val< count;val++) begin
-          repeat(1) begin
-             d = {d, 0};  // Append 0 (using {d, val})
-             d = {d, 1};  // Append 1
+     endclass
+	
+	 //Alternative 
+     class packet
+        rand int count ;
+        int d[];
+        constraint c1 {count inside {[1:4]};} // 1 to 4 pairs → 2 to 8 elements
+		 
+        function void post_randmize();
+           d.delete();
+           for(int val =0 ; val< count;val++) begin
+             repeat(1) begin
+               d = {d, 0};  // Append 0 (using {d, val})
+               d = {d, 1};  // Append 1
+            end
           end
-        end
-      endfunction
-    endclass
-    
-  
-    
-
-73. Generate 1 2 1 2 1 2 1 2.
+        endfunction
+     endclass
+130. Generate 1 2 1 2 1 2 1 2
      class packet 
       rand int d[];
       constraint c1 {d.size () == 8;}
@@ -2321,43 +2314,41 @@ endmodule
                           d[i] == 2;
                     }   
     endclass
-  //Alternative 
+	
+    //Alternative 
     class packet
-      rand int count ;
-      int d[];
-      constraint c1 {count inside {[1:4]};} // 1 to 4 pairs → 2 to 8 elements
-      
-      function void post_randmize();
-        d.delete();
-        for(int val =0 ; val< count;val++) begin
-          repeat(1) begin
-             d = {d, 1};  
-             d = {d, 2};  
-          end
-        end
+       rand int count ;
+       int d[];
+       constraint c1 {count inside {[1:4]};} // 1 to 4 pairs → 2 to 8 elements
+       function void post_randmize();
+          d.delete();
+         for(int val =0 ; val< count;val++) begin
+            repeat(1) begin
+              d = {d, 1};  
+              d = {d, 2};  
+           end
+         end
       endfunction
     endclass
     
-74. Generate 1 2 3 1 2 3 1 2 3
-  
-    class packet
-      rand int count ;
-      int d[];
-      constraint c1 {count == 3;} 
-      
-      function void post_randmize();
-        d.delete();
-        for(int val =1 ; val<= count;val++) begin
-          repeat(1) begin
-             d = {d, 1};  
-             d = {d, 2}; 
-             d = {d, 3};  
+131. Generate 1 2 3 1 2 3 1 2 3
+     class packet
+        rand int count ;
+        int d[];
+        constraint c1 {count == 3;} 
+        function void post_randmize();
+          d.delete();
+          for(int val =1 ; val<= count;val++) begin
+             repeat(1) begin
+               d = {d, 1};  
+               d = {d, 2}; 
+               d = {d, 3};  
+            end
           end
-        end
-      endfunction
+        endfunction
     endclass
   
-75. Generate 0 0 1 1 2 2 3 3 4 4.
+132. Generate 0 0 1 1 2 2 3 3 4 4.
     class packet
       rand int count;
       int d[];
@@ -2369,18 +2360,14 @@ endmodule
           repeat(2) begin
             d= {d,val};
           end
-        end
-        
+        end 
       endfunction
-      
     endclass
-76. Generate 5 5 5 4 4 4 3 3 3 2 2 2
-  
-    class packet
-      rand int count;
-      int d[];
+133. Generate 5 5 5 4 4 4 3 3 3 2 2 2
+     class packet
+       rand int count;
+       int d[];
       constraint c1 {count inside {[2:5]};}
-      
       function void post_randomize ();
         d.delete();
         for(int val=5; val >= count; val--) begin
@@ -2388,11 +2375,10 @@ endmodule
             d= {d,val};
           end
         end
-        
       endfunction   
     endclass
   
-77. Generate an array where odd indices contain odd numbers and even indices contain even numbers.
+134. Generate an array where odd indices contain odd numbers and even indices contain even numbers.
     class packet
       rand int d[];
       constraint c1 {d.size ()== 10;}
@@ -2405,7 +2391,6 @@ endmodule
                         else
                           d[i] %2 ==1; 
                     }
-      
     endclass
 78. Generate 1 3 2 4 3 5 4 6 ...
   
