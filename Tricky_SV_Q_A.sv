@@ -2043,51 +2043,42 @@ endmodule
        constraint c1 {tr_id inside {[0:15]};}       
      endclass
 
-15. Generate a burst length where legal values are 1, 2, 4, 8, 16, with 8 and 16 occurring more frequently.
-    class packet;
-      rand bit [3 :0] axlen ;
-      //bit [3:0] burstlen;
-      //constraint c1 {burstlen == axlen+1;}
-      constraint c2 { axlen dist {0:=10, 1:=10, 3:=10, 7:=35, 15:=35}; }
-      
-    endclass
+111. Generate a burst length where legal values are 1, 2, 4, 8, 16, with 8 and 16 occurring more frequently.
+     class packet;
+       rand bit [3 :0] axlen ;
+       //bit [3:0] burstlen;
+       //constraint c1 {burstlen == axlen+1;}
+       constraint c2 { axlen dist {0:=10, 1:=10, 3:=10, 7:=35, 15:=35}; }
+     endclass
 
-16. Generate an AXI address such that a burst of LEN beats and SIZE bytes does not cross a 4-KB boundary.
-
-    class packet;
-      rand bit [15:0] awaddr;
-      rand bit [2:0]  awsize;
-      rand bit [3:0]  awlen;
-      constraint c1_4kb { (awaddr % 4096 == 0 ) && 
-                          (2**awsize) * (awlen+1) < = 4096;
+112. Generate an AXI address such that a burst of LEN beats and SIZE bytes does not cross a 4-KB boundary.
+     class packet;
+       rand bit [15:0] awaddr;
+       rand bit [2:0]  awsize;
+       rand bit [3:0]  awlen;
+       constraint c1_4kb { (awaddr % 4096 == 0 ) && 
+                             (2**awsize) * (awlen+1) < = 4096;
                         }
-      
-      
     endclass
 
-17. Generate an address aligned according to a randomly generated transfer size: 1, 2, 4, 8, or 16 bytes.
-
-    class packet;
-     rand bit [31:0] addr;
-     rand int unsigned size;
-     constraint c1 { size inside {1,2,4,8,16}; }
-     constraint c2 { addr % size == 0; }
-
-   endclass
+113. Generate an address aligned according to a randomly generated transfer size: 1, 2, 4, 8, or 16 bytes.
+     class packet;
+       rand bit [31:0] addr;
+       rand int unsigned size;
+       constraint c1 { size inside {1,2,4,8,16}; }
+       constraint c2 { addr % size == 0; }
+     endclass
       
-18. Generate a 32-bit data value where exactly one byte is 8'hFF and all other bytes are different.
-    class packet;
-      rand bit [31:0] data[4];
-      constraint c1 { data.sum () with (int'(item== 8'hFF)) == 1;
-                     }
-      constraint c2 {unique {data};}
-      
-    endclass
+114. Generate a 32-bit data value where exactly one byte is 8'hFF and all other bytes are different.
+     class packet;
+       rand bit [31:0] data[4];
+	   constraint c1 { data.sum () with (int'(item== 8'hFF)) == 1; }
+       constraint c2 {unique {data};}
+     endclass
 
-19. Generate a 32-bit value where every byte is unique.
+115. Generate a 32-bit value where every byte is unique.
     class packet;
       rand bit [31:0] data[4];
-      
       //constraint c1 {unique {data};}
       constraint c1 { unique {
                       data[31:24],
@@ -2096,8 +2087,7 @@ endmodule
                       data[7:0]
                       };
                      }
-      
-    endclass
+     endclass
 
 20. Generate a sequence of values where the difference between consecutive values is always 4
   
