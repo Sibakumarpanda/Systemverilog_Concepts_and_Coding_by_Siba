@@ -2392,39 +2392,33 @@ endmodule
                           d[i] %2 ==1; 
                     }
     endclass
-78. Generate 1 3 2 4 3 5 4 6 ...
-  
-    // Even Position pattern values : 1, 2 3 4
-    // Odd Position pattern :  3, 4 5 etc
-  
-    class packet
-      rand int d[];
-      constraint c1 {d.size () == 10;}
-      constraint c2 { foreach (d[i])
+135. Generate 1 3 2 4 3 5 4 6 ...
+     // Even Position pattern values : 1, 2 3 4
+     // Odd Position pattern :  3, 4 5 etc
+     class packet
+        rand int d[];
+        constraint c1 {d.size () == 10;}
+        constraint c2 { foreach (d[i])
                          if (i %2 ==0)
                            d[i] == (i/2)+1;
                          else
                            d[i] == (i/2)+3;
-                    }
-      
-    endclass
+                    } 
+     endclass
   
-79. Generate 0 2 1 3 2 4 3 5 ...
-  
+136. Generate 0 2 1 3 2 4 3 5 ...
      class packet
-      rand int d[];
-      constraint c1 {d.size () == 10;}
-      constraint c2 { foreach (d[i])
+       rand int d[];
+       constraint c1 {d.size () == 10;}
+       constraint c2 { foreach (d[i])
                          if (i %2 ==0)
                            d[i] == (i/2);
                          else
                            d[i] == (i/2)+2;
                     }
-      
     endclass
   
-
-Section 10 — Bit Patterns
+//Various Bit Patterns
  
 98. Generate an 8-bit value with the pattern 10101010
   
