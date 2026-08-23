@@ -2419,10 +2419,8 @@ endmodule
     endclass
   
 //Various Bit Patterns
- 
-98. Generate an 8-bit value with the pattern 10101010
-  
-    class packet;
+137. Generate an 8-bit value with the pattern 10101010
+     class packet;
        rand bit [7:0] a;
        constraint c1 { foreach(a[i]) {
                           if (i % 2 == 0)   // Even bit positions (0,2,4,6)
@@ -2431,12 +2429,9 @@ endmodule
                                a[i] == 1;      // MSB should be 1
                            }
                       }
-    endclass
-  
-  
-99. Generate 01010101
-         
-    class packet;
+     endclass
+138. Generate an 8-bit pattern value with 01010101
+     class packet;
        rand bit [7:0] a;
        constraint c1 { foreach(a[i]) {
                           if (i % 2 == 0)   
@@ -2445,59 +2440,43 @@ endmodule
                               a[i] == 0;      
                            }
                       }
-    endclass  
-         
-100. Generate a 16-bit value with alternating 1 and 0.
+     endclass  
+139. Generate a 16-bit value with alternating 1 and 0.
      class packet
        rand bit [15:0] a;
        constraint c1 { foreach (a[i])
                          if (i <15)
                            a[i] != a[i+1];
-                         }
-       
-     endclass
-                      
-101. Generate a value containing four consecutive 1s, with all other bits zero.
-                     
-      class packet;
+                         } 
+     endclass                     
+140. Generate a value containing four consecutive 1s, with all other bits zero.              
+     class packet;
         rand bit [7:0] a;
         rand int start_pos;
         constraint c1 {$countones(a)==4;}
-        
         constraint c2 { start_pos inside {[0:4]}; }  // 4 ones can start at positions 0-4
-  
-        
         constraint c3 {foreach (a[i])
                          if (i >=start_pos && i < start_pos+4)
                            a[i] ==1;
                          else
-                           a[i] == 0;
-                      
-                      }
-        
-      endclass
-                      
-102. Generate a value containing four consecutive 0s, with all other bits one.
-                      
+                           a[i] == 0;            
+                       }  
+      endclass                     
+141. Generate a value containing four consecutive 0s, with all other bits one.                
      class packet;
         rand bit [7:0] a;
         rand int start_pos;
         constraint c1 {$countzeros(a)==4;}
-        
         constraint c2 { start_pos inside {[0:4]}; }  // 4 ones can start at positions 0-4
-  
-        
         constraint c3 {foreach (a[i])
                          if (i >=start_pos && i < start_pos+4)
                            a[i] ==0;
                          else
-                           a[i] == 1;
-                      
-                      }
-        
+                           a[i] == 1;                  
+                      } 
       endclass
                       
-103. Generate 00001111
+142. Generate a pattern of 00001111
      class packet
        rand bit [7:0] a;
        rand int start_pos;
@@ -2508,22 +2487,19 @@ endmodule
                            a[i] ==1;
                           else
                             a[i] == 0;              
-                     }
-       
+                     } 
      endclass
      //Alternative way
-      class packet
+     class packet
        rand bit [7:0] a;
-       
        constraint c3 {foreach (a[i])
                           if (i< 4)
                            a[i] ==1;
                           else
                             a[i] == 0;              
-                     }
-       
+                     } 
      endclass                
-104. Generate 11110000
+143. Generate a pattern of 11110000
      class packet
        rand bit [7:0] a;
        rand int start_pos;
@@ -2538,32 +2514,28 @@ endmodule
        
      endclass
      //Alternative way
-      class packet
+    class packet
        rand bit [7:0] a;
-       
        constraint c3 {foreach (a[i])
                          if (i> 3)
                            a[i] ==1;
                           else
                             a[i] == 0;              
                      }
-       
      endclass                    
-105. Generate a pattern where the number of consecutive 1s increases: 1, 11, 111, 1111
+144. Generate a pattern where the number of consecutive 1s increases: 1, 11, 111, 1111
                                                                        10   100  1000
      class packet
-       rand int d[];
-       constraint c1 {d.size () == 4;}
-       constraint c2 {d[0] ==1;}
-       constraint c3 {foreach (d[i])
+        rand int d[];
+        constraint c1 {d.size () == 4;}
+        constraint c2 {d[0] ==1;}
+        constraint c3 {foreach (d[i])
                          if (i>0)
                            d[i] -d[i-1] == 10 ** i ; 
-                     }
-       
+                     } 
      endclass
-     
      //Alternative way -1
-      class packet;
+     class packet;
          rand bit d[][];  // 2D dynamic array
          constraint c1 { d.size() == 4; } // 4 patterns 
          constraint c2 { foreach(d[i]) {
@@ -2576,8 +2548,7 @@ endmodule
                              }
                            }
                           }
-      endclass                 
-                      
+      endclass                                 
      //Alternative way-2
      class packet;
        rand int count;
@@ -2592,11 +2563,9 @@ endmodule
           end
        endfunction
      endclass                 
-                      
-                      
-106. Generate a pattern where the number of consecutive 0s increases.
+145. Generate a pattern where the number of consecutive 0s increases.
      //Pattern : 0, 00, 000, 0000 which represent numbers with increasing zeros.
-      class packet;
+     class packet;
          rand bit d[][];  // 2D dynamic array
          constraint c1 { d.size() == 4; } // 4 patterns 
          constraint c2 { foreach(d[i]) {
@@ -2631,11 +2600,10 @@ endmodule
        constraint c3 {foreach (d[i])
                          if (i>0)
                            d[i] == 10 ** i ; 
-                     }
-       
+                     } 
      endclass                         
                       
-107. Generate a walking-1 pattern: 0001, 0010, 0100, 1000.
+146. Generate a walking-1 pattern: 0001, 0010, 0100, 1000.
      class packet;
         rand bit [3:0] a;
         rand int pos;
@@ -2643,8 +2611,7 @@ endmodule
         constraint c2 { a == (1 << pos); } // Walking-1 pattern
       endclass      
            
-108. Generate a walking-0 pattern: 1110, 1101, 1011, 0111
-           
+147. Generate a walking-0 pattern: 1110, 1101, 1011, 0111    
      class packet;
        rand bit [3:0] a;
        rand int pos;
@@ -2652,56 +2619,51 @@ endmodule
        constraint c2 { a == ~(1 << pos); }  // Walking-0 pattern
      endclass        
   	
-Section 9 — Fibonacci / Mathematical Patterns
-
-90. Generate the Fibonacci sequence: 1 1 2 3 5 8 13 21 ...
-    class packet
-      rand int d[];
-      constraint c1 {d.size () == 10;}
-      constraint c2 {foreach d([i])
+//Mathematical Patterns
+148. Generate the Fibonacci sequence: 1 1 2 3 5 8 13 21 ...
+     class packet
+       rand int d[];
+       constraint c1 {d.size () == 10;}
+       constraint c2 {foreach d([i])
                        if (i < 2)
                          d[i] == 1;
                        else 
                          d[i] == d[i-1] + d[i-2];
-                    }
-      
+                    }  
     endclass
   
-91. Generate 2 3 5 8 13 21 
-    
-    class packet
-      rand int d[];
-      constraint c1 {d.size () == 6;}
-      constraint c2 {d[0] == 2; d[1] == 3;}
-      constraint c3 {foreach d([i])
+149. Generate 2 3 5 8 13 21 
+     class packet
+       rand int d[];
+       constraint c1 {d.size () == 6;}
+       constraint c2 {d[0] == 2; d[1] == 3;}
+       constraint c3 {foreach d([i])
                        if (i >1) 
                          d[i] == d[i-1] + d[i-2];
                     }
-      
     endclass
-    
-    
-92. Generate square numbers
-    class packet;
+	
+150. Generate square numbers
+     class packet;
       rand int d[];
       constraint c1 {d.size () ==10;}
       constraint c2 {foreach (d[i])
                         //d[i] == i*i;
                           d[i] == i**2;
                     }
-    endclass
+     endclass
   
-93. Generate cube numbers: 0,1 8 27 64 125 
+151. Generate cube numbers: 0,1 8 27 64 125 
      class packet;
-      rand int d[];
-      constraint c1 {d.size () ==10;}
-      constraint c2 {foreach (d[i])
+       rand int d[];
+       constraint c1 {d.size () ==10;}
+       constraint c2 {foreach (d[i])
                         //d[i] == i*i*i;
                           d[i] == i**3;
                     }
-    endclass
+     endclass
   
- 94. Generate triangular numbers. {1, 3, 6, 10, 15, 21, 28, 36, 45, 55}
+ 152. Generate triangular numbers. {1, 3, 6, 10, 15, 21, 28, 36, 45, 55}
                        Differences   2  3  4  5   6    7  8   9   10
   
   Hint :
@@ -2721,13 +2683,12 @@ Section 9 — Fibonacci / Mathematical Patterns
                      }
     endclass
          
-95. Generate a sequence where array[i] = array[i-1] + array[i-2].
-  
-    class packet;
-       rand int d[];
-       constraint c1 { d.size() == 10;}
-       constraint c2 { d[0] == 1; d[1] == 1;}
-       constraint c3 { foreach(d[i]) {
+153. Generate a sequence where array[i] = array[i-1] + array[i-2].
+     class packet;
+        rand int d[];
+        constraint c1 { d.size() == 10;}
+        constraint c2 { d[0] == 1; d[1] == 1;}
+        constraint c3 { foreach(d[i]) {
                          if (i > 1) {
                            d[i] == d[i-1] + d[i-2];
                         }
@@ -2735,31 +2696,30 @@ Section 9 — Fibonacci / Mathematical Patterns
                      }
     endclass
                            
-96. Generate a sequence where every element is twice the previous element
-    class packet;
-      rand int d[];
-      constraint c1 { d.size() == 10;}  // Generate 10 elements
-      constraint c2 {d[0] == 1;}  // First term
-      constraint c3 {foreach(d[i]) 
+154. Generate a sequence where every element is twice the previous element
+     class packet;
+       rand int d[];
+       constraint c1 { d.size() == 10;}  // Generate 10 elements
+       constraint c2 {d[0] == 1;}  // First term
+       constraint c3 {foreach(d[i]) 
                         if (i > 0) 
-                          d[i] == d[i-1] * 2;  // Each term = previous × 2
-                           
+                          d[i] == d[i-1] * 2;  // Each term = previous × 2                      
                       }
-    endclass
+     endclass
   
-97. Generate a sequence where every element is half the previous element 
-    class packet;
-      rand real d[]; //Use real for floating-point values
-      constraint c1 { d.size() == 10;}  // Generate 10 elements
-      constraint c2 {d[0] == 1.0;}  // First term
-      constraint c3 {foreach(d[i]) 
+155. Generate a sequence where every element is half the previous element 
+     class packet;
+       rand real d[]; //Use real for floating-point values
+       constraint c1 { d.size() == 10;}  // Generate 10 elements
+       constraint c2 {d[0] == 1.0;}  // First term
+       constraint c3 {foreach(d[i]) 
                         if (i > 0) 
                           d[i] == d[i-1] / 2.0;  // Each term = previous / 2, Floating-point division
                            
                       }
-    endclass
+     endclass
     
- Section 3 — Dynamic / Dependency Constraints
+//Dynamic (or) Dependency Constraints
   
 21. Generate axi burst_len based on burst_type: FIXED ® 1–16, INCR ® 1–256, WRAP ® only 2, 4, 8, 16.
   
