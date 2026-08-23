@@ -2077,212 +2077,187 @@ endmodule
      endclass
 
 115. Generate a 32-bit value where every byte is unique.
-    class packet;
-      rand bit [31:0] data[4];
-      //constraint c1 {unique {data};}
-      constraint c1 { unique {
+     class packet;
+       rand bit [31:0] data[4];
+       //constraint c1 {unique {data};}
+       constraint c1 { unique {
                       data[31:24],
                       data[23:16],
                       data[15:8],
                       data[7:0]
                       };
                      }
-     endclass
+      endclass
 
-20. Generate a sequence of values where the difference between consecutive values is always 4
-  
-    class packet;
-       rand int d[];
-       constraint c1 { d.size() == 10;}
-       constraint c2 { d[0] inside {[0:100]};}
-       constraint c3 { foreach(d[i])
+116. Generate a sequence of values where the difference between consecutive values is always 4
+     class packet;
+        rand int d[];
+        constraint c1 { d.size() == 10;}
+        constraint c2 { d[0] inside {[0:100]};}
+        constraint c3 { foreach(d[i])
                           if(i > 0)
                            d[i] == d[i-1] + 4;
-                      }
-
-    endclass
-  
-  
-Section 6 — Basic Numeric Patterns
-  
-60. Generate the pattern 1 2 3 4 5 6 7 8 9 10
-    class packet ;
-      rand int d[];
-      constraint c1 {d.size () ==10 ;}
-      constraint c2 {foreach (d[i])
-                       d[i] inside {[1:10]};
+                       }
+      endclass
+	
+    //Basic Numeric Patterns 
+117. Generate the pattern 1 2 3 4 5 6 7 8 9 10
+     class packet ;
+        rand int d[];
+        constraint c1 {d.size () ==10 ;}
+        constraint c2 {foreach (d[i])
+                         d[i] inside {[1:10]};
                     }
-      constraint c3 {d[0]==1;}
-      constraint c4 {foreach (d[i])
-                       if (i>0)
+        constraint c3 {d[0]==1;}
+        constraint c4 {foreach (d[i])
+                         if (i>0)
                          d[i] == d[i-1]+1;
                     }
       
       //constraint c5 {foreach (d[i])  // Simple and straightforward logic 
       //                    d[i] == i+1;
-      //              }
-      
-    endclass 
+      //              } 
+     endclass 
   
-61. Generate the pattern 10 9 8 7 6 5 4 3 2 1
-  
-    class packet ;
-      rand int d[];
-      constraint c1 {d.size () ==10 ;}
-      constraint c2 {foreach (d[i])
-                       d[i] inside {[1:10]};
+118. Generate the pattern 10 9 8 7 6 5 4 3 2 1
+     class packet ;
+        rand int d[];
+        constraint c1 {d.size () ==10 ;}
+        constraint c2 {foreach (d[i])
+                         d[i] inside {[1:10]};
                     }
-      constraint c3 {d[0]==10;}
-      constraint c4 {foreach (d[i])
-                       if (i>0)
-                         d[i] == d[i-1]-1;
-                    }
+        constraint c3 {d[0]==10;}
+        constraint c4 {foreach (d[i])
+                         if (i>0)
+                           d[i] == d[i-1]-1;
+                       }
       
       //constraint c5 {foreach (d[i])  // Simple and straightforward logic 
       //                    d[i] == 10-i;
       //              }
       
-    endclass 
+     endclass 
   
-62. Generate 0 2 4 6 8 10 12 14
-  
-    class packet ;
-      rand int d[];
-      constraint c1 {d.size () ==10 ;}
-
-      
-      constraint c2 {d[0]==0;}
-      constraint c3 {foreach (d[i])
+119. Generate 0 2 4 6 8 10 12 14
+     class packet ;
+       rand int d[];
+       constraint c1 {d.size () ==10 ;}
+       constraint c2 {d[0]==0;}
+       constraint c3 {foreach (d[i])
                        if (i>0)
                          d[i] == d[i-1]+2;
-                    }
-      
+                     }
       //constraint c4 {foreach (d[i])  // Simple and straightforward logic 
       //                    d[i] == i*2;
       //              }
       
     endclass 
   
-63. Generate 1 3 5 7 9 11 13 15
-  
-    class packet ;
-      rand int d[];
-      constraint c1 {d.size () ==10 ;}
-
-      
-      constraint c2 {d[0]==1;}
-      constraint c3 {foreach (d[i])
-                       if (i>0)
+120. Generate 1 3 5 7 9 11 13 15
+     class packet ;
+        rand int d[];
+        constraint c1 {d.size () ==10 ;}
+        constraint c2 {d[0]==1;}
+        constraint c3 {foreach (d[i])
+                         if (i>0)
                          d[i] == d[i-1]+2;
                     }
       
-      //constraint c4 {foreach (d[i])  // Simple and straightforward logic 
-      //                    d[i] == 1+(2*i);
-      //              }
+       //constraint c4 {foreach (d[i])  // Simple and straightforward logic 
+       //                    d[i] == 1+(2*i);
+       //              }
       
-    endclass 
+     endclass 
   
-64. Generate powers of 2: 1 2 4 8 16 32 64 128
-  
+121. Generate powers of 2: 1 2 4 8 16 32 64 128
     class packet ;
-      rand int d[];
-      constraint c1 {d.size () ==8 ;}
-
-      constraint c2 {foreach (d[i])                      
+       rand int d[];
+       constraint c1 {d.size () ==8 ;}
+       constraint c2 {foreach (d[i])                      
                         d[i] == 2 ** i;
                     }
-      
     endclass 
   
-65. Generate square numbers: 1 4 9 16 25 36 49 64
-  
-    class packet ;
-      rand int d[];
-      constraint c1 {d.size () ==8 ;}
-
-      constraint c2 {foreach (d[i])     // Logic to generate 0 1 4 9 16 25 36 49 64
-                        d[i] == i*i;
+122. Generate square numbers: 1 4 9 16 25 36 49 64
+     class packet ;
+        rand int d[];
+        constraint c1 {d.size () ==8 ;}
+        constraint c2 {foreach (d[i])     // Logic to generate 0 1 4 9 16 25 36 49 64
+                         d[i] == i*i;
                     }
-      
-      //constraint c3 {foreach (d[i])                      
-      //                  d[i] == (i+1)*(i+1);   //Logic to generate 1 4 9 16 25 36 49 64 
+        //constraint c3 {foreach (d[i])                      
+        //                  d[i] == (i+1)*(i+1);   //Logic to generate 1 4 9 16 25 36 49 64 
                     }
-      
     endclass 
   
-66. Generate triangular numbers: 1 3 6 10 15 21 28 36
+123. Generate triangular numbers: 1 3 6 10 15 21 28 36
       //Difference as we see      2 3 4  5
-  
-    class packet ;
-      rand int d[];
-      constraint c1 {d.size () ==8 ;}
-      constraint c2 {d[0]==1;}
-
-      constraint c3 {foreach (d[i])     
-                         if (i>0)
+      class packet ;
+         rand int d[];
+         constraint c1 {d.size () ==8 ;}
+         constraint c2 {d[0]==1;}
+         constraint c3 {foreach (d[i])     
+                          if (i>0)
                            d[i] -d[i-1]== i+1; // Difference between consucative terms = incrementing
-                    }
-
-      
-    endclass
+                        }
+      endclass
   
-67. Generate the pattern as : 1 2 4 7 11 16 22 29
-     //Difference as we see    1 2 3 4  5  6  7
-  
-    class packet ;
-      rand int d[];
-      constraint c1 {d.size () ==8 ;}
-      constraint c2 {d[0]==1;}
-      constraint c3 {foreach (d[i])     
+124. Generate the pattern as : 1 2 4 7 11 16 22 29
+      //Difference as we see    1 2 3 4  5  6  7
+     class packet ;
+        rand int d[];
+        constraint c1 {d.size () ==8 ;}
+        constraint c2 {d[0]==1;}
+        constraint c3 {foreach (d[i])     
                          if (i>0)
                            d[i] -d[i-1]== i; // Difference between consucative terms = incrementing
                     }      
-    endclass
+     endclass
      
-68. Generate the pattern as : 2 4 8 16 32 64 128 256
-  
+125. Generate the pattern as : 2 4 8 16 32 64 128 256
      class packet ;
-      rand int d[];
-      constraint c1 {d.size () ==8 ;}
-      constraint c2 {d[0]==2;}
-      constraint c3 {foreach (d[i])     
-                         if (i>0)
+        rand int d[];
+        constraint c1 {d.size () ==8 ;}
+        constraint c2 {d[0]==2;}
+        constraint c3 {foreach (d[i])     
+                          if (i>0)
                            d[i] == d[i-1]* 2; // Multiplication of 2
-                    }
-
-      
-    endclass
+                       }
+      endclass
+	  //Alternative way
+	  class packet;
+		  rand int d[];
+		  constraint c1 {d.size() ==8 ;}
+		  constraint c2 {foreach (d[i])
+			                 d[i] == 2**(i+1);
+						  }
+	  endclass
   
-69. Generate the pattern as 100 90 80 70 60 50 ... with a defined decrement.
-
-    class packet ;
-      rand int d[];
-      constraint c1 {d.size () ==6 ;}
-      constraint c2 {d[0]==100;}
-      constraint c3 {foreach (d[i])     
+126. Generate the pattern as 100 90 80 70 60 50 ... with a defined decrement.
+     class packet ;
+       rand int d[];
+       constraint c1 {d.size () ==6 ;}
+       constraint c2 {d[0]==100;}
+       constraint c3 {foreach (d[i])     
                          if (i>0)
                            d[i] == d[i-1]-10; 
                     }
-
-      
-    endclass
+      endclass
   
-Section 7 — Repetition / Alternating Patterns
-70. Generate 1 1 2 2 3 3 4 4 5 5
-  
-    class packet;
-       rand int count;
-	   int d[];     // Not rand - we build it
-       constraint c1 { count == 5;}
-      
-       function void post_randomize();
-         d.delete();  // Delete all elements
-         for (int val = 1; val <= count; val++) begin
-           repeat (2) begin
-             d = {d, val};  // Build the pattern
-           end
-         end
-       endfunction
+     // Repetition (or) Alternating Patterns
+127. Generate 1 1 2 2 3 3 4 4 5 5
+     class packet;
+         rand int count;
+	     int d[];     // Not rand - we build it
+         constraint c1 { count == 5;}
+         function void post_randomize();
+            d.delete();  // Delete all elements
+            for (int val = 1; val <= count; val++) begin
+               repeat (2) begin
+                  d = {d, val};  // Build the pattern
+               end
+            end
+         endfunction
      endclass :packet
   
   
