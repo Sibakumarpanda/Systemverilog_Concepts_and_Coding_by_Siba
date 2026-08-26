@@ -1341,6 +1341,23 @@ endmodule
          end
        end
     endmodule :tb_top
+	
+   //Alternative way 
+   class packet;
+     rand int count;
+     int d[];
+     constraint c1 { count inside {[1:5]};}
+	   
+     function void post_randomize();
+       d.delete();
+       for (int val = 0; val < count; val++) begin
+         repeat (2) 
+	        d = {d, 0};
+         repeat (2) 
+	       d = {d, 1};
+       end
+     endfunction
+   endclass
 
 59. Write a SVA to check that if req is asserted, ack must follow within 2 to 5 clock cycles, and 
 	grant must not be asserted until ack arrives.
