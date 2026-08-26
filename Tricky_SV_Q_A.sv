@@ -2948,6 +2948,412 @@ endmodule
      assert property (p1) else
        $error("LTSSM state transition failed: detect → polling → config → L0");
 
+// Tricky Solver-Oriented Constraints
+
+31. Generate an array containing all values from 0 to 9 exactly once, without using unique.
+    class packet;
+      rand int d[];
+      constraint c1 {d.size () == 10;}
+      constraint c2 { foreach (d[i])
+                        d[i] inside {[0:9]};
+                    }
+      constraint c3 {foreach (d[i])
+                        foreach (d[j])
+                          if (i !=j)
+                            d[i] != d[j];
+                    }
+         
+      
+    endclass
+
+32. Generate an array of 20 elements where every element occurs at most twice.
+    class packet;
+      rand int d[];
+      constraint c1 {d.size() == 20;}
+      constraint c2 {foreach (d[i])
+                       d[i] inside {[1:50]};
+                    }
+      
+      // Constraint: No element appears more than twice
+      constraint c3 { foreach(d[i]) {
+                         foreach(d[j]) {
+                            if (i != j && d[i] == d[j]) {
+                                foreach(d[k]) {
+                                    if (k != i && k != j) {
+                                          d[k] != d[i];
+                                     }
+                                    }
+                                   }
+                                  }
+                                 }
+                           } 
+    endclass
+                                      
+33. Generate an array where the first occurrence of every value is unique and duplicate values are allowed afterward.
+    class packet;
+       rand int d[20];
+       // Just make first 10 elements unique
+       constraint c1 { foreach(d[i]) {
+                          if (i < 10) {
+                            foreach(d[j]) {
+                               if (j < 10 && i != j) {
+                                 d[i] != d[j];
+                                }
+                               }
+                              }
+                             }
+                      }
+    endclass  
+                                      
+                                      
+34. Generate a random array that is strictly increasing
+                                 
+    class packet;
+      int d[];
+      constraint c1 { d.size () == 20;}
+      constraint c2 {foreach (d[i])
+                       d[i] inside {[1:50]};
+                    }
+      constraint c3 {foreach (d[i])
+                       if (i>0)
+                         d[i] > d[i-1]; // Strictly increasing
+                  
+                    }
+      
+    endclass
+                                 
+                                  
+35. Generate a random array that is strictly decreasing.
+                              
+    class packet;
+      int d[];
+      constraint c1 { d.size () == 20;}
+      constraint c2 {foreach (d[i])
+                       d[i] inside {[1:50]};
+                    }
+      constraint c3 {foreach (d[i])
+                       if (i>0)
+                         d[i] < d[i-1]; // Strictly Decreasing
+                  
+                    }
+      
+    endclass
+                                        
+36. Generate an array where array[i] < array[i+1] for even i, and array[i] > array[i+1] for odd i.
+  
+    class packet;
+      rand int d[];
+      constraint c1 {d.size() == 10;}
+      constraint c2 {foreach d[i]
+                       d[i] inside {[20:30]};
+                    }
+      constraint c3 {foreach (d[i])
+                        if (i %2 ==0)
+                          d[i]< d[i+1];
+                        else 
+                          d[i] > d[i+1];
+                           
+                    }
+      
+    endclass
+37. Generate an array where the first and last elements are equal, but all middle elements are unique.
+                              
+    class packet;
+      rand int d[];
+      constraint c1 { d.size () ==10;}
+      constraint c2 { foreach (d[i])
+                         d[i] inside {[10:20]}; 
+                    }
+      constraint c3 {d[0] == d[d.size()-1];}
+      constraint c4 {foreach (d[i])
+                       foreach (d[j])
+                         if(i !=j && (i >0 && i < d.size()-1) )
+                           d[i] != d[j];
+                    
+                    }
+      
+      
+    endclass
+                              
+    //Alternative
+                              
+    class packet;
+      rand int d[];
+      constraint c1 { d.size () ==10;}
+      constraint c2 { foreach (d[i])
+                         d[i] inside {[10:20]}; 
+                    }
+      constraint c3 {d[0] == d[d.size()-1];}
+      constraint c4 {unique {d[1:d.size()-2]}; 
+                    }
+    endclass                          
+                                                        
+38. Generate an array where the sum of even-index elements equals the sum of odd-index elements.
+    class packet;
+      rand int d[];
+      rand int d_even[];
+      rand int d_odd[];
+      constraint c1 {d.size () == 20;
+                     d_even.size() ==10;
+                     d_odd.size()==10
+                    };
+      
+      constraint c2 {foreach (d[i])
+                        if (i %2 ==0)
+                          d_even[i/2]==d[i];
+                        else
+                          d_odd[i/2]==d[i];
+                    
+                    }
+      
+      constraint c3 {d_even.sum()== d_odd.sum();}
+      
+      
+    endclass
+                              
+39. Generate two arrays such that their intersection contains exactly 3 elements.
+                              
+    class packet;
+     rand int common[3];    // 3 common elements
+     rand int rest1[7];     // Remaining 7 elements for array1
+     rand int rest2[7];     // Remaining 7 elements for array2
+     int d1[10];
+     int d2[10];
+      
+     // All values between 1-50
+     constraint c1 {  foreach(common[i]) 
+                        common[i] inside {[1:50]};
+                      foreach(rest1[i]) 
+                        rest1[i] inside {[1:50]};
+                      foreach(rest2[i]) 
+                        rest2[i] inside {[1:50]};
+                    }
+      
+     // rest1 elements must NOT be in common
+     constraint c2 { foreach(rest1[i]) {
+                       foreach(common[j]) {
+                          rest1[i] != common[j];
+                        }
+                      }
+                    }
+    
+    // rest2 elements must NOT be in common
+     constraint c3 {foreach(rest2[i]) {
+                       foreach(common[j]) {
+                          rest2[i] != common[j];
+                         }
+                      }
+                   }
+    
+     // rest1 and rest2 should not overlap (optional)
+     constraint c4 {foreach(rest1[i]) {
+                      foreach(rest2[j]) {
+                          rest1[i] != rest2[j];
+                          }
+                         }
+                     }
+  
+    function void post_randomize();
+       // Build d1: 3 common + 7 rest1
+       for (int i = 0; i < 3; i++) d1[i] = common[i];
+       for (int i = 0; i < 7; i++) d1[3+i] = rest1[i];
+    
+       // Build d2: 3 common + 7 rest2
+       for (int i = 0; i < 3; i++) d2[i] = common[i];
+       for (int i = 0; i < 7; i++) d2[3+i] = rest2[i];
+    
+       // Shuffle to mix up the order
+       d1.shuffle();
+       d2.shuffle();
+     endfunction
+   endclass    
+       
+40. Generate a prime number using SystemVerilog constraints.
+       
+    class packet;
+      rand int num ;
+      constraint c1 {num inside {[2:100]};}
+      constraint c2 {is_prime(num)==1;}
+      
+      function bit is_prime(int n);
+        if (n<2) return 0;
+        if (n==2) return 1;
+        if (n%2 ==0) return 0;
+        for (int i=3;i *i<=n; i=i+2) begin
+          if (i%n==0)
+            return 0;
+        end
+        return 1;
+      endfunction
+      
+    endclass
+       
+41. Generate a number divisible by 3 and 5 but not divisible by 15
+       
+    class packet
+      rand bit [7:0] a;
+      constraint c1 { a % 3 == 0 || a % 5 ==0 ;}
+      constraint c2 { a % 15 !=0;}
+         
+    endclass
+       
+       
+42. Generate a number whose binary representation is a palindrome.
+       0000 -- return1
+       0001
+       0010
+       0011
+       0100
+       0101 
+       0110 - return1
+       0111
+       1000 
+       1001 - return1
+       1010 
+       1011 
+       1100
+       1101
+       1110
+       1111- return1
+       
+    class packet
+      rand bit [3:0] a;
+      
+      constraint c1 {is_palindrome(a)==1;}
+      
+      function bit is_palindrome(bit [3:0] n);
+         for (int i = 0; i < 2; i++) begin
+           if (n[i] != n[3-i]) return 0;
+         end
+         return 1;
+      endfunction
+      
+      function void post_randomize();
+        if (!is_palindrome(a)) begin
+          $error("a=%b is NOT a binary palindrome!", a);
+        end
+      endfunction
+      
+    endclass
+       
+43. Generate an array where the number of 1s in every element is different.
+    class packet;
+      rand bit [3:0] d[5];
+      rand int onecount[5];
+  
+      constraint c1 {unique{onecount};} // All onecounts are different
+  
+       constraint c2 {foreach (d[i])
+                        onecount[i] == $countones(d[i]);
+                }
+  
+    endclass   
+       
+44. Generate values where the Hamming distance between every pair is at least 3
+       
+    class packet;
+      rand bit [2:0] a;
+      rand bit [2:0] b;
+      constraint c1 { $countones(a ^ b) == 3; }
+    endclass
+       
+    a = 101, b = 010
+    a ^ b = 111 (distance = 3)
+    --------------------------
+    a = 000, b = 111
+    a ^ b = 111 (distance = 3)
+    --------------------------
+    a = 011, b = 100
+    a ^ b = 111 (distance = 3)   
+    ---------------------------
+    a = 001, b = 110
+    a ^ b = 111 (distance = 3)     
+       
+45. Generate two 8-bit values whose Hamming distance is exactly 4.
+    class packet;
+      rand bit [7:0] a;
+      rand bit [7:0] b;
+      constraint c1 {$countones(a^b)==4;}
+      
+    endclass 
+       
+46. Generate a 16-bit value whose upper byte is greater than its lower byte.
+    class packet;
+      rand bit [15:0] a; 
+      constraint c1 { a[15:8] > a[7:0];} // Upper byte > Lower byte
+      
+    endclass
+       
+       
+47. Generate an array where array[i] == array[i-1] + i.
+    class packet;
+      rand int d[];
+      constraint c1 {d.size () ==10;}
+      constraint c2 {foreach (d[i])
+                        d[i] inside {[10:100]}
+                    
+                    }
+        
+      constraint c3 {d[0] ==10;}  
+        
+      constraint c4 { foreach (d[i])
+                          if (i>0)
+                            d[i] == d[i-1] +i;
+                      } 
+      
+      
+    endclass
+      
+      
+48. Generate an array where the XOR of all elements is zero.
+    class packet;
+      rand int d [];
+      constraint c1 {d.size () ==10;}
+      constraint c2 {foreach (d[i])
+                         d[i] inside {[10:100]}
+                    
+                    }
+        
+      function void post_randomize();
+         int xor_val = 0;
+                     
+         foreach(d[i]) begin
+           xor_val = xor_val ^ d[i];
+         end
+    
+        if (xor_val != 0) begin
+          $error("XOR of all elements = %0d (expected 0)", xor_val);
+        end
+      endfunction  
+      
+    endclass
+        
+49. Generate an array where the sum of all elements is equal to the XOR of all elements.
+                     
+    class packet;
+      rand int d [];
+      constraint c1 {d.size () ==10;}
+      constraint c2 {foreach (d[i])
+                         d[i] inside {[10:100]}
+                    
+                    }
+        
+      function void post_randomize();
+         int sum_val = 0;
+         int xor_val = 0;
+                     
+         foreach(d[i]) begin
+           sum_val += d[i];
+           xor_val ^= d[i];
+         end
+                     
+        if (sum_val != xor_val) begin
+           $error("sum=%0d, xor=%0d (not equal)", sum_val, xor_val);
+        end
+     endfunction
+   endclass  
+      
+ 		 
 
 	  
 	  
