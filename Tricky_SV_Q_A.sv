@@ -2967,7 +2967,7 @@ endmodule
 
 // Tricky Solver-Oriented Constraints
 
-31. Generate an array containing all values from 0 to 9 exactly once, without using unique.
+171. Generate an array containing all values from 0 to 9 exactly once, without using unique.
     class packet;
       rand int d[];
       constraint c1 {d.size () == 10;}
@@ -2983,7 +2983,7 @@ endmodule
       
     endclass
 
-32. Generate an array of 20 elements where every element occurs at most twice.
+172. Generate an array of 20 elements where every element occurs at most twice.
     class packet;
       rand int d[];
       constraint c1 {d.size() == 20;}
@@ -3006,7 +3006,7 @@ endmodule
                            } 
     endclass
                                       
-33. Generate an array where the first occurrence of every value is unique and duplicate values are allowed afterward.
+173. Generate an array where the first occurrence of every value is unique and duplicate values are allowed afterward.
     class packet;
        rand int d[20];
        // Just make first 10 elements unique
@@ -3021,10 +3021,8 @@ endmodule
                              }
                       }
     endclass  
-                                      
-                                      
-34. Generate a random array that is strictly increasing
-                                 
+                                                                            
+174. Generate a random array that is strictly increasing                              
     class packet;
       int d[];
       constraint c1 { d.size () == 20;}
@@ -3038,10 +3036,8 @@ endmodule
                     }
       
     endclass
-                                 
-                                  
-35. Generate a random array that is strictly decreasing.
-                              
+								
+175. Generate a random array that is strictly decreasing.                         
     class packet;
       int d[];
       constraint c1 { d.size () == 20;}
@@ -3053,11 +3049,10 @@ endmodule
                          d[i] < d[i-1]; // Strictly Decreasing
                   
                     }
-      
-    endclass
-                                        
-36. Generate an array where array[i] < array[i+1] for even i, and array[i] > array[i+1] for odd i.
-  
+     
+    endclass 
+								
+176. Generate an array where array[i] < array[i+1] for even i, and array[i] > array[i+1] for odd i.
     class packet;
       rand int d[];
       constraint c1 {d.size() == 10;}
@@ -3073,7 +3068,8 @@ endmodule
                     }
       
     endclass
-37. Generate an array where the first and last elements are equal, but all middle elements are unique.
+								
+177. Generate an array where the first and last elements are equal, but all middle elements are unique.
                               
     class packet;
       rand int d[];
@@ -3088,12 +3084,9 @@ endmodule
                            d[i] != d[j];
                     
                     }
-      
-      
     endclass
                               
-    //Alternative
-                              
+    //Alternative                         
     class packet;
       rand int d[];
       constraint c1 { d.size () ==10;}
@@ -3105,7 +3098,7 @@ endmodule
                     }
     endclass                          
                                                         
-38. Generate an array where the sum of even-index elements equals the sum of odd-index elements.
+178. Generate an array where the sum of even-index elements equals the sum of odd-index elements.
     class packet;
       rand int d[];
       rand int d_even[];
@@ -3121,15 +3114,11 @@ endmodule
                         else
                           d_odd[i/2]==d[i];
                     
-                    }
-      
+                    } 
       constraint c3 {d_even.sum()== d_odd.sum();}
-      
-      
     endclass
                               
-39. Generate two arrays such that their intersection contains exactly 3 elements.
-                              
+179. Generate two arrays such that their intersection contains exactly 3 elements.                            
     class packet;
      rand int common[3];    // 3 common elements
      rand int rest1[7];     // Remaining 7 elements for array1
@@ -3185,8 +3174,7 @@ endmodule
      endfunction
    endclass    
        
-40. Generate a prime number using SystemVerilog constraints.
-       
+180. Generate a prime number using SystemVerilog constraints.    
     class packet;
       rand int num ;
       constraint c1 {num inside {[2:100]};}
@@ -3205,17 +3193,15 @@ endmodule
       
     endclass
        
-41. Generate a number divisible by 3 and 5 but not divisible by 15
-       
-    class packet
+181. Generate a number divisible by 3 and 5 but not divisible by 15  
+     class packet
       rand bit [7:0] a;
       constraint c1 { a % 3 == 0 || a % 5 ==0 ;}
       constraint c2 { a % 15 !=0;}
          
-    endclass
-       
-       
-42. Generate a number whose binary representation is a palindrome.
+     endclass
+             
+182. Generate a number whose binary representation is a palindrome.
        0000 -- return1
        0001
        0010
@@ -3253,7 +3239,7 @@ endmodule
       
     endclass
        
-43. Generate an array where the number of 1s in every element is different.
+183. Generate an array where the number of 1s in every element is different.
     class packet;
       rand bit [3:0] d[5];
       rand int onecount[5];
@@ -3266,8 +3252,7 @@ endmodule
   
     endclass   
        
-44. Generate values where the Hamming distance between every pair is at least 3
-       
+184. Generate values where the Hamming distance between every pair is at least 3
     class packet;
       rand bit [2:0] a;
       rand bit [2:0] b;
@@ -3286,7 +3271,7 @@ endmodule
     a = 001, b = 110
     a ^ b = 111 (distance = 3)     
        
-45. Generate two 8-bit values whose Hamming distance is exactly 4.
+185. Generate two 8-bit values whose Hamming distance is exactly 4.
     class packet;
       rand bit [7:0] a;
       rand bit [7:0] b;
@@ -3294,7 +3279,7 @@ endmodule
       
     endclass 
        
-46. Generate a 16-bit value whose upper byte is greater than its lower byte.
+186. Generate a 16-bit value whose upper byte is greater than its lower byte.
     class packet;
       rand bit [15:0] a; 
       constraint c1 { a[15:8] > a[7:0];} // Upper byte > Lower byte
@@ -3302,33 +3287,26 @@ endmodule
     endclass
        
        
-47. Generate an array where array[i] == array[i-1] + i.
+187. Generate an array where array[i] == array[i-1] + i.
     class packet;
       rand int d[];
       constraint c1 {d.size () ==10;}
       constraint c2 {foreach (d[i])
                         d[i] inside {[10:100]}
                     
-                    }
-        
-      constraint c3 {d[0] ==10;}  
-        
+                    }  
+      constraint c3 {d[0] ==10;}     
       constraint c4 { foreach (d[i])
                           if (i>0)
                             d[i] == d[i-1] +i;
                       } 
-      
-      
     endclass
-      
-      
-48. Generate an array where the XOR of all elements is zero.
+188. Generate an array where the XOR of all elements is zero.
     class packet;
       rand int d [];
       constraint c1 {d.size () ==10;}
       constraint c2 {foreach (d[i])
-                         d[i] inside {[10:100]}
-                    
+                         d[i] inside {[10:100]}         
                     }
         
       function void post_randomize();
@@ -3342,19 +3320,16 @@ endmodule
           $error("XOR of all elements = %0d (expected 0)", xor_val);
         end
       endfunction  
-      
     endclass
-        
-49. Generate an array where the sum of all elements is equal to the XOR of all elements.
-                     
-    class packet;
-      rand int d [];
-      constraint c1 {d.size () ==10;}
-      constraint c2 {foreach (d[i])
+					 
+189. Generate an array where the sum of all elements is equal to the XOR of all elements.                 
+     class packet;
+        rand int d [];
+        constraint c1 {d.size () ==10;}
+        constraint c2 {foreach (d[i])
                          d[i] inside {[10:100]}
                     
                     }
-        
       function void post_randomize();
          int sum_val = 0;
          int xor_val = 0;
