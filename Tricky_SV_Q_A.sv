@@ -3344,7 +3344,16 @@ endmodule
         end
      endfunction
    endclass  
-      
+					   
+190. WAC to generate an array of size 100 , where first 50 element have value randomized and next 50 element have value as 0.
+     class packet
+        rand int d[];
+        constraint c1 { d.size () == 100;}
+        constraint c2 { foreach (d[i])
+                           if (i > 49)
+                              d[i] == 0;
+                       }
+     endclass      
  		 
 
 	  
