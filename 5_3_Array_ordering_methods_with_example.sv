@@ -170,18 +170,14 @@ CPU Time:      0.390 seconds;       Data structure size:   0.0Mb
 Tue Nov 11 06:10:46 2025
 Done
   
-/*******************************************************************************/
-   Array Ordering Example2- sort and rsort methods may use the ‘with’ clause.
-/**********************************************************************************/      
-//Important and Tricky example
-
-/*
-Note:
--The sort and rsort methods may use the ‘with’ clause. The ‘with’ clause usage is optional. 
--The shuffle and reverse methods lead to a compilation error if the ‘with’ clause is specified.
-  */
+/******************************************************************************************************/
+   Array Ordering Example2- sort and rsort methods may use the ‘with’ clause
+   Important and Tricky example
+   Note:
+    -The sort and rsort methods may use the ‘with’ clause. The ‘with’ clause usage is optional. 
+    -The shuffle and reverse methods lead to a compilation error if the ‘with’ clause is specified.
+/*****************************************************************************************************/      
 module array_ordering_method_using_with_clause;
-  
   string str[5]   = '{"siba", "Biranchi", "Subha", "Subhra", "Sriyambika"};
   int    a_value[8]  = '{3,2,1,6,8,7,4,9};
   
@@ -191,8 +187,6 @@ module array_ordering_method_using_with_clause;
      str.reverse;
      $display("AFTER 'str' reverse: str=%p", str);
      $display ("********************************************");
-    
-    
      $display("BEFORE 'a_value' sort: a_value=%p", a_value);
      a_value.sort;
      $display("AFTER 'a_value' sort: a_value=%p",a_value);
@@ -221,8 +215,7 @@ module array_ordering_method_using_with_clause;
      a_value.shuffle;
      $display("AFTER 'a_value' shuffle: a_value=%p",a_value);
      $display ("********************************************");
-    end
-  
+    end 
 endmodule :array_ordering_method_using_with_clause
 
 //Log File
@@ -262,13 +255,11 @@ CPU Time:      0.400 seconds;       Data structure size:   0.0Mb
 Tue Nov 11 19:55:51 2025
 Done 
 
-/*******************************************************************************/
-   Array Ordering Example3- sort and rsort methods may use the ‘with’ clause.
-//  [Running with 20 iterations and see the behaviour]
-/**********************************************************************************/      
-//Important and Tricky example
+/***************************************************************************************/
+    Array Ordering Example3- sort and rsort methods may use the ‘with’ clause.
+    Important and Tricky example : Running with 20 iterations and see the behaviour
+/***************************************************************************************/      
 module array_ordering_method_using_with_clause_with_more_iteration_run;
-  
   string str[5]   = '{"siba", "Biranchi", "Subha", "Subhra", "Sriyambika"};
   int    a_value[8]  = '{3,2,1,6,8,7,4,9};
   
@@ -278,7 +269,6 @@ module array_ordering_method_using_with_clause_with_more_iteration_run;
      str.reverse;
      $display("AFTER 'str' reverse: str=%p", str);
      $display ("********************************************");
-    
     
      $display("BEFORE 'a_value' sort: a_value=%p", a_value);
      a_value.sort;
@@ -314,7 +304,6 @@ module array_ordering_method_using_with_clause_with_more_iteration_run;
      $display("AFTER 'a_value' shuffle: a_value=%p",a_value);
      $display ("********************************************");
     end
-  
 endmodule :array_ordering_method_using_with_clause_with_more_iteration_run
   
 //Log File Output
@@ -473,15 +462,12 @@ Done
   
 /*****************************************************************************************************/
    Array Ordering Example4 with special array values- sort and rsort methods may use the ‘with’ clause.
-  //  [Running with 5 iterations and see the behaviour]
+   NOTE: [Running with 5 iterations and see the behaviour]
 /****************************************************************************************************/  
   
 module array_ordering_method_using_with_clause_with_special_array_val_more_iteration_run;
-  
   bit    a_value[10] = '{0,0,0,1,1,1,0,1,0,1};
-  
-  initial begin
-       
+  initial begin 
      $display("BEFORE 'a_value' sort: a_value=%p", a_value);
      a_value.sort;
      $display("AFTER 'a_value' sort: a_value=%p",a_value);
@@ -577,21 +563,43 @@ Time: 0 ns
 CPU Time:      0.330 seconds;       Data structure size:   0.0Mb
 Tue Nov 11 23:29:32 2025
 Done 
-/*****************************************************************************************************/
-/*   Array Ordering Example5 : Question :
-A SV array is given as:   int val_a[8] = '{3,2,1,6,8,7,4,9};
-Its required to sort the elements which are greater than 3 only.(using SV Array ordering methods )
-Result should be : int val_a[8] = '{3,2,1,4,6,7,8,9}
-
-How to do ? 
-[It may requires a queue to keep track of the indexes of the array elements greater than 3. 
-The find() and find_index() methods can be used to create both those queues]
-
-Steps: 1. First put the elements of the array greater than 3 into a queue
-       2. Then , sort the queue elements
-       3. Then put the sorted queue elements, back into the original array in sorted order
-       4. Then display the array contents
-       
- */    
-/****************************************************************************************************/    
   
+/*****************************************************************************************************/
+   Array Ordering Example5 : Question :
+   A SV array is given as:   int val_a[8] = '{3,2,1,6,8,7,4,9};
+   Its required to sort the elements which are greater than 3 only.(using SV Array ordering methods )
+   Result should be : int val_a[8] = '{3,2,1,4,6,7,8,9}
+
+   How to do ? 
+   [It may requires a queue to keep track of the indexes of the array elements greater than 3. 
+   The find() and find_index() methods can be used to create both those queues]
+
+   Steps: 1. First put the elements of the array greater than 3 into a queue
+          2. Then , sort the queue elements
+          3. Then put the sorted queue elements, back into the original array in sorted order
+          4. Then display the array contents
+/****************************************************************************************************/    
+ module array_ordering_method_example_for_sorting_greater_than_3_values;
+  
+  int a_value[8] = '{3, 2, 1, 6, 8, 7, 4, 9};
+  int b_value[8];
+  int q_greater[$];
+  int q_index[$];
+  
+  initial begin
+    $display("Original: a_value = %p", a_value);
+    // Find elements > 3 and their indices
+    q_greater = a_value.find(x) with (x > 3);
+    q_index = a_value.find_index(x) with (x > 3);
+    
+    // Sort
+    q_greater.sort();
+    
+    // Place back
+    foreach(q_index[i]) begin
+      a_value[q_index[i]] = q_greater[i];
+    end
+    
+    $display("Result:   a_value = %p", a_value);
+  end
+endmodule 
