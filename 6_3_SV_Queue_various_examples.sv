@@ -109,47 +109,41 @@ Time: 0 ns
 CPU Time:      0.480 seconds;       Data structure size:   0.0Mb
 Thu Nov 13 23:47:23 2025
 Done   
+   
 /*************************************************************************/
    Queue : Example3 : Example with insert,delete methods
 /************************************************************************/
 module queue_example3;       //Queue_example with insert,delete method
   int q[$]={0,7,8,15,73,91};
-  
- initial
-  begin
-    $display ("The values in Queue are  = %p",q);      // 0,7,8,15,73,91
-    $display ("The Size of the Queue is = %0p",q.size);  //6
+  initial
+    begin
+     $display ("The values in Queue are  = %p",q);      // 0,7,8,15,73,91
+     $display ("The Size of the Queue is = %0p",q.size);  //6
+       
+     //1st phase insertion and deletion
+     q.insert(2,33); // 2=address, 33=element (Means at index2 , 33 value to be placed)
+     $display ("The values in Queue are = %p",q);      // 0,7,33,8,15,73,91
+     $display ("The Size of the Queue is =%0p",q.size); // 7
+     q.delete(2); // 2=address , Mean delete the value at index2
+     $display ("The values in Queue are = %p",q); // 0,7,8,15,73,91
+     $display ("The Size of the Queue is =%0p",q.size); // 6
     
-    //1st phase insertion and deletion
-    q.insert(2,33); // 2=address, 33=element (Means at index2 , 33 value to be placed)
+     // 2nd phase insertion and deletion
+     q.insert(4,100); // 4=address, 100=element
+     $display ("The values in Queue are = %p",q); // 0,7,8,15,100,73,91
+     $display ("The Size of the Queue is =%0p",q.size); // 7
+     q.delete(6); // 6=address
+     $display ("The values in Queue are = %p",q); // 0,7,8,15,100,73,
+     $display ("The Size of the Queue is =%0p",q.size); // 6
     
-    $display ("The values in Queue are = %p",q);      // 0,7,33,8,15,73,91
-    $display ("The Size of the Queue is =%0p",q.size); // 7
-    
-    q.delete(2); // 2=address , Mean delete the value at index2
-    $display ("The values in Queue are = %p",q); // 0,7,8,15,73,91
-    $display ("The Size of the Queue is =%0p",q.size); // 6
-    
-    // 2nd phase insertion and deletion
-    q.insert(4,100); // 4=address, 100=element
-    
-    $display ("The values in Queue are = %p",q); // 0,7,8,15,100,73,91
-    $display ("The Size of the Queue is =%0p",q.size); // 7
-    
-    q.delete(6); // 6=address
-    $display ("The values in Queue are = %p",q); // 0,7,8,15,100,73,
-    $display ("The Size of the Queue is =%0p",q.size); // 6
-    
-    //3rd attempt
-    q.delete();
-    $display ("The values in Queue are = %p",q);     // 0
-    $display ("The Size of the Queue is =%0p",q.size); //0
-    end
-  
+     //3rd attempt
+     q.delete();
+     $display ("The values in Queue are = %p",q);     // 0
+     $display ("The Size of the Queue is =%0p",q.size); //0
+    end 
 endmodule :queue_example3
 
 //Log File Output
-   
 Starting vcs inline pass...
 1 module and 0 UDP read.
 recompiling module queue_example3
@@ -184,18 +178,14 @@ Done
 /************************************************************************/   
 module queue_methods_example4; //Example with size , max, pop_front, pop_back methods
   byte q[$];
-  
- initial
-   begin
+  initial begin
    q.push_front(2);
    q.push_front(12);
    q.push_front(22);
-   $display("The values in Queue are = %p ",q);  //'{22, 12, 2} 
-     
+   $display("The values in Queue are = %p ",q);  //'{22, 12, 2}  
    q.push_back(11);
    q.push_back(99);
    $display("The values in Queue are = %p ",q); // '{22, 12, 2, 11, 99} 
-     
    foreach(q[i]) begin
      $display("The values in Queue at q[%0d] = %0d ",i,q[i]); 
    end
@@ -205,20 +195,16 @@ module queue_methods_example4; //Example with size , max, pop_front, pop_back me
    $display("The minimim value in the Queue is = %p " ,q.min());  // `{2}
    $display("The pop_front value in the Queue is = %0d " ,q.pop_front()); //22
    $display("The pop_front value in the Queue is = %0d " ,q.pop_back()); //99
-     
    $display("The values in Queue are = %p ",q); 
-
    foreach(q[i]) begin
      $display("The values in Queue at q[%0d] = %0d ",i,q[i]); // `{12,2,11}
    end
-
    q.delete(3); 
    // Means delete the value at index 3, But here if you look carefully previously only 3 values are present with index range from 0 to 2 .
    //Means Index3 is not available , Hence it will give warning as (Illegal index into queue) in Simens Questa Tool
    // Will throw error in Synopsys VCS Tool
    $display("The values in Queue are = %p ",q);        // Same values as before '{12, 2, 11}   
    $display("The Size of the Queue is= %0d " ,q.size()); //3
-     
    q.delete(2);  // Means delete the value at index 2
    $display("The values in Queue are = %p ",q);         //'{12, 2}  
    $display("The Size of the Queue is= %0d " ,q.size());  //2
@@ -226,7 +212,6 @@ module queue_methods_example4; //Example with size , max, pop_front, pop_back me
 endmodule :queue_methods_example4
    
 //Log File Output using Simens Questa Tool
-   
 # Loading sv_std.std
 # Loading work.queue_methods_example4(fast)
 # 
@@ -266,9 +251,9 @@ End time: 06:47:36 on Nov 14,2025, Elapsed time: 0:00:02
 Done
    
 /*******NOTE : If we will run the same above Example4 using Synopsys VCS Tool , we will get the error for that Illegal indx as below ********/
+   
 //Log File Output Using Synopsys VCS Tool
 Starting vcs inline pass...
-
 1 module and 0 UDP read.
 recompiling module queue_methods_example4
 rm -f _cuarc*.so _csrc*.so pre_vcsobj_*.so share_vcsobj_*.so
@@ -313,9 +298,7 @@ Done
 module queue_population_example5;
   int q1[$];
   int q2[$];
-  
- initial
-   begin
+  initial begin
     q1[23] = 81;  // ILLEGAL: Index 23 doesn't exist in empty queue → IGNORED
     q1[75] = 65;  // ILLEGAL: Index 75 doesn't exist in empty queue → IGNORED
      
@@ -342,12 +325,11 @@ module queue_population_example5;
      /*
     q2.insert(23, 81);  // Insert 81 at index 23
     q2.insert(75, 65);  // Insert 65 at index 75 
-    */ 
-     
+    */  
   end
 endmodule : queue_population_example5
-//Log File Output
    
+//Log File Output 
 Starting vcs inline pass...
 1 module and 0 UDP read.
 recompiling module queue_population_example5
@@ -370,50 +352,37 @@ The values at Queue index75 is =65
 The values in the Queue are = '{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 81, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65}  
            V C S   S i m u l a t i o n   R e p o r t 
 Time: 0 ns
-CPU Time:      0.540 seconds;       Data structure size:   0.0Mb   
+CPU Time:      0.540 seconds;       Data structure size:   0.0Mb 
+   
 /******************************************************************************************************/
    Queue : Example6 :  Example with Queue slicing , Mean Printing part of the elements in the Queue
 /*****************************************************************************************************/   
-module queue_slice_expression_example6; // Example with Queue slicing , Mean Printing part of the elements in the Queue
-    
+module queue_slice_expression_example6;   
   //Creating queue for storing string values
   string fruits[$]={"orange","apple","lemon","kiwi"}; 
-  
   initial begin
-    
     foreach(fruits[i]) begin
       $display("fruits[%0d]=%s",i,fruits[i]);
     end
-    
     $display("Displaying subset of fruits=%p",fruits[1:2]); // '{"apple", "lemon"} 
-    
     //Printing all fruits except last fruit
     $display("Displaying all fruits except last fruit=%p",fruits[0:$-1]); // '{"orange", "apple", "lemon"}
-    
      //Printing all fruits except first fruit
     $display("Displaying all fruits except first fruit=%p",fruits[1:$-1]); //'{"apple", "lemon"}
-    
      //Printing all fruits except Last fruit
     $display("Displaying all fruits except Last fruit=%p",fruits[0:$-1]); //'{"orange", "apple", "lemon"} 
-    
     //Printing the first and second fruit
     $display("Displaying First and second fruits=%p",fruits[1:2]); //'{"apple", "lemon"} 
-    
     fruits[$+1]="pineapple";
     $display("Displaying all fruits =%p",fruits); // '{"orange", "apple", "lemon", "kiwi", "pineapple"} 
-    
     $display ("The size of the Queue is = %0d", fruits.size());
-    
     fruits={};
     $display("After Queue Deletion : fruits=%p",fruits);
     $display ("The size of the Queue is after deleting all = %0d", fruits.size());
-    
   end
-  
 endmodule :queue_slice_expression_example6
 
-// LogFile Output
-   
+// LogFile Output 
 Starting vcs inline pass...
 1 module and 0 UDP read.
 recompiling module queue_slice_expression_example6
@@ -443,81 +412,60 @@ Time: 0 ns
 CPU Time:      0.410 seconds;       Data structure size:   0.0Mb
 Sat Nov 15 08:44:07 2025
 Done 
+   
 /******************************************************************************************************/
    Queue : Example7 :  Example of string of queue with , queue method uses
 /*****************************************************************************************************/      
-module queue_of_string_elelments_with_uses_of_methods_example7; //Example of string of queue with , queue method uses
-    
+module queue_of_string_elelments_with_uses_of_methods_example7; 
   //Creating queue for storing string values
   string fruits[$]={ "apple","pear","mango","banana"}; 
-  
   initial begin
-    
     foreach(fruits[i]) begin
       $display("fruits[%0d]=%s",i,fruits[i]);
     end
-    
     $display("Displaying subset of fruits=%p",fruits[1:2]);
-    
     //use of size() method
     $display("Size of the queue is fruits.size() =%0d",fruits.size());
-    
     //use of insert() method- insert an element at given index
     fruits.insert(1,"peach");
     $display("Size of the queue after PEACH insertion at index1: fruits.size() =%0d",fruits.size());
-    
     foreach(fruits[i]) begin
       $display("fruits[%0d]=%s",i,fruits[i]);
     end
-    
     //use of delete() method- delete an element at given index
     fruits.delete(3);
     $display("Size of the queue after deletion at index3: fruits.size() =%0d",fruits.size());
-    
     foreach(fruits[i]) begin
       $display("fruits[%0d]=%s",i,fruits[i]);
     end
-    
     //use of pop_front() method- Poping the element from front side of queue :  fruits.pop_front();
     $display("popped from front =%s,Size of the queue after poping : fruits.size() =%0d ",fruits.pop_front(),fruits.size());
-    
     foreach(fruits[i]) begin
       $display("fruits[%0d]=%s",i,fruits[i]);
     end
-    
     //use of push_front() method- Pushing the element to the front side of queue
     fruits.push_front("apricot");
     $display("The new queue now =%p,Size of the queue after pushing : fruits.size() =%0d ",fruits,fruits.size());
-    
     foreach(fruits[i]) begin
       $display("fruits[%0d]=%s",i,fruits[i]);
     end
-    
     //use of pop_back() method- Poping the element from Back side of queue : fruits.pop_back();
     $display("popped from back =%s,Size of the queue after poping : fruits.size() =%0d ",fruits.pop_back(),fruits.size());
-    
     foreach(fruits[i]) begin
       $display("fruits[%0d]=%s",i,fruits[i]);
     end
-    
     //use of push_back() method- Pushing the element to the back side of queue
     fruits.push_back("palm");
     $display("The new queue now =%p,Size of the queue after pushing : fruits.size() =%0d ",fruits,fruits.size());
-    
     foreach(fruits[i]) begin
       $display("fruits[%0d]=%s",i,fruits[i]);
     end
-    
     fruits={};
-    $display("After Queue Deletion : fruits=%p,fruits.size()=%0d",fruits,fruits.size());
-         
-           
-  end
-  
+    $display("After Queue Deletion : fruits=%p,fruits.size()=%0d",fruits,fruits.size());       
+  end 
 endmodule :queue_of_string_elelments_with_uses_of_methods_example7
 
-//Log File Output
-   
+//Log File Output  
 Starting vcs inline pass...
 1 module and 0 UDP read.
 recompiling module queue_of_string_elelments_with_uses_of_methods_example7
@@ -574,26 +522,20 @@ Done
    Queue : Example8 :  Queue_overall_example_with_all_methods_example8
 /*****************************************************************************************************/         
 module queue_overall_example_with_all_methods_example8;
-  
   string animal_q[$];
-    
   initial begin
     $display("Initial Size: animal_q = %0d", animal_q.size());
-    
     animal_q = {"TIGER","LION"};
     $display("Size: animal_q = %0d", animal_q.size());
     $display("-----------------------");
-    
     animal_q.insert(1, "ELEPHANT");
     animal_q.insert(3, "FOX");
     animal_q.insert(4, "ZEBRA");
     $display("Size: animal_q = %0d", animal_q.size());
-    
     foreach(animal_q[i]) begin
       $display("animal_q[%0d] = %s", i, animal_q[i]);
     end
     $display("-----------------------");
-    
     $display("--- Access queue item ---");
     $display("The second element of animal_q = %s", animal_q[2]);
     $display("The fourth element of animal_q = %s", animal_q[4]);
@@ -708,10 +650,8 @@ Done
 /******************************************************************************************************/
    Queue : Example9 : uses of shuffle method in Queue
 /*****************************************************************************************************/     
-module queue_example_using_shuffle_method_example9; //uses of shuffle method in Queue
- 
+module queue_example_using_shuffle_method_example9; 
   int num_q[$];
-    
   initial begin
     for(int i = 0; i < 10; i++) begin
       num_q.push_back(i);
@@ -734,8 +674,8 @@ module queue_example_using_shuffle_method_example9; //uses of shuffle method in 
     end
   end
 endmodule :queue_example_using_shuffle_method_example9
-//Log File Output
    
+//Log File Output  
 Starting vcs inline pass...
 1 module and 0 UDP read.
 recompiling module queue_example_using_shuffle_method_example9
@@ -779,9 +719,8 @@ Done
 /******************************************************************************************************/
    Queue : Example10 : Example of array of Queue of int values
 /*****************************************************************************************************/      
-module array_of_queue_example10; // Example of array of Queue of int values
-  int array_queue [3][$];
-    
+module array_of_queue_example10; 
+  int array_queue [3][$]; 
   initial begin
     //array[0] = {2, 4, 6, 8};
     //array[1] = {1, 3, 5, 7};
@@ -820,8 +759,7 @@ module array_of_queue_example10; // Example of array of Queue of int values
   
 endmodule :array_of_queue_example10
 
-//Log File Output
-   
+//Log File Output 
 Before push_back operation--------------> 
 The content of the array of Queue : array_queue = '{'{2, 4, 6, 8} , '{1, 3, 5, 7} , '{100, 200, 300} }
 array_queue[0][0] = 2
@@ -860,11 +798,9 @@ Done
 /******************************************************************************************************/
    Queue : Example11 : Example of array of Queue of string values
 /*****************************************************************************************************/ 
-module array_of_queue_example11; // Example of array of Queue with strings 
+module array_of_queue_example11; 
   string array_queue [3][$];
-    
   initial begin
-    
     array_queue = '{ {"siba", "subha", "subhra", "sriyambika"},   // Each array having 4 string names in index range from 0 to 3
                      {"biranchi", "pinku", "ani", "trupti"},
                      {"simanchala", "kuni", "siku"}
@@ -893,12 +829,10 @@ module array_of_queue_example11; // Example of array of Queue with strings
     foreach (array_queue[i,j]) begin
       $display("array_queue[%0d][%0d] = %s", i, j, array_queue[i][j]);
     end
-    
   end
-  
 endmodule :array_of_queue_example11
-//Log File Output
    
+//Log File Output 
  Starting vcs inline pass...
 1 module and 0 UDP read.
 recompiling module array_of_queue_example11
