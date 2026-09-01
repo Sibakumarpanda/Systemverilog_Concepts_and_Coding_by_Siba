@@ -1,35 +1,35 @@
-Array Locator methods Overview :
-
-- Array locator methods operate on queues, unpacked arrays, but their return type is a queue.
+///////////////////////////////////////
+  Array Locator methods Overview 
+//////////////////////////////////////
+- Array locator methods operate on queues, unpacked arrays. but their return type is a queue.
 - An array locator methods do below operations
     Search an index or elements of the array
     Array traversal in an unspecified order
-  
 -  The array location methods can be classified into two types
       Element locator
       Index locator
+    
 /******************************/ 
-  Element locator Methods: 
+   Element locator Methods: 
 /*****************************/     
-  - In element locator type, locator methods iterate over all elements in an array, and then it is used to evaluate the expression specified ‘with’ clause and returns element/s in a queue. 
-  - For some of the methods, the ‘with’ clause is optional.
-  - The Element locator methods are as below
-  
-find          -Returns all elements satisfying the given expression.
-find_first    -Returns the first element satisfying the given expression.
-find_last     -Returns the last element satisfying the given expression.
-unique        -Returns all elements with unique values or whose expression is unique 
-min           -Returns the element with the minimum value or whose expression evaluates to a minimum.
-max           -Returns the element with the maximum value or whose expression evaluates to a maximum.
+- In element locator type, locator methods iterate over all elements in an array, and 
+  then it is used to evaluate the expression specified ‘with’ clause and returns element/s in a queue. 
+- For some of the methods, the ‘with’ clause is optional.
+- The Element locator methods are as below
+  find          -Returns all elements satisfying the given expression.
+  find_first    -Returns the first element satisfying the given expression.
+  find_last     -Returns the last element satisfying the given expression.
+  unique        -Returns all elements with unique values or whose expression is unique 
+  min           -Returns the element with the minimum value or whose expression evaluates to a minimum.
+  max           -Returns the element with the maximum value or whose expression evaluates to a maximum.
     
 /**************************************************************************************************/
-    Array Locator Methods , Complete Example1 (Element locator Methods)
+    Array Locator Methods :Complete Example1 (Element locator Methods)
 /**************************************************************************************************/
 // Transaction class , File Name : array_locator_method_trans_class.sv
     
 typedef enum {RED, GREEN, YELLOW} color_type;
 class array_locator_method_trans_class;
-  
   rand bit [2:0] addr;
   rand bit [2:0] data;
   rand color_type colors; 
@@ -330,7 +330,7 @@ Done
 /********************************************/    
    Index locator Methods:
 /********************************************/        
-  - The index locator method returns index or indexes on iterating over the array.
+- The index locator method returns index or indexes on iterating over the array.
 
 Methods                                                     Description
 
@@ -346,8 +346,8 @@ unique_index                                                Returns the indexes 
     Array Locator Methods , Complete Example2 (Index locator Methods)
 /**************************************************************************************************/    
 // Transaction class , File Name : array_locator_method_trans_class.sv
+    
  typedef enum {RED, GREEN, YELLOW} color_type;
-
 class array_locator_method_trans_class;
   rand bit [2:0] addr;
   rand bit [2:0] data;
@@ -361,9 +361,7 @@ endclass :array_locator_method_trans_class
 
 // TB TOP , File Name : testbench.sv   
 `include "array_locator_method_trans_class.sv"
-
  `include "array_locator_method_trans_class.sv"
-
 module element_arr_locator_tb_top_example2;
   
   array_locator_method_trans_class   tr;
@@ -392,7 +390,6 @@ module element_arr_locator_tb_top_example2;
     $display("-------------------------------------");
     unique_index_method();
   end
-  
   
   //-------------------------
   // Array gen and methods
