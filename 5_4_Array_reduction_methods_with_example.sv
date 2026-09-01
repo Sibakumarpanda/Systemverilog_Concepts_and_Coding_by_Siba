@@ -1,8 +1,11 @@
-Array reduction methods Overview :
-  -The array reduction methods are used to reduce the array to a single value with the optional use of the ‘with’ clause.
-  -The reduction methods can be applied on any unpacked array. 
-  -For a ‘with’ clause, boolean or arithmetic reduction operation must be specified.
-  -Note: If the ‘with’ clause is specified, the above reduction methods return value based on evaluating the expression for each array element.
+////////////////////////////////////////////
+   Array reduction methods Overview :
+////////////////////////////////////////////
+
+-The array reduction methods are used to reduce the array to a single value with the optional use of the ‘with’ clause.
+-The reduction methods can be applied on any unpacked array. 
+-For a ‘with’ clause, boolean or arithmetic reduction operation must be specified.
+-Note: If the ‘with’ clause is specified, the above reduction methods return value based on evaluating the expression for each array element.
 
 Methods                                                     Description
 
@@ -38,23 +41,17 @@ module array_reduction_method_example1;
     $display("-------------------------------------");
     $display("------------ Methods ----------------");
     $display("-------------------------------------");
-    
     $display("AND Operation for: arr = %0h and queue = %0h", arr.and(), que.and());
     $display("OR Operation for : arr = %0h and queue = %0h", arr.or(), que.or());
     $display("XOR Operation for: arr = %0h and queue = %0h", arr.xor(), que.xor());
     $display("SUM Operation for: arr = %0d and queue = %0d", arr.sum(), que.sum());
     $display("PRODUCT Operation for: arr = %0d and queue = %0d", arr.product(), que.product());  
   end
-  
-  //-------------------------
   // print array and queue
-  //-------------------------
-  
   function void print_array_and_queue_values();
     $display("Array = %p", arr);
     $display("Queue = %p", que);
-  endfunction
-  
+  endfunction 
 endmodule :array_reduction_method_example1
 
 //Log File Output
