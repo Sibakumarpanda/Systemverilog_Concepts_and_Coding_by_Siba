@@ -1,6 +1,8 @@
-Iterator index querying method Overview:
- - The iterator index querying method iterates over array indexes or elements at each iteration.
- - Syntax as below:
+////////////////////////////////////////////////
+   Iterator index querying method Overview:
+////////////////////////////////////////////////
+- The iterator index querying method iterates over array indexes or elements at each iteration.
+- Syntax as below:
    find method
    q = arr.find(x) with (x == x.index);
    //or
