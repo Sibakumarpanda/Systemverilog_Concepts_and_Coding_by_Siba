@@ -2,19 +2,14 @@
   Associative Array Example -1
 /*****************************************/
 module associative_array_example1;
- 
   int     array1 [int];       // An integer array with integer index
   int     array2 [string];     // An integer array with string index
   string  array3 [string];     // A string array with string index
- 
     initial begin
-        // Initialize each dynamic array with some values
+      // Initialize each associative array with some values
       array1 = '{ 1 : 22, 6 : 34 };
- 
       array2 = '{ "Ross" : 100, "Joey" : 60 };
- 
       array3 = '{ "Apples" : "Oranges", "Pears" : "44" };
- 
       // Print each array
       $display ("array1 = %p", array1);
       $display ("array2 = %p", array2);
@@ -23,7 +18,6 @@ module associative_array_example1;
 endmodule :associative_array_example1
 
 //LogFile Output
-
 Starting vcs inline pass...
 1 module and 0 UDP read.
 recompiling module associative_array_example
@@ -46,7 +40,7 @@ Mon Nov  3 03:45:16 2025
 Done
 
 /*****************************************/
-  Associative Array Example -2
+    Associative Array Example -2
 /*****************************************/ 
 module associative_array_example2;
   typedef enum {TRANS, RECEIVE, REPEATER} tr_type;
