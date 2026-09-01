@@ -3353,7 +3353,46 @@ endmodule
                            if (i > 49)
                               d[i] == 0;
                        }
-     endclass      
+     endclass  
+	
+191. Lets say in a design there are two inputs clk , x  and one output y .
+     The condition is when x equal to 1 , in next clock cycle y =1 and continues to 1 in between 80 to 100 clock cycles. How to check through a checker ?
+     Secondly, for below two conditions , how the design behaves ? Mean what will happen to output y.
+      a. At clock cycle 0 , When X =1
+      b. In between clock cycle 15: 150 , when X= 0
+
+      property p1;
+         @(posedge clk)
+         disable iff (!rst_n)
+         (x == 1'b1) |=> y[*80:100];
+      endproperty
+
+      assert property p1;
+
+      Now for below two conditions :
+
+      a. At clock cycle 0 , When X =1 
+
+         Cycle 0: Y = 0
+         Cycles 1-100: Y = 1 (for 80 to 100 cycles)
+         Cycle 101+: Y = 0
+
+      b. In between clock cycle 15: 150 , when X= 0 
+
+          Since the assertion is level sensitive (x == 1'b1), it only triggers when X=1.
+
+          When X=0:
+          The assertion does NOT trigger
+          No new Y pulse is generated
+          Y continues its previous behavior (whatever it was doing)
+          If Y was high from previous trigger, it continues high until duration ends. If Y was low, it stays low (no new trigger)
+			 
+          NOTE :
+          The assertion does NOT mean "Y follows X".
+          It means: "Whenever X=1, Y must be high for 80-100 consecutive cycles starting next cycle."
+          This is a monitoring assertion that checks if the design behaves correctly, not a behavioral spec that controls Y.
+
+	
  		 
 
 	  
