@@ -4,18 +4,16 @@
 module queue_basic_example1;
     // Create a queue that can store "string" values
     string   fruits[$] =  { "orange", "apple", "kiwi" };
- 
-  initial begin
+    initial begin
        // Iterate and access each queue element
       foreach (fruits[i]) 
         $display ("fruits[%0d] = %s", i, fruits[i]);
- 
+       
       // Display elements in a queue
       $display ("fruits = %p", fruits);
- 
-        // Delete all elements in the queue
-        fruits = {};
-        $display ("After deletion, fruits = %p", fruits);
+      // Delete all elements in the queue
+      fruits = {};
+      $display ("After deletion, fruits = %p", fruits);
   end
 endmodule
 
@@ -47,7 +45,6 @@ Done
 /************************************************************************/
 module queue_basic_example2; 
   byte qu [$] ; 
-  
   initial 
     begin 
     qu.push_front(2); 
@@ -77,7 +74,6 @@ module queue_basic_example2;
     $display(" The queue elements are = %p",qu );  
     $display(" Queue Size at end = %0d ",qu.size() ); 
     end 
-  
 endmodule :queue_basic_example2
 
 //Log File Output
