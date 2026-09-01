@@ -1,5 +1,8 @@
-Array ordering methods in SV
-  -The ordering methods are used to reorder the single-dimensional arrays or queues.
+///////////////////////////////////
+  Array ordering methods in SV
+///////////////////////////////////
+
+-The ordering methods are used to reorder the single-dimensional arrays or queues.
 
 Methods                                                      Description
 
