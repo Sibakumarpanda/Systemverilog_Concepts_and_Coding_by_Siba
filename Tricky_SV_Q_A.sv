@@ -3392,6 +3392,250 @@ endmodule
           It means: "Whenever X=1, Y must be high for 80-100 consecutive cycles starting next cycle."
           This is a monitoring assertion that checks if the design behaves correctly, not a behavioral spec that controls Y.
 
+//AXI Protocol-Oriented Constraints
+			  
+192. WAC to Generate a 64-bit address that is 64-byte aligned, lies within a 1-MB memory region, and does not cross a 4-KB boundary for a 16-beat burst.
+     class packet;
+        parameter int DATA_WIDTH = 64;  // Change as needed
+        parameter int BEATS = 16;
+  
+        localparam BYTES_PER_BEAT = DATA_WIDTH / 8;
+        localparam BURST_SIZE = BEATS * BYTES_PER_BEAT;
+  
+        rand bit [63:0] start_addr;
+  
+        const int KB_4 = 4096;
+        const int MB_1 = 1024 * 1024;
+  
+        constraint addr_constraints {
+                        start_addr[5:0] == 0;                                     // 64-byte aligned
+                        start_addr < MB_1;                                        // 1-MB region
+                        (start_addr & (KB_4 - 1)) + BURST_SIZE <= KB_4;           // No 4-KB crossing
+                        }
+     endclass
+  
+  
+  
+51. WAC to Generate an AXI WRAP burst address sequence.
+  
+    class axi_wrap;
+      rand bit [3:0] len;
+      rand bit [2:0] size;
+      rand bit [31:0] start;
+      
+      constraint c1 { len inside {2, 4, 8, 16};
+                       start % (1 << size) == 0;
+                     }
+  
+      function void post_randomize();
+           int bw = 1 << size;
+           int total = len * bw;
+           for (int i = 0; i < len; i++) begin
+               bit [31:0] addr = start + (i * bw);
+              if (addr >= start + total) addr = start + (addr - (start + total));
+              $display("Beat %0d: 0x%0h", i, addr);
+           end
+      endfunction
+      
+    endclass
+  
+52. WAC to Generate legal AXI WRAP burst parameters: legal burst lengths, aligned starting address and correct wrap boundary.
+  
+     class packet;
+       rand bit [15:0] axaddr;
+       rand bit [1:0] burst_type;
+       rand bit [2:0] ax_size;
+       rand bit [3:0] ax_len;
+       rand int burst_size , burst_len;
+       
+       
+      // WRAP burst: ax_len must be 1, 3, 7, 15 (burst_len = 2, 4, 8, 16)
+      constraint c1 { burst_type == 2;                    // WRAP burst type
+                      ax_len inside {1, 3, 7, 15};        // Legal WRAP lengths
+                    }
+       constraint c2 {burst_size == 2 ** ax_size;}
+       constraint c3 {burst_len == ax_len+1;}
+       constraint c4 {axaddr % (burst_len * burst_size) ==0;}
+       
+       
+     endclass
+  
+  
+53. WAC to Generate a sequence of transactions where a maximum of 4 transactions can be outstanding.
+    
+    class axi_transaction;
+       rand int id;
+       rand int send_time;
+       rand int resp_time;
+       constraint c1 { send_time inside {[0:100]};
+                       resp_time > send_time;
+                       resp_time - send_time inside {[5:20]};
+                    }
+     endclass
+
+     class axi_sequence;
+        rand axi_transaction tr[20];
+        int max_outstanding = 4;
+        constraint c1 { foreach(tr[i]) 
+                         tr[i].id == i;
+                      }
+  
+        // SIMPLE: 5th transaction starts after 1st completes
+        constraint c2 { foreach(tr[i]) {
+                         if (i >= max_outstanding) {
+                             tr[i].send_time > tr[i - max_outstanding].resp_time;
+                             }
+                           }
+                       }
+     endclass
+  
+  
+54. WAC to Generate transaction IDs such that the same ID cannot be reused while that transaction is outstanding.
+    
+    class axi_transaction;
+      rand int id;
+      rand int send_time;
+      rand int resp_time;
+    endclass
+
+   class axi_sequence;
+     rand axi_transaction tr[20];
+     constraint c1 { foreach(tr[i]) {
+                       tr[i].id inside {[0:7]};
+                       tr[i].send_time inside {[0:100]};
+                       tr[i].resp_time > tr[i].send_time;
+                       tr[i].resp_time - tr[i].send_time inside {[5:20]};
+                       }
+                    }
+  
+      // SIMPLE: Same ID can't overlap
+      constraint c2 { foreach(tr[i]) {
+                        foreach(tr[j]) {
+                           if (i != j && tr[i].id == tr[j].id) {
+                           // Earlier transaction must complete before later starts
+                           if (i < j) {
+                              tr[j].send_time > tr[i].resp_time;
+                              }
+                             }
+                            }
+                           }
+                         }
+     endclass
+  
+  
+  
+55. WAC to Generate AWLEN, AWSIZE, and AWADDR such that the total AXI burst size is between 64 and 4096 bytes.
+                             
+     class packet;
+       rand bit [15:0] awaddr;
+       rand bit [2:0]  awsize;
+       rand bit [7:0]  awlen;
+       rand int burst_len;
+       rand int burst_size;
+       rand int total_burst_size;
+       
+       constraint c1 { burst_len == awlen+1;}
+       constraint c2 { burst_size == 2 ** awsize;}
+       constraint c3 { total_burst_size == burst_len * burst_size;}
+       constraint c4 { total_burst_size inside {[64:4096]};}
+       
+     endclass
+                             
+56. WAC to Generate a random sequence containing 5 READs and 5 WRITEs, with no more than 2 consecutive READs
+  
+    class pkt_sequence;
+      rand int trans[10];  // 1 = READ, 0 = WRITE //trans = {1, 0, 1, 0, 1, 0, 1, 0, 1, 0} means: R W R W R W R W R W
+      // Exactly 5 READs (sum of all elements = 5)
+      constraint c1 { trans.sum() == 5;}
+      // No more than 2 consecutive READs
+      constraint c2 { foreach(trans[i]) 
+                        if (i < 8) 
+                          trans[i] + trans[i+1] + trans[i+2] <= 2;
+                     }
+    endclass
+  
+57. WAC to Generate transactions where a WRITE must always be followed by a READ to the same address
+  
+    class transaction;
+      rand int addr[];
+      rand int trans_type[10];  // 1 = WRITE, 0 = READ
+      
+      constraint c1 {addr.size () == 10;}
+      constraint c2 {foreach (addr[i])
+                       addr[i] inside {[0:100]};
+                    }
+      
+      // Even indices: WRITE (1), Odd indices: READ (0)
+      constraint c3 { foreach(addr[i]) 
+                         if (i % 2 == 0) 
+                           trans_type[i] == 1;  // WRITE
+                         else 
+                           trans_type[i] == 0;  // READ
+                      }
+      
+      // WRITE and READ at same address (WRITE at even, READ at next odd)
+      constraint c4 { foreach(addr[i]) 
+                          if (i % 2 == 0 && i < addr.size() - 1) 
+                             addr[i+1] == addr[i];
+                     }
+ 
+   endclass
+
+58. WAC to Generate 20 transactions where at least one transaction of every burst size 1, 2, 4, 8, 16 must occur.
+  
+    class packet;
+      rand bit [2:0] burst_size[20];
+      constraint c1 { foreach(burst_size[i]) 
+                         burst_size[i] inside {1, 2, 4, 8, 16};
+                    }
+      // At least one of each
+      constraint c2 { burst_size.sum() with (item == 1) >= 1;
+                      burst_size.sum() with (item == 2) >= 1;
+                      burst_size.sum() with (item == 4) >= 1;
+                      burst_size.sum() with (item == 8) >= 1;
+                      burst_size.sum() with (item == 16) >= 1;
+                    }
+    endclass
+
+    module tb_top;
+      packet pkt;
+  
+      initial begin
+       pkt = new();
+        repeat(5) begin 
+          pkt.randomize();
+          $display("%p", pkt.burst_size);
+        end
+     end
+   endmodule
+  
+  
+  
+59. WAC to Generate a sequence where transaction priority is randomized, but priority 3 must occur exactly twice.
+  
+    class packet;
+      rand int tr_priority[10];
+      constraint c1 { foreach(tr_priority[i]) 
+                        tr_priority[i] inside {0, 1, 2, 3};
+                     }
+      // Exactly 2 transactions with priority 3
+      constraint c2 {tr_priority.sum() with (item == 3) == 2;}
+    endclass
+
+    module tb_top;
+      packet pkt;
+  
+     initial begin
+       pkt = new();
+    
+       repeat(5) begin
+         pkt.randomize();
+         $display("%p", pkt.tr_priority);
+       end
+     end
+   endmodule
+			  
+
 	
  		 
 
