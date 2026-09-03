@@ -11,7 +11,7 @@
    //AxADDR[53:0] | AR_AW | AxSIZE | AxLEN | AxBURST | AxCACHE | AxUSER[ATYPE[3:0]] | AxUSER[ATOMIC_EN] | AxUser[atomic opcode] | AxUSER[ATOMIC_RR]
      00000000002c00 READ 6 3 1 a 5 0 0 0
   
-2. WAC to randomize in such a way that 0-31 having value as 1 and 32-61 having value as 0
+2. WAC to randomize an array in such a way that index 0-31 having value as 1 and 32-61 index having value as 0
 class packet;
   rand int d[62];
   
