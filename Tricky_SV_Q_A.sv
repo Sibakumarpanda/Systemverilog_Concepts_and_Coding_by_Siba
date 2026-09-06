@@ -4003,5 +4003,253 @@ endmodule
     endclass   		 
 
 	  
-	  
+
+Section 12 — Advanced Pattern / Randomized Pattern Selection
+
+117. Generate a random array that follows either an increasing or decreasing pattern, with the pattern itself randomized.
+     //Increasing Pattern or Ascending Order
+     class packet;
+       rand int d[];
+       constraint c1 {d.size()== 20;}
+       constraint c2 {foreach {d[i]}
+                         d[i] inside {[50:100]};
+                     }
+       constraint c3 {foreach d[i]
+                        if (i < d.size()-1)
+                          d[i] < d[i+1];
+                     }
+       
+     endclass
+
+     //Decreasing Pattern or Descending Order
+     class packet;
+       rand int d[];
+       constraint c1 {d.size()== 20;}
+       constraint c2 {foreach {d[i]}
+                         d[i] inside {[50:100]};
+                     }
+       constraint c3 {foreach d[i]
+                        if (i < d.size()-1)
+                          d[i] > d[i+1];
+                     }
+       
+     endclass
+
+118. Randomly select one of these patterns and generate it: increasing, decreasing, alternating, or constant.
+  
+     class packet;
+       typedef enum {INCR, DECR, ALTERNATE, CONSTANT} pattern_e;
+       rand int d[];
+       rand pattern_e pattern;
+       
+       constraint c1 { d.size() == 10;}
+       constraint c2 { foreach(d[i]) 
+                         d[i] inside {[1:20]};
+                      }
+  
+       constraint c3 { if (pattern == INCR) 
+                               foreach(d[i]) 
+                                  if (i > 0) 
+                                    d[i] > d[i-1];
+                       else if (pattern == DECR) 
+                               foreach(d[i]) 
+                                   if (i > 0) 
+                                     d[i] < d[i-1];
+                       else if (pattern == ALTERNATE) 
+                               foreach(d[i]) 
+                                  if (i > 0 && i % 2 == 1) 
+                                      d[i] > d[i-1];   // Up
+                                  else if (i > 0 && i % 2 == 0) 
+                                          d[i] < d[i-1];   // Down
+                       else if (pattern == CONSTANT) 
+                               foreach(d[i]) 
+                                   if (i > 0)
+                                     d[i] == d[i-1];
+                      }
+     endclass
+  
+119. Generate a sequence where the pattern changes every 4 elements: 1 2 3 4 / 8 7 6 5 / 9 10 11 12 / 16 15 14 13.
+  
+     class packet;
+        int d[16];
+  
+        function void post_randomize();
+          // Block 0
+          for (int i = 0; i < 4; i++) 
+            d[i] = i + 1;      // 1,2,3,4
+    
+          // Block 1
+          for (int i = 0; i < 4; i++) 
+            d[4+i] = 8 - i;    // 8,7,6,5
+    
+          // Block 2
+          for (int i = 0; i < 4; i++) 
+            d[8+i] = 9 + i;    // 9,10,11,12
+    
+          // Block 3
+          for (int i = 0; i < 4; i++) 
+            d[12+i] = 16 - i;  // 16,15,14,13
+        endfunction
+       
+     endclass
+  
+120. Generate a random starting value and then create start, start+5, start+10, start+15 ...
+  
+     class packet;
+       rand int d[];
+       rand int start_value;
+       constraint c1 {d.size () == 20;}
+       constraint c2 {foreach (d[i])
+                        d[i] inside {[50:100]};
+                     }
+       constraint c3 {start_value inside {[50:100]};
+                       d[0] ==start_value;
+                     }
+       constraint c4 {foreach (d[i])
+                         if (i >0)
+                            d[i] == d[i-1]+5;
+                      
+                     }
+       
+       
+     endclass
+  
+121. Generate a sequence with two interleaved patterns: 1,100,2,90,3,80,4,70 ,5,80
+     class packet;
+       rand int d[];
+       constraint c1 {d.size () == 20;}
+       constraint c2 {foreach (d[i])
+                        d[i] inside {[1:100]};
+                     }
+       
+       constraint c3 {foreach (d[i])
+                         if (i %2==0)
+                           d[i] == (i/2) + 1; //Even Positions
+                         else
+                           d[i] == 100 - (i/2) * 10; //Odd Positions
+                      
+                     }
+       
+     endclass
+  
+122. Generate a sequence with three interleaved patterns: 1,10,100,2,20,90,3,30,80 ,4,40,70...
+     class packet;
+        rand int d[];
+        constraint c1 { d.size() == 15; }  // 15 elements (5 blocks of 3)
+        constraint c2 { foreach(d[i]) 
+                           d[i] inside {[1:100]};
+                       }
+        constraint c3 { foreach(d[i]) 
+                          if (i % 3 == 0) 
+                              d[i] == (i/3) + 1;           // 1, 2, 3, 4, ...
+                          else if (i % 3 == 1) 
+                              d[i] == ((i/3) + 1) * 10;    // 10, 20, 30, 40, ...
+                          else 
+                              d[i] == 100 - (i/3) * 10;    // 100, 90, 80, 70, ...
+                       }
+     endclass
+  
+123. Generate a sequence where every alternate element is the sum of the previous two elements.
+     class packet;
+        rand int d[];
+        constraint c1 {d.size () == 20;}
+        constraint c2 {foreach (d[i])
+                         d[i] inside {[1:100]};
+                     }
+       
+        constraint c3 { d[0] inside {[1:50]};
+                        d[1] inside {[1:50]};
+                        
+                       }
+        constraint c4 {foreach (d[i])
+                           if (i >=2 && i % 2 == 0)
+                              d[i] == d[i-1]+d[i-2];
+                      
+                       }
+      endclass
+   
+     
+124. Generate an array that is palindromic.
+     class packet;
+        rand int d[7];
+  
+        constraint c1 {
+             foreach(d[i]) {
+                   d[i] inside {[1:10]};
+                   }
+                  }
+  
+         // Using loop for palindrome
+        constraint c2 {
+                 foreach(d[i]) {
+                     if (i < d.size() / 2) {
+                        d[i] == d[d.size() - 1 - i];
+                       }
+                     }
+                   }
+       endclass
+                       
+125. Generate an array where the first half increases and the second half decreases.
+     class packet;
+        rand int d[8];
+        constraint c1 { foreach(d[i]) 
+                          d[i] inside {[1:20]};
+                      }
+         // First half: increasing
+        constraint c2 { foreach(d[i]) 
+                           if (i > 0 && i < 4) 
+                               d[i] > d[i-1];        // 0<1<2<3
+                       }
+ 
+         // Second half: decreasing
+        constraint c3 { foreach(d[i]) 
+                           if (i > 4 && i < 8) 
+                              d[i] < d[i-1];        // 4>5>6>7
+                       }
+ 
+  
+         // Peak: d[3] <= d[4] (peak can be flat or single)
+       constraint c4 { d[3] <= d[4];}
+     endclass   
+                   
+126. Generate a random array that follows a selected pattern, but the pattern type itself must be randomized.
+                   
+     class packet;
+         typedef enum {INCR, DECR, ALTERNATE, CONSTANT, PALINDROME} pattern_e;
+  
+         rand pattern_e pattern;
+         rand int d[10];
+  
+         constraint c1 {
+            foreach(d[i]) {
+              d[i] inside {[1:20]};
+             }
+          }
+  
+  constraint c2 {
+    if (pattern == INCR) {
+      foreach(d[i]) {
+        if (i > 0) d[i] > d[i-1];
+      }
+    } else if (pattern == DECR) {
+      foreach(d[i]) {
+        if (i > 0) d[i] < d[i-1];
+      }
+    } else if (pattern == ALTERNATE) {
+      foreach(d[i]) {
+        if (i > 0 && i % 2 == 1) d[i] > d[i-1];
+        else if (i > 0 && i % 2 == 0) d[i] < d[i-1];
+      }
+    } else if (pattern == CONSTANT) {
+      foreach(d[i]) {
+        if (i > 0) d[i] == d[i-1];
+      }
+    } else if (pattern == PALINDROME) {
+      foreach(d[i]) {
+        if (i < 5) d[i] == d[9 - i];
+      }
+    }
+  }
+     endclass           
+  	  
 
