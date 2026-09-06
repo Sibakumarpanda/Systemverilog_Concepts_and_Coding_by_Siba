@@ -3862,150 +3862,138 @@ endmodule
       
       endclass
 
-82. Generate even numbers starting from a random even number.
-     class packet;
-       rand int d[];
-       constraint c1 { d.size() == 20;}
+224. Generate even numbers starting from a random even number.
+      class packet;
+         rand int d[];
+         constraint c1 { d.size() == 20;}
   
-       constraint c2 {d[0] % 2 == 0; }         // First element is even
-                        d[0] inside {[2:100]};
-                     }
-       constraint c3 { foreach(d[i]) {
-                         if (i > 0) {
-                             d[i] % 2 == 0;        // All elements are even
+         constraint c2 {d[0] % 2 == 0; }         // First element is even
+                          d[0] inside {[2:100]};
+                       }
+         constraint c3 { foreach(d[i]) {
+                            if (i > 0) {
+                               d[i] % 2 == 0;        // All elements are even
                                 d[i] inside {[2:100]};
                               }
                              }
                      }
-     endclass
+        endclass
 
-83. Generate 1 4 7 10 13 ... where the difference is always 3.
-    class packet;
-      rand int d[];
-      constraint c1 {d.size () == 10;}
-      constraint c2 {foreach (d[i])
-                        d[i] inside {[1:50]};
-                    }
-      constraint c3 {d[0] ==1 ;}
-      constraint c4 {foreach (d[i])
-                        if (i >0)
-                          d[i] - d[i-1] ==3;
-                     }
-      
-    endclass
+225. Generate 1 4 7 10 13 ... where the difference is always 3.
+     class packet;
+        rand int d[];
+        constraint c1 {d.size () == 10;}
+        constraint c2 {foreach (d[i])
+                          d[i] inside {[1:50]};
+                      }
+        constraint c3 {d[0] ==1 ;}
+        constraint c4 {foreach (d[i])
+                         if (i >0)
+                           d[i] - d[i-1] ==3;
+                       }
+     endclass
   
     
-84. Generate an array where the difference between consecutive elements is randomly selected from {2,4,8}
+226. Generate an array where the difference between consecutive elements is randomly selected from {2,4,8}
      class packet;
-      rand int d[];
-      rand int diff ; 
-      constraint c1 {d.size () == 10;}
-      constraint c2 {diff inside {2,4,8};} 
-      constraint c3 {foreach (d[i])
+       rand int d[];
+       rand int diff ; 
+       constraint c1 {d.size () == 10;}
+       constraint c2 {diff inside {2,4,8};} 
+       constraint c3 {foreach (d[i])
                         d[i] inside {[1:50]};
                     }
-      constraint c4 {d[0] ==1 ;}
-      constraint c5 {foreach (d[i])
+       constraint c4 {d[0] ==1 ;}
+       constraint c5 {foreach (d[i])
                         if (i >0)
                           d[i] - d[i-1] == diff ;
-                     }
-      
-    endclass     
+                     }  
+     endclass     
          
-85. Generate an array where the difference alternates +2, +4, +2, +4 ...
-    class packet;
-       rand int d[];
-       constraint c1 { d.size() == 10; }
-       constraint c2 { d[0] == 1;}  // Starting value
-       constraint c3 { foreach(d[i])
-                        d[i] inside {[1:50]};
+227. Generate an array where the difference alternates +2, +4, +2, +4 ...
+     class packet;
+        rand int d[];
+        constraint c1 { d.size() == 10; }
+        constraint c2 { d[0] == 1;}  // Starting value
+        constraint c3 { foreach(d[i])
+                          d[i] inside {[1:50]};
                     }
-      constraint c4 { foreach(d[i]) 
-                         if (i > 0) 
-                           if (i % 2 == 1) 
-                             d[i] - d[i-1] == 2;   // Odd index: +2
-                           else 
+        constraint c4 { foreach(d[i]) 
+                          if (i > 0) 
+                            if (i % 2 == 1) 
+                              d[i] - d[i-1] == 2;   // Odd index: +2
+                            else 
                              d[i] - d[i-1] == 4;   // Even index: +4
-                     }
-    endclass     
-         
-86. Generate 100, 90, 80, 70 ... with a randomly selected decrement.
-         
-    class packet;
-      rand int d[];
-      rand int decrement;
-      constraint c1 { d.size() == 10;}
-      constraint c2 { decrement inside {5, 10, 15, 20}; } // Random decrement
-      constraint c3 { d[0] == 100;}
-      constraint c4 { foreach(d[i]) 
-                         d[i] inside {[0:100]};  // Keep within range
-                    }
-        
-      constraint c5 { foreach(d[i]) 
-                         if (i > 0) 
-                           d[i] == d[i-1] - decrement;
-              
-                     }
-  
-    endclass    
-         
-87. Generate a random starting value and create start, start+5, start+10, start+15 ...
-         
-    class packet;
-       rand int d[];
-       rand int start;
-       constraint c1 { d.size() == 10;}
-       constraint c2 { start inside {[1:50]}; } // Random starting value
-       constraint c3 { d[0] == start;}
-       constraint c4 { foreach(d[i]) 
-                         d[i] inside {[0:100]};  // Keep within range
-                    }
-       constraint c5 { foreach(d[i]) 
-                            if (i > 0) 
-                               d[i] == d[i-1] + 5;   // Step = 5
-      
                       }
      endclass     
          
-88. Generate a sequence where the step size itself increases: 1, 2, 4, 7, 11, 16, 22, 29, 37
-    class packet;
-      rand int d[];
-      constraint c1 {d.size ()==9;}
-      constraint c2 {foreach (d[i])
-                        d[i] inside {[1:50]}; 
-                    }
-      constraint c3 {d[0] ==1;}
-      constraint c4 {foreach (d[i])
-                       if (i>0)
-                         d[i] -d[i-1] == i;
-                    }
-      
-    endclass  
-  
-  
-89. Generate a sequence where the step size alternates +1, +2, +1, +2 ...
-  
-    class packet;
+228. Generate 100, 90, 80, 70 ... with a randomly selected decrement.
+     class packet;
        rand int d[];
-       constraint c1 { d.size() == 10; }
-       constraint c2 { d[0] == 1;}  // Starting value
-       constraint c3 { foreach(d[i])
+       rand int decrement;
+       constraint c1 { d.size() == 10;}
+       constraint c2 { decrement inside {5, 10, 15, 20}; } // Random decrement
+       constraint c3 { d[0] == 100;}
+       constraint c4 { foreach(d[i]) 
+                         d[i] inside {[0:100]};  // Keep within range
+                    } 
+       constraint c5 { foreach(d[i]) 
+                         if (i > 0) 
+                           d[i] == d[i-1] - decrement; 
+                     }
+     endclass    
+         
+229. Generate a random starting value and create start, start+5, start+10, start+15 ...
+     class packet;
+        rand int d[];
+        rand int start;
+        constraint c1 { d.size() == 10;}
+        constraint c2 { start inside {[1:50]}; } // Random starting value
+        constraint c3 { d[0] == start;}
+        constraint c4 { foreach(d[i]) 
+                         d[i] inside {[0:100]};  // Keep within range
+                    }
+        constraint c5 { foreach(d[i]) 
+                            if (i > 0) 
+                               d[i] == d[i-1] + 5;   // Step = 5
+                      }
+      endclass     
+         
+230. Generate a sequence where the step size itself increases: 1, 2, 4, 7, 11, 16, 22, 29, 37
+     class packet;
+        rand int d[];
+        constraint c1 {d.size ()==9;}
+        constraint c2 {foreach (d[i])
+                         d[i] inside {[1:50]}; 
+                    }
+        constraint c3 {d[0] ==1;}
+        constraint c4 {foreach (d[i])
+                         if (i>0)
+                           d[i] -d[i-1] == i;
+                    }
+      endclass  
+  
+  
+231. Generate a sequence where the step size alternates +1, +2, +1, +2 ...
+     class packet;
+        rand int d[];
+        constraint c1 { d.size() == 10; }
+        constraint c2 { d[0] == 1;}  // Starting value
+        constraint c3 { foreach(d[i])
                         d[i] inside {[1:50]};
                     }
-      constraint c4 { foreach(d[i]) 
+        constraint c4 { foreach(d[i]) 
                          if (i > 0) 
                            if (i % 2 == 1) 
                              d[i] - d[i-1] == 1;   // Odd index: +1
                            else 
                              d[i] - d[i-1] == 2;   // Even index: +2
                      }
-    endclass   		 
-
-	  
-
+      endclass  
+	
 Section 12 — Advanced Pattern / Randomized Pattern Selection
 
-117. Generate a random array that follows either an increasing or decreasing pattern, with the pattern itself randomized.
+232. Generate a random array that follows either an increasing or decreasing pattern, with the pattern itself randomized.
      //Increasing Pattern or Ascending Order
      class packet;
        rand int d[];
@@ -4017,36 +4005,34 @@ Section 12 — Advanced Pattern / Randomized Pattern Selection
                         if (i < d.size()-1)
                           d[i] < d[i+1];
                      }
-       
      endclass
 
      //Decreasing Pattern or Descending Order
      class packet;
-       rand int d[];
-       constraint c1 {d.size()== 20;}
-       constraint c2 {foreach {d[i]}
+        rand int d[];
+        constraint c1 {d.size()== 20;}
+        constraint c2 {foreach {d[i]}
                          d[i] inside {[50:100]};
                      }
-       constraint c3 {foreach d[i]
+        constraint c3 {foreach d[i]
                         if (i < d.size()-1)
                           d[i] > d[i+1];
                      }
        
      endclass
 
-118. Randomly select one of these patterns and generate it: increasing, decreasing, alternating, or constant.
-  
+233. Randomly select one of these patterns and generate it: increasing, decreasing, alternating, or constant.
      class packet;
-       typedef enum {INCR, DECR, ALTERNATE, CONSTANT} pattern_e;
-       rand int d[];
-       rand pattern_e pattern;
+         typedef enum {INCR, DECR, ALTERNATE, CONSTANT} pattern_e;
+         rand int d[];
+         rand pattern_e pattern;
        
-       constraint c1 { d.size() == 10;}
-       constraint c2 { foreach(d[i]) 
+         constraint c1 { d.size() == 10;}
+         constraint c2 { foreach(d[i]) 
                          d[i] inside {[1:20]};
-                      }
+                       }
   
-       constraint c3 { if (pattern == INCR) 
+         constraint c3 { if (pattern == INCR) 
                                foreach(d[i]) 
                                   if (i > 0) 
                                     d[i] > d[i-1];
@@ -4065,10 +4051,9 @@ Section 12 — Advanced Pattern / Randomized Pattern Selection
                                    if (i > 0)
                                      d[i] == d[i-1];
                       }
-     endclass
+      endclass
   
-119. Generate a sequence where the pattern changes every 4 elements: 1 2 3 4 / 8 7 6 5 / 9 10 11 12 / 16 15 14 13.
-  
+234. Generate a sequence where the pattern changes every 4 elements: 1 2 3 4 / 8 7 6 5 / 9 10 11 12 / 16 15 14 13.
      class packet;
         int d[16];
   
@@ -4092,8 +4077,7 @@ Section 12 — Advanced Pattern / Randomized Pattern Selection
        
      endclass
   
-120. Generate a random starting value and then create start, start+5, start+10, start+15 ...
-  
+235. Generate a random starting value and then create start, start+5, start+10, start+15 ...
      class packet;
        rand int d[];
        rand int start_value;
@@ -4106,11 +4090,8 @@ Section 12 — Advanced Pattern / Randomized Pattern Selection
                      }
        constraint c4 {foreach (d[i])
                          if (i >0)
-                            d[i] == d[i-1]+5;
-                      
-                     }
-       
-       
+                            d[i] == d[i-1]+5;                
+                     } 
      endclass
   
 121. Generate a sequence with two interleaved patterns: 1,100,2,90,3,80,4,70 ,5,80
