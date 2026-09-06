@@ -4218,6 +4218,7 @@ Section 12 — Advanced Pattern / Randomized Pattern Selection
                              foreach(d[i]) 
                                  if (i < 5) 
 									 d[i] == d[9 - i];
-					}
-        endclass           
+					  }
+        endclass   
+					 
   	  
