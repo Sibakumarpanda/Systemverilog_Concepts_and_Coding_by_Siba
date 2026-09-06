@@ -3848,20 +3848,19 @@ endmodule
                              d[i] < d[i+1];   // Strictly increasing
                       }
      endclass
-81. Generate an array where every element is smaller than the previous element.
-
-    class packet;
-      rand int d[];
-      constraint c1 {d.size ()==20;}
-      constraint c2 {foreach (d[i])
+223. Generate an array where every element is smaller than the previous element.
+     class packet;
+        rand int d[];
+        constraint c1 {d.size ()==20;}
+        constraint c2 {foreach (d[i])
                         d[i] inside {[50:100]};
-                    }
-      constraint c3 {foreach d[i]
-                       if (i< d.size()-1)
-                         d[i] > d[i+1];   // Strictly Decreasing
-                    }
+                      }
+        constraint c3 {foreach d[i]
+                          if (i< d.size()-1)
+                            d[i] > d[i+1];   // Strictly Decreasing
+                      }
       
-    endclass
+      endclass
 
 82. Generate even numbers starting from a random even number.
      class packet;
