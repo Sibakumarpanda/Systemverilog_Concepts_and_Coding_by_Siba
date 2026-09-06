@@ -2914,6 +2914,7 @@ endmodule
 							   d[i][j] ==3 ;
 					  }
 	 endclass
+	
 168.  a -> aout - > syncronizer_value(1,2,3,4) -> bout
       we need to write a verilog/SV code to perform above . Either a task or function anything is fine 
       where a is the input 
@@ -3257,7 +3258,7 @@ endmodule
       rand bit [2:0] a;
       rand bit [2:0] b;
       constraint c1 { $countones(a ^ b) == 3; }
-    endclass
+     endclass
        
     a = 101, b = 010
     a ^ b = 111 (distance = 3)
@@ -3285,8 +3286,7 @@ endmodule
       constraint c1 { a[15:8] > a[7:0];} // Upper byte > Lower byte
       
     endclass
-       
-       
+              
 187. Generate an array where array[i] == array[i-1] + i.
     class packet;
       rand int d[];
@@ -3414,9 +3414,7 @@ endmodule
                         }
      endclass
   
-  
-  
-51. WAC to Generate an AXI WRAP burst address sequence.
+193. WAC to Generate an AXI WRAP burst address sequence.
   
     class axi_wrap;
       rand bit [3:0] len;
@@ -3439,7 +3437,7 @@ endmodule
       
     endclass
   
-52. WAC to Generate legal AXI WRAP burst parameters: legal burst lengths, aligned starting address and correct wrap boundary.
+194. WAC to Generate legal AXI WRAP burst parameters: legal burst lengths, aligned starting address and correct wrap boundary.
   
      class packet;
        rand bit [15:0] axaddr;
@@ -3460,9 +3458,7 @@ endmodule
        
      endclass
   
-  
-53. WAC to Generate a sequence of transactions where a maximum of 4 transactions can be outstanding.
-    
+195. WAC to Generate a sequence of transactions where a maximum of 4 transactions can be outstanding.  
     class axi_transaction;
        rand int id;
        rand int send_time;
@@ -3489,8 +3485,7 @@ endmodule
                        }
      endclass
   
-  
-54. WAC to Generate transaction IDs such that the same ID cannot be reused while that transaction is outstanding.
+196. WAC to Generate transaction IDs such that the same ID cannot be reused while that transaction is outstanding.
     
     class axi_transaction;
       rand int id;
@@ -3522,9 +3517,7 @@ endmodule
                          }
      endclass
   
-  
-  
-55. WAC to Generate AWLEN, AWSIZE, and AWADDR such that the total AXI burst size is between 64 and 4096 bytes.
+197. WAC to Generate AWLEN, AWSIZE, and AWADDR such that the total AXI burst size is between 64 and 4096 bytes.
                              
      class packet;
        rand bit [15:0] awaddr;
@@ -3541,7 +3534,7 @@ endmodule
        
      endclass
                              
-56. WAC to Generate a random sequence containing 5 READs and 5 WRITEs, with no more than 2 consecutive READs
+198. WAC to Generate a random sequence containing 5 READs and 5 WRITEs, with no more than 2 consecutive READs
   
     class pkt_sequence;
       rand int trans[10];  // 1 = READ, 0 = WRITE //trans = {1, 0, 1, 0, 1, 0, 1, 0, 1, 0} means: R W R W R W R W R W
@@ -3554,7 +3547,7 @@ endmodule
                      }
     endclass
   
-57. WAC to Generate transactions where a WRITE must always be followed by a READ to the same address
+199. WAC to Generate transactions where a WRITE must always be followed by a READ to the same address
   
     class transaction;
       rand int addr[];
@@ -3578,10 +3571,9 @@ endmodule
                           if (i % 2 == 0 && i < addr.size() - 1) 
                              addr[i+1] == addr[i];
                      }
- 
    endclass
 
-58. WAC to Generate 20 transactions where at least one transaction of every burst size 1, 2, 4, 8, 16 must occur.
+200. WAC to Generate 20 transactions where at least one transaction of every burst size 1, 2, 4, 8, 16 must occur.
   
     class packet;
       rand bit [2:0] burst_size[20];
@@ -3599,7 +3591,6 @@ endmodule
 
     module tb_top;
       packet pkt;
-  
       initial begin
        pkt = new();
         repeat(5) begin 
@@ -3608,20 +3599,19 @@ endmodule
         end
      end
    endmodule
-59. WAC to Generate a sequence where transaction priority is randomized, but priority 3 must occur exactly twice.
-  
-    class packet;
-      rand int tr_priority[10];
-      constraint c1 { foreach(tr_priority[i]) 
+	
+201. WAC to Generate a sequence where transaction priority is randomized, but priority 3 must occur exactly twice.
+     class packet;
+        rand int tr_priority[10];
+        constraint c1 { foreach(tr_priority[i]) 
                         tr_priority[i] inside {0, 1, 2, 3};
                      }
-      // Exactly 2 transactions with priority 3
-      constraint c2 {tr_priority.sum() with (item == 3) == 2;}
-    endclass
+        // Exactly 2 transactions with priority 3
+        constraint c2 {tr_priority.sum() with (item == 3) == 2;}
+     endclass
 
     module tb_top;
       packet pkt;
-  
      initial begin
        pkt = new();
     
@@ -3632,253 +3622,232 @@ endmodule
      end
    endmodule
 			  
-1. Write a class that randomizes an integer x between 0 and 100.
+202. Write a class that randomizes an integer x between 0 and 100.
+     class packet;
+        rand int x;
+        constraint c1 {x inside {[0:100]};}
+     endclass
   
-   class packet;
-     rand int x;
-     constraint c1 {x inside {[0:100]};}
-   endclass
-  
-2. Constraint x to be even and a multiple of 4.
-  
-   class packet;
-     rand int x;
-     constraint c1 { x%2 ==0 ;
-                     x%4 ==0 ;
+203. Constraint x to be even and a multiple of 4.
+     class packet;
+        rand int x;
+        constraint c1 { x%2 ==0 ;
+                        x%4 ==0 ;
                    }
      
-   endclass
+      endclass
   
-3. Generate a 3D vector [3][3][3] with values between -10 and 10.
-   class packet;
-     rand int mat [3][3][3];
-     constraint c1 { foreach(mat[i][j][k]) {
+204. Generate a 3D vector [3][3][3] with values between -10 and 10.
+     class packet;
+       rand int mat [3][3][3];
+       constraint c1 { foreach(mat[i][j][k]) {
                           mat[i][j][k] inside {[-10:10]};
                            }
                    }
-   endclass
+      endclass
   
-4. Ensure total sum of 3D vector is greater than zero.
-   class packet;
-      rand int mat[3][3][3];  // 27 elements
-      constraint c1 { foreach(mat[i][j][k]) {
-                         mat[i][j][k] inside {[-10:10]};
+205. Ensure total sum of 3D vector is greater than zero.
+     class packet;
+        rand int mat[3][3][3];  // 27 elements
+        constraint c1 { foreach(mat[i][j][k]) {
+                            mat[i][j][k] inside {[-10:10]};
                            }
                      }
-      // Total sum of all elements must be > 0
-      constraint c2 { mat.sum() with (item) > 0;}
-   endclass    
+        // Total sum of all elements must be > 0
+        constraint c2 { mat.sum() with (item) > 0;}
+     endclass    
        
-5. Randomize a deck of 52 cards ensuring uniqueness.
-        
-   class packet;
-     rand int deck [];
-     constraint c1 {deck.size() == 52;}
-     constraint c2 {foreach (deck[i])
-                      deck[i] inside {[1:52]};
+206. Randomize a deck of 52 cards ensuring uniqueness.
+     class packet;
+        rand int deck [];
+        constraint c1 {deck.size() == 52;}
+        constraint c2 {foreach (deck[i])
+                         deck[i] inside {[1:52]};
                    
                    }
-     //constraint c3 {unique {deck};}  // All cards are unique
-     constraint c3 {foreach (deck[i])
-                      foreach (deck[j])
-                         if (i != j)
-                             deck[i] != deck[j]
+        //constraint c3 {unique {deck};}  // All cards are unique
+        constraint c3 {foreach (deck[i])
+                          foreach (deck[j])
+                             if (i != j)
+                                 deck[i] != deck[j]
                    }
-     
-   endclass
+      endclass
                      
-6. Generate student scores (5 subjects) such that average > 60.
-   class student;
-     rand int scores[5];
-     string subjects[5] = '{"Math", "Science", "English", "History", "Art"};
-     constraint c1 { foreach(scores[i]) 
-                       scores[i] inside {[0:100]};
-                   }
-     constraint c2 {scores.sum() > 300; }
-  
-  endclass
+207. Generate student scores (5 subjects) such that average > 60.
+     class student;
+        rand int scores[5];
+        string subjects[5] = '{"Math", "Science", "English", "History", "Art"};
+        constraint c1 { foreach(scores[i]) 
+                          scores[i] inside {[0:100]};
+                       }
+        constraint c2 {scores.sum() > 300; }
+      endclass
                     
-7. Model a transaction with type (deposit/withdraw) and amount (100-10000)
-                    
-   class transaction;
-     typedef enum {DEPOSIT, WITHDRAW} trans_type_e;
-     rand trans_type_e trans_type;
-     rand int amount;
-     constraint c1 { amount inside {[100:10000]};}
+208. Model a transaction with type (deposit/withdraw) and amount (100-10000)
+     class transaction;
+        typedef enum {DEPOSIT, WITHDRAW} trans_type_e;
+        rand trans_type_e trans_type;
+        rand int amount;
+        constraint c1 { amount inside {[100:10000]};}
   
-     function void display();
-        string type_str = (trans_type == DEPOSIT) ? "DEPOSIT" : "WITHDRAW";
-        $display("%s: $%0d", type_str, amount);
-     endfunction
+        function void display();
+            string type_str = (trans_type == DEPOSIT) ? "DEPOSIT" : "WITHDRAW";
+            $display("%s: $%0d", type_str, amount);
+        endfunction
     endclass    
                     
-8. Randomize a dice value from 1 to 6.
-    class packet;
-      rand int dice[];
-      constraint c1 {dice.size () ==6;}
-      constraint c2 {foreach (dice[i])
-                       dice[i] inside {[1:6]};
-                    }
-      
-    endclass
-                    
+209. Randomize a dice value from 1 to 6.
+     class packet;
+        rand int dice[];
+        constraint c1 {dice.size () ==6;}
+        constraint c2 {foreach (dice[i])
+                          dice[i] inside {[1:6]};
+                      }
+     endclass               
     //Alternative
     class packet;
       rand int dice;
       constraint c1 { dice inside {[1:6]};}
     endclass                
-9. Create a temperature sensor class where temp ranges -40 to 125°C.
+210. Create a temperature sensor class where temp ranges -40 to 125°C.
+     class packet;
+        rand int temp_sense;
+        constraint c1 { temp_sense inside {[-40:125]};}
+      endclass
   
-   class packet;
-     rand int temp_sense;
-     constraint c1 { temp_sense inside {[-40:125]};}
-   endclass
-  
-10. Create a vector of 10 IDs with all unique values.
-    class packet;
-      rand bit [3:0] ID[];
-      constraint c1 {ID.size () == 10;}
-      constraint c2  {foreach (ID[i])
-                         foreach (ID[j])
-                           if (i !=j)
-                             ID[i] != ID [j];
+211. Create a vector of 10 IDs with all unique values.
+     class packet;
+        rand bit [3:0] ID[];
+        constraint c1 {ID.size () == 10;}
+        constraint c2  {foreach (ID[i])
+                           foreach (ID[j])
+                              if (i !=j)
+                                 ID[i] != ID [j];
                      }
-      //constraint c2  {unique {ID};}
-      
-      
+        //constraint c2  {unique {ID};}
     endclass
-11. Constrain a 4-bit vector to have exactly 2 bits set.
-    class packet;
-      rand bit [3:0] a;
-      constraint c1 {$countones(a)==2;}
-    endclass
-  
-12. Generate random hh:mm:ss where hh<24, mm<60, ss<60.
-    class packet;
-      rand int hh ,mm,ss;
-      constraint c1 {hh<24;
-                     mm<60;
-                     ss<60;
-                    }
-      
-    endclass
-  
-13. Generate a traffic light state duration such that total = 180s
-    class traffic_light;
-      rand int red_duration;
-      rand int yellow_duration;
-      rand int green_duration;
-      constraint c1 { red_duration inside {[30:90]};
-                      yellow_duration inside {[3:10]};
-                      green_duration inside {[20:80]};
-                    }
-    
-      constraint c2 {red_duration + yellow_duration + green_duration == 180;}
-      
-   endclass
-  
-14. Randomize dimensions of a square (side 5–20), constrain area > 100.
-    class square;
-      rand int side;
-      rand int area;
-      constraint c1 { side inside {[5:20]};
-                      area == side * side;
-                      area > 100;
-                     }
-    endclass
-15. Generate a binary tree node with key (50–200), left < root < right
-    class node;
-      rand int key;
-      rand int left_key;
-      rand int right_key;
-      constraint c1 { key inside {[50:200]};
-                      left_key inside {[50:200]};
-                      right_key inside {[50:200]};
-                      left_key < key;       // Left < Root
-                      key < right_key;      // Root < Right
-                    }
+212. Constrain a 4-bit vector to have exactly 2 bits set.
+     class packet;
+        rand bit [3:0] a;
+        constraint c1 {$countones(a)==2;}
      endclass
+  
+213. Generate random hh:mm:ss where hh<24, mm<60, ss<60.
+     class packet;
+        rand int hh ,mm,ss;
+        constraint c1  {hh<24;
+                        mm<60;
+                        ss<60;
+                      }
+     endclass
+  
+214. Generate a traffic light state duration such that total = 180s
+     class traffic_light;
+        rand int red_duration;
+        rand int yellow_duration;
+        rand int green_duration;
+        constraint c1 { red_duration inside {[30:90]};
+                        yellow_duration inside {[3:10]};
+                        green_duration inside {[20:80]};
+                      }
+        constraint c2 {red_duration + yellow_duration + green_duration == 180;} 
+     endclass
+  
+215. Randomize dimensions of a square (side 5–20), constrain area > 100.
+     class square;
+        rand int side;
+        rand int area;
+        constraint c1 { side inside {[5:20]};
+                        area == side * side;
+                        area > 100;
+                      }
+      endclass
+216. Generate a binary tree node with key (50–200), left < root < right
+     class node;
+        rand int key;
+        rand int left_key;
+        rand int right_key;
+        constraint c1 { key inside {[50:200]};
+                        left_key inside {[50:200]};
+                        right_key inside {[50:200]};
+                        left_key < key;       // Left < Root
+                        key < right_key;      // Root < Right
+                    }
+      endclass
      
-16. Ensure 3 student roll numbers are all different.
-  
-    class student;
-      rand int roll[3];
-      constraint c1 { foreach(roll[i]) 
-                        roll[i] inside {[1:100]};
-    
-                    }
-  
-      constraint c2 { foreach(roll[i]) {
-                        foreach(roll[j]) {
-                          if (i != j) {
-                             roll[i] != roll[j];
-                           }
-                          }
-                         }
-                     }
-     endclass
+217. Ensure 3 student roll numbers are all different.
+     class student;
+        rand int roll[3];
+        constraint c1 { foreach(roll[i]) 
+                          roll[i] inside {[1:100]};
+                       }
+        constraint c2 { foreach(roll[i]) {
+                            foreach(roll[j]) {
+                                if (i != j) {
+                                   roll[i] != roll[j];
+                                 }
+                              }
+                            }
+                        }
+       endclass
                             
-17. Generate a packet with addr, data, id ensuring addr % 4 == 0.
-    class packet;
-      rand bit [15:0] addr;
-      rand bit [15:0] data;
-      rand bit [7:0] id;
-      constraint c1 {addr inside {[10:100]};}
-      constraint c2 {addr % 4 ==0;}
-      
-    endclass
+218. Generate a packet with addr, data, id ensuring addr % 4 == 0.
+     class packet;
+        rand bit [15:0] addr;
+        rand bit [15:0] data;
+        rand bit [7:0] id;
+        constraint c1 {addr inside {[10:100]};}
+        constraint c2 {addr % 4 ==0;}
+     endclass
                           
-18. Create random IP address with each byte between 0–255.
-    class ip_address;
-      rand bit [7:0] octet1;
-      rand bit [7:0] octet2;
-      rand bit [7:0] octet3;
-      rand bit [7:0] octet4;
+219. Create random IP address with each byte between 0–255.
+     class ip_address;
+        rand bit [7:0] octet1;
+        rand bit [7:0] octet2;
+        rand bit [7:0] octet3;
+        rand bit [7:0] octet4;
       
-      function string to_string();
-        return $sformatf("%0d.%0d.%0d.%0d", octet1, octet2, octet3, octet4);
-      endfunction
+        function string to_string();
+           return $sformatf("%0d.%0d.%0d.%0d", octet1, octet2, octet3, octet4);
+        endfunction
     endclass   
                           
-19. Randomize a 4-digit pin such that it doesn’t contain repeated digits
-    class pin;
-      rand int digit[4];
-      constraint c1 { foreach(digit[i]) 
-                        digit[i] inside {[0:9]};
+220. Randomize a 4-digit pin such that it doesn’t contain repeated digits
+     class pin;
+        rand int digit[4];
+        constraint c1 { foreach(digit[i]) 
+                           digit[i] inside {[0:9]};
                     }
-      constraint c2 {unique {digit};  } // No repeated digits
-  
-      function string to_string();
-        return $sformatf("%0d%0d%0d%0d", digit[0], digit[1], digit[2], digit[3]);
-      endfunction
-    endclass    
+        constraint c2 {unique {digit};  } // No repeated digits
+		 
+        function string to_string();
+            return $sformatf("%0d%0d%0d%0d", digit[0], digit[1], digit[2], digit[3]);
+        endfunction
+      endclass    
                           
-20. Create a random MAC address with valid formatting (6 bytes, each 0–255)
-                          
-    class mac_address;
-      rand bit [7:0] octet[6];
-  
-      function string to_string();
-         return $sformatf("%02x:%02x:%02x:%02x:%02x:%02x", 
-                     octet[0], octet[1], octet[2], octet[3], octet[4], octet[5]);
-      endfunction
-    endclass                      
+221. Create a random MAC address with valid formatting (6 bytes, each 0–255)
+     class mac_address;
+        rand bit [7:0] octet[6];
+        function string to_string();
+             return $sformatf("%02x:%02x:%02x:%02x:%02x:%02x", 
+                          octet[0], octet[1], octet[2], octet[3], octet[4], octet[5]);
+        endfunction
+     endclass                      
 	
 // Increasing or Decreasing Patterns
 
-80. Generate an array where every element is greater than the previous element.
-    class packet;
-      rand int d[];
-      constraint c1 {d.size ()==20;}
-      constraint c2 {foreach (d[i])
-                        d[i] inside {[50:100]};
-                    }
-      constraint c3 {foreach d[i]
-                       if (i< d.size()-1)
-                         d[i] < d[i+1];   // Strictly increasing
-                    }
-      
-    endclass
+222. Generate an array where every element is greater than the previous element.
+     class packet;
+        rand int d[];
+        constraint c1 {d.size ()==20;}
+        constraint c2 {foreach (d[i])
+                          d[i] inside {[50:100]};
+                      }
+        constraint c3 {foreach d[i]
+                          if (i< d.size()-1)
+                             d[i] < d[i+1];   // Strictly increasing
+                      }
+     endclass
 81. Generate an array where every element is smaller than the previous element.
 
     class packet;
