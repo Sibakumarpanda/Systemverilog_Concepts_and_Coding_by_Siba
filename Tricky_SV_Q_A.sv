@@ -4379,7 +4379,20 @@ endmodule
      endproperty
      assert property (p1);	 
 254. Assert burst transfers complete with burst_len cycles.
+	 property p1;
+        @(posedge clk)
+        disable iff (!rst_n)
+        $rose(burst_start) |-> ##[1:burst_len] burst_done;
+      endproperty
+      assert property (p1);	 
 255. Check that write happens only when enable is high.
+     property p1;
+        @(posedge clk)
+        disable iff (!rst_n)
+        write |-> enable;   // Write only when enable is high
+      endproperty
+      assert property (p1);		  
+		  
 256. Assert a transaction ID is not repeated consecutively.
 257. Ensure address in a write is aligned (addr % 4 == 0).
 258. Assert signal done is only asserted after start.
