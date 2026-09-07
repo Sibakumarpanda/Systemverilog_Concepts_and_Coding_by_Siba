@@ -4220,11 +4220,8 @@ Section 12 — Advanced Pattern / Randomized Pattern Selection
 									 d[i] == d[9 - i];
 					  }
         endclass   
-					 
-Section 11 — Matrix / Structured Patterns
-
-
-109. Generate rows: 1 / 12 / 123 / 1234 / 12345 using an array.
+//Matrix or Structured Patterns constraints
+242. Generate rows: 1 / 12 / 123 / 1234 / 12345 using an array.
       class packet;
         rand int count ;
         int d[];
@@ -4255,7 +4252,7 @@ Section 11 — Matrix / Structured Patterns
                           }
       endclass                    
 
-110. Generate alternating rows: 1 2 3 4 5, then 5 4 3 2 1, repeatedly.
+243. Generate alternating rows: 1 2 3 4 5, then 5 4 3 2 1, repeatedly.
                               
      class packet;
         rand int d[][];
@@ -4275,8 +4272,7 @@ Section 11 — Matrix / Structured Patterns
                                 }
                          }
       endclass                         
-                              
-111. Generate: 1 2 3 / 2 3 4 / 3 4 5 / 4 5 6.
+244. Generate: 1 2 3 / 2 3 4 / 3 4 5 / 4 5 6.
      class packet;
         rand int d[][];
         constraint c1 { d.size() == 4; }      // 4 rows
@@ -4292,8 +4288,7 @@ Section 11 — Matrix / Structured Patterns
                        }
      endclass  
                              
-112. Generate a 1-D array representing the matrix 1 2 3 / 4 5 6 / 7 8 9.
-                             
+245. Generate a 1-D array representing the matrix 1 2 3 / 4 5 6 / 7 8 9                      
      class packet;
         int d[9];
         function void post_randomize();
@@ -4303,8 +4298,7 @@ Section 11 — Matrix / Structured Patterns
        endfunction
      endclass
                              
-113. Generate a sequence where every alternate element is the sum of the previous two elements.
-  
+246. Generate a sequence where every alternate element is the sum of the previous two elements.
      class packet;
         rand int d[10];
         constraint c1 { d[0] inside {[1:20]};
@@ -4317,8 +4311,7 @@ Section 11 — Matrix / Structured Patterns
    
      endclass
   
-114. Generate a palindromic array such as 1 2 3 4 3 2 1.
-  
+247. Generate a palindromic array such as 1 2 3 4 3 2 1.
      class packet;
        parameter int SIZE = 7;
        rand int d[SIZE];
@@ -4330,11 +4323,9 @@ Section 11 — Matrix / Structured Patterns
                            if (i < SIZE/2) 
                               d[i] == d[SIZE - 1 - i];
                       }
-  
       endclass
 
-115. Generate an array where the middle element is the maximum and values decrease symmetrically around it.
-  
+248. Generate an array where the middle element is the maximum and values decrease symmetrically around it.
      class packet;
         parameter int SIZE = 7;
         rand int d[SIZE];
