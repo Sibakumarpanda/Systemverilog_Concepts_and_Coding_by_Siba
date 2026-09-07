@@ -3835,7 +3835,6 @@ endmodule
      endclass                      
 	
 // Increasing or Decreasing Patterns
-
 222. Generate an array where every element is greater than the previous element.
      class packet;
         rand int d[];
@@ -3972,8 +3971,6 @@ endmodule
                            d[i] -d[i-1] == i;
                     }
       endclass  
-  
-  
 231. Generate a sequence where the step size alternates +1, +2, +1, +2 ...
      class packet;
         rand int d[];
@@ -3991,8 +3988,7 @@ endmodule
                      }
       endclass  
 	
-Section 12 — Advanced Pattern / Randomized Pattern Selection
-
+//Advanced and Randomized Pattern Selection
 232. Generate a random array that follows either an increasing or decreasing pattern, with the pattern itself randomized.
      //Increasing Pattern or Ascending Order
      class packet;
@@ -4341,23 +4337,39 @@ Section 12 — Advanced Pattern / Randomized Pattern Selection
                       }
       endclass
 
-1. Assert that req is followed by ack within 3 cycles.
-2. Ensure reset is deasserted within 5 cycles of power-up.
-3. Assert that wvalid stays high for at most 2 cycles without wready.
-4. Ensure FIFO never underflows (read without empty).
-5. Assert that no transaction occurs during reset.
-6. Assert burst transfers complete with burst_len cycles.
-7. Check that write happens only when enable is high.
-8. Assert a transaction ID is not repeated consecutively.
-9. Ensure address in a write is aligned (addr % 4 == 0).
-10. Assert signal done is only asserted after start.
-11. Check arvalid is followed by arready within 5 cycles.
-12. Assert that clock frequency doesn’t skip (no 2 rising edges too close).
-13. Check that packet size is always less than max allowed size.
-14. Ensure grant signal is not active for more than 10 cycles.
-15. Assert temperature never exceeds 120°C.
-16. Ensure data_valid is only high when data_ready is also high.
-17. Assert a valid handshake occurs before any data is transferred.
-18. Check that a signal toggles at least once every 20 cycles.
-19. Ensure no packet is dropped (valid & !ready case).
-20. Check that fsm never enters an invalid or undefined state.    	  
+249. Assert that req is followed by ack within 3 cycles.
+	 property p1;
+        @(posedge clk)
+        disable iff (!rst_n)
+        req |-> ## [0:3] ack;
+     endproperty  
+     assert property p1;
+250. Ensure reset is deasserted within 5 cycles of power-up.
+     property p1;
+       logic power_up_down;
+       logic reset;
+       @(posedge clk)
+       disable iff (!rst_n)
+       power_up_down |-> ## [0:5] !(reset);
+    endproperty  
+    assert property p1;		 
+
+	
+251. Assert that wvalid stays high for at most 2 cycles without wready.
+252. Ensure FIFO never underflows (read without empty).
+253. Assert that no transaction occurs during reset.
+254. Assert burst transfers complete with burst_len cycles.
+255. Check that write happens only when enable is high.
+256. Assert a transaction ID is not repeated consecutively.
+257. Ensure address in a write is aligned (addr % 4 == 0).
+258. Assert signal done is only asserted after start.
+259. Check arvalid is followed by arready within 5 cycles.
+260. Assert that clock frequency doesn’t skip (no 2 rising edges too close).
+261. Check that packet size is always less than max allowed size.
+262. Ensure grant signal is not active for more than 10 cycles.
+263. Assert temperature never exceeds 120°C.
+264. Ensure data_valid is only high when data_ready is also high.
+265. Assert a valid handshake occurs before any data is transferred.
+266. Check that a signal toggles at least once every 20 cycles.
+267. Ensure no packet is dropped (valid & !ready case).
+268. Check that fsm never enters an invalid or undefined state.    	  
