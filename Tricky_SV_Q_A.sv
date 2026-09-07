@@ -4221,4 +4221,152 @@ Section 12 — Advanced Pattern / Randomized Pattern Selection
 					  }
         endclass   
 					 
-  	  
+Section 11 — Matrix / Structured Patterns
+
+
+109. Generate rows: 1 / 12 / 123 / 1234 / 12345 using an array.
+      class packet;
+        rand int count ;
+        int d[];
+        constraint c1 {count inside {[1:5]};}
+        
+        function void post_randomize();
+          d.delete();
+          for (int val=1;val<=count ; val++)begin
+            d= {d,val};
+          end
+        endfunction
+        
+      endclass
+     
+      //Alternative way
+      class packet ;
+        rand int d[][];
+        constraint c1 {d.size() ==5;}
+        constraint c2 {foreach (d[i])
+                         d[i].size() == i+1;} 
+                      }
+     
+        constraint c3 { foreach(d[i]) {
+                            foreach(d[i][j]) {
+                              d[i][j] == j+1;  
+                             }
+                           }
+                          }
+      endclass                    
+
+110. Generate alternating rows: 1 2 3 4 5, then 5 4 3 2 1, repeatedly.
+                              
+     class packet;
+        rand int d[][];
+        constraint c1 { d.size() == 6; } // 6 rows
+        constraint c2 { foreach(d[i]) {
+                          d[i].size() == 5;  // Each row has 5 elements
+                          }
+                       }
+        constraint c3 { foreach(d[i]) {
+                           foreach(d[i][j]) {
+                              if (i % 2 == 0) {
+                                  d[i][j] == j + 1;        // Even rows: 1,2,3,4,5
+                            } else {
+                                  d[i][j] == 5 - j;        // Odd rows: 5,4,3,2,1
+                                  }
+                                 }
+                                }
+                         }
+      endclass                         
+                              
+111. Generate: 1 2 3 / 2 3 4 / 3 4 5 / 4 5 6.
+     class packet;
+        rand int d[][];
+        constraint c1 { d.size() == 4; }      // 4 rows
+  
+        constraint c2 { foreach(d[i]) 
+                         d[i].size() == 3;  // 3 columns per row
+    
+                      }
+  
+        constraint c3 { foreach(d[i]) 
+                          foreach(d[i][j]) 
+                             d[i][j] == i + j + 1;
+                       }
+     endclass  
+                             
+112. Generate a 1-D array representing the matrix 1 2 3 / 4 5 6 / 7 8 9.
+                             
+     class packet;
+        int d[9];
+        function void post_randomize();
+           for (int i = 0; i < 9; i++) begin
+             d[i] = i + 1;
+           end
+       endfunction
+     endclass
+                             
+113. Generate a sequence where every alternate element is the sum of the previous two elements.
+  
+     class packet;
+        rand int d[10];
+        constraint c1 { d[0] inside {[1:20]};
+                        d[1] inside {[1:20]};
+                       }
+        constraint c2 { foreach(d[i]) 
+                          if (i >= 2 && i % 2 == 0) 
+                             d[i] == d[i-1] + d[i-2];
+                       }
+   
+     endclass
+  
+114. Generate a palindromic array such as 1 2 3 4 3 2 1.
+  
+     class packet;
+       parameter int SIZE = 7;
+       rand int d[SIZE];
+       constraint c1 { foreach(d[i]) 
+                         d[i] inside {[1:10]};
+                      }
+  
+       constraint c2 { foreach(d[i]) 
+                           if (i < SIZE/2) 
+                              d[i] == d[SIZE - 1 - i];
+                      }
+  
+      endclass
+
+115. Generate an array where the middle element is the maximum and values decrease symmetrically around it.
+  
+     class packet;
+        parameter int SIZE = 7;
+        rand int d[SIZE];
+        constraint c1 { foreach(d[i]) 
+                          d[i] inside {[1:30]};
+                       }
+  
+       constraint c2 { foreach(d[i]) 
+                          if (i < SIZE/2) 
+                              d[i] == d[SIZE - 1 - i];       // Symmetric
+                                d[i] < d[i+1];              // Increasing to center
+    
+                      }
+      endclass
+
+1. Assert that req is followed by ack within 3 cycles.
+2. Ensure reset is deasserted within 5 cycles of power-up.
+3. Assert that wvalid stays high for at most 2 cycles without wready.
+4. Ensure FIFO never underflows (read without empty).
+5. Assert that no transaction occurs during reset.
+6. Assert burst transfers complete with burst_len cycles.
+7. Check that write happens only when enable is high.
+8. Assert a transaction ID is not repeated consecutively.
+9. Ensure address in a write is aligned (addr % 4 == 0).
+10. Assert signal done is only asserted after start.
+11. Check arvalid is followed by arready within 5 cycles.
+12. Assert that clock frequency doesn’t skip (no 2 rising edges too close).
+13. Check that packet size is always less than max allowed size.
+14. Ensure grant signal is not active for more than 10 cycles.
+15. Assert temperature never exceeds 120°C.
+16. Ensure data_valid is only high when data_ready is also high.
+17. Assert a valid handshake occurs before any data is transferred.
+18. Check that a signal toggles at least once every 20 cycles.
+19. Ensure no packet is dropped (valid & !ready case).
+20. Check that fsm never enters an invalid or undefined state.    	  
