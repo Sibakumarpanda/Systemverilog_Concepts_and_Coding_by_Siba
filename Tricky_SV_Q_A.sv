@@ -4356,8 +4356,28 @@ endmodule
 
 	
 251. Assert that wvalid stays high for at most 2 cycles without wready.
+	 property p1;
+       @(posedge clk)
+       disable iff (!rst_n)
+	   //not (wvalid && !wready)[*3]; // This is also correct 
+	   $rose(wvalid && !wready) |-> (wvalid && !wready)[*1:2] ##0 !(wvalid && !wready);	 
+     endproperty
+     assert property (p1);
 252. Ensure FIFO never underflows (read without empty).
+	 property p1;
+       @(posedge clk)
+       disable iff (!rst_n)
+       !(read && empty);   // Read and empty cannot both be high
+	   //read |-> !empty;    // If read is high, empty must be low- This assertion is also correct 	 
+     endproperty
+	 assert property (p1);	 
 253. Assert that no transaction occurs during reset.
+	 property p1;
+       @(posedge clk)
+       !rst_n |-> !valid;   // When reset is active, valid must be low
+	   // !(valid && !rst_n);   // Valid should not be high during reset -This assertion code is also correct 	 
+     endproperty
+     assert property (p1);	 
 254. Assert burst transfers complete with burst_len cycles.
 255. Check that write happens only when enable is high.
 256. Assert a transaction ID is not repeated consecutively.
