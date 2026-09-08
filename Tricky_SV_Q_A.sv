@@ -4466,6 +4466,26 @@ endmodule
        data_transfer |-> $past(handshake_done, 1);   // Data transfer requires previous handshake
      endproperty
      assert property (p1);	 
-266. Check that a signal toggles at least once every 20 cycles.
+266. Write an assertion to Check that a signal toggles at least once every 20 cycles.
+	 property p1;
+       @(posedge clk)
+       disable iff (!rst_n)
+       !($stable(signal) throughout ##[1:20] $stable(signal));
+     endproperty
+     assert property (p1);	 
 267. Ensure no packet is dropped (valid & !ready case).
-268. Check that fsm never enters an invalid or undefined state.    	  
+	 property p1;
+        @(posedge clk)
+        disable iff (!rst_n)
+        $rose(valid) && !ready |-> ##[1:$] ready;
+     endproperty
+     assert property (p1);
+268. Check that fsm never enters an invalid or undefined state.  
+	 typedef enum {IDLE, READ, WRITE, DONE} state_e;
+     state_e state;
+     property p1;
+       @(posedge clk)
+       disable iff (!rst_n)
+       state inside {IDLE, READ, WRITE, DONE};
+     endproperty
+     assert property (p1);	 
