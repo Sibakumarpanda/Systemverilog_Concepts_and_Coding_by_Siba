@@ -4402,6 +4402,13 @@ endmodule
      endproperty
      assert property (p1);	  
 257. Ensure address in a write is aligned (addr % 4 == 0).
+	 property p1;
+       @(posedge clk)
+       disable iff (!rst_n)
+       write |-> (addr % 4 == 0);   // Write address must be 4-byte aligned
+	   //write |-> (addr[1:0] == 0);   // Lower 2 bits must be 0 , This will also work
+     endproperty
+     assert property (p1);	 
 258. Assert signal done is only asserted after start.
 259. Check arvalid is followed by arready within 5 cycles.
 260. Assert that clock frequency doesn’t skip (no 2 rising edges too close).
