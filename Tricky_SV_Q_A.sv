@@ -4453,7 +4453,19 @@ endmodule
      endproperty
      assert property (p1);	 
 264. Ensure data_valid is only high when data_ready is also high.
+	 property p1;
+       @(posedge clk)
+       disable iff (!rst_n)
+		 data_valid |-> data_ready;   // If data_valid is high, data_ready must be high
+     endproperty
+     assert property (p1);	 
 265. Assert a valid handshake occurs before any data is transferred.
+	 property p1;
+       @(posedge clk)
+       disable iff (!rst_n)
+       data_transfer |-> $past(handshake_done, 1);   // Data transfer requires previous handshake
+     endproperty
+     assert property (p1);	 
 266. Check that a signal toggles at least once every 20 cycles.
 267. Ensure no packet is dropped (valid & !ready case).
 268. Check that fsm never enters an invalid or undefined state.    	  
