@@ -4446,6 +4446,12 @@ endmodule
      endproperty
      assert property (p1);
 263. Assert temperature never exceeds 120°C.
+	 property p1;
+       @(posedge clk)
+       disable iff (!rst_n)
+       temp_valid |-> (temperature <= 120);
+     endproperty
+     assert property (p1);	 
 264. Ensure data_valid is only high when data_ready is also high.
 265. Assert a valid handshake occurs before any data is transferred.
 266. Check that a signal toggles at least once every 20 cycles.
