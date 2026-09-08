@@ -4432,7 +4432,19 @@ endmodule
 	 endproperty	
 	 assert property p1;	 
 261. Check that packet size is always less than max allowed size.
+	 property p1;
+        @(posedge clk)
+        disable iff (!rst_n)
+        packet_valid |-> (packet_size < MAX_SIZE);
+     endproperty
+     assert property (p1);
 262. Ensure grant signal is not active for more than 10 cycles.
+	 property p1;
+        @(posedge clk)
+        disable iff (!rst_n)
+        not (grant[*11]);   // Grant cannot be high for 11 consecutive cycles
+     endproperty
+     assert property (p1);
 263. Assert temperature never exceeds 120°C.
 264. Ensure data_valid is only high when data_ready is also high.
 265. Assert a valid handshake occurs before any data is transferred.
