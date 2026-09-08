@@ -4424,6 +4424,13 @@ endmodule
 	 endproperty
 	 assert property (p1);	 
 260. Assert that clock frequency doesn’t skip (no 2 rising edges too close).
+	 property p1;
+		 realtime current_time;
+		 time  clk_period=10;
+		 @(posedge clk)
+		 (('1, current_time = $realtime) |=> ($realtime - current_time == 10ns));
+	 endproperty	
+	 assert property p1;	 
 261. Check that packet size is always less than max allowed size.
 262. Ensure grant signal is not active for more than 10 cycles.
 263. Assert temperature never exceeds 120°C.
