@@ -4410,7 +4410,19 @@ endmodule
      endproperty
      assert property (p1);	 
 258. Assert signal done is only asserted after start.
+     property p1;
+		 @(posedge clk)
+		 disable iff (!rst_n)
+		 start |=> (signal_done==1'b1);
+	 endproperty
+	 assert property (p1);	
 259. Check arvalid is followed by arready within 5 cycles.
+	 property p1;
+		 @(posedge clk)
+		 disable iff (!rst_n)
+		 arvalid |-> ##[0:5] arready;   
+	 endproperty
+	 assert property (p1);	 
 260. Assert that clock frequency doesn’t skip (no 2 rising edges too close).
 261. Check that packet size is always less than max allowed size.
 262. Ensure grant signal is not active for more than 10 cycles.
