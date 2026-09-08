@@ -4394,6 +4394,13 @@ endmodule
       assert property (p1);		  
 		  
 256. Assert a transaction ID is not repeated consecutively.
+	 property p1;
+        @(posedge clk)
+        disable iff (!rst_n)
+        valid && $past(valid) |-> (id != $past(id, 1));
+		//valid && $past(valid) |-> $changed(id); //This is also correct
+     endproperty
+     assert property (p1);	  
 257. Ensure address in a write is aligned (addr % 4 == 0).
 258. Assert signal done is only asserted after start.
 259. Check arvalid is followed by arready within 5 cycles.
