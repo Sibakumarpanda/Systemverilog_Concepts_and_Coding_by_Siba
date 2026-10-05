@@ -3,7 +3,8 @@
 ///////////////////////////////////////////
 Multiple handles for the same object example:
 - In the below example, memory is created for object tr1. 
-- Class handle tr2 can also point to the same object using a simple assignment operator.  After the assignment, anyone tr1 or tr2 handle can change the ‘data’ value.
+- Class handle tr2 can also point to the same object using a simple assignment operator.  
+- After the assignment, anyone tr1 or tr2 handle can change the ‘data’ value.
 
 //Example1:
 class transaction;
