@@ -28,8 +28,9 @@ endclass
 /////////////////////////////////////////  
 - A class defines a data type and an object.
 - Basically the instance/variable of class is called handle .
-- Also an object handle is nothing but a pointer for an object.
-- Once the handle is newed ,means explicitely called with a constructor new (), at that time memory allocation is done .And we can say the object is created for the class.  
+- Also a handle is nothing but a pointer for an object.
+- Once the handle is newed ,means explicitely called with a constructor new (), at that time memory allocation is done .
+- And we can say the object is created for the class.  
 - NOTE : If an object is not created, then the default value for the class handle is null. 
   
 // Basic code Snippet
@@ -63,7 +64,7 @@ tr = new(); // memory is allotted for class handle .
   //2nd way
   transaction tr = new(); // This is possible. Declaration of class handle and object creation in a single line
 
-//Example1 - constructor with passing argument
+ //Example1 - constructor with passing argument
 - An argument can be passed to the constructor.
   
 class transaction;
